@@ -1,34 +1,30 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Ceci est un projet utilisant [Node.js](https://nodejs.org/en/download/current/)+[Next.js](https://nextjs.org/).
 
-## Getting Started
+## Avant toute choses
+Il est recommandé de lire en entier la [page Notion](https://www.notion.so/thomascardon/PTUT-1-524f16b2e99a451b953becb84e8ef513), qui permet de savoir tous les logiciels utilisés ainsi que les objectifs à atteindre.
 
-First, run the development server:
+Une fois Node.js **installé** et le répertoire cloné, n'oubliez pas de préparer le projet avant de tenter de le modifier ou de l'exécuter:
+```bash
+npm install
+```
+
+De plus, le répertoire contient un fichier `.gitignore`. Il permet à GitHub de ne pas compter parmi ses changements certains dossiers, comme `node_modules`, qui est le répertoire qui contient toute les bibliothèques (dépendences), mais ce dossier n'est pas nécessaire car si vous avez fait les choses correctement, Node.js est capable de le réinstaller car les dépendances sont inscrites dans le fichier `package.json`.
+
+## Commencer
+Pour commencer, lancez le serveur de développement:
 
 ```bash
 npm run dev
-# or
-yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Ouvrez [http://localhost:3000](http://localhost:3000) avec votre navigateur une fois le serveur de lancé afin de voir le résultat.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+Le serveur met-à-jour automatiquement la page sans besoin de relancer dès que vous changez les pages.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+Le dossier `pages/api` permet de relier à l'adresse `/api/*`. Les fichiers dans ce répertoire sont traités comme des [API routes](https://nextjs.org/docs/api-routes/introduction) au lieu de pages React.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## En savoir plus
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
+Pour plus comprendre Next.js:
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
