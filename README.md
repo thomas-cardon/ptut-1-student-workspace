@@ -25,6 +25,8 @@ Le dossier `pages/api` permet de relier à l'adresse `/api/*`. Les fichiers dans
 
 ## En savoir plus
 
+Etat du projet: disponible [ici](https://github.com/Ryzzzen/ptut-1-remote-toolbox/projects/1) (si vous êtes contributeur)
+
 Pour plus comprendre Next.js:
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
