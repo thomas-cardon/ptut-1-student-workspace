@@ -1,6 +1,8 @@
 import { withIronSession } from "next-iron-session";
 
 function handler(req, res, session) {
+  if (!req.session) return res.send('no');
+  
   req.session.destroy();
   res.send('ok');
 }
