@@ -1,10 +1,10 @@
 import { withIronSession } from "next-iron-session";
 
 function handler(req, res, session) {
-  if (!req.session) return res.status(401).send('NOT_AUTHORIZED');
+  if (!req.session) return res.status(401).send({ error: 'NOT_AUTHORIZED', success: false });
 
   const user = req.session.get('user');
-  if (!user) return res.status(401).send('NOT_AUTHORIZED');
+  if (!user) return res.status(401).send({ error: 'NOT_AUTHORIZED', success: false });
 
   res.send({ user });
 }
