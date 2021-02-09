@@ -1,17 +1,20 @@
 import useSWR from 'swr';
-import fetch from 'isomorphic-unfetch';
 
+import { useRouter } from 'next/router';
 import Head from 'next/head';
+
 import styles from '../styles/Dashboard.module.css';
 
-const fetcher = url => fetch(url).then(r => r.json());
-
 export default function Dashboard({ props }) {
-  const { data, error } = useSWR('/api/me/user', fetcher);
-  console.dir(data);
+  const router = useRouter();
+  const { data, error } = useSWR('/api/me/user');
 
-  if (error) return <pre><code>{error}</code></pre>
-  if (!data) return <div>loading...</div>
+  if (error) {
+    console.error(error);
+    return <div>Une erreur est survenue</div>;
+  }
+  if (!data) return <div>Chargement...</div>
+  if (!data.success && data.error == 'NOT_AUTHORIZED') return router.push('/login');
 
   return (
     <div className={styles.container}>
