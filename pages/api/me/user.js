@@ -4,7 +4,7 @@ function handler(req, res, session) {
   if (!req.session) return res.status(401).send('NOT_AUTHORIZED');
 
   const user = req.session.get('user');
-  if (!user) res.status(401).send('NOT_AUTHORIZED');
+  if (!user) return res.status(401).send('NOT_AUTHORIZED');
 
   res.send({ user });
 }

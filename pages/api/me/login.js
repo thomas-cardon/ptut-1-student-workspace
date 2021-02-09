@@ -3,12 +3,11 @@
 import { withIronSession } from "next-iron-session";
 
 async function handler(req, res) {
-  // get user from database then:
   req.session.set('user', {
     id: 1,
-    admin: true,
     firstName: 'Thomas',
-    lastName: 'Cardon'
+    lastName: 'Cardon',
+    userType: 2 /* 0 = user, 1 = teacher, 2 = admin */
   });
 
   await req.session.save();
