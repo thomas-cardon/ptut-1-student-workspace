@@ -14,6 +14,12 @@ export default function BasicLayout({ title, children }) {
       <main className={styles.main}>
         {children}
       </main>
+
+      <footer className={styles.footer}>
+        <p>
+          <b>Remote Toolbox</b> — Votre nouvel environnement de travail
+        </p>
+      </footer>
     </div>
   );
 };
