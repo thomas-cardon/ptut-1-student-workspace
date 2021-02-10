@@ -6,13 +6,13 @@ import BasicLayout from '../components/BasicLayout';
 
 function Post({ id, title, content, author, date }) {
   return (
-    <article>
+    <article style={{ border: 'darkgrey solid 1px', borderRadius: '8px', padding: '2em', 'marginBottom': '2em' }}>
       <h1>{title}</h1><small>— #{id}</small>
-      <pre>
+      <p>
         <code>
           {content}
         </code>
-      </pre>
+      </p>
     </article>
   )
 }
@@ -29,7 +29,7 @@ export default function Posts({ props }) {
       <h1 className={'title'}>
         Derniers posts
       </h1>
-      <div style={{ display: 'flex', flexDirection: 'column', width: '70%' }}>
+      <div className={'grid'}>
         {data.data.map((post, i) => <Post id={post.id} title={post.title} content={post.content} author={post.author} date={post.date}></Post>)}
       </div>
     </BasicLayout>

@@ -49,11 +49,9 @@ h2.title {
 
 .grid {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  max-width: 800px;
-  margin-top: 3rem;
+  flex-direction: column;
+  width: 70%;
+  margin-top: 2em;
 }
 
 form {
