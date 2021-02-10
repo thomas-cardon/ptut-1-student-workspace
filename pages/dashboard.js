@@ -1,20 +1,15 @@
 import useSWR from 'swr';
+import useUser from '../lib/useUser';
 
-import { useRouter } from 'next/router';
 import Head from 'next/head';
 
 import styles from '../styles/Dashboard.module.css';
 
 export default function Dashboard({ props }) {
-  const router = useRouter();
-  const { data, error } = useSWR('/api/me/user');
+  const { user } = useUser({ redirectNotAuthorized: '/login', redirectOnError: '/error' }); /* Redirection si l'utilisateur n'est pas connecté */
+  if (!user) return <div className={styles.container}>Loading...</div>
 
-  if (error) {
-    console.error(error);
-    return <div>Une erreur est survenue</div>;
-  }
-  if (!data) return <div>Chargement...</div>
-  if (!data.success && data.error == 'NOT_AUTHORIZED') return router.push('/login');
+  console.dir(user);
 
   return (
     <div className={styles.container}>
@@ -25,7 +20,7 @@ export default function Dashboard({ props }) {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Salut, {data.user.firstName} !
+          Salut, {user.firstName} !
         </h1>
       </main>
     </div>
