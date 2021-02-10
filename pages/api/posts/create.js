@@ -5,8 +5,6 @@ import { query } from '../../../lib/db';
 import { hash } from '../../../lib/encryption';
 
 async function handler(req, res, session) {
-  if (!req.session) return res.status(401).send('NOT_AUTHORIZED');
-
   const user = req.session.get('user');
   if (!user || user.userType == 0) return res.status(401).send('NOT_AUTHORIZED');
 
