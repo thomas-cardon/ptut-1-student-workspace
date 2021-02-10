@@ -7,9 +7,9 @@ import { verify } from '../../../lib/encryption';
 //
 async function handler(req, res) {
   // On vérifie que le corps de la requête contient l'e-mail et le mot de passe, si c'est pas le cas on renvoie une erreur
-  if (!req.body.email || !req.body.password) return res.status(400).json({ error: 'MISSING_PARAMETERS' });
-  if (req.session) return res.status(400).json({ error: 'ALREADY_AUTHENTIFIED' });
-  
+  if (!req.body.email || !req.body.password) return res.status(400).json({ error: 'MISSING_PARAMETERS', success: false });
+  if (req.session.get('user')) return res.status(400).json({ error: 'ALREADY_AUTHENTIFIED', success: true });
+
   try {
     // On cherche dans la table users tous les utilisateurs ayant l'adresse mail sélectionnée
     const results = await query('SELECT `id`, `firstName`, `lastName`, `birthDate`, `userType`, `hash` FROM `users` WHERE `email` = ?', req.body.email);
@@ -17,19 +17,19 @@ async function handler(req, res) {
       // On vérifie le mot de passe avec le hash qu'on a dans le tuple sélectionné
       const isPasswordVerified = await verify(req.body.password, results[0].hash);
       // Si ce n'est pas le bon mot de passe, on renvoie une erreur
-      if (!isPasswordVerified) return res.status(400).json({ error: 'WRONG_MAIL_OR_PASSWORD' });
+      if (!isPasswordVerified) return res.status(400).json({ error: 'WRONG_MAIL_OR_PASSWORD', success: false });
 
       // Sinon, on enregistre l'utilisateur dans le navigateur du client
       req.session.set('user', results[0]);
       await req.session.save();
 
-      res.send('ok');
+      res.send({ success: true });
 
     } // Sinon on renvoie une erreur générale (pour éviter de donner trop d'indices aux truands)
-    else return res.status(400).json({ error: 'WRONG_MAIL_OR_PASSWORD' });
+    else return res.status(400).json({ error: 'WRONG_MAIL_OR_PASSWORD', success: false });
   }
   catch (e) {
-    res.status(500).json({ message: e.message });
+    res.status(500).json({ error: e.message, success: false });
   }
 }
 
