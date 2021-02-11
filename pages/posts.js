@@ -2,7 +2,7 @@ import useSWR from 'swr';
 import useUser from '../lib/useUser';
 import fetcher from '../lib/fetchJson';
 
-import BasicLayout from '../components/BasicLayout';
+import UserLayout from '../components/UserLayout';
 
 function Post({ id, title, content, author, date }) {
   return (
@@ -25,13 +25,13 @@ export default function Posts({ props }) {
   if (error || !data?.success) return <div>{error || 'failed to load'}</div>;
 
   return (
-    <BasicLayout>
+    <UserLayout user={user}>
       <h1 className={'title'}>
         Derniers posts
       </h1>
       <div className={'grid'}>
-        {data.data.map((post, i) => <Post id={post.id} title={post.title} content={post.content} author={post.author} date={post.date}></Post>)}
+        {data.data.map((post, i) => <Post id={post.id} key={'post-' + post.id} title={post.title} content={post.content} author={post.author} date={post.date}></Post>)}
       </div>
-    </BasicLayout>
+    </UserLayout>
   );
 };
