@@ -1,43 +1,59 @@
-.main {
-  width: 20%;
+.sidebar {
+  grid-area: sidebar;
+  display: flex;
+  flex-direction: column;
   height: 100%;
-
-  left: 0;
+  width: 240px;
   position: fixed;
-  background-color: #f1f1f1;
+  overflow-y: auto;
+  transform: translateX(-245px);
+  transition: all .6s ease-in-out;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+  z-index: 2; /* Needs to sit above the hamburger menu icon */
+  background-color: #111827;
 }
 
-.title {
-  display: block;
-  padding: 0 0.5em;
-  text-align: left;
-  font-weight: 400;
-  font-size: xx-large;
+.sidebar[data-active="1"] {
+  transform: translateX(0);
 }
 
-.link {
-  width: 100%;
-  display: block;
-  padding: 8px 16px;
-  text-align: left;
-  border: none;
-  white-space: normal;
-  float: none;
-  outline: 0;
+/* Non-mobile styles, 750px breakpoint */
+@media only screen and (min-width: 46.875em) {
+  .sidebar {
+    position: relative;
+    transform: translateX(0);
+  }
 
+  .closeIcon {
+    visibility: hidden;
+  }
+}
+
+.list {
+  padding: 0;
+  margin-top: 85px;
+  list-style-type: none;
+}
+
+.item {
+  color: #ddd;
+
+  display: block;
+  padding: 20px 20px 20px 40px;
   transition: all 0.3s ease;
-
-  font-size: large;
-  display: inline-flex;
-  align-self: center;
 }
 
-.link:hover {
-  background-color: #ccc!important;
+.item:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
 }
 
-.icon {
-  width: 1.5em;
-  height: 1.5em;
-  margin-right: 0.5em;
+.closeIcon {
+  position: absolute;
+  visibility: visible;
+  top: 8px;
+  right: 12px;
+  cursor: pointer;
+  font-size: 20px;
+  color: #ddd;
 }
