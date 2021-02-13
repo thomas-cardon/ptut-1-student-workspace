@@ -10,7 +10,15 @@ export default function BasicLayout({ title, children }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      {children}
+      <main className={styles.flex}>
+        {children}
+      </main>
+
+      <footer className={styles.footer}>
+        <p>
+          <b>Remote Toolbox</b> — Votre nouvel environnement de travail
+        </p>
+      </footer>
     </div>
   );
 };
