@@ -20,7 +20,13 @@ async function handler(req, res) {
       if (!isPasswordVerified) return res.status(400).json({ error: 'WRONG_MAIL_OR_PASSWORD', success: false });
 
       // Sinon, on enregistre l'utilisateur dans le navigateur du client
-      req.session.set('user', results[0]);
+      req.session.set('user', {
+        id: results[0].id,
+        firstName: results[0].firstName,
+        lastName: results[0].lastName,
+        birthDate: results[0].birthDate,
+        userType: results[0].userType
+      } /* On sélectionne les variables voulues */);
       await req.session.save();
 
       res.send({ success: true });
