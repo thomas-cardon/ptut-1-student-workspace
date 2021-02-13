@@ -8,7 +8,7 @@ import styles from './UserLayout.module.css';
 
 import { HiOutlineMenu } from "react-icons/hi";
 
-export default function BasicLayout({ title, user, children }) {
+export default function BasicLayout({ title, user, children, flex }) {
   const [active, setActive] = useState(false);
 
   return (
@@ -31,7 +31,7 @@ export default function BasicLayout({ title, user, children }) {
       <Sidebar active={active} setActive={setActive}></Sidebar>
 
       <main className={styles.main}>
-        <div className={styles.overview}>
+        <div className={styles[flex ? 'flex' : 'overview']}>
           {children}
         </div>
       </main>

@@ -10,7 +10,7 @@ export default function Dashboard({ props }) {
   console.dir(user);
 
   return (
-    <UserLayout user={user}>
+    <UserLayout user={user} flex={true}>
       <h1 className={'title'}>
         Salut, {user.firstName} !
       </h1>
