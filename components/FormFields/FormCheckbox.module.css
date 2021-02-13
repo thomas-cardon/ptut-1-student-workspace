@@ -1,0 +1,8 @@
+.checkbox {
+  flex-direction: row;
+  width: auto;
+}
+
+.checkbox > * {
+  flex: none;
+}

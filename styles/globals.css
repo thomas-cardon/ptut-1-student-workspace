@@ -54,39 +54,12 @@ h2.title {
   margin-top: 2em;
 }
 
-form {
-  display: flex;
-  flex-direction: column;
-  width: 80%;
-}
-
-form.sm {
-  width: 30%;
-}
-
-form.md {
-  width: 50%;
-}
-
-form input, form button {
-  border: darkgrey;
-  border-radius: 5px;
-  outline: none;
-
-  width: 100%;
-  padding: 0.5em;
-  margin: 0.5em;
-
-  transition: all .3s ease;
-}
-
-form button {
-  text-transform: uppercase;
-  font-weight: bolder;
-}
-
-form button:focus, form button:hover {
-  cursor: pointer;
-  color: white;
-  background: black;
+.gradient {
+  font-weight: 800;
+  font-size: 2.25rem;
+  line-height: 1.33;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  background-image: linear-gradient(to top right, #63b3ed, #48BB78);
 }

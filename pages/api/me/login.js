@@ -4,13 +4,13 @@ import { withIronSession } from "next-iron-session";
 import { query } from '../../../lib/db';
 import { verify } from '../../../lib/encryption';
 
-//
 async function handler(req, res) {
   // On vérifie que le corps de la requête contient l'e-mail et le mot de passe, si c'est pas le cas on renvoie une erreur
   if (!req.body.email || !req.body.password) return res.status(400).json({ error: 'MISSING_PARAMETERS', success: false });
-  if (req.session.get('user')) return res.status(400).json({ error: 'ALREADY_AUTHENTIFIED', success: true });
 
   try {
+    if (req.session.get('user')) return res.status(400).json({ error: 'ALREADY_AUTHENTIFIED', success: true });
+
     // On cherche dans la table users tous les utilisateurs ayant l'adresse mail sélectionnée
     const results = await query('SELECT `id`, `firstName`, `lastName`, `birthDate`, `userType`, `hash` FROM `users` WHERE `email` = ?', req.body.email);
     if (results.length > 0) { // Si un utilisateur est trouvé on poursuit

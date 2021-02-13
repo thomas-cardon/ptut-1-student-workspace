@@ -9,7 +9,10 @@ import Router from 'next/router';
 
 const fetcher = url => fetch(url).then(r => r.json());
 
-export default function Login({ props }) {
+import Form from "../components/Form";
+import * as Fields from "../components/FormFields";
+
+export default function Login(props) {
   const { user } = useUser({ redirectTo: '/dashboard' }); /* Redirection si l'utilisateur est connecté */
 
   const loginUser = async event => {
@@ -25,7 +28,7 @@ export default function Login({ props }) {
         method: 'POST'
       });
 
-      const result = await res.json();
+      const result = await res.text();
       console.dir(result);
 
       if (result.success) Router.push('/dashboard');
@@ -37,13 +40,14 @@ export default function Login({ props }) {
 
   return (
     <BasicLayout title="Connexion">
-      <h1 className={'title'}>Connectez-vous</h1>
+      <h1 className={'title gradient'}>Connectez-vous</h1>
       <h2 className={'title'}>...pour accéder au tableau de bord</h2>
-      <form onSubmit={loginUser}>
-        <input id="email" type="email" placeholder="Adresse mail" />
-        <input id="password" type="password" placeholder="Mot de passe" />
-        <button type="submit">Se connecter</button>
-      </form>
+      <Form onSubmit={loginUser}>
+        <Fields.FormInput label="Adresse mail" id="email" name="email" type="email" placeholder="exemple@exemple.fr" />
+        <Fields.FormInput label="Mot de passe" id="password" name="password" type="password" placeholder="Mot de passe difficile à trouver" />
+        <Fields.FormButton id="forgotPassword" type="button">Mot de passe oublié?</Fields.FormButton>
+        <Fields.FormButton type="submit">Se connecter</Fields.FormButton>
+      </Form>
     </BasicLayout>
   );
 };
