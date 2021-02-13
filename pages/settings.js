@@ -9,13 +9,14 @@ export default function Dashboard({ props }) {
 
 
   return (
-    <UserLayout user={user}>
+    <UserLayout user={user} flex={true}>
       <h1 className={'title'}>
         Paramètres utilisateur
       </h1>
       <h2 className={'title'}>
         {user.firstName} {user.lastName}
       </h2>
+      <img style={{ borderRadius: '50%', width: '10%' }} src="https://placem.at/places?w=500&h=500&txt=" />
     </UserLayout>
   );
 };

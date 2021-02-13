@@ -25,7 +25,7 @@ export default function Posts({ props }) {
   if (error || !data?.success) return <div>{error || 'failed to load'}</div>;
 
   return (
-    <UserLayout user={user}>
+    <UserLayout user={user} flex={true}>
       <h1 className={'title'}>
         Derniers posts
       </h1>

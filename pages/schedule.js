@@ -9,7 +9,7 @@ export default function Schedule({ props }) {
   if (!user) return <div>Loading...</div>;
 
   return (
-    <UserLayout user={user}>
+    <UserLayout user={user} flex={true}>
       <h1 className={'title'}>
         Emploi du temps
       </h1>
