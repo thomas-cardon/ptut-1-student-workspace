@@ -19,10 +19,16 @@ function Post({ id, title, content, author, date }) {
 
 export default function Posts({ props }) {
   const { user } = useUser({ redirectNotAuthorized: '/login', redirectOnError: '/error' }); /* Redirection si l'utilisateur n'est pas connecté */
-  const { data, error } = useSWR('/api/posts/recent', fetcher)
+  const { data, error } = useSWR('/api/posts/recent', fetcher);
 
-  if (!user) return <div>Loading...</div>
-  if (error || !data?.success) return <div>{error || 'failed to load'}</div>;
+  let content;
+
+  if (!user || !data) content = <h2 className={'title'}>Chargement</h2>;
+  else if (error) {
+    content = <h2 className={'title'}>Erreur !</h2>;
+    console.error(error);
+  }
+  else content = data.data.map((post, i) => <Post id={post.id} key={'post-' + post.id} title={post.title} content={post.content} author={post.author} date={post.date}></Post>);
 
   return (
     <UserLayout user={user} flex={true}>
@@ -30,7 +36,7 @@ export default function Posts({ props }) {
         Derniers posts
       </h1>
       <div className={'grid'}>
-        {data.data.map((post, i) => <Post id={post.id} key={'post-' + post.id} title={post.title} content={post.content} author={post.author} date={post.date}></Post>)}
+        {content}
       </div>
     </UserLayout>
   );

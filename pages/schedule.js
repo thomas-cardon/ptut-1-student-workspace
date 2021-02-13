@@ -6,7 +6,11 @@ import UserLayout from '../components/UserLayout';
 
 export default function Schedule({ props }) {
   const { user } = useUser({ redirectNotAuthorized: '/login', redirectOnError: '/error' }); /* Redirection si l'utilisateur n'est pas connecté */
-  if (!user) return <div>Loading...</div>;
+
+  let content;
+
+  if (!user) content = <h2 className={'title'}>Chargement</h2>;
+  else content = <></>;
 
   return (
     <UserLayout user={user} flex={true}>
@@ -14,6 +18,7 @@ export default function Schedule({ props }) {
         Emploi du temps
       </h1>
       <div className={'grid'}>
+        {content}
       </div>
     </UserLayout>
   );
