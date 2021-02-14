@@ -12,7 +12,7 @@ async function handler(req, res) {
     if (req.session.get('user')) return res.status(400).json({ error: 'ALREADY_AUTHENTIFIED', success: true });
 
     // On cherche dans la table users tous les utilisateurs ayant l'adresse mail sélectionnée
-    const results = await query('SELECT `id`, `firstName`, `lastName`, `birthDate`, `userType`, `hash` FROM `users` WHERE `email` = ?', req.body.email);
+    const results = await query('SELECT `userId`, `firstName`, `lastName`, `birthDate`, `userType`, `hash` FROM `users` WHERE `email` = ?', req.body.email);
     if (results.length > 0) { // Si un utilisateur est trouvé on poursuit
       // On vérifie le mot de passe avec le hash qu'on a dans le tuple sélectionné
       const isPasswordVerified = await verify(req.body.password, results[0].hash);
@@ -21,7 +21,7 @@ async function handler(req, res) {
 
       // Sinon, on enregistre l'utilisateur dans le navigateur du client
       req.session.set('user', {
-        id: results[0].id,
+        userId: results[0].userId,
         firstName: results[0].firstName,
         lastName: results[0].lastName,
         birthDate: results[0].birthDate,
