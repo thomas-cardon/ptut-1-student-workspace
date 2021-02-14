@@ -14,9 +14,10 @@ export default function BasicLayout({ title, user, children, flex }) {
   return (
     <div className={styles.container}>
       <Head>
-        <title>{title || 'Remote Toolbox'}</title>
+        <title>{title || 'Student Workspace'}</title>
         <link rel="icon" href="/favicon.ico" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="description" content="Votre nouvel environnement de travail" />
       </Head>
 
       <div className={styles.menuIcon} onClick={() => setActive(!active)}>
@@ -38,7 +39,7 @@ export default function BasicLayout({ title, user, children, flex }) {
 
       <footer className={styles.footer}>
         <p>
-          <b>Remote Toolbox</b> — Votre nouvel environnement de travail
+          <b>Student Workspace</b> — Votre nouvel environnement de travail
         </p>
       </footer>
     </div>
