@@ -1,8 +1,9 @@
 import BasicLayout from '../components/BasicLayout';
 
+import { useToasts } from 'react-toast-notifications';
+
 import useSWR from 'swr';
 import useUser from '../lib/useUser';
-
 import fetch from 'isomorphic-unfetch';
 
 import Router from 'next/router';
@@ -14,6 +15,8 @@ import * as Fields from "../components/FormFields";
 
 export default function Login(props) {
   const { user } = useUser({ redirectTo: '/dashboard' }); /* Redirection si l'utilisateur est connecté */
+  const { addToast } = useToasts();
+
   const onSubmit = async (e) => {
     e.preventDefault();
 
@@ -30,14 +33,22 @@ export default function Login(props) {
       const result = await res.json();
       console.dir(result);
 
-      if (result.success) Router.push('/dashboard');
+      if (result.success) {
+        addToast('Connexion réussie', { appearance: 'success' });
+        Router.push('/dashboard');
+      }
+      else addToast(result.error || 'Une erreur s\'est produite', { appearance: 'error' });
     }
     catch(error) {
       console.error(error);
+      addToast(error || 'Une erreur s\'est produite', { appearance: 'error' });
     }
   }
 
-  const onError = (errors, e) => console.error(errors, e);
+  const onError = (errors, e) => {
+    console.error(errors, e);
+    addToast(errors || 'Une erreur s\'est produite', { appearance: 'error' });
+  }
 
   return (
     <BasicLayout title="Connexion">
