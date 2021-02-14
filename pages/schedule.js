@@ -10,7 +10,10 @@ export default function Schedule({ props }) {
   let content;
 
   if (!user) content = <h2 className={'title'}>Chargement</h2>;
-  else content = <></>;
+  else content = (
+    <div>
+      <img src="https://i.postimg.cc/Gp3dFNbK/image.png" />
+    </div>);
 
   return (
     <UserLayout user={user} flex={true}>
