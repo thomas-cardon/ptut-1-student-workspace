@@ -9,7 +9,7 @@ async function handler(req, res, session) {
     const data = await query(
       `
       SELECT * FROM posts
-      ORDER BY date, id DESC
+      ORDER BY creation_time, id DESC
       LIMIT 1, 10
       `
     );
