@@ -9,7 +9,7 @@ export default function GroupList({ children }) {
   let content;
 
   if (data) content = data.data.map((x, i) =>
-    <label for={x.id} style={{ display: 'block' }}>
+    <label htmlFor={x.id} style={{ display: 'block' }}>
       <input key={i} type="radio" id={x.id} name="group" value={x.id} />
       ({x.id}) {x.name}
     </label>);
