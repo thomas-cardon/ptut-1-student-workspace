@@ -9,8 +9,8 @@ export default function GroupList({ children }) {
   let content;
 
   if (data) content = data.data.map((x, i) =>
-    <label htmlFor={x.id} style={{ display: 'block' }}>
-      <input key={i} type="radio" id={x.id} name="group" value={x.id} />
+    <label key={i} htmlFor={x.id} style={{ display: 'block' }}>
+      <input type="radio" id={x.id} name="group" value={x.id} />
       ({x.id}) {x.name}
     </label>);
   else if (error) content = <pre><code>{error || "Une erreur s'est produite"}</code></pre>;
