@@ -1,5 +1,5 @@
 import { withIronSession } from 'next-iron-session';
-import { query } from '../../../lib/db';
+import { query } from '../../../../../lib/db';
 
 async function handler(req, res, session) {
   const user = req.session.get('user');
@@ -10,10 +10,10 @@ async function handler(req, res, session) {
       `
       SELECT id, userId, title, content, creation_time, moduleId, classes.name as moduleName, classes.classId
       FROM posts INNER JOIN classes ON classes.classId = posts.classId
+      WHERE classes.moduleId = ?
       ORDER BY creation_time, id DESC
       LIMIT 1, 10
-      `
-    );
+      `, req.query.moduleId);
 
     res.send({ data, success: true });
   }
