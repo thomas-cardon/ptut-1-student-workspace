@@ -1,9 +1,12 @@
 import useSWR from 'swr';
 import useUser from '../lib/useUser';
+import useServiceWorker from '../lib/workers';
 
 import UserLayout from '../components/UserLayout';
 
 export default function Dashboard({ props }) {
+  useServiceWorker();
+
   const { user } = useUser({ redirectNotAuthorized: '/login', redirectOnError: '/error' }); /* Redirection si l'utilisateur n'est pas connecté */
   if (!user) return <div>Loading...</div>
 
