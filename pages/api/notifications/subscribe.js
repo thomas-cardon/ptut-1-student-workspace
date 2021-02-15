@@ -12,10 +12,12 @@ async function handler(req, res, session) {
 
   if (!subscription) return res.status(404).send({ message: 'NOT_FOUND', success: false });
 
+  console.dir(user);
+
   try {
     const results = await query(
       `
-      REPLACE INTO subscriptions (userId, subscription)
+      REPLACE INTO subscriptions (userId, subscriptions)
       VALUES (?, ?)
       `,
       [user.userId, JSON.stringify(subscription)]

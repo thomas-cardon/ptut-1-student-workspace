@@ -25,7 +25,7 @@ async function handler(req, res, session) {
 
     const subscriptions = await query('SELECT * FROM `subscriptions`');
     for (let sub of subscriptions) {
-      webpush.sendNotification(JSON.parse(sub.subscription), body || 'Notification vide');
+      webpush.sendNotification(JSON.parse(sub.subscriptions), body || 'Notification vide');
     }
 
     res.send({ success: true });
