@@ -26,6 +26,7 @@
     "react-toast-notifications": "^2.4.3",
     "serverless-mysql": "^1.5.4",
     "swr": "^0.4.2",
-    "validate.js": "^0.13.1"
+    "validate.js": "^0.13.1",
+    "web-push": "^3.4.4"
   }
 }
