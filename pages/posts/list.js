@@ -4,18 +4,7 @@ import fetcher from '../../lib/fetchJson';
 
 import UserLayout from '../../components/UserLayout';
 
-function Post({ id, title, content, author, date }) {
-  return (
-    <article style={{ border: 'darkgrey solid 1px', borderRadius: '8px', padding: '2em', 'marginBottom': '2em' }}>
-      <h1>{title}</h1><small>— #{id}</small>
-      <p>
-        <code>
-          {content}
-        </code>
-      </p>
-    </article>
-  )
-}
+import Post from "../../components/Post";
 
 export default function Posts({ props }) {
   const { user } = useUser({ redirectNotAuthorized: '/login', redirectOnError: '/error' }); /* Redirection si l'utilisateur n'est pas connecté */

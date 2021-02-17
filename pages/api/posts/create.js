@@ -31,15 +31,15 @@ async function handler(req, res, session) {
     const results = await query(
       `
       INSERT INTO posts (title, content, userId, classId)
-      VALUES (?, ?, ?, ?, ?, ?)
+      VALUES (?, ?, ?, ?)
       `,
-      [post.title, post.content, user.id, post.classId]
+      [post.title, post.content, user.userId, post.classId]
     );
 
     res.send({ success: true });
   }
-  catch (e) {
-    res.status(500).json({ message: e.message, success: false });
+  catch (error) {
+    res.status(500).json({ error: error.message || error, success: false });
   }
 }
 
