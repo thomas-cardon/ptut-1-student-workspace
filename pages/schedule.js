@@ -19,7 +19,7 @@ export default function Page({ props }) {
   if (!user) content = <h2 className={'title'}>Chargement</h2>;
   else content = (
     <>
-      <GroupList />
+      {/*<GroupList />*/}
       <Schedule classes={data} />
     </>);
 
@@ -28,7 +28,7 @@ export default function Page({ props }) {
       <h1 className={'title'}>
         Emploi du temps
       </h1>
-      <div className={'grid'} style={{ flexDirection: 'row', width: '100%' }}>
+      <div className={'grid'} style={{ flexDirection: 'row', width: '80%' }}>
         {content}
       </div>
     </UserLayout>

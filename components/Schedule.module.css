@@ -11,6 +11,26 @@
 /*************************
  * GRID SCHEDULE LAYOUT
  *************************/
+
+ .schedule {
+   margin-left: 1em;
+   background-color: #FFF8E7;
+ }
+
+@media screen and (max-width: 700px) {
+  .schedule {
+    background-color: unset;
+  }
+
+  .schedule .timeSlot, .schedule .trackSlot {
+    display: none;
+  }
+
+  .session {
+    margin-bottom: 1em;
+  }
+}
+
 @media screen and (min-width: 700px) {
   .schedule {
     display: grid;
@@ -24,10 +44,6 @@
     */
     grid-template-columns: [times] 4em [track-1-start] 1fr [track-1-end track-2-start] 1fr [track-2-end track-3-start] 1fr [track-3-end track-4-start] 1fr [track-4-end track-5-start] 1fr [track-5-end track-6-start] 1fr [track-7-end];
   }
-}
-
-.schedule {
-  background-color: #FFF8E7;
 }
 
 .timeSlot {
