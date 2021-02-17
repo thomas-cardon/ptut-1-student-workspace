@@ -4,10 +4,10 @@ import { useToasts } from 'react-toast-notifications';
 
 import useSWR from 'swr';
 import useUser from '../lib/useUser';
-import fetch from 'isomorphic-unfetch';
 
 import Router from 'next/router';
 
+import fetch from 'isomorphic-unfetch';
 const fetcher = url => fetch(url).then(r => r.json());
 
 import Form from "../components/Form";
