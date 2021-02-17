@@ -1,8 +1,8 @@
 import useSWR from 'swr';
-import useUser from '../lib/useUser';
-import fetcher from '../lib/fetchJson';
+import useUser from '../../lib/useUser';
+import fetcher from '../../lib/fetchJson';
 
-import UserLayout from '../components/UserLayout';
+import UserLayout from '../../components/UserLayout';
 
 function Post({ id, title, content, author, date }) {
   return (

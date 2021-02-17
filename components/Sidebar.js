@@ -21,7 +21,7 @@ export default function Sidebar({ user, children, active, setActive }) {
 
         <hr style={{ width: '85%' }} />
 
-        <Link href="/posts">
+        <Link href="/posts/list">
           <a className={styles.item}>Derniers posts <Badge>1</Badge></a>
         </Link>
 
