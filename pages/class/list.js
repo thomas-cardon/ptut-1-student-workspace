@@ -31,7 +31,7 @@ export default function Page({ props }) {
     console.error(error);
   }
   else if (data.modules.length == 0) content = <h2 className={'title'}>Aucun cours disponible</h2>;
-  else content = data.modules.map((module, i) => <Class id={module.moduleId} key={'module-' + module.id} name={module.name}></Class>);
+  else content = data.modules.map((module, i) => <Class id={module.module} key={'module-' + module.module} name={module.name}></Class>);
 
   return (
     <UserLayout user={user} flex={true}>

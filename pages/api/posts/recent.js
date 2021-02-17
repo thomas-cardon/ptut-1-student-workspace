@@ -8,8 +8,8 @@ async function handler(req, res, session) {
   try {
     const data = await query(
       `
-      SELECT id, userId, title, content, creation_time, moduleId, classes.name as moduleName, classes.classId
-      FROM posts INNER JOIN classes ON classes.classId = posts.classId
+      SELECT posts.id, userId, title, content, creation_time, module, classId
+      FROM posts INNER JOIN classes ON posts.classId = classes.id
       ORDER BY creation_time, id DESC
       LIMIT 1, 10
       `
