@@ -30,7 +30,7 @@ export default function BasicLayout({ title, user, children, flex }) {
         <div className="header-search">Rechercher...</div>
         {user && <div className="header-avatar">{user?.firstName + ' ' + user?.lastName}</div>}
       </header>
-      <Sidebar active={active} setActive={setActive}></Sidebar>
+      <Sidebar user={user} active={active} setActive={setActive}></Sidebar>
 
       <main className={styles.main}>
         <div className={styles[flex ? 'flex' : 'overview']}>
