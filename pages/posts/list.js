@@ -18,7 +18,7 @@ export default function Posts({ props }) {
     console.error(error);
   }
   else if (data.data.length == 0) content = <h2 className={'title'}>Aucun post disponible</h2>;
-  else content = data.data.map((post, i) => <Post id={post.id} key={'post-' + post.id} title={post.title} content={post.content} author={post.author} creationTime={new Date(post.creation_time)}></Post>);
+  else content = data.data.map((post, i) => <Post id={post.id} key={'post-' + post.id} authorName={post.firstName + ' ' + post.lastName} title={post.title} content={post.content} author={post.author} creationTime={new Date(post.creation_time)}></Post>);
 
   console.dir(data);
 

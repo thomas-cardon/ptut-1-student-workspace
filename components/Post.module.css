@@ -2,16 +2,41 @@
   border-top: 1px solid rgb(238, 238, 238);
   border-bottom: 1px solid rgb(238, 238, 238);
   transition: all 0.2s ease 0s;
+
+  display: flex;
+  align-items: center;
+  margin: 1em;
 }
 
 .content {
   display: flex;
-  align-items: center;
   flex-direction: column;
 }
 
 .title {
   display: inline-block;
-  line-height: 1px;
   margin-bottom: -1px;
+  font-size: 1.45em;
+}
+
+.meta {
+  background-color: #ecf0f1;
+}
+
+.date {
+  line-height: 0px;
+}
+
+.profile {
+  align-items: center;
+  display: flex;
+  flex-direction: row-reverse;
+  float: right;
+}
+
+.profile > img {
+  margin-left: 1em;
+  border-radius: 50%;
+  margin-right: 1em;
+  width: 10%;
 }
