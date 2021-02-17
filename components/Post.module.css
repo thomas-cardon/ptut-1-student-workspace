@@ -1,0 +1,17 @@
+.article {
+  border-top: 1px solid rgb(238, 238, 238);
+  border-bottom: 1px solid rgb(238, 238, 238);
+  transition: all 0.2s ease 0s;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.title {
+  display: inline-block;
+  line-height: 1px;
+  margin-bottom: -1px;
+}

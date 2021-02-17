@@ -1,12 +1,21 @@
 import ReactMarkdown from 'react-markdown';
+import { format, formatDistance, formatRelative, subDays } from 'date-fns';
+import { fr } from 'date-fns/locale';
 
-export default function Post({ id, title, content, author, date }) {
+import styles from "./Post.module.css";
+
+export default function Post({ id, title, content, author, creationTime }) {
   return (
-    <article style={{ border: 'darkgrey solid 1px', borderRadius: '8px', padding: '2em', 'marginBottom': '2em' }}>
-      <h1>{title}</h1><small>— #{id}</small>
-      <ReactMarkdown allowDangerousHtml="true">
-        {content}
-      </ReactMarkdown>
+    <article className={styles.article}>
+      <div className={styles.content}>
+        <h1 className={styles.title}>{title}</h1>
+        <p>
+          <small>— {formatRelative(creationTime, new Date(), { locale: fr })}</small>
+        </p>
+        <ReactMarkdown allowDangerousHtml={true}>
+          {content}
+        </ReactMarkdown>
+      </div>
     </article>
-  )
+  );
 }
