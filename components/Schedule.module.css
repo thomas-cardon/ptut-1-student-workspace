@@ -34,14 +34,8 @@
 @media screen and (min-width: 700px) {
   .schedule {
     display: grid;
-    grid-gap: 1em;
-    grid-template-rows: [tracks] auto [time-0800] 1fr [time-0830] 1fr [time-0900] 1fr [time-0930] 1fr [time-1000] 1fr [time-1030] 1fr [time-1100] 1fr [time-1130] 1fr [time-1200] 1fr [time-1230] 1fr [time-1300] 1fr [time-1330] 1fr [time-1400] 1fr [time-1430] 1fr [time-1500] 1fr [time-1530] 1fr [time-1600] 1fr [time-1630] 1fr [time-1700] 1fr [time-1730] 1fr [time-1800] 1fr;
-    /* Note 1:
-    Use 24hr time for gridline names for simplicity
-
-    Note 2: Use "auto" instead of "1fr" for a more compact schedule where height of a slot is not proportional to the session length. Implementing a "compact" shortcode attribute might make sense for this!
-    Try 0.5fr for more compact equal rows. I don't quite understand how that works :)
-    */
+    grid-gap: 0 1em;
+    grid-template-rows: [tracks] auto [time-0800] 2em [time-0815] 2em [time-0830] 2em [time-0845] 2em [time-0900] 2em [time-0915] 2em [time-0930] 2em [time-0945] 2em [time-1000] 2em [time-1015] 2em [time-1030] 2em [time-1045] 2em [time-1100] 2em [time-1115] 2em [time-1130] 2em [time-1145] 2em [time-1200] 2em [time-1215] 2em [time-1230] 2em [time-1245] 2em [time-1300] 2em [time-1315] 2em [time-1330] 2em [time-1345] 2em [time-1400] 2em [time-1415] 2em [time-1430] 2em [time-1445] 2em [time-1500] 2em [time-1515] 2em [time-1530] 2em [time-1545] 2em [time-1600] 2em [time-1615] 2em [time-1630] 2em [time-1645] 2em [time-1700] 2em [time-1715] 2em [time-1730] 2em [time-1745] 2em [time-1800] 2em [time-1815] 2em [time-1830] 2em [time-1845] 2em [time-1900] 2em;
     grid-template-columns: [times] 4em [track-1-start] 1fr [track-1-end track-2-start] 1fr [track-2-end track-3-start] 1fr [track-3-end track-4-start] 1fr [track-4-end track-5-start] 1fr [track-5-end track-6-start] 1fr [track-7-end];
   }
 }
@@ -60,31 +54,33 @@
     .trackSlot {
       display: block;
       padding: 10px 5px 5px;
-      position: -webkit-sticky;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
     }
   }
 }
 
 .trackSlot,
 .timeSlot {
-  font-weight: bold;
-  font-size: 0.75em;
+  font-size: 1em;
+  font-family: system-ui;
+  text-transform: uppercase;
+}
+
+.trackSlot {
+  text-align: center;
+  border-bottom: darkgrey solid 1px;
 }
 
 .session {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-around;
 
-  border-color: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   border-left-style: solid;
   border-left-width: .5em;
 
-  font-family: MarianneBOLD;
+  font-family: Marianne;
 
   transition: all 0.2s ease;
 }
@@ -94,19 +90,28 @@
   cursor: pointer;
 }
 
-.session .hours, .session .teacher, .session .room {
-    margin-left: 0.7rem;
+.session .hours, .session .teacher, .session .room, .session .module {
+  margin: 5% 0 0 5%;
+}
+
+.teacher {
+  font-size: 1em;
+  font-family: 'MarianneBOLD';
+  margin-top: 0 !important;
 }
 
 .hours {
   font-family: 'Marianne';
+  font-size: small;
+
   margin-top: 1em;
   margin-bottom: 1em;
 }
 
 .module {
+  font-family: MarianneBOLD;
   font-size: x-large;
-  text-align: center;
+  margin-left: 0.45em;
 }
 
 .room {

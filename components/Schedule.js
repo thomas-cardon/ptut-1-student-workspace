@@ -52,29 +52,32 @@ export default function Schedule({ classes, children }) {
     return number.toString().length;
   }
 
-  useContextMenu();
+  //useContextMenu();
 
   return (
     <div className={styles.schedule}>
-      <h2 className={styles.timeSlot} style={{ gridRow: 'time-0800' }}>8:00</h2>
-      <h2 className={styles.timeSlot} style={{ gridRow: 'time-0830' }}>8:30</h2>
-      <h2 className={styles.timeSlot} style={{ gridRow: 'time-0900' }}>9:00</h2>
-      <h2 className={styles.timeSlot} style={{ gridRow: 'time-1000' }}>10:00</h2>
-      <h2 className={styles.timeSlot} style={{ gridRow: 'time-1030' }}>10:30</h2>
-      <h2 className={styles.timeSlot} style={{ gridRow: 'time-1100' }}>11:00</h2>
-      <h2 className={styles.timeSlot} style={{ gridRow: 'time-1130' }}>11:30</h2>
-      <h2 className={styles.timeSlot} style={{ gridRow: 'time-1200' }}>12:00</h2>
-      <h2 className={styles.timeSlot} style={{ gridRow: 'time-1230' }}>12:30</h2>
-      <h2 className={styles.timeSlot} style={{ gridRow: 'time-1300' }}>13:00</h2>
-      <h2 className={styles.timeSlot} style={{ gridRow: 'time-1330' }}>13:00</h2>
-      <h2 className={styles.timeSlot} style={{ gridRow: 'time-1400' }}>14:00</h2>
-      <h2 className={styles.timeSlot} style={{ gridRow: 'time-1430' }}>14:30</h2>
-      <h2 className={styles.timeSlot} style={{ gridRow: 'time-1500' }}>15:00</h2>
-      <h2 className={styles.timeSlot} style={{ gridRow: 'time-1530' }}>15:30</h2>
-      <h2 className={styles.timeSlot} style={{ gridRow: 'time-1600' }}>16:00</h2>
-      <h2 className={styles.timeSlot} style={{ gridRow: 'time-1630' }}>16:30</h2>
-      <h2 className={styles.timeSlot} style={{ gridRow: 'time-1700' }}>17:00</h2>
-      <h2 className={styles.timeSlot} style={{ gridRow: 'time-1730' }}>17:30</h2>
+      <span className={styles.timeSlot} style={{ gridRow: 'time-0800' }}>8:00</span>
+      <span className={styles.timeSlot} style={{ gridRow: 'time-0830' }}>8:30</span>
+      <span className={styles.timeSlot} style={{ gridRow: 'time-0900' }}>9:00</span>
+      <span className={styles.timeSlot} style={{ gridRow: 'time-0930' }}>9:30</span>
+      <span className={styles.timeSlot} style={{ gridRow: 'time-1000' }}>10:00</span>
+      <span className={styles.timeSlot} style={{ gridRow: 'time-1030' }}>10:30</span>
+      <span className={styles.timeSlot} style={{ gridRow: 'time-1100' }}>11:00</span>
+      <span className={styles.timeSlot} style={{ gridRow: 'time-1130' }}>11:30</span>
+      <span className={styles.timeSlot} style={{ gridRow: 'time-1200' }}>12:00</span>
+      <span className={styles.timeSlot} style={{ gridRow: 'time-1230' }}>12:30</span>
+      <span className={styles.timeSlot} style={{ gridRow: 'time-1300' }}>13:00</span>
+      <span className={styles.timeSlot} style={{ gridRow: 'time-1330' }}>13:00</span>
+      <span className={styles.timeSlot} style={{ gridRow: 'time-1400' }}>14:00</span>
+      <span className={styles.timeSlot} style={{ gridRow: 'time-1430' }}>14:30</span>
+      <span className={styles.timeSlot} style={{ gridRow: 'time-1500' }}>15:00</span>
+      <span className={styles.timeSlot} style={{ gridRow: 'time-1530' }}>15:30</span>
+      <span className={styles.timeSlot} style={{ gridRow: 'time-1600' }}>16:00</span>
+      <span className={styles.timeSlot} style={{ gridRow: 'time-1630' }}>16:30</span>
+      <span className={styles.timeSlot} style={{ gridRow: 'time-1700' }}>17:00</span>
+      <span className={styles.timeSlot} style={{ gridRow: 'time-1730' }}>17:30</span>
+      <span className={styles.timeSlot} style={{ gridRow: 'time-1800' }}>18:00</span>
+      <span className={styles.timeSlot} style={{ gridRow: 'time-1830' }}>18:30</span>
 
       <span className={styles.trackSlot} aria-hidden="true" style={{ gridColumn: 'track-1', gridRow: 'tracks' }}>Lundi</span>
       <span className={styles.trackSlot} aria-hidden="true" style={{ gridColumn: 'track-2', gridRow: 'tracks' }}>Mardi</span>
@@ -82,13 +85,14 @@ export default function Schedule({ classes, children }) {
       <span className={styles.trackSlot} aria-hidden="true" style={{ gridColumn: 'track-4', gridRow: 'tracks' }}>Jeudi</span>
       <span className={styles.trackSlot} aria-hidden="true" style={{ gridColumn: 'track-5', gridRow: 'tracks' }}>Vendredi</span>
       <span className={styles.trackSlot} aria-hidden="true" style={{ gridColumn: 'track-6', gridRow: 'tracks' }}>Samedi</span>
-      <span className={styles.trackSlot} aria-hidden="true" style={{ gridColumn: 'track-7', gridRow: 'tracks' }}>Dimanche</span>
 
       {classes.map((x, i) =>
-        <div key={i} className={styles.session} style={{ gridColumn: 'track-' + x.day, backgroundColor: stringToColor(x.module), gridRow: 'time-' + (getLength(x.start) == 1 ? '0' + x.start : x.start) + '00 / time-' + (getLength(x.end) == 1 ? '0' + x.end : x.end) + '00' }}>
-          <span className={styles.hours}>{x.start}:00 - {x.end}:00</span>
-          <p className={styles.module}>{x.module}</p>
-          <p className={styles.teacher}>{x.teacher}</p>
+        <div key={i} className={styles.session} style={{ gridColumn: 'track-' + x.day, backgroundColor: x.color || stringToColor(x.module), gridRow: 'time-' + x.start + ' / time-' + x.end }}>
+          <span className={styles.hours}>{x.start.slice(0, 2)}:{x.start.slice(2)} - {x.end.slice(0, 2)}:{x.end.slice(2)}</span>
+          <div>
+            <p className={styles.module}>{x.module} {x.name}</p>
+            <p className={styles.teacher}>{x.teacher}</p>
+          </div>
           <p className={styles.room}>{x.room}</p>
         </div>
       )}
