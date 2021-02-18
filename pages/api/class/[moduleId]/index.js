@@ -16,10 +16,10 @@ async function handler(req, res) {
       if (!req.query.moduleId || !req.body.name) return res.status(400).send('MISSING_PARAMETERS');
       const results = await query(
         `
-        INSERT INTO classes (module, name)
-        VALUES (?, ?)
+        INSERT INTO classes (module, name, color)
+        VALUES (?, ?, ?)
         `,
-        [req.query.moduleId, req.body.name]
+        [req.query.moduleId, req.body.name, req.body.color || null]
       );
 
       res.send({ success: true });
