@@ -6,7 +6,7 @@ import { useUser, getAvatar } from '../../../lib/useUser';
 import useSWR from 'swr';
 import fetcher from '../../../lib/fetchJson';
 
-export default function Posts({ moduleId }) {
+export default function Page({ moduleId }) {
   const { user } = useUser({ redirectNotAuthorized: '/login', redirectOnError: '/error' }); /* Redirection si l'utilisateur n'est pas connecté */
   const { data, error } = useSWR('/api/posts/recent', fetcher);
 
@@ -38,5 +38,3 @@ export default function Posts({ moduleId }) {
 export function getServerSideProps(ctx) {
   return { props: ctx.query };
 }
-
-export default Page;
