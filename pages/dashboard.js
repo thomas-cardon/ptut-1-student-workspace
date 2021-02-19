@@ -13,11 +13,12 @@ export default function Dashboard({ props }) {
   let content;
 
   if (!user) content = <h1 className={'title'}>Chargement...</h1>
-  else content = (
+  else content = (<>
     <h1 className={'title'}>
       Salut, <span className={'gradient'}>{user.firstName}</span> !
     </h1>
-  );
+    <code>{user.group.name}</code>
+  </>);
 
   return (
     <UserLayout user={user} flex={true}>
