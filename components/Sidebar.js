@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-
 import Link from 'next/link';
 
-import styles from './Sidebar.module.css';
-
 import Badge from './Badge';
+import { HiOutlineMenu } from "react-icons/hi";
 
-import { HiOutlineAdjustments, HiCalendar, HiCollection, HiOutlineMenu } from "react-icons/hi";
+import styles from './Sidebar.module.css';
 
 export default function Sidebar({ user, children, active, setActive }) {
   return (

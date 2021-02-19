@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import UserLayout from '../../components/UserLayout';
 import GroupList from '../../components/GroupList';
 
@@ -26,8 +28,13 @@ export default function Page({ props }) {
   return (
     <UserLayout user={user} flex={true}>
       <h1 className={'title'}>
-        Emploi du temps
+        Emploi du <span className={'gradient'}>temps</span>
       </h1>
+      <h3 className={'subtitle'}>
+        <Link href='/schedule/edit'>
+          <a>Ajouter...</a>
+        </Link>
+      </h3>
       <div className={'grid'} style={{ width: '98%', margin: '0' }}>
         {content}
       </div>

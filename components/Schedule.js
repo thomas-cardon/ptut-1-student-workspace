@@ -46,6 +46,9 @@ export default function Schedule({ classes, children }) {
         <Item disabled>&#x1F4BB; Se connecter (Zoom)</Item>
         <Separator />
         <Submenu label="Modération">
+          <Item disabled>&#x1F589; Notifier le groupe</Item>
+          <Separator />
+          
           <Item disabled>&#x1F589; Modifier le professeur</Item>
           <Item disabled>&#x1F392; Modifier la salle</Item>
           <Item disabled>&#x1F4C6; Modifier la date</Item>

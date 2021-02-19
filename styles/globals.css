@@ -38,6 +38,23 @@ h2.title {
   color: #c3c8cd;
 }
 
+.subtitle {
+  font-weight: 300;
+  font-size: x-large;
+}
+
+.subtitle > a {
+  color: #4393e6;
+  transition: all 0.2s ease;
+
+  text-decoration: none;
+}
+
+.subtitle > a:hover {
+  color: #030f8e;
+  cursor: pointer;
+}
+
 .code {
   background: #fafafa;
   border-radius: 5px;
