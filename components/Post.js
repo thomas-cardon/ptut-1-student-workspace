@@ -11,7 +11,7 @@ export default function Post({ id, title, content, module, authorName, creationT
     <article className={styles.article}>
       <div className={styles.module}>
         {module && (
-          <Link href={'/posts/by-module/' + module}>
+          <Link href={{ pathname: '/posts/list', query: { module } }}>
             <a>{module}</a>
           </Link>
         )}

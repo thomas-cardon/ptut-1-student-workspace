@@ -11,12 +11,14 @@ async function handler(req, res, session) {
       SELECT posts.id, posts.userId, title, content, creation_time, module, classId, firstName, lastName, email, userType FROM posts
       INNER JOIN classes ON posts.classId = classes.id
       INNER JOIN users ON users.userId = posts.userId
+      ${req.query.module ? 'WHERE module = "' + req.query.module + '"' : ''}
       ORDER BY creation_time DESC
       LIMIT 10
       `
     );
 
-    res.send({ data, success: true });
+    if (data.length > 0) res.send({ data, success: true });
+    else res.status(404).send({ message: 'NOT_FOUND', success: false });
   }
   catch (e) {
     res.status(500).json({ message: e.message, success: false });
