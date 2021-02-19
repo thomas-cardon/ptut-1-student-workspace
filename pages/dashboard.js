@@ -15,7 +15,7 @@ export default function Dashboard({ props }) {
   if (!user) content = <h1 className={'title'}>Chargement...</h1>
   else content = (
     <h1 className={'title'}>
-      Salut, {user.firstName} !
+      Salut, <span className={'gradient'}>{user.firstName}</span> !
     </h1>
   );
 
