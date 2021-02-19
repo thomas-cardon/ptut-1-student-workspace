@@ -70,7 +70,7 @@ function Page({ moduleId }) {
     </h1>
 
     <p>Pas d'inquiétude, le contenu du post est enregistré sur votre navigateur tant qu'il n'est pas envoyé.</p>
-    <div style={{ display: 'flex', }}>
+    <div style={{ display: 'flex' }}>
       <MarkdownEditor />
       <Form onSubmit={onSubmit} onError={onError}>
         <Fields.FormInput label="Titre du post" id="title" name="title" type="text" placeholder="Titre" required />

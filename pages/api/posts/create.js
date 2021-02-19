@@ -2,7 +2,6 @@ import { withIronSession } from 'next-iron-session';
 import validate from 'validate.js';
 
 import { query } from '../../../lib/db';
-import { hash } from '../../../lib/encryption';
 
 async function handler(req, res, session) {
   const user = req.session.get('user');

@@ -52,8 +52,6 @@ export default function Schedule({ classes, children }) {
     return number.toString().length;
   }
 
-  //useContextMenu();
-
   return (
     <div className={styles.schedule}>
       <span className={styles.timeSlot} style={{ gridRow: 'time-0800' }}>8:00</span>

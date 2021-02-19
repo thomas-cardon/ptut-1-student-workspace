@@ -16,7 +16,7 @@ export default function Form({ onSubmit, onError, fields, children }) {
 
   return (
     <FormProvider {...methods}>
-      <form className={styles.form} onSubmit={onSubmit} onError={onError}>
+      <form className={styles.form} onChange={onChange} onSubmit={onSubmit} onError={onError}>
         {fields.map(({ __typename, ...field }, index) => {
           const Field = Fields[__typename];
           if (!Field) return null;

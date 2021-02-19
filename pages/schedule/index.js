@@ -1,10 +1,10 @@
 import useSWR from 'swr';
-import useUser from '../lib/useUser';
+import useUser from '../../lib/useUser';
 
-import UserLayout from '../components/UserLayout';
-import GroupList from '../components/GroupList';
+import UserLayout from '../../components/UserLayout';
+import GroupList from '../../components/GroupList';
 
-import Schedule from '../components/Schedule';
+import Schedule from '../../components/Schedule';
 
 export default function Page({ props }) {
   const { user } = useUser({ redirectNotAuthorized: '/login', redirectOnError: '/error' }); /* Redirection si l'utilisateur n'est pas connecté */

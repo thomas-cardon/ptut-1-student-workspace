@@ -12,7 +12,7 @@ async function handler(req, res, session) {
       INNER JOIN classes ON posts.classId = classes.id
       INNER JOIN users ON users.userId = posts.userId
       ORDER BY creation_time DESC
-      LIMIT 1, 10
+      LIMIT 10
       `
     );
 
