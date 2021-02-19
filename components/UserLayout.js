@@ -8,7 +8,7 @@ import styles from './UserLayout.module.css';
 
 import { HiOutlineMenu } from "react-icons/hi";
 
-export default function BasicLayout({ title, user, children, flex }) {
+export default function UserLayout({ title, user, children, flex = true }) {
   const [active, setActive] = useState(false);
 
   return (
