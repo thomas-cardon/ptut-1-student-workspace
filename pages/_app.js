@@ -3,7 +3,7 @@ import '../styles/globals.css';
 
 function MyApp({ Component, pageProps }) {
   return (
-    <ToastProvider>
+    <ToastProvider autoDismiss={true}>
       <Component {...pageProps} />
     </ToastProvider>
   );
