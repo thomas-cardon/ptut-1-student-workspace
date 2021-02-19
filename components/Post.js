@@ -6,7 +6,7 @@ import { fr } from 'date-fns/locale';
 
 import styles from "./Post.module.css";
 
-export default function Post({ id, title, content, module, authorName, creationTime }) {
+export default function Post({ id, title, content, module, authorName, creationTime, avatar }) {
   return (
     <article className={styles.article}>
       <div className={styles.module}>
@@ -24,7 +24,7 @@ export default function Post({ id, title, content, module, authorName, creationT
       <div className={styles.meta}>
          <span className={styles.author}>
             <span className={styles.avatar}>
-               <img src="https://ahrefs.com/blog/wp-content/uploads/2020/09/Tim_ava-425x425.jpg" width="30" height="30" alt={authorName} className={styles.avatarImage} />
+               <img src={avatar} width="30" height="30" alt={authorName} className={styles.avatarImage} />
             </span>
             {authorName}
          </span>

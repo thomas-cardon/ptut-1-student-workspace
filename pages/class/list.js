@@ -1,5 +1,5 @@
 import useSWR from 'swr';
-import useUser from '../../lib/useUser';
+import { useUser } from '../../lib/useUser';
 import fetcher from '../../lib/fetchJson';
 
 import UserLayout from '../../components/UserLayout';

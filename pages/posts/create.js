@@ -1,20 +1,19 @@
-import useUser from '../../lib/useUser';
-import useServiceWorker from '../../lib/workers';
-
-import { useToasts } from 'react-toast-notifications';
-
-import UserLayout from '../../components/UserLayout';
-
 import Router from 'next/router';
 
-import useSWR from 'swr';
-import fetch from 'isomorphic-unfetch';
-const fetcher = url => fetch(url).then(r => r.json());
+import MarkdownEditor from "../../components/MarkdownEditor";
+import UserLayout from '../../components/UserLayout';
+import Post from "../../components/Post";
 
 import Form from "../../components/Form";
 import * as Fields from "../../components/FormFields";
 
-import MarkdownEditor from "../../components/MarkdownEditor";
+import useServiceWorker from '../../lib/workers';
+import { useToasts } from 'react-toast-notifications';
+
+import { useUser, getAvatar } from '../../lib/useUser';
+
+import useSWR from 'swr';
+import fetcher from '../../lib/fetchJson';
 
 function Page({ moduleId }) {
   useServiceWorker();
@@ -66,7 +65,7 @@ function Page({ moduleId }) {
 
   if (user && data) content = (<>
     <h1 className={'title'}>
-      Edition d'un <span style={{ color: '#D56A53' }}>nouveau post</span>
+      Edition d'un <span className={'gradient'}>nouveau post</span>
     </h1>
 
     <p>Pas d'inquiétude, le contenu du post est enregistré sur votre navigateur tant qu'il n'est pas envoyé.</p>

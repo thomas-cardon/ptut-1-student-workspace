@@ -1,10 +1,10 @@
-import useSWR from 'swr';
-import useUser from '../../lib/useUser';
-import fetcher from '../../lib/fetchJson';
-
 import UserLayout from '../../components/UserLayout';
-
 import Post from "../../components/Post";
+
+import { useUser, getAvatar } from '../../lib/useUser';
+
+import useSWR from 'swr';
+import fetcher from '../../lib/fetchJson';
 
 export default function Posts({ props }) {
   const { user } = useUser({ redirectNotAuthorized: '/login', redirectOnError: '/error' }); /* Redirection si l'utilisateur n'est pas connecté */
@@ -18,7 +18,7 @@ export default function Posts({ props }) {
     console.error(error);
   }
   else if (data.data.length == 0) content = <h2 className={'title'}>Aucun post disponible</h2>;
-  else content = data.data.map((post, i) => <Post id={post.id} key={'post-' + post.id} authorName={post.firstName + ' ' + post.lastName} creationTime={new Date(post.creation_time)} {...post}></Post>);
+  else content = data.data.map((post, i) => <Post id={post.id} key={'post-' + post.id} authorName={post.firstName + ' ' + post.lastName} creationTime={new Date(post.creation_time)} avatar={getAvatar(user)} {...post}></Post>);
 
   console.dir(data);
 

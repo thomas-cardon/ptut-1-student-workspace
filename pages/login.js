@@ -3,7 +3,7 @@ import BasicLayout from '../components/BasicLayout';
 import { useToasts } from 'react-toast-notifications';
 
 import useSWR from 'swr';
-import useUser from '../lib/useUser';
+import { useUser } from '../lib/useUser';
 
 import Router from 'next/router';
 

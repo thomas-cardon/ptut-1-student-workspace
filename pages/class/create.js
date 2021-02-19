@@ -1,4 +1,4 @@
-import useUser from '../../lib/useUser';
+import { useUser } from '../../lib/useUser';
 import useServiceWorker from '../../lib/workers';
 
 import { useToasts } from 'react-toast-notifications';

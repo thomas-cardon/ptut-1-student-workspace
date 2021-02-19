@@ -1,8 +1,9 @@
-import useSWR from 'swr';
-import useUser from '../lib/useUser';
-import useServiceWorker from '../lib/workers';
-
 import UserLayout from '../components/UserLayout';
+
+import useSWR from 'swr';
+import { useUser } from '../lib/useUser';
+
+import useServiceWorker from '../lib/workers';
 
 export default function Dashboard({ props }) {
   useServiceWorker();
@@ -17,7 +18,7 @@ export default function Dashboard({ props }) {
       Salut, {user.firstName} !
     </h1>
   );
-  
+
   return (
     <UserLayout user={user} flex={true}>
       {content}

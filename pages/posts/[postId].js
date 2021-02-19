@@ -2,12 +2,9 @@ import ReactMarkdown from 'react-markdown';
 import UserLayout from '../../components/UserLayout';
 
 import use from '../../lib/use';
-import useUser from '../../lib/useUser';
-import useServiceWorker from '../../lib/workers';
+import { useUser } from '../../lib/useUser';
 
 function Page({ postId }) {
-  useServiceWorker();
-
   const { data } = use({ url: '/api/posts/' + postId, redirectOnError: '/error' });
 
   let content = <h1 className={'title'}>Chargement...</h1>;

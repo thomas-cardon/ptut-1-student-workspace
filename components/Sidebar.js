@@ -15,6 +15,12 @@ export default function Sidebar({ user, children, active, setActive }) {
         <HiOutlineMenu />
       </div>
       <ul className={styles.list}>
+        <Link href="/dashboard">
+          <a className={styles.item}>Tableau de bord</a>
+        </Link>
+
+        <hr style={{ width: '85%' }} />
+
         <Link href="/schedule">
           <a className={styles.item}>Emploi du temps <Badge>1</Badge></a>
         </Link>
@@ -29,8 +35,8 @@ export default function Sidebar({ user, children, active, setActive }) {
           <a className={styles.item}>Liste des cours</a>
         </Link>
 
-        <hr style={{ width: '85%' }} />
         {user?.userId > 0 && (<>
+          <hr style={{ width: '85%' }} />
           <Link href="/posts/create">
             <a className={styles.item}>Créer un nouveau post</a>
           </Link>

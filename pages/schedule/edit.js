@@ -1,18 +1,21 @@
-import useSWR from 'swr';
-import useUser from '../../lib/useUser';
+import React, { useRef } from 'react';
+import Router from 'next/router';
 
 import UserLayout from '../../components/UserLayout';
-import GroupList from '../../components/GroupList';
-
-import Schedule from '../../components/Schedule';
 
 import Form from "../../components/Form";
 import * as Fields from "../../components/FormFields";
 
+import useServiceWorker from '../../lib/workers';
+import { useToasts } from 'react-toast-notifications';
+
+import { useUser, getAvatar } from '../../lib/useUser';
+
+import useSWR from 'swr';
+import fetcher from '../../lib/fetchJson';
+
 import { format, formatDistance, formatRelative, subDays } from 'date-fns';
 import { fr } from 'date-fns/locale';
-
-import React, { useRef } from 'react';
 
 export default function Page({ props }) {
   const { user } = useUser({ redirectNotAuthorized: '/login', redirectOnError: '/error' }); /* Redirection si l'utilisateur n'est pas connecté */
@@ -20,7 +23,7 @@ export default function Page({ props }) {
   const onChange = async (e) => {
     console.log('change');
   };
-  
+
   const onError = (errors, e) => {
     console.error(errors, e);
     addToast(errors || 'Une erreur s\'est produite', { appearance: 'error' });
@@ -28,7 +31,7 @@ export default function Page({ props }) {
 
   let content;
 
-  if (!user) content = <h2 className={'title'}>Chargement</h2>;
+  if (!user) content = <h2 className={'title gradient'}>Edition de l'emploi du temps</h2>;
   else content = (
     <div style={{ display: 'flex' }}>
       <Form onChange={onChange} onError={onError}>
@@ -42,8 +45,8 @@ export default function Page({ props }) {
 
   return (
     <UserLayout user={user} flex={true}>
-      <h1 className={'title'}>
-        Modification de l'emploi du temps
+      <h1 className={'title'}>Edition de&nbsp;
+        <span className={'gradient'}>l'emploi du temps</span>
       </h1>
       <div className={'grid'} style={{ width: '98%', margin: '0' }}>
         {content}

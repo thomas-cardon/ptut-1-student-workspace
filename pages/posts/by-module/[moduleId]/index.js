@@ -1,43 +1,39 @@
-import useUser from '../../../lib/useUser';
-import useServiceWorker from '../../../lib/workers';
-
 import UserLayout from '../../../components/UserLayout';
+import Post from "../../../components/Post";
+
+import { useUser, getAvatar } from '../../../lib/useUser';
 
 import useSWR from 'swr';
-import fetch from 'isomorphic-unfetch';
-const fetcher = url => fetch(url).then(r => r.json());
+import fetcher from '../../../lib/fetchJson';
 
-function Page({ moduleId }) {
-  useServiceWorker();
-
+export default function Posts({ moduleId }) {
   const { user } = useUser({ redirectNotAuthorized: '/login', redirectOnError: '/error' }); /* Redirection si l'utilisateur n'est pas connecté */
-  const { data } = useSWR('/api/class/' + moduleId, fetcher);
-  const { postsData } = useSWR('/api/posts/by-module/' + moduleId, fetcher);
+  const { data, error } = useSWR('/api/posts/recent', fetcher);
 
-  let content = <h1 className={'title'}>Chargement...</h1>;
-  let posts = <span>Chargement des posts</span>;
+  let content;
+
+  if (!user || !data) content = <h2 className={'title'}>Chargement</h2>;
+  else if (error) {
+    content = <h2 className={'title'}>Erreur !</h2>;
+    console.error(error);
+  }
+  else if (data.data.length == 0) content = <h2 className={'title'}>Aucun post disponible</h2>;
+  else content = data.data.map((post, i) => <Post id={post.id} key={'post-' + post.id} authorName={post.firstName + ' ' + post.lastName} creationTime={new Date(post.creation_time)} avatar={getAvatar(user)} {...post}></Post>);
 
   console.dir(data);
-  console.dir(postsData);
-
-  if (user && data) content = (<>
-    <h1 className={'title'}>
-      Cours <span style={{ color: '#D56A53' }}>{moduleId.toUpperCase()}</span>
-    </h1>
-    <p>{data.success && data.module.name}</p>
-    <p>{(!data.success && data.error === "Not found") && "Le cours n'existe pas!"}</p>
-  </>);
-
-  if (data?.success && postsData)
-  posts = postsData.data.map((post, i) => <Post id={post.id} key={'post-' + post.id} title={post.title} content={post.content} author={post.author} date={post.date}></Post>);
 
   return (
     <UserLayout user={user} flex={true}>
-      {content}
-      {data?.success && posts}
+      <h1 className={'title'}>
+        Derniers posts
+      </h1>
+      <div className={'grid'}>
+        {content}
+      </div>
     </UserLayout>
   );
 };
+
 
 export function getServerSideProps(ctx) {
   return { props: ctx.query };
