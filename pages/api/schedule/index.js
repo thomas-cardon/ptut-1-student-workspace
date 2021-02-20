@@ -5,8 +5,6 @@ async function handler(req, res, session) {
   const user = req.session.get('user');
   if (!user || user.userType == 0) return res.status(401).send('NOT_AUTHORIZED');
 
-  console.dir(user);
-
   try {
     const schedule = await query(
       `
