@@ -6,14 +6,7 @@ import UserLayout from '../../components/UserLayout';
 
 function Class({ id, name }) {
   return (
-    <article style={{ border: 'darkgrey solid 1px', borderRadius: '8px', padding: '2em', 'marginBottom': '2em' }}>
-      <h1>{name}</h1><small>— #{id}</small>
-      <p>
-        <code>
-
-        </code>
-      </p>
-    </article>
+    <li>{name}<small>— #{id}</small></li>
   )
 }
 
@@ -39,7 +32,9 @@ export default function Page({ props }) {
         Cours enregistrés
       </h1>
       <div className={'grid'}>
-        {content}
+        <ul>
+          {content}
+        </ul>
       </div>
     </UserLayout>
   );
