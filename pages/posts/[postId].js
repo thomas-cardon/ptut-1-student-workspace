@@ -12,7 +12,7 @@ function Page({ postId }) {
   console.dir(data);
 
   if (data) content = (<>
-    <h1 className={'title'}>
+    <h1 className={'title'} style={{ marginBottom: '1em' }}>
       {data.post.title}
     </h1>
     <ReactMarkdown allowDangerousHtml={true}>
