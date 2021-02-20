@@ -1,0 +1,8 @@
+.checkbox {
+  margin: .4rem;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+}

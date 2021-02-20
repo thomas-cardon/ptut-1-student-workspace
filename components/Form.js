@@ -1,29 +1,20 @@
-import styles from "./Form.module.css";
+import React from 'react';
 
 import { useForm, FormProvider } from "react-hook-form";
 import * as Fields from "./FormFields";
 
-export default function Form({ onSubmit, onError, fields, children }) {
+import styles from "./Form.module.css";
+
+const Form = React.forwardRef(({ onSubmit, onError, fields, children, reactHookForm = true }, ref) => {
   const { handleSubmit, ...methods } = useForm();
 
-  if (!fields) return (
+  return (
     <FormProvider {...methods}>
-      <form className={styles.form} onSubmit={onSubmit} onError={onError}>
+      <form ref={ref} className={styles.form} onSubmit={onSubmit} onError={onError}>
         {children}
       </form>
     </FormProvider>
   );
+});
 
-  return (
-    <FormProvider {...methods}>
-      <form className={styles.form} onChange={onChange} onSubmit={onSubmit} onError={onError}>
-        {fields.map(({ __typename, ...field }, index) => {
-          const Field = Fields[__typename];
-          if (!Field) return null;
-          return <Field key={index} {...field} />;
-        })}
-        <button type="submit">Submit</button>
-      </form>
-    </FormProvider>
-  );
-}
+export default Form;

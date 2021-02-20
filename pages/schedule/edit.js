@@ -6,40 +6,129 @@ import UserLayout from '../../components/UserLayout';
 import Form from "../../components/Form";
 import * as Fields from "../../components/FormFields";
 
-import useServiceWorker from '../../lib/workers';
 import { useToasts } from 'react-toast-notifications';
 
 import { useUser, getAvatar } from '../../lib/useUser';
+import use from '../../lib/use';
 
 import useSWR from 'swr';
 import fetcher from '../../lib/fetchJson';
 
-import { format, formatDistance, formatRelative, subDays } from 'date-fns';
+import { formatDuration, differenceInMinutes, isSameDay, getDay } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
 export default function Page({ props }) {
   const { user } = useUser({ redirectNotAuthorized: '/login', redirectOnError: '/error' }); /* Redirection si l'utilisateur n'est pas connecté */
 
-  const onChange = async (e) => {
-    console.log('change');
-  };
+  const { data : modules } = use({ url: '/api/class/list' });
+  const { data : groups } = use({ url: '/api/groups/list' });
+  const { data : teachers } = use({ url: '/api/users/list?queryUserType=1' });
+
+  const { addToast } = useToasts();
+
+  const form = useRef(null), legend = useRef(null);
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    if (!verify()) return;
+
+    try {
+      const res = await fetch(location.protocol + '//' + location.host + '/api/schedule/add', {
+        body: JSON.stringify({
+          start: e.target[0].value.slice(0, 19).replace('T', ' '),
+          duration: 120,
+          classId: parseInt(e.target[2].value),
+          concernedGroups: Array.from(e.target.childNodes[6].querySelectorAll('*')).filter(x => x.nodeName === "INPUT" && x.checked).map(x => { return parseInt(x.getAttribute('data-id')); }),
+          teacherId: parseInt(e.target[3].value)
+        }),
+        headers: { 'Content-Type': 'application/json' },
+        method: 'POST'
+      });
+
+      const result = await res.json();
+      console.dir(result);
+
+      if (result.success) {
+        addToast('Cours ajouté à l\'emploi du temps avec succès', { appearance: 'success' });
+        Router.push('/schedule');
+      }
+      else addToast(result.error || 'Une erreur s\'est produite', { appearance: 'error' });
+    }
+    catch(error) {
+      console.error(error);
+      addToast(error || 'Une erreur s\'est produite', { appearance: 'error' });
+    }
+  }
 
   const onError = (errors, e) => {
     console.error(errors, e);
     addToast(errors || 'Une erreur s\'est produite', { appearance: 'error' });
-  };
+  }
 
-  let content;
+  function verify() {
+    let start = form.current[0].value, end = form.current[1].value;
 
-  if (!user) content = <h2 className={'title gradient'}>Edition de l'emploi du temps</h2>;
-  else content = (
+    if (!start || !end) {
+      legend.current.innerText = "Définissez un début et une fin valide";
+      return false;
+    }
+    else {
+      start = new Date(start);
+      end = new Date(end);
+
+      let diff = differenceInMinutes(end, start);
+
+      if (!isSameDay(start, end)) {
+        addToast('Erreur: le cours ne se termine pas le même jour qu\'au début', { appearance: 'error' });
+
+        legend.current.innerText = 'Erreur';
+        legend.current.style.backgroundColor = 'red';
+        return false;
+      }
+
+      if (getDay(start) === 0) {
+        addToast('Erreur: l\'emploi du temps ne gère pas les cours un Dimanche', { appearance: 'error' });
+
+        legend.current.innerText = 'Erreur';
+        legend.current.style.backgroundColor = 'red';
+        return false;
+      }
+
+      if (diff < 15) {
+        addToast('Erreur: le cours doit durer au moins un quart d\'heure.', { appearance: 'error' });
+
+        legend.current.innerText = 'Erreur';
+        legend.current.style.backgroundColor = 'red';
+        return false;
+      }
+
+      legend.current.style.backgroundColor = '#000';
+      legend.current.innerText = `Durée: ${formatDuration({ minutes: diff }, { format: ['minutes', 'hours'], locale: fr })}`;
+
+      return true;
+    }
+  }
+
+  let content = <h2 className={'title'}>Chargement</h2>;
+  if (user) content = (
     <div style={{ display: 'flex' }}>
-      <Form onChange={onChange} onError={onError}>
-        <Fields.FormInput label="Début du cours" id="start" name="start" type="datetime-local" required />
-        <Fields.FormInput label="Fin du cours" id="end" name="end" type="datetime-local" required />
-        <legend style={{ backgroundColor: '#000', color: '#fff', padding: '2px 3px', margin: '1em 0 1em 0' }}>{}</legend>
-        <Fields.FormSelect label="Cours" id="classId" name="classId" options={[].map(x => { return { option: 'Cours ' + x.module, value: x.id } })} />
-        <Fields.FormButton type="submit">Créer un nouveau post</Fields.FormButton>
+      <Form ref={form} onSubmit={onSubmit} onError={onError}>
+        <Fields.FormGroup label="Début du cours" name="start">
+          <input id="start" name="start" type="datetime-local" onChange={verify} required />
+        </Fields.FormGroup>
+        <Fields.FormGroup label="Fin du cours" name="end">
+          <input id="end" name="end" type="datetime-local" onChange={verify} required />
+        </Fields.FormGroup>
+
+        <legend ref={legend} style={{ backgroundColor: '#000', color: '#fff', padding: '2px 3px', margin: '1em 0 1em 0' }}>Définissez un début et une fin valide</legend>
+
+        <Fields.FormSelect label="Cours" id="classId" name="classId" options={(modules?.modules || []).map(x => { return { option: x.name + ' (' + x.module + ')', value: x.id } })} />
+        <Fields.FormSelect label="Professeur" id="teacherId" name="teacherId" options={(teachers?.users || []).map(x => { return { option: x.firstName + ' ' + x.lastName, value: x.userId } })} />
+
+        <hr />
+        <Fields.FormCheckboxList label="Groupes affectés" options={(groups?.groups || []).map(x => { return { label: x.name, id: x.id } })} />
+
+        <Fields.FormButton type="submit">Ajouter à l'emploi du temps</Fields.FormButton>
       </Form>
     </div>);
 

@@ -8,8 +8,13 @@ async function handler(req, res) {
   if (!user) return res.status(401).send('NOT_AUTHORIZED');
 
   try {
-    const modules = await query(`SELECT * FROM classes ORDER BY module ASC`);
-    res.json({ modules, success: true });
+    const users = await query(`
+      SELECT userId, email, userType, firstName, lastName FROM users
+      ${req.query.queryUserType ? 'WHERE userType >= ' + req.query.queryUserType : ''}
+    `);
+
+    if (users.length > 0) res.send({ users, success: true });
+    else res.status(404).send({ message: 'NOT_FOUND', success: false });
   }
   catch (e) {
     res.status(500).json({ error: e.message, success: false });

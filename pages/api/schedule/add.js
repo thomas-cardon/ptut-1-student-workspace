@@ -6,16 +6,18 @@ async function handler(req, res, session) {
   if (!user || user.userType == 0) return res.status(401).send('NOT_AUTHORIZED');
 
   try {
-    const data = await query(
-      `
-      SELECT * FROM groups ORDER BY name ASC
-      `
-    );
+    for (let i = 0; i < req.body.concernedGroups.length; i++) {
+      const results = await query(
+        `
+        INSERT INTO schedule (start, duration, classId, teacherId, groupId)
+        VALUES (?, ?, ?, ?, ?)`,
+        [req.body.start, req.body.duration, req.body.classId, req.body.teacherId, req.body.concernedGroups[i]]);
+    }
 
-    res.send({ data, success: true });
+    res.send({ success: true });
   }
-  catch (e) {
-    res.status(500).json({ message: e.message, success: false });
+  catch (error) {
+    res.status(500).json({ error: error.message || error, success: false });
   }
 }
 
