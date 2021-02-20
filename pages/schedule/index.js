@@ -29,7 +29,8 @@ export default function Page({ props }) {
       name: x.moduleName,
       room: "Salle TD 2 - 3",
       color: x?.color,
-      teacher: x.teacherFirstName + ' ' + x.teacherLastName
+      teacher: x.teacherFirstName + ' ' + x.teacherLastName,
+      meetingUrl: x?.meetingUrl
     };
   });
 

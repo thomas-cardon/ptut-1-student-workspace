@@ -48,7 +48,7 @@ export default function Schedule({ classes, children }) {
         <Submenu label="Modération">
           <Item disabled>&#x1F589; Notifier le groupe</Item>
           <Separator />
-          
+
           <Item disabled>&#x1F589; Modifier le professeur</Item>
           <Item disabled>&#x1F392; Modifier la salle</Item>
           <Item disabled>&#x1F4C6; Modifier la date</Item>
@@ -89,7 +89,7 @@ export default function Schedule({ classes, children }) {
         <span className={styles.trackSlot} aria-hidden="true" style={{ gridColumn: 'track-6', gridRow: 'tracks' }}>Samedi</span>
 
         {classes.map((x, i) =>
-          <div key={i} onClick={show} className={styles.session} style={{ gridColumn: 'track-' + x.day, backgroundColor: x.color || stringToColor(x.module), gridRow: 'time-' + x.start + ' / time-' + x.end }}>
+          <div key={i} onClick={show} className={styles.session} meetingUrl={x.meetingUrl} style={{ gridColumn: 'track-' + x.day, backgroundColor: x.color || stringToColor(x.module), gridRow: 'time-' + x.start + ' / time-' + x.end }}>
             <span className={styles.hours}>{x.start.slice(0, 2)}:{x.start.slice(2)} - {x.end.slice(0, 2)}:{x.end.slice(2)}</span>
             <div>
               <p className={styles.module}>{x.module} {x.name}</p>
