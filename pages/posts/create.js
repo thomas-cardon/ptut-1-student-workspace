@@ -70,7 +70,7 @@ function Page({ moduleId }) {
       Edition d'un <span className={'gradient'}>nouveau post</span>
     </h1>
 
-    <Highlight title={'Le saviez-vous?'}>Pas d'inquiétude, le contenu du post est enregistré sur votre navigateur tant qu'il n'est pas envoyé.</Highlight>
+    <Highlight title={'Le saviez-vous?'}>Le contenu du post est enregistré sur votre navigateur tant qu'il n'est pas envoyé.</Highlight>
     <Form onSubmit={onSubmit} onError={onError}>
       <Fields.FormInput label="Titre du post" id="title" name="title" type="text" placeholder="Titre" required />
       <Fields.FormSelect label="Cours" id="classId" name="classId" options={data.modules.map(x => { return { option: 'Cours ' + x.module, value: x.id } })} />
