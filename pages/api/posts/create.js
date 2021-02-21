@@ -3,6 +3,8 @@ import validate from 'validate.js';
 
 import { query } from '../../../lib/db';
 
+import DOMPurify from 'isomorphic-dompurify';
+
 async function handler(req, res, session) {
   const user = req.session.get('user');
   if (!user || user.userType == 0) return res.status(401).send('NOT_AUTHORIZED');
@@ -32,7 +34,7 @@ async function handler(req, res, session) {
       INSERT INTO posts (title, content, userId, classId)
       VALUES (?, ?, ?, ?)
       `,
-      [post.title, post.content, user.userId, post.classId]
+      [post.title, DOMPurify.sanitize(post.content), user.userId, post.classId]
     );
 
     res.send({ success: true });
