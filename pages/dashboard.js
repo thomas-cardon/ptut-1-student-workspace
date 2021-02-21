@@ -1,28 +1,32 @@
 import UserLayout from '../components/UserLayout';
 
-import useSWR from 'swr';
-import { useUser } from '../lib/useUser';
-
 import useServiceWorker from '../lib/workers';
+import withSession from "../lib/session";
 
-export default function Dashboard({ props }) {
+export default function Dashboard({ user }) {
   useServiceWorker();
-
-  const { user } = useUser({ redirectNotAuthorized: '/login', redirectOnError: '/error' }); /* Redirection si l'utilisateur n'est pas connecté */
-
-  let content;
-
-  if (!user) content = <h1 className={'title'}>Chargement...</h1>
-  else content = (<>
-    <h1 className={'title'}>
-      Salut, <span className={'gradient'}>{user.firstName}</span> !
-    </h1>
-    <code>{user.group.name || "Groupe inconnu"}</code>
-  </>);
 
   return (
     <UserLayout user={user} flex={true}>
-      {content}
+      <h1 className={'title'}>
+        Salut, <span className={'gradient'}>{user.firstName}</span> !
+      </h1>
+      <code>{user ? (user?.group?.name || 'Groupe inconnu') : 'Chargement'}</code>
     </UserLayout>
   );
 };
+
+export const getServerSideProps = withSession(async function ({ req, res }) {
+  const user = req.session.get('user');
+
+  if (!user) {
+    res.setHeader('location', '/login');
+    res.statusCode = 302;
+    res.end();
+    return { props: {} };
+  }
+
+  return {
+    props: { user: req.session.get('user') },
+  };
+});

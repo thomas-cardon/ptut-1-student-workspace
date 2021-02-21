@@ -6,17 +6,13 @@ import GroupList from '../../components/GroupList';
 import Schedule from '../../components/Schedule';
 
 import useSWR from 'swr';
-
 import use from '../../lib/use';
-import { useUser } from '../../lib/useUser';
+import withSession from "../../lib/session";
 
 import { lightFormat, getDay } from 'date-fns';
 
-export default function Page({ props }) {
-  const { user } = useUser({ redirectNotAuthorized: '/login', redirectOnError: '/error' }); /* Redirection si l'utilisateur n'est pas connecté */
+export default function SchedulePage({ user }) {
   const { data : schedule } = use({ url: '/api/schedule' });
-
-  console.dir(schedule);
 
   let content = <h2 className={'title'}>Chargement</h2>;
   let data = (schedule?.schedule || []).map(x => {
@@ -30,7 +26,7 @@ export default function Page({ props }) {
       room: "Salle TD 2 - 3",
       color: x?.color,
       teacher: x.teacherFirstName + ' ' + x.teacherLastName,
-      meetingUrl: x?.meetingUrl
+      meetingurl: x?.meetingurl
     };
   });
 
@@ -56,3 +52,18 @@ export default function Page({ props }) {
     </UserLayout>
   );
 };
+
+export const getServerSideProps = withSession(async function ({ req, res }) {
+  const user = req.session.get('user');
+
+  if (!user) {
+    res.setHeader('location', '/login');
+    res.statusCode = 302;
+    res.end();
+    return { props: {} };
+  }
+
+  return {
+    props: { user: req.session.get('user') },
+  };
+});

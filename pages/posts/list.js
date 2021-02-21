@@ -1,21 +1,21 @@
+import Link from 'next/link';
+
 import UserLayout from '../../components/UserLayout';
 import Highlight from "../../components/Highlight";
 import Post from "../../components/Post";
 
-import { useUser, getAvatar } from '../../lib/useUser';
+import { getAvatar } from '../../lib/useUser';
 
 import useSWR from 'swr';
 import fetcher from '../../lib/fetchJson';
+import withSession from "../../lib/session";
 
-export default function Posts({ module }) {
-  const { user } = useUser({ redirectNotAuthorized: '/login', redirectOnError: '/error' }); /* Redirection si l'utilisateur n'est pas connecté */
+export default function Posts({ user, module }) {
   const { data, error } = module ? useSWR(`/api/posts/recent?module=${module}`, fetcher) : useSWR('/api/posts/recent', fetcher);
-
-  console.log(module);
 
   let content;
 
-  if (!user || !data) content = <h2 className={'title'}>Chargement</h2>;
+  if (!data) content = <h2 className={'title'}>Chargement</h2>;
   else if (error) {
     content = <h2 className={'title'}>Erreur !</h2>;
     console.error(error);
@@ -31,13 +31,29 @@ export default function Posts({ module }) {
         Derniers <span className={'gradient'}>posts</span>
       </h1>
       <div className={'grid'}>
-        <Highlight title={'Le saviez-vous?'}>Cliquez sur le titre d'un post pour y accéder.</Highlight>
+        <Highlight title={'Le saviez-vous?'}>
+          Cliquez sur le titre d'un post pour y accéder. Ou retournez à la&nbsp;
+          <Link href="/posts/list">
+            <a>liste sans filtre</a>
+          </Link>.
+        </Highlight>
         {content}
       </div>
     </UserLayout>
   );
 };
 
-export function getServerSideProps(ctx) {
-  return { props: ctx.query };
-}
+export const getServerSideProps = withSession(async function ({ req, res, query }) {
+  const user = req.session.get('user');
+
+  if (!user) {
+    res.setHeader('location', '/login');
+    res.statusCode = 302;
+    res.end();
+    return { props: {} };
+  }
+
+  return {
+    props: { user: req.session.get('user'), ...query },
+  };
+});

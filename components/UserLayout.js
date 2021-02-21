@@ -28,7 +28,7 @@ export default function UserLayout({ title, user, children, flex = true, ...rest
 
       <header className={styles.header}>
         <div className="header-search">Rechercher...</div>
-        {user && <div className="header-avatar">{user?.firstName + ' ' + user?.lastName}</div>}
+        {user && <div className="header-avatar">{user?.firstName + ' ' + user?.lastName} — <Link href="/logout"><a style={{ color: '#34495e' }}>Se déconnecter</a></Link></div>}
       </header>
       <Sidebar user={user} active={active} setActive={setActive}></Sidebar>
 

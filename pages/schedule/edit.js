@@ -8,18 +8,15 @@ import * as Fields from "../../components/FormFields";
 
 import { useToasts } from 'react-toast-notifications';
 
-import { useUser, getAvatar } from '../../lib/useUser';
 import use from '../../lib/use';
-
 import useSWR from 'swr';
 import fetcher from '../../lib/fetchJson';
+import withSession from "../../lib/session";
 
 import { formatDuration, differenceInMinutes, isSameDay, getDay } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
-export default function Page({ props }) {
-  const { user } = useUser({ redirectNotAuthorized: '/login', redirectOnError: '/error' }); /* Redirection si l'utilisateur n'est pas connecté */
-
+export default function EditSchedulePage({ user }) {
   const { data : modules } = use({ url: '/api/class/list' });
   const { data : groups } = use({ url: '/api/groups/list' });
   const { data : teachers } = use({ url: '/api/users/list?queryUserType=1' });
@@ -109,37 +106,48 @@ export default function Page({ props }) {
     }
   }
 
-  let content = <h2 className={'title'}>Chargement</h2>;
-  if (user) content = (
-    <div style={{ display: 'flex' }}>
-      <Form ref={form} onSubmit={onSubmit} onError={onError}>
-        <Fields.FormGroup label="Début du cours" name="start">
-          <input id="start" name="start" type="datetime-local" onChange={verify} required />
-        </Fields.FormGroup>
-        <Fields.FormGroup label="Fin du cours" name="end">
-          <input id="end" name="end" type="datetime-local" onChange={verify} required />
-        </Fields.FormGroup>
-
-        <legend ref={legend} style={{ backgroundColor: '#000', color: '#fff', padding: '2px 3px', margin: '1em 0 1em 0' }}>Définissez un début et une fin valide</legend>
-
-        <Fields.FormSelect label="Cours" id="classId" name="classId" options={(modules?.modules || []).map(x => { return { option: x.name + ' (' + x.module + ')', value: x.id } })} />
-        <Fields.FormSelect label="Professeur" id="teacherId" name="teacherId" options={(teachers?.users || []).map(x => { return { option: x.firstName + ' ' + x.lastName, value: x.userId } })} />
-
-        <hr />
-        <Fields.FormCheckboxList label="Groupes affectés" options={(groups?.groups || []).map(x => { return { label: x.name, id: x.id } })} />
-
-        <Fields.FormButton type="submit">Ajouter à l'emploi du temps</Fields.FormButton>
-      </Form>
-    </div>);
-
   return (
     <UserLayout user={user} flex={true}>
       <h1 className={'title'}>Edition de&nbsp;
         <span className={'gradient'}>l'emploi du temps</span>
       </h1>
       <div className={'grid'} style={{ width: '98%', margin: '0' }}>
-        {content}
+        <div style={{ display: 'flex' }}>
+          <Form ref={form} onSubmit={onSubmit} onError={onError}>
+            <Fields.FormGroup label="Début du cours" name="start">
+              <input id="start" name="start" type="datetime-local" onChange={verify} required />
+            </Fields.FormGroup>
+            <Fields.FormGroup label="Fin du cours" name="end">
+              <input id="end" name="end" type="datetime-local" onChange={verify} required />
+            </Fields.FormGroup>
+
+            <legend ref={legend} style={{ backgroundColor: '#000', color: '#fff', padding: '2px 3px', margin: '1em 0 1em 0' }}>Définissez un début et une fin valide</legend>
+
+            <Fields.FormSelect label="Cours" id="classId" name="classId" options={(modules?.modules || []).map(x => { return { option: x.name + ' (' + x.module + ')', value: x.id } })} />
+            <Fields.FormSelect label="Professeur" id="teacherId" name="teacherId" options={(teachers?.users || []).map(x => { return { option: x.firstName + ' ' + x.lastName, value: x.userId } })} />
+
+            <hr />
+            <Fields.FormCheckboxList label="Groupes affectés" options={(groups?.groups || []).map(x => { return { label: x.name, id: x.id } })} />
+
+            <Fields.FormButton type="submit">Ajouter à l'emploi du temps</Fields.FormButton>
+          </Form>
+        </div>
       </div>
     </UserLayout>
   );
 };
+
+export const getServerSideProps = withSession(async function ({ req, res }) {
+  const user = req.session.get('user');
+
+  if (!user) {
+    res.setHeader('location', '/login');
+    res.statusCode = 302;
+    res.end();
+    return { props: {} };
+  }
+
+  return {
+    props: { user: req.session.get('user') },
+  };
+});

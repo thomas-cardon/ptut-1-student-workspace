@@ -1,12 +1,12 @@
 import dynamic from 'next/dynamic';
 
 import use from '../../lib/use';
-import { useUser } from '../../lib/useUser';
+import withSession from "../../lib/session";
 
 const Editor = dynamic(() => import("../../components/Editor"), { ssr: false });
 import UserLayout from '../../components/UserLayout';
 
-function Page({ postId }) {
+export default function ReadPostPage({ user, postId }) {
   const { data } = use({ url: '/api/posts/' + postId, redirectOnError: '/error' });
 
   let content = <h1 className={'title'}>Chargement...</h1>;
@@ -34,15 +34,24 @@ function Page({ postId }) {
           color: blue;
         }
       `}</style>
-      <UserLayout flex={true}>
+      <UserLayout user={user} flex={true}>
         {content}
       </UserLayout>
     </>
   );
 };
 
-export function getServerSideProps(ctx) {
-  return { props: ctx.query };
-}
+export const getServerSideProps = withSession(async function ({ req, res, query, params }) {
+  const user = req.session.get('user');
 
-export default Page;
+  if (!user) {
+    res.setHeader('location', '/login');
+    res.statusCode = 302;
+    res.end();
+    return { props: {} };
+  }
+
+  return {
+    props: { user: req.session.get('user'), ...query, ...params },
+  };
+});

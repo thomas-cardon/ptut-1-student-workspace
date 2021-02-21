@@ -1,4 +1,4 @@
-import { withIronSession } from "next-iron-session";
+import withSession from "../../../lib/session";
 
 function handler(req, res) {
   if (!req.session) return res.status(401).send({ error: 'NOT_AUTHORIZED', success: false });
@@ -9,11 +9,4 @@ function handler(req, res) {
   res.send(user);
 }
 
-export default withIronSession(handler, {
-  cookieName: "ptut-1/sessions/v1",
-  password: process.env.SECRET_COOKIE_PASSWORD,
-  // La sécurisation s'active que si Node.js n'est pas en mode développement (il est en production quand c'est Vercel qui l'héberge)
-  cookieOptions: {
-    secure: process.env.NODE_ENV === "production",
-  },
-});
+export default withSession(handler);

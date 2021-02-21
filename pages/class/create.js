@@ -1,27 +1,19 @@
-import { useUser } from '../../lib/useUser';
-import useServiceWorker from '../../lib/workers';
-
-import { useToasts } from 'react-toast-notifications';
-
 import React, { useState } from 'react';
 import { SketchPicker } from 'react-color';
 
+import { useToasts } from 'react-toast-notifications';
 
 import UserLayout from '../../components/UserLayout';
 
-import useSWR from 'swr';
 import fetch from 'isomorphic-unfetch';
-const fetcher = url => fetch(url).then(r => r.json());
+import withSession from "../../lib/session";
 
 import Form from "../../components/Form";
 import * as Fields from "../../components/FormFields";
 
-function Page({ moduleId }) {
-  useServiceWorker();
-
+export default function CreateClassPage({ user }) {
   const [color, setColor] = useState('#AB2567');
 
-  const { user } = useUser({ redirectNotAuthorized: '/login', redirectOnError: '/error' }); /* Redirection si l'utilisateur n'est pas connecté */
   const { addToast } = useToasts();
 
   let content = <h1 className={'title'}>Chargement...</h1>;
@@ -84,8 +76,17 @@ function Page({ moduleId }) {
   );
 };
 
-export function getServerSideProps(ctx) {
-  return { props: ctx.query };
-}
+export const getServerSideProps = withSession(async function ({ req, res, query, params }) {
+  const user = req.session.get('user');
 
-export default Page;
+  if (!user) {
+    res.setHeader('location', '/login');
+    res.statusCode = 302;
+    res.end();
+    return { props: {} };
+  }
+
+  return {
+    props: { user: req.session.get('user') },
+  };
+});

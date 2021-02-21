@@ -1,9 +1,7 @@
-import { withIronSession } from 'next-iron-session';
+import withSession from "../../../lib/session";
 import validate from 'validate.js';
 
 import { query } from '../../../lib/db';
-
-import DOMPurify from 'isomorphic-dompurify';
 
 async function handler(req, res, session) {
   const user = req.session.get('user');
@@ -34,7 +32,7 @@ async function handler(req, res, session) {
       INSERT INTO posts (title, content, userId, classId)
       VALUES (?, ?, ?, ?)
       `,
-      [post.title, DOMPurify.sanitize(post.content), user.userId, post.classId]
+      [post.title, post.content, user.userId, post.classId]
     );
 
     res.send({ success: true });
@@ -44,11 +42,4 @@ async function handler(req, res, session) {
   }
 }
 
-export default withIronSession(handler, {
-  cookieName: "ptut-1/sessions/v1",
-  password: process.env.SECRET_COOKIE_PASSWORD,
-  // La sécurisation s'active que si Node.js n'est pas en mode développement (il est en production quand c'est Vercel qui l'héberge)
-  cookieOptions: {
-    secure: process.env.NODE_ENV === "production",
-  },
-});
+export default withSession(handler);

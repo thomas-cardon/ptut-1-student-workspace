@@ -89,7 +89,7 @@ export default function Schedule({ classes, children }) {
         <span className={styles.trackSlot} aria-hidden="true" style={{ gridColumn: 'track-6', gridRow: 'tracks' }}>Samedi</span>
 
         {classes.map((x, i) =>
-          <div key={i} onClick={show} className={styles.session} meetingUrl={x.meetingUrl} style={{ gridColumn: 'track-' + x.day, backgroundColor: x.color || stringToColor(x.name), gridRow: 'time-' + x.start + ' / time-' + x.end }}>
+          <div key={i} onClick={show} className={styles.session} meetingurl={x.meetingurl} style={{ gridColumn: 'track-' + x.day, backgroundColor: x.color || stringToColor(x.name), gridRow: 'time-' + x.start + ' / time-' + x.end }}>
             <span className={styles.hours}>{x.start.slice(0, 2)}:{x.start.slice(2)} - {x.end.slice(0, 2)}:{x.end.slice(2)}</span>
             <div>
               <p className={styles.module}>{x.module} {x.name}</p>
