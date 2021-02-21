@@ -8,11 +8,11 @@ import styles from './UserLayout.module.css';
 
 import { HiOutlineMenu } from "react-icons/hi";
 
-export default function UserLayout({ title, user, children, flex = true }) {
+export default function UserLayout({ title, user, children, flex = true, ...rest }) {
   const [active, setActive] = useState(false);
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} {...rest}>
       <Head>
         <title>{title || 'Student Workspace'}</title>
         <link rel="icon" href="/favicon.ico" />
