@@ -1,4 +1,5 @@
 import UserLayout from '../../components/UserLayout';
+import Highlight from "../../components/Highlight";
 import Post from "../../components/Post";
 
 import { useUser, getAvatar } from '../../lib/useUser';
@@ -30,6 +31,7 @@ export default function Posts({ module }) {
         Derniers <span className={'gradient'}>posts</span>
       </h1>
       <div className={'grid'}>
+        <Highlight title={'Le saviez-vous?'}>Cliquez sur le titre d'un post pour y accéder.</Highlight>
         {content}
       </div>
     </UserLayout>
