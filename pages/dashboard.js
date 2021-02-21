@@ -17,7 +17,7 @@ export default function Dashboard({ props }) {
     <h1 className={'title'}>
       Salut, <span className={'gradient'}>{user.firstName}</span> !
     </h1>
-    <code>{user.group.name}</code>
+    <code>{user.group.name || "Groupe inconnu"}</code>
   </>);
 
   return (
