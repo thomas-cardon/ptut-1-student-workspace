@@ -1,6 +1,5 @@
 import Link from 'next/link';
 
-import ReactMarkdown from 'react-markdown';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
