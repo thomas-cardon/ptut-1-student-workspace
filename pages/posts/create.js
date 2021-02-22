@@ -7,9 +7,7 @@ import Highlight from "../../components/Highlight";
 import Form from "../../components/Form";
 import * as Fields from "../../components/FormFields";
 
-import useServiceWorker from '../../lib/workers';
 import { useToasts } from 'react-toast-notifications';
-
 import { useUser, getAvatar } from '../../lib/useUser';
 
 import useSWR from 'swr';
@@ -18,8 +16,6 @@ import fetcher from '../../lib/fetchJson';
 const Editor = dynamic(() => import("../../components/Editor"), { ssr: false });
 
 function Page({ moduleId }) {
-  useServiceWorker();
-
   const { user } = useUser({ redirectNotAuthorized: '/login', redirectOnError: '/error' }); /* Redirection si l'utilisateur n'est pas connecté */
   const { data, error } = useSWR('/api/class/list', fetcher);
 
