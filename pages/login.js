@@ -158,10 +158,10 @@ export default function Login(props) {
         outline: 0;
         border: none;
 
-        width: 100%;
+        width: 75%;
         padding: 1.5% 2%;
 
-        border-radius: 30px;
+        border-radius: 10px;
 
         transition: color 0.5s, background-color 0.5s;
       }
@@ -172,7 +172,7 @@ export default function Login(props) {
         display: inline-block;
         box-sizing: border-box;
         background-color: #282828;
-        opacity: 0.3;
+        opacity: 0.2;
         font-family: monospace;
         font-size: large;
         color: white;
