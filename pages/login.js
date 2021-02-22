@@ -3,12 +3,10 @@ import BasicLayout from '../components/BasicLayout';
 import { useToasts } from 'react-toast-notifications';
 
 import { useUser } from '../lib/useUser';
+import fetcher from '../lib/fetchJson';
 
 import Router from 'next/router';
 import Link from 'next/link'
-
-import fetch from 'isomorphic-unfetch';
-const fetcher = url => fetch(url).then(r => r.json());
 
 import Form from "../components/Form";
 import * as Fields from "../components/FormFields";
