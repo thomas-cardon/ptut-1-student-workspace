@@ -72,11 +72,11 @@ function Page({ moduleId }) {
       <Fields.FormSelect label="Cours" id="classId" name="classId" options={data.modules.map(x => { return { option: 'Cours ' + x.module, value: x.id } })} />
       <Fields.FormButton type="submit">Créer un nouveau post</Fields.FormButton>
     </Form>
-    <Editor />
+    <Editor style={{ width: '60%' }} />
   </>);
 
   return (
-    <UserLayout user={user} flex={true} style={{ backgroundColor: '#f7f7f7' }}>
+    <UserLayout user={user} flex={true}>
       {content}
     </UserLayout>
   );
