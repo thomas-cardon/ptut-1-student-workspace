@@ -15,7 +15,7 @@ async function handler(req, res) {
     // On cherche dans la table users tous les utilisateurs ayant l'adresse mail sélectionnée
     const results = await query(`
       SELECT userId, email, hash, userType, firstName, lastName, birthDate, groupId, groups.name AS groupName FROM users
-      INNER JOIN groups ON groups.id = users.groupId
+      LEFT OUTER JOIN groups ON groups.id = users.groupId
       WHERE email = ?`, req.body.email);
     if (results.length > 0) { // Si un utilisateur est trouvé on poursuit
       // On vérifie le mot de passe avec le hash qu'on a dans le tuple sélectionné
@@ -32,8 +32,8 @@ async function handler(req, res) {
         birthDate: results[0].birthDate,
         userType: results[0].userType,
         group: {
-          id: results[0].groupId,
-          name: results[0].groupName
+          id: results[0]?.groupId,
+          name: results[0]?.groupName
         }
       } /* On sélectionne les variables voulues */);
       await req.session.save();
