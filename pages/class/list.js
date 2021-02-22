@@ -1,6 +1,6 @@
 import useSWR from 'swr';
-import { useUser } from '../../lib/useUser';
 import fetcher from '../../lib/fetchJson';
+import withSession from "../../lib/session";
 
 import UserLayout from '../../components/UserLayout';
 
@@ -10,15 +10,12 @@ function Class({ id, name }) {
   )
 }
 
-export default function Page({ props }) {
-  const { user } = useUser({ redirectNotAuthorized: '/login', redirectOnError: '/error' }); /* Redirection si l'utilisateur n'est pas connecté */
+export default function ClassListPage({ user }) {
   const { data, error } = useSWR('/api/class/list', fetcher);
 
   let content;
 
-  console.dir(data);
-
-  if (!user || !data) content = <h2 className={'title'}>Chargement</h2>;
+  if (!data) content = <h2 className={'title'}>Chargement</h2>;
   else if (error) {
     content = <h2 className={'title'}>Erreur !</h2>;
     console.error(error);
@@ -39,3 +36,18 @@ export default function Page({ props }) {
     </UserLayout>
   );
 };
+
+export const getServerSideProps = withSession(async function ({ req, res, query, params }) {
+  const user = req.session.get('user');
+
+  if (!user) {
+    res.setHeader('location', '/login');
+    res.statusCode = 302;
+    res.end();
+    return { props: {} };
+  }
+
+  return {
+    props: { user: req.session.get('user'), ...query, ...params },
+  };
+});

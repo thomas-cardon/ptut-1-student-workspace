@@ -1,24 +1,31 @@
-import ReactMarkdown from 'react-markdown';
-import UserLayout from '../../components/UserLayout';
+import dynamic from 'next/dynamic';
 
 import use from '../../lib/use';
-import { useUser } from '../../lib/useUser';
+import withSession from "../../lib/session";
 
-function Page({ postId }) {
+const Editor = dynamic(() => import("../../components/Editor"), { ssr: false });
+import UserLayout from '../../components/UserLayout';
+
+export default function ReadPostPage({ user, postId }) {
   const { data } = use({ url: '/api/posts/' + postId, redirectOnError: '/error' });
 
   let content = <h1 className={'title'}>Chargement...</h1>;
 
-  console.dir(data);
+  if (data) {
+    try {
+      let postContent = JSON.parse(data.post.content);
 
-  if (data) content = (<>
-    <h1 className={'title'} style={{ marginBottom: '1em' }}>
-      {data.post.title}
-    </h1>
-    <ReactMarkdown allowDangerousHtml={true}>
-      {data.post.content}
-    </ReactMarkdown>
-  </>);
+      content = (<>
+        <h1 className={'title'} style={{ marginBottom: '1em' }}>
+          {data.post.title}
+        </h1>
+        <Editor readOnly={true} data={postContent} />
+      </>);
+    }
+    catch(error) {
+      console.error(error);
+    }
+  }
 
   return (
     <>
@@ -27,15 +34,24 @@ function Page({ postId }) {
           color: blue;
         }
       `}</style>
-      <UserLayout flex={true}>
+      <UserLayout user={user} flex={true}>
         {content}
       </UserLayout>
     </>
   );
 };
 
-export function getServerSideProps(ctx) {
-  return { props: ctx.query };
-}
+export const getServerSideProps = withSession(async function ({ req, res, query, params }) {
+  const user = req.session.get('user');
 
-export default Page;
+  if (!user) {
+    res.setHeader('location', '/login');
+    res.statusCode = 302;
+    res.end();
+    return { props: {} };
+  }
+
+  return {
+    props: { user: req.session.get('user'), ...query, ...params },
+  };
+});

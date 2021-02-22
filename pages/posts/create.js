@@ -1,8 +1,8 @@
 import Router from 'next/router';
+import dynamic from 'next/dynamic';
 
-import MarkdownEditor from "../../components/MarkdownEditor";
 import UserLayout from '../../components/UserLayout';
-import Post from "../../components/Post";
+import Highlight from "../../components/Highlight";
 
 import Form from "../../components/Form";
 import * as Fields from "../../components/FormFields";
@@ -14,6 +14,8 @@ import { useUser, getAvatar } from '../../lib/useUser';
 
 import useSWR from 'swr';
 import fetcher from '../../lib/fetchJson';
+
+const Editor = dynamic(() => import("../../components/Editor"), { ssr: false });
 
 function Page({ moduleId }) {
   useServiceWorker();
@@ -68,19 +70,17 @@ function Page({ moduleId }) {
       Edition d'un <span className={'gradient'}>nouveau post</span>
     </h1>
 
-    <p>Pas d'inquiétude, le contenu du post est enregistré sur votre navigateur tant qu'il n'est pas envoyé.</p>
-    <div style={{ display: 'flex' }}>
-      <MarkdownEditor />
-      <Form onSubmit={onSubmit} onError={onError}>
-        <Fields.FormInput label="Titre du post" id="title" name="title" type="text" placeholder="Titre" required />
-        <Fields.FormSelect label="Cours" id="classId" name="classId" options={data.modules.map(x => { return { option: 'Cours ' + x.module, value: x.id } })} />
-        <Fields.FormButton type="submit">Créer un nouveau post</Fields.FormButton>
-      </Form>
-    </div>
+    <Highlight title={'Le saviez-vous?'}>Le contenu du post est enregistré sur votre navigateur tant qu'il n'est pas envoyé.</Highlight>
+    <Form onSubmit={onSubmit} onError={onError}>
+      <Fields.FormInput label="Titre du post" id="title" name="title" type="text" placeholder="Titre" required />
+      <Fields.FormSelect label="Cours" id="classId" name="classId" options={data.modules.map(x => { return { option: 'Cours ' + x.module, value: x.id } })} />
+      <Fields.FormButton type="submit">Créer un nouveau post</Fields.FormButton>
+    </Form>
+    <Editor />
   </>);
 
   return (
-    <UserLayout user={user} flex={true}>
+    <UserLayout user={user} flex={true} style={{ backgroundColor: '#f7f7f7' }}>
       {content}
     </UserLayout>
   );

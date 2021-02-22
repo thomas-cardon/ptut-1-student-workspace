@@ -8,11 +8,11 @@ import styles from './UserLayout.module.css';
 
 import { HiOutlineMenu } from "react-icons/hi";
 
-export default function UserLayout({ title, user, children, flex = true }) {
+export default function UserLayout({ title, user, children, flex = true, ...rest }) {
   const [active, setActive] = useState(false);
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} {...rest}>
       <Head>
         <title>{title || 'Student Workspace'}</title>
         <link rel="icon" href="/favicon.ico" />
@@ -28,7 +28,7 @@ export default function UserLayout({ title, user, children, flex = true }) {
 
       <header className={styles.header}>
         <div className="header-search">Rechercher...</div>
-        {user && <div className="header-avatar">{user?.firstName + ' ' + user?.lastName}</div>}
+        {user && <div className="header-avatar">{user?.firstName + ' ' + user?.lastName} — <Link href="/logout"><a style={{ color: '#34495e' }}>Se déconnecter</a></Link></div>}
       </header>
       <Sidebar user={user} active={active} setActive={setActive}></Sidebar>
 
