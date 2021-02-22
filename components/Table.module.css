@@ -1,0 +1,45 @@
+@font-face {
+  font-family: Lato;
+  src : url(/assets/fonts/Lato-Regular.ttf);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+
+  font-family: Lato;
+}
+
+.table th {
+  font-size: 1.2em;
+  text-align: left;
+  color: #fff;
+
+  background-color: #6c7ae0;
+  padding: 1em 0 1em 0;
+}
+
+.table th:first-child {
+  padding: 1em 0 1em 1em;
+  border-radius: 15px 0 0 0;
+}
+
+.table th:last-child {
+  border-radius: 0 15px 0 0;
+}
+
+.table td:first-child {
+  padding: 1em 0 1em 1em;
+}
+
+.table td:nth-of-type(2) {
+  font-weight: bold;
+}
+
+.table td:nth-of-type(4) {
+  font-style: italic;
+}
+
+.table tr:nth-child(even) {
+  background-color: #F8F6FF;
+}

@@ -9,11 +9,18 @@ async function handler(req, res) {
 
   try {
     const users = await query(`
-      SELECT userId, email, userType, firstName, lastName FROM users
+      SELECT userId, email, userType, firstName, lastName, birthDate, groupId, groups.name AS groupName FROM users
+      LEFT OUTER JOIN groups ON groups.id = users.groupId
       ${req.query.queryUserType ? 'WHERE userType >= ' + req.query.queryUserType : ''}
     `);
 
-    if (users.length > 0) res.send({ users, success: true });
+    if (users.length > 0) res.send({ users: users.map(u => {
+      u.group = { id: u.groupId, name: u.groupName };
+      delete u.groupId;
+      delete u.groupName;
+
+      return u;
+    }), success: true });
     else res.status(404).send({ message: 'NOT_FOUND', success: false });
   }
   catch (e) {
