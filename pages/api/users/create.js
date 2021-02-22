@@ -52,4 +52,4 @@ async function handler(req, res, session) {
   }
 }
 
-export withSession(handler);
+export default withSession(handler);
