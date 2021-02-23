@@ -24,6 +24,16 @@ export default function ReadPostPage({ user, postId }) {
     }
     catch(error) {
       console.error(error);
+
+      content = (<>
+        <h1 className={'title'} style={{ marginBottom: '1em' }}>
+          {data.post.title}
+        </h1>
+        <h3 className={'subtitle'}>Une erreur s'est produite lors de la lecture du post.</h3>
+        <pre>
+          <code>{error.toString()}</code>
+        </pre>
+      </>);
     }
   }
 
