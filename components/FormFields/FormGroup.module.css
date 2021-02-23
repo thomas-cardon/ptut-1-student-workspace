@@ -1,23 +1,6 @@
-.formGroup {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 1em;
-}
-
 .formGroup > * {
   flex: 1;
-}
+  display: block;
 
-.formGroup label {
-  flex: none;
-}
-
-@media screen and (min-width: 480px) {
-  .formGroup {
-    flex-direction: row;
-  }
-
-  .formGroup label {
-    order: -1;
-  }
+  margin: 1em;
 }
