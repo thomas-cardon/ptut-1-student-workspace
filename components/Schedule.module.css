@@ -27,7 +27,7 @@
   }
 
   .session {
-    margin-bottom: 1em;
+    margin: 1em;
   }
 }
 
@@ -35,7 +35,7 @@
   .schedule {
     display: grid;
     grid-gap: 0 1em;
-    grid-template-rows: [tracks] auto [time-0800] 2em [time-0815] 2em [time-0830] 2em [time-0845] 2em [time-0900] 2em [time-0915] 2em [time-0930] 2em [time-0945] 2em [time-1000] 2em [time-1015] 2em [time-1030] 2em [time-1045] 2em [time-1100] 2em [time-1115] 2em [time-1130] 2em [time-1145] 2em [time-1200] 2em [time-1215] 2em [time-1230] 2em [time-1245] 2em [time-1300] 2em [time-1315] 2em [time-1330] 2em [time-1345] 2em [time-1400] 2em [time-1415] 2em [time-1430] 2em [time-1445] 2em [time-1500] 2em [time-1515] 2em [time-1530] 2em [time-1545] 2em [time-1600] 2em [time-1615] 2em [time-1630] 2em [time-1645] 2em [time-1700] 2em [time-1715] 2em [time-1730] 2em [time-1745] 2em [time-1800] 2em [time-1815] 2em [time-1830] 2em [time-1845] 2em [time-1900] 2em;
+    grid-template-rows: [tracks] auto [time-0800] 1em [time-0815] 1em [time-0830] 1em [time-0845] 1em [time-0900] 1em [time-0915] 1em [time-0930] 1em [time-0945] 1em [time-1000] 1em [time-1015] 1em [time-1030] 1em [time-1045] 1em [time-1100] 1em [time-1115] 1em [time-1130] 1em [time-1145] 1em [time-1200] 1em [time-1215] 1em [time-1230] 1em [time-1245] 1em [time-1300] 1em [time-1315] 1em [time-1330] 1em [time-1345] 1em [time-1400] 1em [time-1415] 1em [time-1430] 1em [time-1445] 1em [time-1500] 1em [time-1515] 1em [time-1530] 1em [time-1545] 1em [time-1600] 1em [time-1615] 1em [time-1630] 1em [time-1645] 1em [time-1700] 1em [time-1715] 1em [time-1730] 1em [time-1745] 1em [time-1800] 1em [time-1815] 1em [time-1830] 1em [time-1845] 1em [time-1900] 1em;
     grid-template-columns: [times] 4em [track-1-start] 1fr [track-1-end track-2-start] 1fr [track-2-end track-3-start] 1fr [track-3-end track-4-start] 1fr [track-4-end track-5-start] 1fr [track-5-end track-6-start] 1fr [track-7-end];
   }
 }
@@ -74,7 +74,6 @@
 .session {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
 
   border-color: rgba(0, 0, 0, 0.1);
   border-radius: 10px;
@@ -91,30 +90,36 @@
   cursor: pointer;
 }
 
-.session .hours, .session .teacher, .session .room, .session .module {
+.session .hours, .session .teacher, .session .room, .session .module, .session .name {
   margin: 5% 0 0 5%;
+
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .teacher {
-  font-size: 1em;
+  font-size: .6em;
+  font-style: italic;
   font-family: 'MarianneBOLD';
   margin-top: 0 !important;
 }
 
 .hours {
-  font-family: 'Marianne';
   font-size: small;
 
   margin-top: 1em;
   margin-bottom: 1em;
 }
 
-.module {
+.name {
   font-family: MarianneBOLD;
-  font-size: x-large;
-  margin-left: 0.45em;
+  font-size: 0.8em;
 }
 
 .room {
   text-transform: uppercase;
+  font-size: .6em;
+
+  padding-bottom: 5px;
 }
