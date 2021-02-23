@@ -90,11 +90,9 @@ export default function Schedule({ classes, children }) {
 
         {classes.map((x, i) =>
           <div key={i} onClick={show} className={styles.session} meetingurl={x.meetingurl} style={{ gridColumn: 'track-' + x.day, backgroundColor: x.color || stringToColor(x.name), gridRow: 'time-' + x.start + ' / time-' + x.end }}>
-            <span className={styles.hours}>{x.start.slice(0, 2)}:{x.start.slice(2)} - {x.end.slice(0, 2)}:{x.end.slice(2)}</span>
-            <div>
-              <p className={styles.module}>{x.module} {x.name}</p>
-              <p className={styles.teacher}>{x.teacher}</p>
-            </div>
+            <span className={styles.hours}><b>{x.module}</b> - {x.start.slice(0, 2)}:{x.start.slice(2)} - {x.end.slice(0, 2)}:{x.end.slice(2)}</span>
+            <p className={styles.name}>{x.name}</p>
+            <p className={styles.teacher}>{x.teacher}</p>
             <p className={styles.room}>{x.room}</p>
           </div>
         )}
