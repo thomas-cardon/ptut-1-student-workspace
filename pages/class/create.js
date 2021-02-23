@@ -13,12 +13,9 @@ import * as Fields from "../../components/FormFields";
 
 export default function CreateClassPage({ user }) {
   const [color, setColor] = useState('#AB2567');
-
   const { addToast } = useToasts();
 
   let content = <h1 className={'title'}>Chargement...</h1>;
-
-  console.log(color);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -55,7 +52,7 @@ export default function CreateClassPage({ user }) {
 
   if (user) content = (<>
     <h1 className={'title'}>
-      Edition d'un <span style={{ color: '#D56A53' }}>nouveau cours</span>
+      Edition d'un <span className={'gradient'}>nouveau cours</span>
     </h1>
 
     <div style={{ display: 'flex', flexDirection: 'row', marginTop: '5em' }}>
