@@ -30,6 +30,13 @@ export default function Posts({ user, module }) {
       <h1 className={'title'}>
         Derniers <span className={'gradient'}>posts</span>
       </h1>
+      {user.userType !== 0 && (
+        <h3 className={'subtitle'}>
+          <Link href="/posts/create">
+            <a>Ajouter</a>
+          </Link>...
+        </h3>
+      )}
       <div className={'grid'}>
         <Highlight title={'Le saviez-vous?'}>
           Cliquez sur le titre d'un post pour y accéder. Ou retournez à la&nbsp;

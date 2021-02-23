@@ -93,7 +93,7 @@ export default function EditUserPage({ user, id }) {
 export const getServerSideProps = withSession(async function ({ req, res, query }) {
   const user = req.session.get('user');
 
-  if (!user || user.userType != 2) {
+  if (!user || user.userType !== 2) {
     res.setHeader('location', '/login');
     res.statusCode = 302;
     res.end();

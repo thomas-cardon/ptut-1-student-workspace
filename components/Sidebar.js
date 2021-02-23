@@ -33,16 +33,6 @@ export default function Sidebar({ user, children, active, setActive }) {
           <a className={styles.item}>Liste des cours</a>
         </Link>
 
-        {user?.userType > 0 && (<>
-          <hr style={{ width: '85%' }} />
-          <Link href="/posts/create">
-            <a className={styles.item}>Créer un nouveau post</a>
-          </Link>
-          <Link href="/class/create">
-            <a className={styles.item}>Créer un nouveau cours</a>
-          </Link>
-        </>)}
-
         {user?.userType == 2 && (<>
           <hr style={{ width: '85%' }} />
           <Link href="/users/list">
