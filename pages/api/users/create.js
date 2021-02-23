@@ -5,12 +5,12 @@ import { query } from '../../../lib/db';
 import { hash } from '../../../lib/encryption';
 
 async function handler(req, res, session) {
-  if (!req.session) return res.status(401).send('NOT_AUTHORIZED');
-
   const user = req.session.get('user');
-  if (!user || user.userType == 0) return res.status(401).send('NOT_AUTHORIZED');
+  if (!user || user.userType == 0) return res.status(401).send({ message: 'NOT_AUTHORIZED', success: false });
 
-  let userCreated = req.query;
+  let userCreated = { ...req.body, ...req.query };
+
+  console.dir(userCreated);
 
   let errors = validate(userCreated, {
     email: {
@@ -29,6 +29,9 @@ async function handler(req, res, session) {
         minimum: 5
       }
     },
+    userType: {
+      presence: true
+    },
     birthDate: {
       presence: true
     }
@@ -42,13 +45,13 @@ async function handler(req, res, session) {
       INSERT INTO users (firstName, lastName, email, hash, birthDate, userType)
       VALUES (?, ?, ?, ?, ?, ?)
       `,
-      [userCreated.firstName, userCreated.lastName, userCreated.email, await hash(userCreated.password), userCreated.birthDate, userCreated.userType || 0]
+      [userCreated.firstName, userCreated.lastName, userCreated.email, await hash(userCreated.password), userCreated.birthDate, userCreated.userType || 0, userCreated?.groupId]
     );
 
-    res.send('ok');
+    res.send({ success: true });
   }
   catch (e) {
-    res.status(500).json({ message: e.message });
+    res.status(500).json({ message: e.message, success: false });
   }
 }
 
