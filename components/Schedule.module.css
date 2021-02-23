@@ -27,7 +27,7 @@
   }
 
   .session {
-    margin-bottom: 1em;
+    margin: 1em;
   }
 }
 
@@ -92,7 +92,6 @@
 
 .session .hours, .session .teacher, .session .room, .session .module, .session .name {
   margin: 5% 0 0 5%;
-  color: black;
 
   text-overflow: ellipsis;
   overflow: hidden;
@@ -100,7 +99,7 @@
 }
 
 .teacher {
-  font-size: .8vw;
+  font-size: .6em;
   font-style: italic;
   font-family: 'MarianneBOLD';
   margin-top: 0 !important;
@@ -115,10 +114,12 @@
 
 .name {
   font-family: MarianneBOLD;
-  font-size: 1vw;
+  font-size: 0.8em;
 }
 
 .room {
   text-transform: uppercase;
-  font-size: .8vw;
+  font-size: .6em;
+
+  padding-bottom: 5px;
 }
