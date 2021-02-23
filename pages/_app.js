@@ -1,6 +1,8 @@
 import { ToastProvider } from 'react-toast-notifications';
 import '../styles/globals.css';
 
+import withDarkMode from 'next-dark-mode'
+
 function MyApp({ Component, pageProps }) {
   return (
     <ToastProvider autoDismiss={true}>
@@ -9,4 +11,4 @@ function MyApp({ Component, pageProps }) {
   );
 }
 
-export default MyApp
+export default withDarkMode(MyApp);
