@@ -23,8 +23,6 @@ export default function Posts({ user, module }) {
   else if (!data.data) content = <h2 className={'title'}>Aucun post disponible</h2>;
   else content = data.data.map((post, i) => <Post id={post.id} key={'post-' + post.id} authorName={post.firstName + ' ' + post.lastName} creationTime={new Date(post.creation_time)} avatar={getAvatar(user)} {...post}></Post>);
 
-  console.dir(data);
-
   return (
     <UserLayout user={user} flex={true}>
       <h1 className={'title'}>
