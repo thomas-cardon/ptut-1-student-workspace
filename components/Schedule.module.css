@@ -63,6 +63,7 @@
   font-size: 1em;
   font-family: system-ui;
   text-transform: uppercase;
+  margin-left: 1em;
 }
 
 .trackSlot {

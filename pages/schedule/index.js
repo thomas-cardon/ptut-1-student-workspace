@@ -46,7 +46,7 @@ export default function SchedulePage({ user }) {
           <a>Ajouter...</a>
         </Link>
       </h3>
-      <div className={'grid'} style={{ width: '98%', margin: '0' }}>
+      <div className={'grid'} style={{ width: '100%', margin: '0' }}>
         {content}
       </div>
     </UserLayout>
