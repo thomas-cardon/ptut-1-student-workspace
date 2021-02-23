@@ -3,7 +3,7 @@ import { query } from '../../../lib/db';
 
 async function handler(req, res, session) {
   const user = req.session.get('user');
-  if (!user || user.userType == 0) return res.status(401).send('NOT_AUTHORIZED');
+  if (!user || user.userType !== 2) return res.status(401).send('NOT_AUTHORIZED');
 
   try {
     for (let i = 0; i < req.body.concernedGroups.length; i++) {
