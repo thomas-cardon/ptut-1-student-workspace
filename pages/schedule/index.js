@@ -30,22 +30,10 @@ export default function SchedulePage({ user }) {
     };
   });
 
-  if (user) content = (
-    <>
-      {/*<GroupList />*/}
-      <Schedule classes={data} />
-    </>);
+  if (user) content = <Schedule classes={data} />
 
   return (
     <UserLayout user={user} flex={true}>
-      <h1 className={'title'}>
-        Emploi du <span className={'gradient'}>temps</span>
-      </h1>
-      <h3 className={'subtitle'}>
-        <Link href='/schedule/edit'>
-          <a>Ajouter...</a>
-        </Link>
-      </h3>
       <div className={'grid'} style={{ width: '100%', margin: '0' }}>
         {content}
       </div>

@@ -111,28 +111,24 @@ export default function EditSchedulePage({ user }) {
       <h1 className={'title'}>Edition de&nbsp;
         <span className={'gradient'}>l'emploi du temps</span>
       </h1>
-      <div className={'grid'} style={{ width: '98%', margin: '0' }}>
-        <div style={{ display: 'flex' }}>
-          <Form ref={form} onSubmit={onSubmit} onError={onError}>
-            <Fields.FormGroup label="Début du cours" name="start">
-              <input id="start" name="start" type="datetime-local" onChange={verify} required />
-            </Fields.FormGroup>
-            <Fields.FormGroup label="Fin du cours" name="end">
-              <input id="end" name="end" type="datetime-local" onChange={verify} required />
-            </Fields.FormGroup>
+      <Form ref={form} onSubmit={onSubmit} onError={onError}>
+        <Fields.FormGroup label="Début du cours" name="start">
+          <input id="start" name="start" type="datetime-local" onChange={verify} required />
+        </Fields.FormGroup>
+        <Fields.FormGroup label="Fin du cours" name="end">
+          <input id="end" name="end" type="datetime-local" onChange={verify} required />
+        </Fields.FormGroup>
 
-            <legend ref={legend} style={{ backgroundColor: '#000', color: '#fff', padding: '2px 3px', margin: '1em 0 1em 0' }}>Définissez un début et une fin valide</legend>
+        <legend ref={legend} style={{ backgroundColor: '#000', color: '#fff', padding: '2px 3px', margin: '1em 0 1em 0' }}>Définissez un début et une fin valide</legend>
 
-            <Fields.FormSelect label="Cours" id="classId" name="classId" options={(modules?.modules || []).map(x => { return { option: x.name + ' (' + x.module + ')', value: x.id } })} />
-            <Fields.FormSelect label="Professeur" id="teacherId" name="teacherId" options={(teachers?.users || []).map(x => { return { option: x.firstName + ' ' + x.lastName, value: x.userId } })} />
+        <Fields.FormSelect label="Cours" id="classId" name="classId" options={(modules?.modules || []).map(x => { return { option: x.name + ' (' + x.module + ')', value: x.id } })} />
+        <Fields.FormSelect label="Professeur" id="teacherId" name="teacherId" options={(teachers?.users || []).map(x => { return { option: x.firstName + ' ' + x.lastName, value: x.userId } })} />
 
-            <hr />
-            <Fields.FormCheckboxList label="Groupes affectés" options={(groups?.groups || []).map(x => { return { label: x.name, id: x.id } })} />
+        <hr />
+        <Fields.FormCheckboxList label="Groupes affectés" options={(groups?.groups || []).map(x => { return { label: x.name, id: x.id } })} />
 
-            <Fields.FormButton type="submit">Ajouter à l'emploi du temps</Fields.FormButton>
-          </Form>
-        </div>
-      </div>
+        <Fields.FormButton type="submit">Ajouter à l'emploi du temps</Fields.FormButton>
+      </Form>
     </UserLayout>
   );
 };
