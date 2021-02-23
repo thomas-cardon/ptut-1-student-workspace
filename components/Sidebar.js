@@ -20,13 +20,13 @@ export default function Sidebar({ user, children, active, setActive }) {
         <hr style={{ width: '85%' }} />
 
         <Link href="/schedule">
-          <a className={styles.item}>Emploi du temps <Badge>1</Badge></a>
+          <a className={styles.item}>Emploi du temps</a>
         </Link>
 
         <hr style={{ width: '85%' }} />
 
         <Link href="/posts/list">
-          <a className={styles.item}>Derniers posts <Badge>1</Badge></a>
+          <a className={styles.item}>Derniers posts</a>
         </Link>
 
         <Link href="/class/list">
