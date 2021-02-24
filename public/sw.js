@@ -1,6 +1,8 @@
 const BASE_URL = location.protocol + '//' + location.host;
 self.addEventListener("install", () => console.log("Services >> Service de notifications installé 🤙"));
 
+const publicVapidKey = 'BFSDAPvCd3KoMuYnxHSSw7QofBJ6-hDq-2Yyq-UfaYyy47k4g4loSPqimLirh1bnPR1wdpZGB03ye5M0Yy1FBtM';
+
 // urlB64ToUint8Array is a magic function that will encode the base64 public key
 // to Array buffer which is needed by the subscription option
 const urlB64ToUint8Array = base64String => {
@@ -33,10 +35,10 @@ const saveSubscription = async subscription => {
 self.addEventListener('activate', async () => {
   // This will be called only once when the service worker is activated.
   try {
-    const applicationServerKey = urlB64ToUint8Array('BFSDAPvCd3KoMuYnxHSSw7QofBJ6-hDq-2Yyq-UfaYyy47k4g4loSPqimLirh1bnPR1wdpZGB03ye5M0Yy1FBtM');
-
-    const options = { applicationServerKey, userVisibleOnly: true };
-    const subscription = await self.registration.pushManager.subscribe(options);
+    const subscription = await self.registration.pushManager.subscribe({
+      applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
+      userVisibleOnly: true
+    });
 
     await saveSubscription(subscription);
   } catch (error) {
