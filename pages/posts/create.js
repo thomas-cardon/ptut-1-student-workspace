@@ -8,15 +8,14 @@ import Form from "../../components/Form";
 import * as Fields from "../../components/FormFields";
 
 import { useToasts } from 'react-toast-notifications';
-import { useUser, getAvatar } from '../../lib/useUser';
 
 import useSWR from 'swr';
 import fetcher from '../../lib/fetchJson';
+import withSession from "../../lib/session";
 
 const Editor = dynamic(() => import("../../components/Editor"), { ssr: false });
 
-function Page({ moduleId }) {
-  const { user } = useUser({ redirectNotAuthorized: '/login', redirectOnError: '/error' }); /* Redirection si l'utilisateur n'est pas connecté */
+export default function CreatePostPage({ user, moduleId }) {
   const { data, error } = useSWR('/api/class/list', fetcher);
 
   const { addToast } = useToasts();
@@ -82,8 +81,17 @@ function Page({ moduleId }) {
   );
 };
 
-export function getServerSideProps(ctx) {
-  return { props: ctx.query };
-}
+export const getServerSideProps = withSession(async function ({ req, res }) {
+  const user = req.session.get('user');
 
-export default Page;
+  if (!user || user.userType !== 2) {
+    res.setHeader('location', '/login');
+    res.statusCode = 302;
+    res.end();
+    return { props: {} };
+  }
+
+  return {
+    props: { user: req.session.get('user') },
+  };
+});
