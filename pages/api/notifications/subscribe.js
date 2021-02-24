@@ -3,21 +3,19 @@ import { query } from '../../../lib/db';
 
 async function handler(req, res, session) {
   const user = req.session.get('user');
-  if (!user || user.userType == 0) return res.status(401).send({ message: 'NOT_AUTHORIZED', success: false });
+  if (!user) return res.status(401).send({ message: 'NOT_AUTHORIZED', success: false });
 
-  const subscription = req.body;
-
+  const { subscription } = req.body;
   if (!subscription) return res.status(404).send({ message: 'NOT_FOUND', success: false });
-
-  console.dir(user);
 
   try {
     const results = await query(
       `
-      REPLACE INTO subscriptions (userId, subscriptions)
-      VALUES (?, ?)
+      UPDATE users
+      SET subscription = ?
+      WHERE userId = ?
       `,
-      [user.userId, JSON.stringify(subscription)]
+      [JSON.stringify(subscription), user.userId]
     );
 
     res.send({ success: true });

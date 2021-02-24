@@ -41,7 +41,7 @@ async function handler(req, res) {
 
       await query(`
         REPLACE INTO users(userId, firstName, lastName, email, birthDate, userType, groupId)
-        VALUES (?, ?, ?, ?, ?, ?, ?)`, [userCreated.userId, userCreated.firstName, userCreated.lastName, userCreated.email, userCreated.birthDate, userCreated.userType || 0, userCreated?.groupId]);
+        VALUES (?, ?, ?, ?, ?, ?, ?)`, [userCreated.userId, userCreated.firstName, userCreated.lastName, userCreated.email, userCreated.birthDate, userCreated.userType || 0, userCreated?.groupId == 0 ? null : userCreated?.groupId]);
 
       res.send({ id: userCreated.userId, success: true });
     }

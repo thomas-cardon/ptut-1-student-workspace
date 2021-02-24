@@ -1,6 +1,5 @@
 const BASE_URL = location.protocol + '//' + location.host;
-
-self.addEventListener("install", () => console.log("Hello world from the Service Worker 🤙"));
+self.addEventListener("install", () => console.log("Services >> Service de notifications installé 🤙"));
 
 // urlB64ToUint8Array is a magic function that will encode the base64 public key
 // to Array buffer which is needed by the subscription option
@@ -20,15 +19,12 @@ const urlB64ToUint8Array = base64String => {
 const saveSubscription = async subscription => {
   const SERVER_URL = BASE_URL + '/api/notifications/subscribe';
 
-  console.log(SERVER_URL);
-  console.dir(subscription);
-
   const response = await fetch(SERVER_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(subscription),
+    body: JSON.stringify({ subscription }),
   });
 
   return response.json();
