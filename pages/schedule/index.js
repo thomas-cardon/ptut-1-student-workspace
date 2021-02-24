@@ -12,12 +12,13 @@ import withSession from "../../lib/session";
 import { lightFormat, getDay } from 'date-fns';
 
 export default function SchedulePage({ user }) {
-  const { data : schedule } = use({ url: '/api/schedule' });
+  const { data : schedule } = use({ url: '/api/schedule' + (user.userType == 0 && user?.group?.id ? '?filterByGroup=' + user?.group?.id : '') });
 
   let content = <h2 className={'title'}>Chargement</h2>;
   let data = (schedule?.schedule || []).map(x => {
     let start = new Date(x.start);
     return {
+      id: x.id,
       day: getDay(start),
       start: lightFormat(start, 'HHmm'),
       end: lightFormat(new Date(start.getTime() + x.duration * 60000), 'HHmm'),
@@ -26,7 +27,7 @@ export default function SchedulePage({ user }) {
       room: "Salle TD 2 - 3",
       color: x?.color,
       teacher: x.teacherFirstName + ' ' + x.teacherLastName,
-      meetingurl: x?.meetingurl
+      meetingUrl: x?.meetingUrl
     };
   });
 
