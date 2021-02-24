@@ -46,8 +46,9 @@ self.addEventListener('activate', async () => {
 
 self.addEventListener('push', function(event) {
   if (event.data) {
-    console.log('Push >>', event.data.text())
-    showLocalNotification('Informations', event.data.text(), self.registration);
+    let d = event.data.text().split('|');
+    console.log('Push >>', d);
+    showLocalNotification(d[0] || 'Informations', d[1], self.registration);
   }
   else console.log('Push >> No data');
 });
