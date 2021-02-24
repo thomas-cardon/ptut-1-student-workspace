@@ -1,15 +1,11 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import styles from "./Schedule.module.css";
+import { useToasts } from 'react-toast-notifications';
 
-import {
-  Menu,
-  Item,
-  Separator,
-  Submenu,
-  useContextMenu
-} from "react-contexify";
-
+import { useContextMenu, Submenu, Menu, Item, Separator } from "react-contexify";
 import "react-contexify/dist/ReactContexify.css";
+
+import fetcher from '../lib/fetchJson';
+import styles from "./Schedule.module.css";
 
 const MENU_ID = "schedule-menu";
 
@@ -44,29 +40,62 @@ function pickTextColorBasedOnBgColorAdvanced(bgColor, lightColor, darkColor) {
 }
 
 export default function Schedule({ classes, children }) {
+  const { addToast } = useToasts();
   const { show } = useContextMenu({
-    id: MENU_ID
+    id: MENU_ID,
   });
 
-  function handleItemClick({ event, props, triggerEvent, data }){
-    console.log(event, props, triggerEvent, data );
+  function displayMenu(e) {
+    show(e, { props: { id: Number(e.currentTarget.id) } });
+  }
+
+  function handleItemClick({ event, props, data, triggerEvent }) {
+    switch (event.currentTarget.id) {
+      case "notify":
+        let title = window.prompt('Saisissez le titre de la notification', 'Rappel de cours');
+        let body = window.prompt('Saisissez le corps de la notification', document.getElementById(props.id).children[1].innerText);
+
+        fetcher(location.protocol + '//' + location.host + `/api/notifications/broadcast?title=${title}&body=${body}`)
+        .then(() => addToast('Tous les utilisateurs ont été notifiés.', { appearance: 'success' }))
+        .catch(err => {
+          addToast("Une erreur s'est produite.", { appearance: 'error' });
+          console.error(err);
+        });
+
+        break;
+      case "connect":
+        if (!document.getElementById(event.currentTarget.id).getAttribute('meetingurl')) alert("Aucune réunion n'est encore disponible pour ce cours.");
+        else window.open(document.getElementById(event.currentTarget.id).getAttribute('meetingurl'), '_blank').focus();
+        break;
+      case "remove":
+        if (!confirm('Voulez-vous vraiment supprimer ce cours?'))
+          return;
+
+        fetcher(location.protocol + '//' + location.host + '/api/schedule/' + props.id, { method: 'DELETE' })
+        .then(() => addToast(`Suppression réussie du cours  #${props.id}`, { appearance: 'success' }))
+        .catch(err => {
+          addToast("Une erreur s'est produite.", { appearance: 'error' });
+          console.error(err);
+        });
+        break;
+    }
   }
 
   return (
     <>
       <Menu id={MENU_ID}>
-        <Item disabled>&#x1F4DC; Voir le post attaché</Item>
-        <Item disabled>&#x1F4BB; Se connecter (Zoom)</Item>
+        <Item id="view" onClick={handleItemClick}>&#x1F4DC; Voir le post attaché</Item>
+        <Item id="connect" onClick={handleItemClick}>&#x1F4BB; Se connecter à la réunion</Item>
         <Separator />
         <Submenu label="Modération">
-          <Item disabled>&#x1F589; Notifier le groupe</Item>
+          <Item id="notify" onClick={handleItemClick}>&#x1F589; Notifier le groupe</Item>
           <Separator />
 
-          <Item disabled>&#x1F589; Modifier le professeur</Item>
-          <Item disabled>&#x1F392; Modifier la salle</Item>
-          <Item disabled>&#x1F4C6; Modifier la date</Item>
+          <Item id="edit-teacher" onClick={handleItemClick}>&#x1F589; Modifier le professeur</Item>
+          <Item id="edit-room" onClick={handleItemClick}>&#x1F392; Modifier la salle</Item>
+          <Item id="edit-date" onClick={handleItemClick}>&#x1F4C6; Modifier la date</Item>
           <Separator />
-          <Item disabled>&#x274C; Supprimer</Item>
+          <Item id="remove" onClick={handleItemClick}>&#x274C; Supprimer</Item>
         </Submenu>
       </Menu>
 
@@ -102,7 +131,7 @@ export default function Schedule({ classes, children }) {
         <span className={styles.trackSlot} aria-hidden="true" style={{ gridColumn: 'track-6', gridRow: 'tracks' }}>Samedi</span>
 
         {classes.map((x, i) =>
-          <div key={i} onClick={show} className={styles.session} meetingurl={x.meetingurl} style={{ gridColumn: 'track-' + x.day, backgroundColor: x.color || stringToColor(x.name), color: pickTextColorBasedOnBgColorAdvanced(x.color || stringToColor(x.name), 'white', 'black'), gridRow: 'time-' + x.start + ' / time-' + x.end }}>
+          <div id={x.id} key={i} onContextMenu={displayMenu} className={styles.session} meetingurl={x.meetingUrl} style={{ gridColumn: 'track-' + x.day, backgroundColor: x.color || stringToColor(x.name), color: pickTextColorBasedOnBgColorAdvanced(x.color || stringToColor(x.name), 'white', 'black'), gridRow: 'time-' + x.start + ' / time-' + x.end }}>
             <span className={styles.hours}><b>{x.module}</b> - {x.start.slice(0, 2)}:{x.start.slice(2)} - {x.end.slice(0, 2)}:{x.end.slice(2)}</span>
             <p className={styles.name}>{x.name}</p>
             <p className={styles.teacher}>{x.teacher}</p>
