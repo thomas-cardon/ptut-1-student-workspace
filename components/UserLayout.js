@@ -18,6 +18,7 @@ export default function UserLayout({ title, user, children, flex = true, ...rest
         <link rel="icon" href="/favicon.ico" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content="Votre nouvel environnement de travail" />
+        <link rel="apple-touch-icon" href="/favicon-192x192.png" />
         <link rel="manifest" href="/site.webmanifest" />
       </Head>
 
