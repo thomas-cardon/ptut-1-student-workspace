@@ -33,10 +33,11 @@ export default function EditSchedulePage({ user }) {
       const res = await fetch(location.protocol + '//' + location.host + '/api/schedule/add', {
         body: JSON.stringify({
           start: e.target[0].value.slice(0, 19).replace('T', ' '),
-          duration: 120,
+          duration: differenceInMinutes(new Date(e.target[1].value.slice(0, 19).replace('T', ' ')), new Date(e.target[0].value.slice(0, 19).replace('T', ' '))),
           classId: parseInt(e.target[2].value),
-          concernedGroups: Array.from(e.target.childNodes[6].querySelectorAll('*')).filter(x => x.nodeName === "INPUT" && x.checked).map(x => { return parseInt(x.getAttribute('data-id')); }),
-          teacherId: parseInt(e.target[3].value)
+          teacherId: parseInt(e.target[3].value),
+          meetingUrl: e.target[4].value,
+          concernedGroups: Array.from(e.target.childNodes[7].querySelectorAll('*')).filter(x => x.nodeName === "INPUT" && x.checked).map(x => { return parseInt(x.getAttribute('data-id')); })
         }),
         headers: { 'Content-Type': 'application/json' },
         method: 'POST'
@@ -124,9 +125,10 @@ export default function EditSchedulePage({ user }) {
         <Fields.FormSelect label="Cours" id="classId" name="classId" options={(modules?.modules || []).map(x => { return { option: x.name + ' (' + x.module + ')', value: x.id } })} />
         <Fields.FormSelect label="Professeur" id="teacherId" name="teacherId" options={(teachers?.users || []).map(x => { return { option: x.firstName + ' ' + x.lastName, value: x.userId } })} />
 
+        <Fields.FormInput label="Lien de la réunion" id="meetingUrl" name="meetingUrl" type="url" placeholder="Lien Zoom, Google Meet, jit.si, Discord..." />
+
         <hr />
         <Fields.FormCheckboxList label="Groupes affectés" options={(groups?.groups || []).map(x => { return { label: x.name, id: x.id } })} />
-
         <Fields.FormButton type="submit">Ajouter à l'emploi du temps</Fields.FormButton>
       </Form>
     </UserLayout>
