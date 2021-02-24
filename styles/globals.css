@@ -13,6 +13,21 @@ body {
   text-align: left;
 }
 
+/* Scrollbar */
+body::-webkit-scrollbar {
+  width: 0.3em;
+}
+
+body::-webkit-scrollbar-track {
+  box-shadow: none !important;
+  background-color: black;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #2ecc71;
+  border-radius: 25px;
+}
+
 h1, h2, h3, h4, h5, h6 {
   margin-bottom: .5rem;
   margin-top: 0;

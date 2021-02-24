@@ -6,6 +6,11 @@
   padding-top: 1.5em;
 }
 
+.flex .dark {
+  color: #D4D4D4;
+  background-color: #121212;
+}
+
 .footer {
   position: relative;
   min-height: 10em;

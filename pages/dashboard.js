@@ -8,10 +8,12 @@ import fetcher from '../lib/fetchJson';
 import withSession from "../lib/session";
 
 import { HiArrowNarrowRight } from "react-icons/hi";
+import { useDarkMode } from 'next-dark-mode';
 
 export default function Dashboard({ user }) {
   useServiceWorker();
 
+  const { darkModeActive } = useDarkMode();
   const { data : posts, error } = useSWR('/api/posts/recent', fetcher);
 
   let content = <h1 className={'title'}>Chargement</h1>;
@@ -26,9 +28,9 @@ export default function Dashboard({ user }) {
     content = (
       <div className="cards">
         {true && (
-          <div className="card card-xl">
+          <div className={`card ${darkModeActive ? 'dark' : ''} card-xl chat`}>
             <h3>Chat:&nbsp;<code style={{ color: 'red' }}>global</code> (Placeholder)</h3>
-            <textarea readOnly style={{ width: '100%', height: '70%', margin: '0', padding: '0' }}></textarea>
+            <textarea readOnly></textarea>
             <div style={{ display: 'flex', width: '100%' }}>
               <input type="text" placeholder="Ecrire un message" />
               <button>Envoyer</button>
@@ -37,7 +39,7 @@ export default function Dashboard({ user }) {
         )}
 
         {posts && (
-          <div className="card">
+          <div className={`card ${darkModeActive ? 'dark' : ''}`}>
             <h3>Derniers posts</h3>
             <ul>
               {posts.data.map((post, i) => <li key={i}>
@@ -78,6 +80,10 @@ export default function Dashboard({ user }) {
           box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
           transition: 0.3s;
           padding: 1em;
+        }
+
+        .dark {
+          background-color: #1E1E1E;
         }
 
         .card-lg {
@@ -121,6 +127,18 @@ export default function Dashboard({ user }) {
 
         li a > * {
           margin-right: .5em;
+        }
+
+        .chat textarea {
+          width: 100%;
+          height: 70%;
+          margin: 0px;
+          padding: 0px;
+          outline: 0;
+          border: 0;
+          border-radius: 8px;
+          background-color: #353535;
+          resize: none;
         }
       `}</style>
       {content}

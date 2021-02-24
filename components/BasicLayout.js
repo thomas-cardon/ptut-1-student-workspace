@@ -1,9 +1,13 @@
-import Head from 'next/head';
+import Head from './Head';
 import styles from './BasicLayout.module.css';
 
-export default function BasicLayout({ title, children }) {
+import { useDarkMode } from 'next-dark-mode';
+
+export default function BasicLayout({ title, children, rest }) {
+  const { darkModeActive } = useDarkMode();
+
   return (
-    <div className={styles.container}>
+    <div className={[styles.flex, darkModeActive ? styles.dark : ''].join(' ')} {...rest}>
       <Head>
         <title>{title || 'Student Workspace'}</title>
         <link rel="icon" href="/favicon.ico" />

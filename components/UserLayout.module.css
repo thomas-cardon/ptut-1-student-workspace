@@ -9,6 +9,11 @@
   height: 100vh;
 }
 
+.container.dark {
+  color: #D4D4D4;
+  background-color: #121212;
+}
+
 /* Non-mobile styles, 750px breakpoint */
 @media only screen and (min-width: 46.875em) {
   /* Show the sidenav */
@@ -29,6 +34,10 @@
   grid-area: header;
 }
 
+.header.dark, .footer.dark {
+  background-color: #1F1F1F;
+}
+
 .header-search {
   margin-left: 42px;
 }
@@ -37,8 +46,16 @@
   grid-area: main;
 }
 
+.main.dark {
+  background-color: #121212;
+}
+
 .footer {
   grid-area: footer;
+}
+
+.footer p {
+  margin: 0;
 }
 
 .header, .footer {

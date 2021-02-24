@@ -4,12 +4,24 @@
 }
 
 .article {
-  padding: 29px 0 33px;
+  padding: 1em;
   margin: 0;
   border-bottom: 1px solid #ededed;
 
   text-align: center;
   transition: all 0.2s ease 0s;
+}
+
+.dark {
+  border-bottom: none;
+  border-radius: 5px;
+  background-color: #1E1E1E;
+
+  margin-bottom: 1em;
+}
+
+.article:last-child {
+  border-bottom: none;
 }
 
 .module {
@@ -25,7 +37,7 @@
   font-size: 16px;
   line-height: 22px;
   color: #000;
-  font-family: 'IBM Plex Sans',sans-serif;
+  font-family: monospace, sans-serif;
   font-weight: 400;
   position: relative;
 }
@@ -38,6 +50,8 @@
   display: inline-block;
   vertical-align: top;
   margin: 0 7px;
+
+  color: white;
 }
 
 .avatar {

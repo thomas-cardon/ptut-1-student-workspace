@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import Head from 'next/head';
+import Head from './Head';
 import Link from 'next/link';
 
 import Sidebar from './Sidebar';
@@ -8,11 +8,14 @@ import styles from './UserLayout.module.css';
 
 import { HiOutlineMenu } from "react-icons/hi";
 
+import { useDarkMode } from 'next-dark-mode';
+
 export default function UserLayout({ title, user, children, flex = true, ...rest }) {
   const [active, setActive] = useState(false);
+  const { darkModeActive } = useDarkMode();
 
   return (
-    <div className={styles.container} {...rest}>
+    <div className={[styles.container, darkModeActive ? styles.dark : ''].join(' ')} {...rest}>
       <Head>
         <title>{title || 'Student Workspace'}</title>
         <link rel="icon" href="/favicon.ico" />
@@ -27,18 +30,18 @@ export default function UserLayout({ title, user, children, flex = true, ...rest
       </div>
 
 
-      <header className={styles.header}>
+      <header className={[styles.header, darkModeActive ? styles.dark : ''].join(' ')}>
         {user && <div className="header-avatar">{user?.firstName + ' ' + user?.lastName} — <Link href="/logout"><a style={{ color: '#34495e' }}>Se déconnecter</a></Link></div>}
       </header>
       <Sidebar user={user} active={active} setActive={setActive}></Sidebar>
 
-      <main className={styles.main}>
+      <main className={[styles.main, darkModeActive ? styles.dark : ''].join(' ')}>
         <div className={styles[flex ? 'flex' : 'overview']}>
           {children}
         </div>
       </main>
 
-      <footer className={styles.footer}>
+      <footer className={[styles.footer, darkModeActive ? styles.dark : ''].join(' ')}>
         <p>
           <b>Student Workspace</b> — Votre nouvel environnement de travail
         </p>

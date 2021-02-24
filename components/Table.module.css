@@ -43,3 +43,15 @@
 .table tr:nth-child(even) {
   background-color: #F8F6FF;
 }
+
+.table-dark th {
+  background-color: #1D1D1D;
+}
+
+.table-dark tr {
+  background-color: #373737;
+}
+
+.table-dark tr:nth-child(even) {
+  background-color: #2D2D2D;
+}

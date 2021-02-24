@@ -5,9 +5,13 @@ import { fr } from 'date-fns/locale';
 
 import styles from "./Post.module.css";
 
+import { useDarkMode } from 'next-dark-mode';
+
 export default function Post({ id, title, content, module, authorName, creationTime, avatar }) {
+  const { darkModeActive } = useDarkMode();
+
   return (
-    <article className={styles.article}>
+    <article className={[styles.article, darkModeActive ? styles.dark : ''].join(' ')}>
       <div className={styles.module}>
         {module && (
           <Link href={{ pathname: '/posts/list', query: { module } }}>
