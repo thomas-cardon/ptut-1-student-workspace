@@ -38,7 +38,7 @@ export default function Dashboard({ user }) {
           </div>
         )}
 
-        {posts && (
+        {posts?.data && (
           <div className={`card ${darkModeActive ? 'dark' : ''}`}>
             <h3>Derniers posts</h3>
             <ul>
