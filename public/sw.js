@@ -1,5 +1,5 @@
 const BASE_URL = location.protocol + '//' + location.host;
-self.addEventListener("install", () => console.log("Services >> Service de notifications installé 🤙"));
+self.addEventListener("install", () => console.log("Services >> Notifications installées 🤙"));
 
 const publicVapidKey = 'BFSDAPvCd3KoMuYnxHSSw7QofBJ6-hDq-2Yyq-UfaYyy47k4g4loSPqimLirh1bnPR1wdpZGB03ye5M0Yy1FBtM';
 
@@ -36,7 +36,7 @@ self.addEventListener('activate', async () => {
   // This will be called only once when the service worker is activated.
   try {
     const subscription = await self.registration.pushManager.subscribe({
-      applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
+      applicationServerKey: urlB64ToUint8Array(publicVapidKey),
       userVisibleOnly: true
     });
 
