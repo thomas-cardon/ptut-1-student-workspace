@@ -3,6 +3,7 @@ import Link from 'next/link';
 
 import UserLayout from '../../components/UserLayout';
 import Table from '../../components/Table';
+import Title from '../../components/Title';
 
 import {
   contextMenu,
@@ -73,9 +74,9 @@ export default function ClassListPage({ user }) {
 
   return (
     <UserLayout user={user} flex={true}>
-      <h1 className={'title'}>
-        Cours enregistrés
-      </h1>
+      <Title appendGradient="enregistrés">
+        Cours
+      </Title>
       {user.userType == 2 && (
         <h3 className={'subtitle'}>
           <Link href="/class/create">
