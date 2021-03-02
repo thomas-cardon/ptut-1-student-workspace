@@ -1,13 +1,8 @@
-@font-face {
-  font-family: Lato;
-  src : url(/assets/fonts/Lato-Regular.ttf);
-}
-
 .table {
   width: 100%;
   border-collapse: collapse;
 
-  font-family: Lato;
+  font-family: "Lato";
 }
 
 .table th {
