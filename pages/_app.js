@@ -1,4 +1,8 @@
 import { ToastProvider } from 'react-toast-notifications';
+
+import "@fontsource/open-sans";
+import "@fontsource/lato";
+
 import '../styles/globals.css';
 
 import withDarkMode from 'next-dark-mode'
