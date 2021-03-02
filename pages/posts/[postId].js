@@ -5,11 +5,12 @@ import withSession from "../../lib/session";
 
 const Editor = dynamic(() => import("../../components/Editor"), { ssr: false });
 import UserLayout from '../../components/UserLayout';
+import Title from '../../components/Title';
 
 export default function ReadPostPage({ user, postId }) {
   const { data } = use({ url: '/api/posts/' + postId, redirectOnError: '/error' });
 
-  let content = <h1 className={'title'}>Chargement...</h1>;
+  let content = <Title>Chargement...</Title>;
 
   if (data) {
     try {
@@ -26,9 +27,9 @@ export default function ReadPostPage({ user, postId }) {
       console.error(error);
 
       content = (<>
-        <h1 className={'title'} style={{ marginBottom: '1em' }}>
+        <Title appendGradient="l'emploi du temps" style={{ marginBottom: '1em' }}>
           {data.post.title}
-        </h1>
+        </Title>
         <h3 className={'subtitle'}>Une erreur s'est produite lors de la lecture du post.</h3>
         <pre>
           <code>{error.toString()}</code>
@@ -38,16 +39,9 @@ export default function ReadPostPage({ user, postId }) {
   }
 
   return (
-    <>
-      <style jsx>{`
-        .title {
-          color: blue;
-        }
-      `}</style>
-      <UserLayout user={user} flex={true}>
-        {content}
-      </UserLayout>
-    </>
+    <UserLayout user={user} flex={true}>
+      {content}
+    </UserLayout>
   );
 };
 

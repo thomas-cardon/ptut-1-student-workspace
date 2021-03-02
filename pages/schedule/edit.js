@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import Router from 'next/router';
 
 import UserLayout from '../../components/UserLayout';
+import Title from '../../components/Title';
 
 import Form from "../../components/Form";
 import * as Fields from "../../components/FormFields";
@@ -109,9 +110,9 @@ export default function EditSchedulePage({ user }) {
 
   return (
     <UserLayout user={user} flex={true}>
-      <h1 className={'title'}>Edition de&nbsp;
-        <span className={'gradient'}>l'emploi du temps</span>
-      </h1>
+      <Title appendGradient="l'emploi du temps">
+        Edition de
+      </Title>
       <Form ref={form} onSubmit={onSubmit} onError={onError}>
         <Fields.FormGroup label="Début du cours" name="start">
           <input id="start" name="start" type="datetime-local" onChange={verify} required />

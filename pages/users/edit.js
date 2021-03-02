@@ -1,8 +1,9 @@
 import { useRouter } from 'next/router';
-
 import Link from 'next/link';
+
 import UserLayout from '../../components/UserLayout';
 import Highlight from "../../components/Highlight";
+import Title from '../../components/Title';
 
 import Form from "../../components/Form";
 import * as Fields from "../../components/FormFields";
@@ -20,8 +21,6 @@ export default function EditUserPage({ user, id }) {
 
   const { data, error } = useSWR('/api/groups/list', fetcher);
   const { user : requested } = useUserById(id);
-
-  console.dir(user);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -41,8 +40,6 @@ export default function EditUserPage({ user, id }) {
       });
 
       const result = await res.json();
-      console.dir(result);
-
       if (result.success) {
         addToast('Utilisateur ' + (id ? 'édité' : 'créé') + ' avec succès -> #' + result.id, { appearance: 'success' });
         router.push('/users/list');
@@ -62,13 +59,13 @@ export default function EditUserPage({ user, id }) {
 
   return (
     <UserLayout user={user} flex={true}>
-      <h1 className={'title'}>
-      {id ? 'Edition d\'un' : 'Création d\'un nouvel'} <span className={'gradient'}>utilisateur</span>
-      </h1>
+      <Title appendGradient="utilisateur">
+        {id ? 'Edition d\'un' : 'Création d\'un nouvel'}
+      </Title>
       {id && (
-        <h3 className={'subtitle'}>
-          Utilisateur #{id}
-        </h3>
+        <Title appendGradient={'#' + id}>
+          Utilisateur
+        </Title>
       )}
       <div className={'grid'}>
         {!id && (

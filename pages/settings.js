@@ -2,16 +2,17 @@ import withSession from "../lib/session";
 import { getAvatar } from '../lib/useUser';
 
 import UserLayout from '../components/UserLayout';
+import Title from '../components/Title';
 
-export default function Settings({ user }) {
+export default function SettingsPage({ user }) {
   return (
     <UserLayout user={user} flex={true}>
-      <h1 className={'title'}>
-        Paramètres utilisateur
-      </h1>
-      <h2 className={'title'}>
-        {user.firstName} {user.lastName}
-      </h2>
+      <Title appendGradient={user.firstName}>
+        Paramètres utilisateur:
+      </Title>
+      <code>
+        NOM: {user.firstName} {user.lastName}
+      </code>
       <img style={{ borderRadius: '50%', width: '10%' }} src={getAvatar(user)} />
     </UserLayout>
   );

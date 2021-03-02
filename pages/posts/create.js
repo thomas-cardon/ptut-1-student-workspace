@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 
 import UserLayout from '../../components/UserLayout';
 import Highlight from "../../components/Highlight";
+import Title from '../../components/Title';
 
 import Form from "../../components/Form";
 import * as Fields from "../../components/FormFields";
@@ -61,9 +62,9 @@ export default function CreatePostPage({ user, moduleId }) {
   }
 
   if (user && data) content = (<>
-    <h1 className={'title'}>
-      Edition d'un <span className={'gradient'}>nouveau post</span>
-    </h1>
+    <Title appendGradient="nouveau post">
+      Edition d'un
+    </Title>
 
     <Highlight title={'Le saviez-vous?'}>Le contenu du post est enregistré sur votre navigateur tant qu'il n'est pas envoyé.</Highlight>
     <Form onSubmit={onSubmit} onError={onError}>

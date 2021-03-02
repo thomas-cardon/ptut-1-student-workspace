@@ -1,4 +1,6 @@
 import UserLayout from '../components/UserLayout';
+import Title from '../components/Title';
+
 import Link from 'next/link';
 
 import useServiceWorker from '../lib/workers';
@@ -16,10 +18,10 @@ export default function Dashboard({ user }) {
   const { darkModeActive } = useDarkMode();
   const { data : posts, error } = useSWR('/api/posts/recent', fetcher);
 
-  let content = <h1 className={'title'}>Chargement</h1>;
+  let content = <Title>Chargement</Title>;
 
   if (error) content = <>
-    <h3 className={'subtitle'}>Chargement</h3>
+    <h3 className={'subtitle'}>Une erreur s'est produite.</h3>
     <pre>
       <code>{error.toString()}</code>
     </pre>
@@ -60,9 +62,9 @@ export default function Dashboard({ user }) {
 
   return (
     <UserLayout user={user} flex={true}>
-      <h1 className={'title'}>
-        Salut, <span className={'gradient'}>{user.firstName}</span> !
-      </h1>
+      <Title appendGradient={user.firstName + ' !'}>
+        Salut, 
+      </Title>
       <code>{user ? (user?.group?.name || 'Groupe inconnu') : 'Chargement'}</code>
 
       <style jsx global>{`
@@ -101,7 +103,7 @@ export default function Dashboard({ user }) {
         }
 
         .card h3 {
-          font-family: 'Lato';
+          font-family: 'Lato', system-ui;
           font-weight: 300;
 
           text-align: center;

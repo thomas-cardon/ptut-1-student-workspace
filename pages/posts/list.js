@@ -2,6 +2,7 @@ import Link from 'next/link';
 
 import UserLayout from '../../components/UserLayout';
 import Highlight from "../../components/Highlight";
+import Title from "../../components/Title";
 import Post from "../../components/Post";
 
 import { getAvatar } from '../../lib/useUser';
@@ -17,7 +18,7 @@ export default function Posts({ user, module }) {
 
   if (!data) content = <h2 className={'title'}>Chargement</h2>;
   else if (error) {
-    content = <h2 className={'title'}>Erreur !</h2>;
+    content = <Title>Erreur !</Title>;
     console.error(error);
   }
   else if (!data.data) content = <h2 className={'title'}>Aucun post disponible</h2>;
@@ -25,9 +26,9 @@ export default function Posts({ user, module }) {
 
   return (
     <UserLayout user={user} flex={true}>
-      <h1 className={'title'}>
-        Derniers <span className={'gradient'}>posts</span>
-      </h1>
+      <Title appendGradient="posts">
+        Derniers
+      </Title>
       {user.userType !== 0 && (
         <h3 className={'subtitle'}>
           <Link href="/posts/create">

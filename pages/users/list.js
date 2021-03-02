@@ -12,6 +12,7 @@ import {
 import UserLayout from '../../components/UserLayout';
 import Highlight from "../../components/Highlight";
 import Table from '../../components/Table';
+import Title from '../../components/Title';
 
 import useSWR from 'swr';
 import fetcher from '../../lib/fetchJson';
@@ -79,9 +80,9 @@ export default function UserListPage({ user, module }) {
 
   return (
     <UserLayout user={user} flex={true}>
-      <h1 className={'title'}>
-        Liste des <span className={'gradient'}>utilisateurs</span>
-      </h1>
+      <Title appendGradient="utilisateurs">
+        Liste des
+      </Title>
       <h3 className={'subtitle'}>
         <Link href='/users/edit'>
           <a>Ajouter...</a>
