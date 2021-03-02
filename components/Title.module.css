@@ -1,0 +1,25 @@
+.title {
+  font-weight: 800;
+  font-size: 4em;
+  line-height: 1;
+  margin: 0.25em 0 0;
+  color: #404d5b;
+  text-align: center;
+  font-family: sans-serif;
+}
+
+.dark {
+  color: #D4D4D4;
+}
+
+.title a:hover,
+.title a:focus,
+.title a:active {
+  text-decoration: underline;
+}
+
+.gradient {
+  color: transparent;
+  background-clip: text;
+  background-image: linear-gradient(to top right, #63b3ed, #48BB78);
+}
