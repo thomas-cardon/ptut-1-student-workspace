@@ -3,13 +3,12 @@ import FormGroup from "./FormGroup.js";
 
 import { useFormContext } from 'react-hook-form';
 
-export default function FormCheckbox({ label, inline, ...rest }) {
+export default function FormCheckbox({ label, inline, name, ...rest }) {
   const { register } = useFormContext();
-  const { name } = rest;
 
   return (
     <FormGroup label={label} name={name} inline={inline}>
-      <input className={styles.checkbox} ref={register({ required: rest.required })} id={name} type="checkbox" {...rest} />
+      <input className={styles.checkbox} id={name} name={name} ref={register({ required: rest.required })} type="checkbox" {...rest} />
     </FormGroup>
   );
 }
