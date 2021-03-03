@@ -19,6 +19,8 @@ export default function Dashboard({ user }) {
   const { darkModeActive } = useDarkMode();
   const { data : posts, error } = useSWR('/api/posts/recent', fetcher);
 
+  console.dir(posts);
+
   let content = <Title>Chargement</Title>;
 
   if (error) content = <>
@@ -35,11 +37,26 @@ export default function Dashboard({ user }) {
             <Chat clientId={"user-" + user.userId + '-' + Math.floor(Math.random() * Math.floor(10000))} />
           </div>
         )}
-        {posts?.data && (
+        {posts?.data.filter(x => x.isHomework).length > 0 && (
+          <div className={`card ${darkModeActive ? 'dark' : ''}`}>
+            <h3>Devoirs à faire</h3>
+            <ul>
+              {posts.data.filter(x => x.isHomework).map((post, i) => <li key={i}>
+                <Link href={"/posts/" + post.id}>
+                  <a>
+                    <HiArrowNarrowRight style={{ verticalAlign: 'middle' }}/>
+                    <span>{post.title}</span>
+                  </a>
+                </Link>
+              </li>)}
+            </ul>
+          </div>
+        )}
+        {posts?.data.filter(x => !x.isHomework).length > 0 && (
           <div className={`card ${darkModeActive ? 'dark' : ''}`}>
             <h3>Derniers posts</h3>
             <ul>
-              {posts.data.map((post, i) => <li key={i}>
+              {posts.data.filter(x => !x.isHomework).map((post, i) => <li key={i}>
                 <Link href={"/posts/" + post.id}>
                   <a>
                     <HiArrowNarrowRight style={{ verticalAlign: 'middle' }}/>
