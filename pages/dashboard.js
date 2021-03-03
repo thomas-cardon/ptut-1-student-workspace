@@ -32,7 +32,7 @@ export default function Dashboard({ user }) {
       <div className="cards">
         {true && (
           <div className={`card ${darkModeActive ? 'dark' : ''} card-xl chat`}>
-            <Chat clientId={"user-" + user.userId} />
+            <Chat clientId={"user-" + user.userId + '-' + Math.floor(Math.random() * Math.floor(10000))} />
           </div>
         )}
         {posts?.data && (

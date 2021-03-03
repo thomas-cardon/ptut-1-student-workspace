@@ -8,7 +8,7 @@ export default function Chat({ clientId, room = 'global' }) {
   const { darkModeActive } = useDarkMode();
 
   const clientRef = React.useRef(null);
-  const [messages, setMessages] = useState(['init']);
+  const [messages, setMessages] = useState([]);
 
   const addMessage = () => {
     const newMessages = messages.concat(Math.random());
@@ -16,31 +16,31 @@ export default function Chat({ clientId, room = 'global' }) {
   };
 
   const send = msg => {
-    clientRef.current.publish('/ptut-student-workspace/chat/' + room, { clientId, msg });
+    clientRef.current.publish('/ptut-student-workspace/chat/' + room, JSON.stringify({ clientId, msg }));
   };
 
   useEffect(() => {
     // access client vis clientRef.current
     console.dir(clientRef.current);
     if (!clientRef.current) {
-      clientRef.current = mqtt.connect('mqtt://test.mosquitto.org:8081', { protocol: 'mqtts', clientId });
+      clientRef.current = mqtt.connect('mqtt://test.mosquitto.org:8081', { protocol: 'mqtts', reconnectPeriod: 20, clientId });
       clientRef.current.subscribe('/ptut-student-workspace/chat/' + room);
 
       clientRef.current.on('connect', () => {
-        console.log('Client >> connected');
+        console.log('Client #' + clientId + ' >> connected');
       })
 
       clientRef.current.on('error', console.error);
       clientRef.current.stream.on('error', console.error);
 
-      clientRef.current.on('message', (message) => {
+      clientRef.current.on('message', (topic, message) => {
         console.log(message.toString());
-        setMessages(messages.concat(message.toString()));
+        setMessages(messages.concat(JSON.parse(message)));
       });
 
-      console.log('Client:', clientRef.current);
+      console.log('Client #' + clientId + ' :', clientRef.current);
     }
-    else if (!clientRef.current.connected)
+    else if (clientRef.current.disconnected)
       clientRef.current.reconnect();
 
     return () => {
@@ -63,7 +63,7 @@ export default function Chat({ clientId, room = 'global' }) {
         <div className={styles.circle}></div>
       </div>
 
-      <textarea className={[styles.textarea, darkModeActive ? styles['textarea-dark'] : ''].join(' ')} readOnly></textarea>
+      <textarea className={[styles.textarea, darkModeActive ? styles['textarea-dark'] : ''].join(' ')} value={messages.map(x => x.userId + ' : ' + x.msg).join('\n')} readOnly></textarea>
       <div style={{ display: 'flex', width: '100%' }}>
         <input type="text" placeholder="Ecrire un message" />
         <button onClick={() => send('test')}>Envoyer</button>
