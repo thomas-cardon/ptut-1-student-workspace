@@ -1,5 +1,6 @@
 import UserLayout from '../components/UserLayout';
 import Title from '../components/Title';
+import Chat from '../components/Chat';
 
 import Link from 'next/link';
 
@@ -31,15 +32,9 @@ export default function Dashboard({ user }) {
       <div className="cards">
         {true && (
           <div className={`card ${darkModeActive ? 'dark' : ''} card-xl chat`}>
-            <h3>Chat:&nbsp;<code style={{ color: 'red' }}>global</code> (Placeholder)</h3>
-            <textarea readOnly></textarea>
-            <div style={{ display: 'flex', width: '100%' }}>
-              <input type="text" placeholder="Ecrire un message" />
-              <button>Envoyer</button>
-            </div>
+            <Chat clientId={"user-" + user.userId} />
           </div>
         )}
-
         {posts?.data && (
           <div className={`card ${darkModeActive ? 'dark' : ''}`}>
             <h3>Derniers posts</h3>
@@ -63,7 +58,7 @@ export default function Dashboard({ user }) {
   return (
     <UserLayout user={user} flex={true}>
       <Title appendGradient={user.firstName + ' !'}>
-        Salut, 
+        Salut,
       </Title>
       <code>{user ? (user?.group?.name || 'Groupe inconnu') : 'Chargement'}</code>
 
@@ -129,18 +124,6 @@ export default function Dashboard({ user }) {
 
         li a > * {
           margin-right: .5em;
-        }
-
-        .chat textarea {
-          width: 100%;
-          height: 70%;
-          margin: 0px;
-          padding: 0px;
-          outline: 0;
-          border: 0;
-          border-radius: 8px;
-          background-color: #353535;
-          resize: none;
         }
       `}</style>
       {content}
