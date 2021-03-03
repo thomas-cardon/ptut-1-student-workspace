@@ -8,7 +8,7 @@ async function handler(req, res, session) {
   try {
     const data = await query(
       `
-      SELECT posts.id, posts.userId, title, content, creation_time, module, classId, firstName, lastName, email, userType FROM posts
+      SELECT posts.id, posts.userId, title, content, isHomework, homeworkDate, courseId, creation_time, module, classId, firstName, lastName, email, userType FROM posts
       INNER JOIN classes ON posts.classId = classes.id
       INNER JOIN users ON users.userId = posts.userId
       ${req.query.module ? 'WHERE module = "' + req.query.module + '"' : ''}

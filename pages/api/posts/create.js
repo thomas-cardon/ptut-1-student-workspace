@@ -29,10 +29,10 @@ async function handler(req, res, session) {
   try {
     const results = await query(
       `
-      INSERT INTO posts (title, content, userId, classId)
-      VALUES (?, ?, ?, ?)
+      INSERT INTO posts (title, content, userId, classId, courseId, isHomework, homeworkDate)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
       `,
-      [post.title, post.content, user.userId, post.classId]
+      [post.title, post.content, user.userId, post.classId, post.courseId, post.isHomework, post.homeworkDate]
     );
 
     res.send({ success: true });
