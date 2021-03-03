@@ -15,9 +15,10 @@ async function handler(req, res, session) {
 
     const schedule = await query(
       `
-      SELECT schedule.id, start, duration, classId, schedule.groupId, meetingUrl, module, name as moduleName, color as moduleColor, firstName AS teacherFirstName, lastName as teacherLastName, email as teacherEmail, schedule.teacherId FROM schedule
+      SELECT schedule.id, start, duration, classId, schedule.groupId, meetingUrl, classes.module, classes.name as moduleName, color as moduleColor, firstName AS teacherFirstName, lastName as teacherLastName, email as teacherEmail, schedule.teacherId, groups.name as groupName FROM schedule
       INNER JOIN users ON teacherId = users.userId
       INNER JOIN classes ON classId = classes.id
+      LEFT OUTER JOIN groups ON schedule.groupId = groups.id
       ${filterByGroup ? 'WHERE schedule.groupId = ?' : ''}
       ${filterByTeacher ? 'WHERE schedule.teacherId = ?' : ''}
       ORDER BY start ASC
