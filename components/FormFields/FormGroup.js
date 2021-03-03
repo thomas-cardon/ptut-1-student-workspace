@@ -1,6 +1,6 @@
 import styles from "./FormGroup.module.css";
 
-export default function FormGroup({ label, name, disableStyle, children }) {
+export default function FormGroup({ label, name, inline, disableStyle, children }) {
   if (disableStyle) return (
     <div>
       {label && (<label htmlFor={name}>
@@ -11,7 +11,7 @@ export default function FormGroup({ label, name, disableStyle, children }) {
   );
 
   return (
-    <div className={styles.formGroup}>
+    <div className={[styles.formGroup, inline ? styles.inline : ''].join(' ')}>
       {label && (<label htmlFor={name} style={{ marginRight: '1em', fontWeight: 'bold' }}>
         {label}
       </label>)}
