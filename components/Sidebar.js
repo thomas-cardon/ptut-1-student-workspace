@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 
-import Badge from './Badge';
 import { HiOutlineMenu } from "react-icons/hi";
 
 import styles from './Sidebar.module.css';
