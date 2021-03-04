@@ -24,14 +24,14 @@ export default function CreatePostPage({ user, moduleId }) {
  /*
   * Variable definitions
   */
-  const [values, setValues] = useState({ homework: false, title: 'Sans titre', classId: '', courseId: '', homeworkDate: '' });
+  const [values, setValues] = useState({ homework: false, title: 'Sans titre', subjectId: '', courseId: '', homeworkDate: '' });
 
   const handleInputChange = e => {
     const {name, value, checked, type } = e.target;
     setValues({ ...values, [name]: type === 'checkbox' ? checked : value });
   };
 
-  const { data : classes } = use({ url: '/api/class/list' });
+  const { data : subjects } = use({ url: '/api/subjects/list' });
   const { data : scheduleList } = use({ url: `/api/schedule?omitPassedEntries=1${user.userType == 1 ? '&filterByTeacher=' + user.userId : ''}` });
 
   const { addToast } = useToasts();
@@ -48,7 +48,7 @@ export default function CreatePostPage({ user, moduleId }) {
     let body = {
       title: values.title,
       content: localStorage.getItem('posts.lastSavedState'),
-      classId: parseInt(values.classId),
+      subjectId: parseInt(values.subjectId),
       courseId: values.courseId ? parseInt(values.courseId) : undefined,
       isHomework: values.homework ? 1 : 0,
       homeworkDate: values.homework ? values.homeworkDate.slice(0, 19).replace('T', ' ') : undefined
@@ -97,7 +97,7 @@ export default function CreatePostPage({ user, moduleId }) {
     </p>
   </>);
 
-  if (user && classes) content = (<>
+  if (user && subjects) content = (<>
     <Title appendGradient="nouveau post">
       Edition d'un
     </Title>
@@ -105,7 +105,7 @@ export default function CreatePostPage({ user, moduleId }) {
     <Highlight title={'Le saviez-vous?'}>Le contenu du post est enregistré sur votre navigateur tant qu'il n'est pas envoyé.</Highlight>
     <Form style={{ width: '60%' }} onSubmit={onSubmit} onError={onError}>
       <Fields.FormInput label="Titre du post" name="title" type="text" onChange={handleInputChange} value={values.title} placeholder="Titre" required />
-      <Fields.FormSelect label="Matière (Module)" name="classId" onChange={handleInputChange} noOption="-- Sélectionnez un module --" value={values.classId} options={classes.modules.map(x => { return { option: 'Cours ' + x.module, value: x.id } })} required />
+      <Fields.FormSelect label="Matière (Module)" name="subjectId" onChange={handleInputChange} noOption="-- Sélectionnez un module --" value={values.subjectId} options={subjects.modules.map(x => { return { option: 'Cours ' + x.module, value: x.id } })} required />
       <Fields.FormCheckbox label="Est-ce un devoir ?" name="homework" inline={true} onChange={handleInputChange} value={values.homework} />
       <Fields.FormInput disabled={values.homework == "0"} label="Date du devoir" name="homeworkDate" type="datetime-local" onChange={handleInputChange} value={values.homeworkDate} />
       {scheduleSelector}
