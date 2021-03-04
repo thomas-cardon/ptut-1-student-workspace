@@ -6,8 +6,7 @@ import Link from 'next/link';
 
 import useServiceWorker from '../lib/workers';
 
-import useSWR from 'swr';
-import fetcher from '../lib/fetchJson';
+import use from '../lib/use';
 import withSession from "../lib/session";
 
 import { HiArrowNarrowRight } from "react-icons/hi";
@@ -20,19 +19,11 @@ export default function Dashboard({ user }) {
   useServiceWorker();
 
   const { darkModeActive } = useDarkMode();
-  const { data : posts, error } = useSWR('/api/posts/recent', fetcher);
-
-  console.dir(posts);
+  const { data : posts } = use({ url: '/api/posts/recent' });
 
   let content = <Title>Chargement</Title>;
 
-  if (error) content = <>
-    <h3 className={'subtitle'}>Une erreur s'est produite.</h3>
-    <pre>
-      <code>{error.toString()}</code>
-    </pre>
-  </>;
-  else if (posts) {
+  if (posts) {
     content = (
       <div className="cards">
         {true && (
