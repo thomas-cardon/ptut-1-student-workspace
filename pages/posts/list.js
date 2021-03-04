@@ -7,22 +7,17 @@ import Post from "../../components/Post";
 
 import { getAvatar } from '../../lib/useUser';
 
-import useSWR from 'swr';
-import fetcher from '../../lib/fetchJson';
+import use from '../../lib/use';
 import withSession from "../../lib/session";
 
 export default function Posts({ user, module }) {
-  const { data, error } = module ? useSWR(`/api/posts/recent?module=${module}`, fetcher) : useSWR('/api/posts/recent', fetcher);
+  const { data : posts } = use({ url: `/api/posts/recent?type=0${module ? '&module=' + module : ''}` + (user.userType == 0 && user?.group?.id ? '&filterByGroup=' + user?.group?.id : '') });
 
   let content;
 
-  if (!data) content = <h2 className={'title'}>Chargement</h2>;
-  else if (error) {
-    content = <Title>Erreur !</Title>;
-    console.error(error);
-  }
-  else if (!data.data) content = <h2 className={'title'}>Aucun post disponible</h2>;
-  else content = data.data.map((post, i) => <Post id={post.id} key={'post-' + post.id} authorName={post.firstName + ' ' + post.lastName} creationTime={new Date(post.creation_time)} avatar={getAvatar(user)} {...post}></Post>);
+  if (!posts) content = <h2 className={'title'}>Chargement</h2>;
+  else if (!posts.data || posts.data.length === 0) content = <h2 className={'title'}>Aucun post disponible</h2>;
+  else content = posts.data.map((post, i) => <Post id={post.id} key={'post-' + post.id} authorName={post.firstName + ' ' + post.lastName} creationTime={new Date(post.creation_time)} avatar={getAvatar(user)} {...post}></Post>);
 
   return (
     <UserLayout user={user} flex={true}>

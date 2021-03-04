@@ -17,7 +17,7 @@ async function handler(req, res, session) {
       `
     );
 
-    if (data.length > 0) res.send({ data, success: true });
+    if (data.length > 0) res.send({ data: req.query.type ? data.filter(x => x.isHomework == req.query.type) : data, success: true });
     else res.status(404).send({ message: 'NOT_FOUND', success: false });
   }
   catch (e) {
