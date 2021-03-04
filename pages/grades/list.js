@@ -2,7 +2,9 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 import UserLayout from '../../components/UserLayout';
+import Highlight from '../../components/Highlight';
 import Table from '../../components/Table';
+import Title from '../../components/Title';
 
 import {
   contextMenu,
@@ -12,14 +14,16 @@ import {
   Submenu
 } from "react-contexify";
 
-import useSWR from 'swr';
-import fetcher from '../../lib/fetchJson';
+import use from '../../lib/use';
 import withSession from "../../lib/session";
 
 import { useToasts } from 'react-toast-notifications';
+import { useDarkMode } from 'next-dark-mode';
 
-export default function ClassListPage({ user }) {
-  const { data, error } = useSWR('/api/grades/list', fetcher);
+export default function ClassListPage({ user, id }) {
+  const { data } = use({ url: '/api/grades', redirectOnError: '/error' });
+
+  const { darkModeActive } = useDarkMode();
   const { addToast } = useToasts();
   const router = useRouter();
 
@@ -41,31 +45,56 @@ export default function ClassListPage({ user }) {
   let content;
 
   if (!data) content = <h2 className={'title'}>Chargement</h2>;
-  else if (error) {
-    content = <h2 className={'title'}>Erreur !</h2>;
-    console.error(error);
-  }
-  else if (data.grades.length == 0) content = <h2 className={'title'}>Aucune note disponible</h2>;
+  else if (data.data === {}) content = <h2 className={'title'}>Aucune note disponible</h2>;
   else content = (<>
-    <Table menuId="courses" onContextMenu={displayMenu} head={['#', 'Nom', 'Professeur', 'Elève', 'Note', 'Coefficient']} menu={<Menu id="grades">
-      <Item id="edit" onClick={handleItemClick}>&#x1F589; Editer </Item>
-      <Item id="remove" onClick={handleItemClick}>&#x274C; Supprimer</Item>
-      </Menu>}>
-      {data.grades.map((m, i) => (
-        <tr id={`${m.id}`} key={i}>
-        <td data-type='id'>{m.id}</td>
-        <td data-type='module'>{m.module}</td>
-        <td data-type='name'>{m.name}</td>
-        </tr>
-      ))}
-    </Table>
+    {Object.keys(data.data).map((key, i) => (<>
+      <h3 style={{ margin: '1em 0 0 0' }}>
+        <span>{data.data[key][Object.keys(data.data[key])[0]][0].userFirstName} {data.data[key][Object.keys(data.data[key])[0]][0].userLastName}</span>
+        {data.data[key][0]?.userGroupName && (<>
+          <span style={{ margin: '0 0.5em' }}>→</span>
+          <span>
+            Groupe:&nbsp;
+            <i>{data.data[key][0]?.userGroupName}</i>
+          </span>
+        </>)}
+      </h3>
+      <hr style={{ width: '50%', margin: '1em 2em 2em 0' }} />
+      <Table menuId={"grades"} onContextMenu={displayMenu} head={['Matière', 'Nom', 'Professeur', 'Note', 'Coef.', 'Absent', 'Appréciations']} menu={<Menu id="grades">
+        <Item id="edit" onClick={handleItemClick}>&#x1F589; Editer </Item>
+        <Item id="remove" onClick={handleItemClick}>&#x274C; Supprimer</Item>
+        </Menu>}>
+        {Object.keys(data.data[key]).map((m, i) => (<>
+          <tr style={{ backgroundColor: darkModeActive ? '#272c34' : '#ddd' }}>
+            <td data-type='subject'>
+              <p style={{ margin: '0' }}>{data.data[key][m][0].subjectModule}</p>
+              <p style={{ fontSize: 'xx-small', margin: '0' }}>{data.data[key][m][0].subjectName}</p>
+            </td>
+            <td />
+            <td />
+            <td />
+            <td />
+            <td />
+            <td />
+          </tr>
+          {data.data[key][m].map((note, i) => (<tr>
+            <td />
+            <td data-type='name'>{note.name}</td>
+            <td data-type='teacher'>{note.teacherFirstName} {note.teacherLastName}</td>
+            <td data-type='value'>{(note.value || 0) + '/' + note.max}</td>
+            <td data-type='coefficient'>{note.coefficient}</td>
+            <td data-type='absent'>{note.wasAbsent === 1 ? '❌' : '✔️'}</td>
+            <td data-type='notes'>{note.notes || 'N/A'}</td>
+          </tr>))}
+        </>))}
+      </Table>
+    </>))}
   </>);
 
   return (
     <UserLayout user={user} flex={true}>
-      <h1 className={'title'}>
-        Notes <span className={'gradient'}>enregistrées</span>
-      </h1>
+      <Title appendGradient="enregistrées">
+        Notes
+      </Title>
       {user.userType == 2 && (
         <h3 className={'subtitle'}>
           <Link href="/grades/create">
@@ -74,9 +103,12 @@ export default function ClassListPage({ user }) {
         </h3>
       )}
       <div className={'grid'}>
-        <ul>
-          {content}
-        </ul>
+        {!id && (
+          <Highlight title={'A savoir'}>
+            Vous ne verrez que les étudiants dans la liste des notes.
+          </Highlight>
+        )}
+        {content}
       </div>
     </UserLayout>
   );
