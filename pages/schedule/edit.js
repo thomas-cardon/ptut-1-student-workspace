@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import Router from 'next/router';
 
 import UserLayout from '../../components/UserLayout';
@@ -10,36 +10,50 @@ import * as Fields from "../../components/FormFields";
 import { useToasts } from 'react-toast-notifications';
 
 import use from '../../lib/use';
-import useSWR from 'swr';
-import fetcher from '../../lib/fetchJson';
 import withSession from "../../lib/session";
 
 import { formatDuration, differenceInMinutes, isSameDay, getDay } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
 export default function EditSchedulePage({ user }) {
-  const { data : modules } = use({ url: '/api/class/list' });
-  const { data : groups } = use({ url: '/api/groups/list' });
-  const { data : teachers } = use({ url: '/api/users/list?queryUserType=1' });
+  /*
+   * Variable definitions
+   */
+   const [values, setValues] = useState({ start: '', duration: '', classId: '', teacherId: '', meetingUrl: '' });
+   const legend = useRef(null);
 
-  const { addToast } = useToasts();
+   const handleInputChange = e => {
+     const {name, value, checked, type } = e.target;
+     setValues({ ...values, [name]: type === 'checkbox' ? checked : value });
+   };
 
-  const form = useRef(null), legend = useRef(null);
+   const { data : modules } = use({ url: '/api/class/list' });
+   const { data : groups } = use({ url: '/api/groups/list' });
+   const { data : teachers } = use({ url: '/api/users/list?queryUserType=1' });
+
+   const { addToast } = useToasts();
+
+  /*
+   * End of variable definitions
+   */
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (!verify()) return;
+
+    let body = {
+      start: values.start.slice(0, 19).replace('T', ' '),
+      duration: differenceInMinutes(new Date(values.end.slice(0, 19).replace('T', ' ')), new Date(values.start.slice(0, 19).replace('T', ' '))),
+      classId: parseInt(values.classId),
+      teacherId: parseInt(values.teacherId),
+      meetingUrl: values.meetingUrl,
+      concernedGroups: Array.from(e.target.childNodes[7].querySelectorAll('*')).filter(x => x.nodeName === "INPUT" && x.checked).map(x => { return parseInt(x.getAttribute('data-id')); })
+    };
+
+    if (!verify(body)) return;
 
     try {
-      const res = await fetch(location.protocol + '//' + location.host + '/api/schedule/add', {
-        body: JSON.stringify({
-          start: e.target[0].value.slice(0, 19).replace('T', ' '),
-          duration: differenceInMinutes(new Date(e.target[1].value.slice(0, 19).replace('T', ' ')), new Date(e.target[0].value.slice(0, 19).replace('T', ' '))),
-          classId: parseInt(e.target[2].value),
-          teacherId: parseInt(e.target[3].value),
-          meetingUrl: e.target[4].value,
-          concernedGroups: Array.from(e.target.childNodes[7].querySelectorAll('*')).filter(x => x.nodeName === "INPUT" && x.checked).map(x => { return parseInt(x.getAttribute('data-id')); })
-        }),
+      const res = await fetch(location.protocol + '//' + location.host + '/api/posts/create', {
+        body: JSON.stringify(body),
         headers: { 'Content-Type': 'application/json' },
         method: 'POST'
       });
@@ -64,16 +78,14 @@ export default function EditSchedulePage({ user }) {
     addToast(errors || 'Une erreur s\'est produite', { appearance: 'error' });
   }
 
-  function verify() {
-    let start = form.current[0].value, end = form.current[1].value;
-
-    if (!start || !end) {
+  function verify(body) {
+    if (!body.start || !body.end) {
       legend.current.innerText = "Définissez un début et une fin valide";
       return false;
     }
     else {
-      start = new Date(start);
-      end = new Date(end);
+      let start = new Date(body.start);
+      let end = new Date(body.end);
 
       let diff = differenceInMinutes(end, start);
 
@@ -113,20 +125,16 @@ export default function EditSchedulePage({ user }) {
       <Title appendGradient="l'emploi du temps">
         Edition de
       </Title>
-      <Form ref={form} onSubmit={onSubmit} onError={onError}>
-        <Fields.FormGroup label="Début du cours" name="start">
-          <input id="start" name="start" type="datetime-local" onChange={verify} required />
-        </Fields.FormGroup>
-        <Fields.FormGroup label="Fin du cours" name="end">
-          <input id="end" name="end" type="datetime-local" onChange={verify} required />
-        </Fields.FormGroup>
+      <Form onSubmit={onSubmit} onError={onError}>
+        <Fields.FormInput label="Début du cours" name="start" type="datetime-local" onChange={handleInputChange} value={values.start} required />
+        <Fields.FormInput label="Fin du cours" name="end" type="datetime-local" onChange={handleInputChange} value={values.end} required />
 
         <legend ref={legend} style={{ backgroundColor: '#000', color: '#fff', padding: '2px 3px', margin: '1em 0 1em 0' }}>Définissez un début et une fin valide</legend>
 
-        <Fields.FormSelect label="Cours" id="classId" name="classId" options={(modules?.modules || []).map(x => { return { option: x.name + ' (' + x.module + ')', value: x.id } })} />
-        <Fields.FormSelect label="Professeur" id="teacherId" name="teacherId" options={(teachers?.users || []).map(x => { return { option: x.firstName + ' ' + x.lastName, value: x.userId } })} />
+        <Fields.FormSelect noOption="-- Sélectionnez un cours --" label="Cours" name="classId" onChange={handleInputChange} value={values.classId} options={(modules?.modules || []).map(x => { return { option: x.name + ' (' + x.module + ')', value: x.id } })} required />
+        <Fields.FormSelect noOption="-- Sélectionnez un professeur --" label="Professeur" name="teacherId" onChange={handleInputChange} value={values.teacherId} options={(teachers?.users || []).map(x => { return { option: x.firstName + ' ' + x.lastName, value: x.userId } })} required />
 
-        <Fields.FormInput label="Lien de la réunion" id="meetingUrl" name="meetingUrl" type="url" placeholder="Lien Zoom, Google Meet, jit.si, Discord..." />
+        <Fields.FormInput label="Lien de la réunion" name="meetingUrl" onChange={handleInputChange} value={values.meetingUrl} type="url" placeholder="Lien Zoom, Google Meet, jit.si, Discord..." />
 
         <hr />
         <Fields.FormCheckboxList label="Groupes affectés" options={(groups?.groups || []).map(x => { return { label: x.name, id: x.id } })} />
