@@ -45,7 +45,7 @@ const Table = React.forwardRef((props, ref) => {
           {props.head.map((x, i) => <th key={'head-' + i}>{x}</th>)}
         </tr>
       </thead>
-      <tbody onClick={show}>
+      <tbody>
         {props.children}
       </tbody>
     </table>
