@@ -13,6 +13,9 @@ import withSession from "../lib/session";
 import { HiArrowNarrowRight } from "react-icons/hi";
 import { useDarkMode } from 'next-dark-mode';
 
+import { format } from 'date-fns';
+import { fr } from 'date-fns/locale';
+
 export default function Dashboard({ user }) {
   useServiceWorker();
 
@@ -39,13 +42,18 @@ export default function Dashboard({ user }) {
         )}
         {posts?.data.filter(x => x.isHomework).length > 0 && (
           <div className={`card ${darkModeActive ? 'dark' : ''}`}>
-            <h3>Devoirs à faire</h3>
-            <ul>
+            <h1>Devoirs à faire</h1>
+            <ul className="homework">
               {posts.data.filter(x => x.isHomework).map((post, i) => <li key={i}>
                 <Link href={"/posts/" + post.id}>
                   <a>
+                    <p>Pour le {format(Date.parse(post.homeworkDate), 'd MMMM yyyy à HH:mm', { locale: fr })}</p>
+                    <hr />
                     <HiArrowNarrowRight style={{ verticalAlign: 'middle' }}/>
                     <span>{post.title}</span>
+                    <p>
+                      <i>({post.moduleName} — {post.firstName + ' ' + post.lastName})</i>
+                    </p>
                   </a>
                 </Link>
               </li>)}
@@ -54,7 +62,7 @@ export default function Dashboard({ user }) {
         )}
         {posts?.data.filter(x => !x.isHomework).length > 0 && (
           <div className={`card ${darkModeActive ? 'dark' : ''}`}>
-            <h3>Derniers posts</h3>
+            <h1>Derniers posts</h1>
             <ul>
               {posts.data.filter(x => !x.isHomework).map((post, i) => <li key={i}>
                 <Link href={"/posts/" + post.id}>
@@ -124,6 +132,10 @@ export default function Dashboard({ user }) {
         ul {
           margin-left: 0;
           padding-left: 0;
+        }
+
+        ul.homework p {
+          margin: 0;
         }
 
         li {
