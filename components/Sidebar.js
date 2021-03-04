@@ -38,6 +38,9 @@ export default function Sidebar({ user, children, active, setActive }) {
           <Link href="/users/list">
             <a className={styles.item}>Liste des utilisateurs</a>
           </Link>
+          <Link href="/grades/list">
+            <a className={styles.item}>Notes enregistrées</a>
+          </Link>
           <Link href="/schedule/edit">
             <a className={styles.item}>Ajouter à l'emploi du temps</a>
           </Link>
