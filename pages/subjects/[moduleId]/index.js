@@ -8,7 +8,7 @@ import fetcher from '../../../lib/fetchJson';
 import withSession from "../../../lib/session";
 
 export default function ClassPage({ user, moduleId }) {
-  const { data } = useSWR('/api/class/' + moduleId, fetcher);
+  const { data } = useSWR('/api/subjects/' + moduleId, fetcher);
   const { postsData } = useSWR('/api/posts/by-module/' + moduleId, fetcher);
 
   let content = <h1 className={'title'}>Chargement...</h1>;

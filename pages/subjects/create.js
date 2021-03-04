@@ -21,7 +21,7 @@ export default function CreateClassPage({ user }) {
     e.preventDefault();
 
     try {
-      const res = await fetch(location.protocol + '//' + location.host + '/api/class/' + e.target.moduleId.value, {
+      const res = await fetch(location.protocol + '//' + location.host + '/api/subjects/' + e.target.moduleId.value, {
         body: JSON.stringify({
           name: e.target.name.value,
           color: color.slice(1)

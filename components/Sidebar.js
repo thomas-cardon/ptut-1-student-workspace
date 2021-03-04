@@ -29,7 +29,7 @@ export default function Sidebar({ user, children, active, setActive }) {
           <a className={styles.item}>Derniers posts</a>
         </Link>
 
-        <Link href="/class/list">
+        <Link href="/subjects/list">
           <a className={styles.item}>Liste des cours</a>
         </Link>
 

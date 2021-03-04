@@ -6,8 +6,8 @@ async function handler(req, res) {
   if (!user) return res.status(401).send('NOT_AUTHORIZED');
 
   try {
-    const modules = await query(`SELECT * FROM classes ORDER BY module ASC`);
-    res.json({ modules, success: true });
+    const subjects = await query(`SELECT * FROM subjects ORDER BY module ASC`);
+    res.json({ subjects, success: true });
   }
   catch (e) {
     res.status(500).json({ error: e.message, success: false });

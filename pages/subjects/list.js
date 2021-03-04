@@ -20,7 +20,7 @@ import withSession from "../../lib/session";
 import { useToasts } from 'react-toast-notifications';
 
 export default function ClassListPage({ user }) {
-  const { data, error } = useSWR('/api/class/list', fetcher);
+  const { data, error } = useSWR('/api/subjects/list', fetcher);
   const { addToast } = useToasts();
   const router = useRouter();
 
@@ -56,13 +56,13 @@ export default function ClassListPage({ user }) {
     content = <h2 className={'title'}>Erreur !</h2>;
     console.error(error);
   }
-  else if (data.modules.length == 0) content = <h2 className={'title'}>Aucun cours disponible</h2>;
+  else if (data.subjects.length == 0) content = <h2 className={'title'}>Aucun cours disponible</h2>;
   else content = (<>
     <Table menuId="courses" onContextMenu={displayMenu} head={['#', 'Module', 'Nom']} menu={<Menu id="courses">
       <Item id="edit" onClick={handleItemClick}>&#x1F589; Editer </Item>
       <Item id="remove" onClick={handleItemClick}>&#x274C; Supprimer</Item>
       </Menu>}>
-      {data.modules.map((m, i) => (
+      {data.subjects.map((m, i) => (
         <tr id={`${m.id}`} key={i}>
         <td data-type='id'>{m.id}</td>
         <td data-type='module'>{m.module}</td>
@@ -79,7 +79,7 @@ export default function ClassListPage({ user }) {
       </Title>
       {user.userType == 2 && (
         <h3 className={'subtitle'}>
-          <Link href="/class/create">
+          <Link href="/subjects/create">
             <a>Ajouter</a>
           </Link>...
         </h3>
