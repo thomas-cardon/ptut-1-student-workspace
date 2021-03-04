@@ -12,8 +12,7 @@ import * as Fields from "../../components/FormFields";
 
 import { useToasts } from 'react-toast-notifications';
 
-import useSWR from 'swr';
-import fetcher from '../../lib/fetchJson';
+import use from '../../lib/use';
 import withSession from "../../lib/session";
 
 import { formatDistance } from 'date-fns';
@@ -32,8 +31,8 @@ export default function CreatePostPage({ user, moduleId }) {
     setValues({ ...values, [name]: type === 'checkbox' ? checked : value });
   };
 
-  const { data : classes } = useSWR('/api/class/list', fetcher);
-  const { data : scheduleList } = useSWR(`/api/schedule?omitPassedEntries=1${user.userType == 1 ? '&filterByTeacher=' + user.userId : ''}`, fetcher);
+  const { data : classes } = use({ url: '/api/class/list' });
+  const { data : scheduleList } = use({ url: `/api/schedule?omitPassedEntries=1${user.userType == 1 ? '&filterByTeacher=' + user.userId : ''}` });
 
   const { addToast } = useToasts();
 
