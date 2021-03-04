@@ -33,7 +33,7 @@ export default function CreatePostPage({ user, moduleId }) {
   };
 
   const { data : classes } = useSWR('/api/class/list', fetcher);
-  const { data : scheduleList } = useSWR(`/api/schedule${user.userType == 1 ? '?filterByTeacher=' + user.userId : ''}`, fetcher);
+  const { data : scheduleList } = useSWR(`/api/schedule?omitPassedEntries=1${user.userType == 1 ? '&filterByTeacher=' + user.userId : ''}`, fetcher);
 
   const { addToast } = useToasts();
 
@@ -86,11 +86,17 @@ export default function CreatePostPage({ user, moduleId }) {
     addToast(errors || 'Une erreur s\'est produite', { appearance: 'error' });
   }
 
-  let scheduleSelector = scheduleList && scheduleList.schedule ? (
+  let scheduleSelector = scheduleList && scheduleList.schedule ? (<>
     <Fields.FormSelect disabled={values.homework == "1"} label="Attacher à l'emploi du temps ?" name="courseId" onChange={handleInputChange} value={values.courseId} noOption="-- Ne pas attacher à l'emploi du temps --" options={scheduleList.schedule.map(x => { return { option: formatDistance(Date.parse(x.start), new Date(), { locale: fr, addSuffix: true }) + (x.groupName ? ' avec: ' + x.groupName : ''), value: x.id } })} />
-  ) : (
+    <p>
+      <i>Il se peut que vous n'ayez pas de cours disponible si vous n'avez pas de cours de programmé dans l'emploi du temps.</i>
+    </p>
+  </>) : (<>
     <Fields.FormSelect disabled={values.homework == "1"} label="Attacher à l'emploi du temps ?" name="courseId" noOption="-- Aucun cours disponible --" disabled />
-  );
+    <p>
+      <i>Il se peut que vous n'ayez pas de cours disponible si vous n'avez pas de cours de programmé dans l'emploi du temps.</i>
+    </p>
+  </>);
 
   if (user && classes) content = (<>
     <Title appendGradient="nouveau post">
