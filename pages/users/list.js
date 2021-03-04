@@ -9,19 +9,20 @@ import {
   Submenu
 } from "react-contexify";
 
+import * as Fields from "../../components/FormFields";
+
 import UserLayout from '../../components/UserLayout';
 import Highlight from "../../components/Highlight";
 import Table from '../../components/Table';
 import Title from '../../components/Title';
 
-import useSWR from 'swr';
-import fetcher from '../../lib/fetchJson';
+import use from '../../lib/use';
 import withSession from "../../lib/session";
 
 import { useToasts } from 'react-toast-notifications';
 
 export default function UserListPage({ user, module }) {
-  const { data, error } = useSWR('/api/users/list', fetcher);
+  const { data: users, setSize, size } = use({ url: '/api/users/list', infinite: true });
   const { addToast } = useToasts();
   const router = useRouter();
 
@@ -52,30 +53,24 @@ export default function UserListPage({ user, module }) {
 
   let content;
 
-  if (!data) content = <h2 className={'title'}>Chargement</h2>;
-  else if (error) {
-    content = <h2 className={'title'}>Erreur !</h2>;
-    console.error(error);
-  }
-  else if (!data.users) content = <h2 className={'title'}>Il n'y a aucun utilisateur.</h2>;
+  if (!users) content = <h2 className={'title'}>Chargement</h2>;
   else {
-    content = (<>
-      <Table menuId="userTable" onContextMenu={displayMenu} head={['#', 'Nom', 'Prénom', 'E-mail', 'Groupe', 'Type']} menu={<Menu id="userTable">
+    content = <>
+      <Table head={['#', 'Nom', 'Prénom', 'E-mail', 'Groupe', 'Type']} menuId="userTable" onContextMenu={displayMenu} menu={<Menu id="userTable">
         <Item id="edit" onClick={handleItemClick}>&#x1F589; Editer </Item>
         <Item id="remove" onClick={handleItemClick}>&#x274C; Supprimer</Item>
       </Menu>}>
-        {data.users.map((user, i) => (
-          <tr id={`${user.userId}`} key={i}>
-            <td data-type='id'>{user.userId}</td>
-            <td data-type='lastName'>{user.lastName}</td>
-            <td data-type='firstName'>{user.firstName}</td>
-            <td data-type='email'>{user.email}</td>
-            <td data-type='groupName'>{user.group.name}</td>
-            <td data-type='type'>{user.userType === 0 ? 'Étudiant' : user.userType === 1 ? 'Professeur' : 'Administration'}</td>
-          </tr>
-        ))}
+        {[].concat(...users).map((user, index) => <tr id={`${user.userId}`} key={user.userId}>
+          <td data-type="id">{user.userId}</td>
+          <td data-type="lastName">{user.lastName}</td>
+          <td data-type="firstName">{user.firstName}</td>
+          <td data-type="email">{user.email}</td>
+          <td data-type="groupName">{user.group.name}</td>
+          <td data-type="type">{user.userType === 0 ? 'Étudiant' : user.userType === 1 ? 'Professeur' : 'Administration'}</td>
+        </tr>)}
       </Table>
-    </>);
+      <Fields.FormButton onClick={() => setSize(size + 1)}>Charger plus...</Fields.FormButton>
+    </>;
   }
 
   return (

@@ -30,7 +30,7 @@ const Table = React.forwardRef((props, ref) => {
           </tr>
         </thead>
         <tbody>
-          {props.children.map((child, i) => {
+          {props.children.filter(child => child.type).map((child, i) => {
             return <child.type onContextMenu={props.onContextMenu} id={i} key={i} {...child.props} />;
           })}
         </tbody>
@@ -38,7 +38,7 @@ const Table = React.forwardRef((props, ref) => {
     </div>);
   }
 
-  return (<>
+  return (<div>
     <table ref={ref} className={[styles.table, darkModeActive ? styles['table-dark'] : ''].join(' ')}>
       <thead>
         <tr>
@@ -49,7 +49,7 @@ const Table = React.forwardRef((props, ref) => {
         {props.children}
       </tbody>
     </table>
-  </>);
+  </div>);
 });
 
 export default Table;

@@ -12,16 +12,16 @@ async function handler(req, res) {
       SELECT userId, email, userType, firstName, lastName, birthDate, groupId, groups.name AS groupName FROM users
       LEFT OUTER JOIN groups ON groups.id = users.groupId
       ${req.query.queryUserType ? 'WHERE userType >= ' + req.query.queryUserType : ''}
+      ${req.query.page && req.query.limit ? 'LIMIT ' + (req.query.page * req.query.limit) + ', ' + req.query.limit : ''}
     `);
 
-    if (users.length > 0) res.send({ users: users.map(u => {
+    res.send(users.map(u => {
       u.group = { id: u.groupId, name: u.groupName };
       delete u.groupId;
       delete u.groupName;
 
       return u;
-    }), success: true });
-    else res.status(404).send({ message: 'NOT_FOUND', success: false });
+    }));
   }
   catch (e) {
     res.status(500).json({ error: e.message, success: false });
