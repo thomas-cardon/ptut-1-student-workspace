@@ -38,6 +38,7 @@ p {
 }
 
 .subtitle {
+  margin: 0;
   font-weight: 300;
   font-size: x-large;
 }
