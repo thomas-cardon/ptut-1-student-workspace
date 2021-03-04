@@ -7,7 +7,7 @@ async function handler(req, res) {
 
   try {
     let data = {}, q = await query(`
-      SELECT grades.id, teacherId, teachers.firstName as teacherFirstName, teachers.lastName as teacherLastName, subjectId, subjects.name as subjectName, subjects.module as subjectModule, subjects.color as subjectColor, grades.name, studentGrades.value, studentGrades.wasAbsent, studentGrades.notes, max, coefficient, UE, users.firstName as userFirstName, users.lastName as userLastName, users.userId as userId, users.groupId as userGroupId, groups.name as userGroupName from grades
+      SELECT grades.id, teacherId, teachers.firstName as teacherFirstName, teachers.lastName as teacherLastName, subjectId, subjects.name as subjectName, subjects.module as subjectModule, subjects.color as subjectColor, grades.name, studentGrades.value, studentGrades.wasAbsent, studentGrades.notes, max, coefficient, UE, grades.date, users.firstName as userFirstName, users.lastName as userLastName, users.userId as userId, users.groupId as userGroupId, groups.name as userGroupName from grades
       CROSS JOIN users
       LEFT JOIN users teachers ON teachers.userId = teacherId
       LEFT JOIN groups ON groups.id = users.groupId

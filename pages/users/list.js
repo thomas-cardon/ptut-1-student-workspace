@@ -37,6 +37,9 @@ export default function UserListPage({ user, module }) {
       case "edit":
         router.push('/users/edit?id=' + props.id);
         break;
+      case "notes":
+        router.push('/grades/list?id=' + props.id);
+        break;
       case "remove":
         if (!confirm('Voulez-vous vraiment supprimer cet utilisateur?'))
           return;
@@ -57,7 +60,9 @@ export default function UserListPage({ user, module }) {
   else {
     content = <>
       <Table head={['#', 'Nom', 'Prénom', 'E-mail', 'Groupe', 'Type']} menuId="userTable" onContextMenu={displayMenu} menu={<Menu id="userTable">
-        <Item id="edit" onClick={handleItemClick}>&#x1F589; Editer </Item>
+        <Item id="edit" onClick={handleItemClick}>📝 Editer </Item>
+        <Item id="notes" onClick={handleItemClick}>📑 Voir les notes</Item>
+        <Separator />
         <Item id="remove" onClick={handleItemClick}>&#x274C; Supprimer</Item>
       </Menu>}>
         {[].concat(...users).map((user, index) => <tr id={`${user.userId}`} key={user.userId}>

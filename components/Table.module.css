@@ -1,8 +1,13 @@
 .table {
+  margin: 0;
+  padding: 0;
   width: 100%;
+  table-layout: fixed;
   border-collapse: collapse;
 
   font-family: "Lato";
+
+  margin-bottom: 1em;
 }
 
 .table th {

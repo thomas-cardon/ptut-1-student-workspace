@@ -22,9 +22,12 @@ import withSession from "../../lib/session";
 import { useToasts } from 'react-toast-notifications';
 import { useDarkMode } from 'next-dark-mode';
 
-export default function ClassListPage({ user, id }) {
-  const { data } = use({ url: '/api/grades', redirectOnError: '/error' });
+import { format } from 'date-fns';
+import { fr } from 'date-fns/locale';
 
+export default function ClassListPage({ user, id }) {
+  const { data } = use({ url: '/api/grades' + (id ? '?id=' + id : ''), redirectOnError: '/error' });
+  console.dir(data);
   const { darkModeActive } = useDarkMode();
   const { addToast } = useToasts();
   const router = useRouter();
@@ -46,13 +49,14 @@ export default function ClassListPage({ user, id }) {
         </>)}
       </h3>
       <hr style={{ width: '50%', margin: '1em 2em 2em 0' }} />
-      <Table head={['Matière', 'Nom', 'Professeur', 'Note', 'Coef.', 'Absent', 'Appréciations']}>
+      <Table head={['Matière', 'Nom', 'Professeur', 'Note', 'Coef.', 'Absent', 'Appréciations', 'Date']}>
         {Object.keys(data.data[key]).map((m, i) => (<React.Fragment key={key + '-' + m}>
           <tr style={{ backgroundColor: darkModeActive ? '#272c34' : '#ddd' }}>
             <td data-type='subject'>
               <p style={{ margin: '0' }}>{data.data[key][m][0].subjectModule}</p>
-              <p style={{ fontSize: 'xx-small', margin: '0' }}>{data.data[key][m][0].subjectName}</p>
+              <p style={{ fontSize: 'x-small', margin: '0' }}>{data.data[key][m][0].subjectName}</p>
             </td>
+            <td />
             <td />
             <td />
             <td />
@@ -68,6 +72,7 @@ export default function ClassListPage({ user, id }) {
             <td data-type='coefficient'>{note.coefficient}</td>
             <td data-type='absent'>{note.wasAbsent === 1 ? '❌' : '✔️'}</td>
             <td data-type='notes'>{note.notes || 'N/A'}</td>
+            <td data-type='date'>{format(Date.parse(note.date), 'd MMMM yyyy', { locale: fr }) || 'N/A'}</td>
           </tr>))}
         </React.Fragment>))}
       </Table>
@@ -86,12 +91,10 @@ export default function ClassListPage({ user, id }) {
           </Link>...
         </h3>
       )}
-      <div className={'grid'}>
-        {!id && (
-          <Highlight title={'A savoir'}>
-            Vous ne verrez que les étudiants dans la liste des notes.
-          </Highlight>
-        )}
+      <div className={'grid'} style={{ width: '92%' }}>
+        <Highlight title={'A savoir'}>
+          {id ? 'Vous ne verrez que les étudiants dans la liste des notes.' : "Vous ne voyez qu'un seul étudiant actuellement. Pour tous les voir, cliquez sur le lien dans la barre latérale."}
+        </Highlight>
         {content}
       </div>
     </UserLayout>
