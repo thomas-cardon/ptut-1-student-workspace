@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
@@ -27,27 +29,12 @@ export default function ClassListPage({ user, id }) {
   const { addToast } = useToasts();
   const router = useRouter();
 
-  const displayMenu = e => contextMenu.show({
-    id: "grades",
-    event: e,
-    props: { id: e.currentTarget.id }
-  });
-
-  function handleItemClick({ event, props, data, triggerEvent }) {
-    switch (event.currentTarget.id) {
-      case "edit":
-        break;
-      case "remove":
-        break;
-    }
-  }
-
   let content;
 
   if (!data) content = <h2 className={'title'}>Chargement</h2>;
   else if (data.data === {}) content = <h2 className={'title'}>Aucune note disponible</h2>;
   else content = (<>
-    {Object.keys(data.data).map((key, i) => (<>
+    {Object.keys(data.data).map((key, i) => (<div key={key}>
       <h3 style={{ margin: '1em 0 0 0' }}>
         <span>{data.data[key][Object.keys(data.data[key])[0]][0].userFirstName} {data.data[key][Object.keys(data.data[key])[0]][0].userLastName}</span>
         {data.data[key][0]?.userGroupName && (<>
@@ -59,11 +46,8 @@ export default function ClassListPage({ user, id }) {
         </>)}
       </h3>
       <hr style={{ width: '50%', margin: '1em 2em 2em 0' }} />
-      <Table menuId={"grades"} onContextMenu={displayMenu} head={['Matière', 'Nom', 'Professeur', 'Note', 'Coef.', 'Absent', 'Appréciations']} menu={<Menu id="grades">
-        <Item id="edit" onClick={handleItemClick}>&#x1F589; Editer </Item>
-        <Item id="remove" onClick={handleItemClick}>&#x274C; Supprimer</Item>
-        </Menu>}>
-        {Object.keys(data.data[key]).map((m, i) => (<>
+      <Table head={['Matière', 'Nom', 'Professeur', 'Note', 'Coef.', 'Absent', 'Appréciations']}>
+        {Object.keys(data.data[key]).map((m, i) => (<React.Fragment key={key + '-' + m}>
           <tr style={{ backgroundColor: darkModeActive ? '#272c34' : '#ddd' }}>
             <td data-type='subject'>
               <p style={{ margin: '0' }}>{data.data[key][m][0].subjectModule}</p>
@@ -76,7 +60,7 @@ export default function ClassListPage({ user, id }) {
             <td />
             <td />
           </tr>
-          {data.data[key][m].map((note, i) => (<tr>
+          {data.data[key][m].map((note, i) => (<tr key={key + '-' + m + '-' + i}>
             <td />
             <td data-type='name'>{note.name}</td>
             <td data-type='teacher'>{note.teacherFirstName} {note.teacherLastName}</td>
@@ -85,9 +69,9 @@ export default function ClassListPage({ user, id }) {
             <td data-type='absent'>{note.wasAbsent === 1 ? '❌' : '✔️'}</td>
             <td data-type='notes'>{note.notes || 'N/A'}</td>
           </tr>))}
-        </>))}
+        </React.Fragment>))}
       </Table>
-    </>))}
+    </div>))}
   </>);
 
   return (
