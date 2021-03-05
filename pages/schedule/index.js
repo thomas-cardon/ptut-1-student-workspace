@@ -25,6 +25,8 @@ export default function SchedulePage({ user }) {
       module: x.module,
       name: x.subjectName,
       room: x.room,
+      groupId: x.groupId,
+      groupName: x.groupName,
       color: x.color,
       teacher: x.teacherFirstName + ' ' + x.teacherLastName,
       meetingUrl: x?.meetingUrl

@@ -6,9 +6,10 @@ export default function CustomHead({ title }) {
       <title>{title || 'Student Workspace'}</title>
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <meta name="description" content="Votre nouvel environnement de travail" />
-      <meta charset="UTF-8" />
+      <meta charSet="UTF-8" />
       <link rel="icon" href="/favicon.ico" />
       <link rel="manifest" href="/site.webmanifest" />
+      <script src="https://js.pusher.com/beams/1.0/push-notifications-cdn.js"></script>
     </Head>
   );
 };

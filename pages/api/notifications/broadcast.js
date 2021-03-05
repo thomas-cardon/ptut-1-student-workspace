@@ -1,37 +1,30 @@
 import withSession from "../../../lib/session";
 import { query } from '../../../lib/db';
 
+const PushNotifications = require('@pusher/push-notifications-server');
+
+let beamsClient = new PushNotifications({
+  instanceId: process.env.BEAMS_INSTANCE_ID,
+  secretKey: process.env.BEAMS_SECRET_KEY
+});
+
 async function handler(req, res, session) {
-  const user = req.session.get('user');
-  if (!user || user.userType == 0) return res.status(401).send({ message: 'NOT_AUTHORIZED', success: false });
-
-  try {
-    const { title, body } = req.query;
-    const webpush = require('web-push');
-
-    const vapidKeys = {
-      publicKey: process.env.VAPID_PUBLIC_KEY,
-      privateKey: process.env.VAPID_PRIVATE_KEY,
-    };
-
-    //setting our previously generated VAPID keys
-    webpush.setVapidDetails(
-      'mailto:thomas.cardon@pm.me',
-      vapidKeys.publicKey,
-      vapidKeys.privateKey
-    );
-
-    const subscriptions = await query('SELECT subscription FROM users WHERE subscription IS NOT NULL');
-
-    for (let o of subscriptions)
-      webpush.sendNotification(JSON.parse(o.subscription), `${title}|${body}`);
-
-    res.send({ length: subscriptions.length, success: true });
-  }
-  catch(error) {
-    console.error(error);
-    res.status(500).json({ message: error, success: false });
-  }
+  beamsClient.publishToInterests(req.query.interests.split(';'), {
+    web: {
+      notification: {
+        title: req.body.title || req.query.title || 'Notification',
+        body: req.body.body || req.query.body || '[!] Cette notification est vide.',
+        icon: 'https://ptut-1-student-workspace.vercel.app/icon-256x256.png',
+        deep_link: 'https://ptut-1-student-workspace.vercel.app'
+      }
+    }
+  }).then((publishResponse) => {
+    console.log('Just published:', publishResponse.publishId);
+    res.send({ success: true });
+  }).catch((error) => {
+    console.error('Error:', error);
+    res.status(500).send({ success: false, error: error.toString() });
+  });
 }
 
 export default withSession(handler);

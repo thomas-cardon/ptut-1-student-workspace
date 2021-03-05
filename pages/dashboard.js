@@ -16,7 +16,7 @@ import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
 export default function Dashboard({ user }) {
-  useServiceWorker();
+  useServiceWorker(user);
 
   const { darkModeActive } = useDarkMode();
   const { data : posts } = use({ url: '/api/posts/recent' });

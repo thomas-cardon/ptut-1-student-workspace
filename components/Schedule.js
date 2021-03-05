@@ -55,8 +55,8 @@ export default function Schedule({ data, children }) {
         let title = window.prompt('Saisissez le titre de la notification', 'Rappel de cours');
         let body = window.prompt('Saisissez le corps de la notification', document.getElementById(props.id).children[1].innerText);
 
-        fetcher(location.protocol + '//' + location.host + `/api/notifications/broadcast?title=${title}&body=${body}`)
-        .then(() => addToast('Tous les utilisateurs ont été notifiés.', { appearance: 'success' }))
+        fetcher(location.protocol + '//' + location.host + `/api/notifications/broadcast?title=${title}&body=${body}&interests=group-${document.getElementById(props.id).lastChild.getAttribute('groupid')}`)
+        .then(() => addToast('Tous les utilisateurs concernés ont été notifiés.', { appearance: 'success' }))
         .catch(err => {
           addToast("Une erreur s'est produite.", { appearance: 'error' });
           console.error(err);
@@ -88,10 +88,10 @@ export default function Schedule({ data, children }) {
         <Item id="connect" onClick={handleItemClick}>&#x1F4BB; Se connecter à la réunion</Item>
         <Separator />
         <Submenu label="Modération">
-          <Item id="notify" onClick={handleItemClick}>&#x1F589; Notifier le groupe</Item>
+          <Item id="notify" onClick={handleItemClick}>🔔 Notifier le groupe</Item>
           <Separator />
 
-          <Item id="edit-teacher" onClick={handleItemClick}>&#x1F589; Modifier le professeur</Item>
+          <Item id="edit-teacher" onClick={handleItemClick}>✏️ Modifier le professeur</Item>
           <Item id="edit-room" onClick={handleItemClick}>&#x1F392; Modifier la salle</Item>
           <Item id="edit-date" onClick={handleItemClick}>&#x1F4C6; Modifier la date</Item>
           <Separator />
@@ -136,6 +136,7 @@ export default function Schedule({ data, children }) {
             <p className={styles.name}>{x.name}</p>
             <p className={styles.teacher}>{x.teacher}</p>
             <p className={styles.room}>{x.room}</p>
+            <p className={styles.room} style={{ margin: '0 0 0 5%' }} groupid={x.groupId}>{x.groupName}</p>
           </div>
         )}
       </div>
