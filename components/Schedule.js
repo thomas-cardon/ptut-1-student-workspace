@@ -39,7 +39,7 @@ function pickTextColorBasedOnBgColorAdvanced(bgColor, lightColor, darkColor) {
   return (L > 0.179) ? darkColor : lightColor;
 }
 
-export default function Schedule({ classes, children }) {
+export default function Schedule({ data, children }) {
   const { addToast } = useToasts();
   const { show } = useContextMenu({
     id: MENU_ID,
@@ -130,7 +130,7 @@ export default function Schedule({ classes, children }) {
         <span className={styles.trackSlot} aria-hidden="true" style={{ gridColumn: 'track-5', gridRow: 'tracks' }}>Vendredi</span>
         <span className={styles.trackSlot} aria-hidden="true" style={{ gridColumn: 'track-6', gridRow: 'tracks' }}>Samedi</span>
 
-        {classes.map((x, i) =>
+        {data.map((x, i) =>
           <div id={x.id} key={i} onContextMenu={displayMenu} className={styles.session} meetingurl={x.meetingUrl} style={{ gridColumn: 'track-' + x.day, backgroundColor: x.color || stringToColor(x.name), color: pickTextColorBasedOnBgColorAdvanced(x.color || stringToColor(x.name), 'white', 'black'), gridRow: 'time-' + x.start + ' / time-' + x.end }}>
             <span className={styles.hours}><b>{x.module}</b> - {x.start.slice(0, 2)}:{x.start.slice(2)} - {x.end.slice(0, 2)}:{x.end.slice(2)}</span>
             <p className={styles.name}>{x.name}</p>

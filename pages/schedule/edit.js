@@ -19,7 +19,7 @@ export default function EditSchedulePage({ user }) {
   /*
    * Variable definitions
    */
-   const [values, setValues] = useState({ start: '', duration: '', classId: '', teacherId: '', meetingUrl: '' });
+   const [values, setValues] = useState({ start: '', duration: '', subjectId: '', teacherId: '', meetingUrl: '', room: '' });
    const legend = useRef(null);
 
    const handleInputChange = e => {
@@ -43,7 +43,7 @@ export default function EditSchedulePage({ user }) {
     let body = {
       start: values.start.slice(0, 19).replace('T', ' '),
       duration: differenceInMinutes(new Date(values.end.slice(0, 19).replace('T', ' ')), new Date(values.start.slice(0, 19).replace('T', ' '))),
-      classId: parseInt(values.classId),
+      subjectId: parseInt(values.subjectId),
       teacherId: parseInt(values.teacherId),
       meetingUrl: values.meetingUrl,
       concernedGroups: Array.from(e.target.childNodes[7].querySelectorAll('*')).filter(x => x.nodeName === "INPUT" && x.checked).map(x => { return parseInt(x.getAttribute('data-id')); })
@@ -125,17 +125,17 @@ export default function EditSchedulePage({ user }) {
       <Title appendGradient="l'emploi du temps">
         Edition de
       </Title>
-      <Form onSubmit={onSubmit} onError={onError}>
+      <Form onSubmit={onSubmit} onError={onError} style={{ minWidth: '50%' }}>
         <Fields.FormInput label="Début du cours" name="start" type="datetime-local" onChange={handleInputChange} value={values.start} required />
         <Fields.FormInput label="Fin du cours" name="end" type="datetime-local" onChange={handleInputChange} value={values.end} required />
 
         <legend ref={legend} style={{ backgroundColor: '#000', color: '#fff', padding: '2px 3px', margin: '1em 0 1em 0' }}>Définissez un début et une fin valide</legend>
 
-        <Fields.FormSelect noOption="-- Sélectionnez un cours --" label="Cours" name="classId" onChange={handleInputChange} value={values.classId} options={(modules?.modules || []).map(x => { return { option: x.name + ' (' + x.module + ')', value: x.id } })} required />
+        <Fields.FormSelect noOption="-- Sélectionnez un cours --" label="Cours" name="subjectId" onChange={handleInputChange} value={values.subjectId} options={(modules?.modules || []).map(x => { return { option: x.name + ' (' + x.module + ')', value: x.id } })} required />
         <Fields.FormSelect noOption="-- Sélectionnez un professeur --" label="Professeur" name="teacherId" onChange={handleInputChange} value={values.teacherId} options={(teachers?.users || []).map(x => { return { option: x.firstName + ' ' + x.lastName, value: x.userId } })} required />
 
         <Fields.FormInput label="Lien de la réunion" name="meetingUrl" onChange={handleInputChange} value={values.meetingUrl} type="url" placeholder="Lien Zoom, Google Meet, jit.si, Discord..." />
-
+        <Fields.FormInput label="Salle (facultatif)" name="room" onChange={handleInputChange} value={values.room} type="url" placeholder="Exemple: Salle 100, Salle TD 1, Bâtiment B..." />
         <hr />
         <Fields.FormCheckboxList label="Groupes affectés" options={(groups?.groups || []).map(x => { return { label: x.name, id: x.id } })} />
         <Fields.FormButton type="submit">Ajouter à l'emploi du temps</Fields.FormButton>

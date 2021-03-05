@@ -23,15 +23,15 @@ export default function SchedulePage({ user }) {
       start: lightFormat(start, 'HHmm'),
       end: lightFormat(new Date(start.getTime() + x.duration * 60000), 'HHmm'),
       module: x.module,
-      name: x.moduleName,
-      room: "Salle TD 2 - 3",
-      color: x?.color,
+      name: x.subjectName,
+      room: x.room,
+      color: x.color,
       teacher: x.teacherFirstName + ' ' + x.teacherLastName,
       meetingUrl: x?.meetingUrl
     };
   });
 
-  if (user) content = <Schedule classes={data} />
+  if (user) content = <Schedule data={data} />
 
   return (
     <UserLayout user={user} flex={true}>

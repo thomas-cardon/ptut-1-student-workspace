@@ -9,9 +9,9 @@ async function handler(req, res, session) {
     for (let i = 0; i < req.body.concernedGroups.length; i++) {
       const results = await query(
         `
-        INSERT INTO schedule (start, duration, classId, teacherId, groupId)
+        INSERT INTO schedule (start, duration, subjectId, teacherId, groupId)
         VALUES (?, ?, ?, ?, ?)`,
-        [req.body.start, req.body.duration, req.body.classId, req.body.teacherId, req.body.concernedGroups[i]]);
+        [req.body.start, req.body.duration, req.body.subjectId, req.body.teacherId, req.body.concernedGroups[i]]);
     }
 
     res.send({ success: true });
