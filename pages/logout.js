@@ -7,8 +7,8 @@ export default function LogoutPage(props) {
 export const getServerSideProps = withSession(async function ({ req, res }) {
   req.session.destroy();
 
-  res.setHeader('location', '/login');
   res.statusCode = 302;
-  res.end();
+  res.setHeader('location', '/login');
+  
   return { props: {} };
 });
