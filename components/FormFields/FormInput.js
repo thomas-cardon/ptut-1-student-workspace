@@ -5,11 +5,24 @@ import FormGroup from "./FormGroup.js";
 
 import { useFormContext } from 'react-hook-form';
 
-export default function FormInput({ label, disableStyle, type: enumType, ...rest }) {
-  const { register } = useFormContext();
-
-  const { name } = rest;
+export default function FormInput({ label, name, disableStyle, groupStyle = {}, disableLogic, type: enumType, ...rest }) {
   const type = enumType.toLowerCase();
+
+  if (disableLogic) {
+    if (disableStyle) return (
+      <FormGroup label={label} name={name} disableStyle={true}>
+        <input id={name} type={type} {...rest} />
+      </FormGroup>
+    );
+
+    return (
+      <FormGroup label={label} name={name} style={groupStyle}>
+        <input className={styles.input} id={name} type={type} {...rest} />
+      </FormGroup>
+    );
+  }
+
+  const { register } = useFormContext();
 
   if (disableStyle) return (
     <FormGroup label={label} name={name} disableStyle={true}>
@@ -18,7 +31,7 @@ export default function FormInput({ label, disableStyle, type: enumType, ...rest
   );
 
   return (
-    <FormGroup label={label} name={name}>
+    <FormGroup label={label} name={name} style={groupStyle}>
       <input className={styles.input} ref={ref => register({ required: rest.required })} id={name} type={type} {...rest} />
     </FormGroup>
   );
