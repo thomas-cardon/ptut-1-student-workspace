@@ -23,7 +23,7 @@ const Table = React.forwardRef((props, ref) => {
 
     return (<div>
       {props.menu}
-      <table ref={ref} className={[styles.table, darkModeActive ? styles['table-dark'] : ''].join(' ')}>
+      <table ref={ref} className={[styles.table, props.fixed ? styles['table-fixed'] : '', darkModeActive ? styles['table-dark'] : ''].join(' ')}>
         <thead>
           <tr>
             {props.head.map((x, i) => <th key={'head-' + i}>{x}</th>)}

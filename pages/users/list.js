@@ -88,7 +88,7 @@ export default function UserListPage({ user, module }) {
           <a>Ajouter...</a>
         </Link>
       </h3>
-      <div className={'grid'}>
+      <div className={'grid'} style={{ width: '92%' }}>
         <Highlight title={'Le saviez-vous?'}>
           Cliquez sur un utilisateur pour éditer des propriétés.
         </Highlight>

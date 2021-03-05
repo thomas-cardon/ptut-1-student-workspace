@@ -49,7 +49,7 @@ export default function ClassListPage({ user, id }) {
         </>)}
       </h3>
       <hr style={{ width: '50%', margin: '1em 2em 2em 0' }} />
-      <Table head={['Matière', 'Nom', 'Professeur', 'Note', 'Coef.', 'Absent', 'Appréciations', 'Date']}>
+      <Table head={['Matière', 'Nom', 'Professeur', 'Note', 'Coef.', 'Absent', 'Appréciations', 'Date']} fixed={true}>
         {Object.keys(data.data[key]).map((m, i) => (<React.Fragment key={key + '-' + m}>
           <tr style={{ backgroundColor: darkModeActive ? '#272c34' : '#ddd' }}>
             <td data-type='subject'>
