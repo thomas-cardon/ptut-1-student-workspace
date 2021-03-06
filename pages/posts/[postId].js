@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic';
 
-import use from '../../lib/use';
+import { usePost } from '../../lib/hooks';
 import withSession from "../../lib/session";
 
 const Editor = dynamic(() => import("../../components/Editor"), { ssr: false });
@@ -8,17 +8,17 @@ import UserLayout from '../../components/UserLayout';
 import Title from '../../components/Title';
 
 export default function ReadPostPage({ user, postId }) {
-  const { data } = use({ url: '/api/posts/' + postId, redirectOnError: '/error' });
+  const { data : post } = usePost(postId);
 
   let content = <Title>Chargement...</Title>;
 
-  if (data) {
+  if (post) {
     try {
-      let postContent = JSON.parse(data.post.content);
+      let postContent = JSON.parse(post.content);
 
       content = (<>
         <h1 className={'title'} style={{ marginBottom: '1em' }}>
-          {data.post.title}
+          {post.title}
         </h1>
         <Editor readOnly={true} data={postContent} />
       </>);
@@ -28,7 +28,7 @@ export default function ReadPostPage({ user, postId }) {
 
       content = (<>
         <Title appendGradient="l'emploi du temps" style={{ marginBottom: '1em' }}>
-          {data.post.title}
+          {post.title}
         </Title>
         <h3 className={'subtitle'}>Une erreur s'est produite lors de la lecture du post.</h3>
         <pre>

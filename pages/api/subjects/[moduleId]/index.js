@@ -2,8 +2,7 @@ import { query } from '../../../../lib/db';
 import withSession from '../../../../lib/session';
 
 async function handler(req, res) {
-  const user = req.session.get('user');
-  if (!user) return res.status(401).send('NOT_AUTHORIZED');
+  if (!req?.session?.get('user')) return res.status(401).send({ error: 'NOT_AUTHORIZED', success: false });
 
   try {
     if (req.method === 'DELETE' && user.userType == 2) { // Suppression

@@ -5,12 +5,8 @@ import { query } from '../../../lib/db';
 import { hash } from '../../../lib/encryption';
 
 async function handler(req, res, session) {
-  const user = req.session.get('user');
-  if (!user || user.userType == 0) return res.status(401).send({ message: 'NOT_AUTHORIZED', success: false });
-
+  if (!req?.session?.get('user')) return res.status(401).send({ error: 'NOT_AUTHORIZED', success: false });
   let userCreated = { ...req.body, ...req.query };
-
-  console.dir(userCreated);
 
   let errors = validate(userCreated, {
     email: {

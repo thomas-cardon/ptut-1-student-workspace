@@ -5,17 +5,16 @@ import GroupList from '../../components/GroupList';
 
 import Schedule from '../../components/Schedule';
 
-import useSWR from 'swr';
-import use from '../../lib/use';
+import { useSchedule } from '../../lib/hooks';
 import withSession from "../../lib/session";
 
 import { lightFormat, getDay } from 'date-fns';
 
 export default function SchedulePage({ user }) {
-  const { data : schedule } = use({ url: '/api/schedule' + (user.userType == 0 && user?.group?.id ? '?filterByGroup=' + user?.group?.id : '') });
+  const { data : schedule } = useSchedule(user);
 
   let content = <h2 className={'title'}>Chargement</h2>;
-  let data = (schedule?.schedule || []).map(x => {
+  let data = (schedule || []).map(x => {
     let start = new Date(x.start);
     return {
       id: x.id,

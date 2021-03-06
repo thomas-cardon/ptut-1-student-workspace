@@ -4,13 +4,12 @@ import withSession from "../../../lib/session";
 import { query } from '../../../lib/db';
 
 async function handler(req, res) {
-  const user = req.session.get('user');
-  if (!user) return res.status(401).send({ error: 'NOT_AUTHORIZED', success: false });
+  if (!req?.session?.get('user')) return res.status(401).send({ error: 'NOT_AUTHORIZED', success: false });
 
   try {
     const data = await query(`SELECT * FROM posts WHERE id = ?`, req.query.postId);
 
-    if (data.length > 0) res.json({ post: data[0], success: true });
+    if (data.length > 0) res.json(data[0]);
     else res.status(404).json({ error: 'Not found', success: false });
   }
   catch (e) {

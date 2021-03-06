@@ -17,7 +17,7 @@ import {
   Submenu
 } from "react-contexify";
 
-import use from '../../lib/use';
+import { useGrades } from '../../lib/hooks';
 import withSession from "../../lib/session";
 import { useDarkMode } from 'next-dark-mode';
 
@@ -32,17 +32,17 @@ export default function GradesListPage({ user, id }) {
    */
    const [query, setQuery] = useState("");
 
-   const { data } = use({ url: '/api/grades' + (id ? '?id=' + id : ''), redirectOnError: '/error' });
+   const { data } = useGrades(id);
    const { darkModeActive } = useDarkMode();
 
   let content, users = [];
 
   if (!data) content = <h2 className={'title'}>Chargement</h2>;
-  else if (data.data === {}) content = <h2 className={'title'}>Aucune note disponible</h2>;
+  else if (data === {}) content = <h2 className={'title'}>Aucune note disponible</h2>;
   else {
-    users = fuzzy(Object.values(data.data), query);
+    users = fuzzy(Object.values(data), query);
     content = (<>
-      {users.map((user, i) => (<div key={user.userId}>
+      {users.map((user, i) => (<div key={i}>
         <h3 style={{ margin: '1em 0 0 0' }}>
           <span>{user[Object.keys(user)[0]][0].userFirstName} {user[Object.keys(user)[0]][0].userLastName}</span>
           {user[0]?.userGroupName && (<>
@@ -55,7 +55,7 @@ export default function GradesListPage({ user, id }) {
         </h3>
         <hr style={{ width: '50%', margin: '1em 2em 2em 0' }} />
         <Table head={['Matière', 'Nom', 'Professeur', 'Note', 'Coef.', 'Absent', 'Appréciations', 'Date']} fixed={true}>
-          {Object.keys(user).map((m, i) => (<React.Fragment key={user.userId + '-' + m}>
+          {Object.keys(user).map((m, x) => (<React.Fragment key={i + '-m-' + x}>
             <tr style={{ backgroundColor: darkModeActive ? '#272c34' : '#ddd' }}>
               <td data-type='subject'>
                 <p style={{ margin: '0' }}>{user[m][0].subjectModule}</p>
@@ -69,7 +69,7 @@ export default function GradesListPage({ user, id }) {
               <td />
               <td />
             </tr>
-            {user[m].map((note, i) => (<tr key={user.userId + '-' + m + '-' + i}>
+            {user[m].map((note, y) => (<tr key={i + '-m-' + x + '-n-' + y}>
               <td />
               <td data-type='name'>{note.name}</td>
               <td data-type='teacher'>{note.teacherFirstName} {note.teacherLastName}</td>
@@ -101,7 +101,7 @@ export default function GradesListPage({ user, id }) {
       )}
       <div className={'grid'} style={{ width: '92%' }}>
         <Highlight title={'A savoir'}>
-          {id ? 'Vous ne verrez que les étudiants dans la liste des notes.' : "Vous ne voyez qu'un seul étudiant actuellement. Pour tous les voir, cliquez sur le lien dans la barre latérale."}
+          {!id ? 'Vous ne verrez que les étudiants dans la liste des notes.' : "Vous ne voyez qu'un seul étudiant actuellement. Pour tous les voir, cliquez sur le lien dans la barre latérale."}
         </Highlight>
         {content}
       </div>

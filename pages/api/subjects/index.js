@@ -6,7 +6,7 @@ async function handler(req, res) {
 
   try {
     const subjects = await query(`SELECT * FROM subjects ORDER BY module ASC`);
-    res.json({ subjects, success: true });
+    res.json(subjects);
   }
   catch (e) {
     res.status(500).json({ error: e.message, success: false });

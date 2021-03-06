@@ -43,11 +43,6 @@ export default function LoginPage(props) {
     }
   }
 
-  const onError = (errors, e) => {
-    console.error(errors, e);
-    addToast(errors || 'Une erreur s\'est produite', { appearance: 'error' });
-  }
-
   return (<div className={'bgLogo'}>
     <style global jsx>{`
       @font-face {
@@ -217,7 +212,7 @@ export default function LoginPage(props) {
     <BasicLayout title="Connexion">
       <h3>STUDENT WORKSPACE</h3>
       <p>CONNEXION</p>
-      <Form className={'flex'} style={{ marginTop: '6em' }} onSubmit={onSubmit} onError={onError}>
+      <Form className={'flex'} style={{ marginTop: '6em' }} onSubmit={onSubmit}>
         <Fields.FormInput disableStyle={true} label="Adresse mail" id="email" name="email" type="email" placeholder="exemple@exemple.fr" />
         <Fields.FormInput disableStyle={true} label="Mot de passe" id="password" name="password" type="password" placeholder="Mot de passe difficile à trouver" />
         <Fields.FormButton disableStyle={true} type="submit">Se connecter</Fields.FormButton>

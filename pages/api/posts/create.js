@@ -4,8 +4,7 @@ import validate from 'validate.js';
 import { query } from '../../../lib/db';
 
 async function handler(req, res, session) {
-  const user = req.session.get('user');
-  if (!user || user.userType == 0) return res.status(401).send('NOT_AUTHORIZED');
+  if (!req?.session?.get('user')) return res.status(401).send({ error: 'NOT_AUTHORIZED', success: false });
 
   let post = req.body;
   let errors = validate(post, {

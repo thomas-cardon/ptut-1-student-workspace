@@ -3,8 +3,7 @@ import { query } from '../../../../lib/db';
 import validate from 'validate.js';
 
 async function handler(req, res) {
-  const user = req.session.get('user');
-  if (!user) return res.status(401).send({ message: 'NOT_AUTHORIZED', success: false });
+  if (!req?.session?.get('user')) return res.status(401).send({ error: 'NOT_AUTHORIZED', success: false });
 
   try {
     if (req.method === 'DELETE' && user.userType == 2) { // Suppression

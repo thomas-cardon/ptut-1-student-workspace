@@ -73,11 +73,6 @@ export default function EditSchedulePage({ user }) {
     }
   }
 
-  const onError = (errors, e) => {
-    console.error(errors, e);
-    addToast(errors || 'Une erreur s\'est produite', { appearance: 'error' });
-  }
-
   function verify(body) {
     if (!body.start || !body.end) {
       legend.current.innerText = "Définissez un début et une fin valide";
@@ -125,7 +120,7 @@ export default function EditSchedulePage({ user }) {
       <Title appendGradient="l'emploi du temps">
         Edition de
       </Title>
-      <Form onSubmit={onSubmit} onError={onError} style={{ minWidth: '50%' }}>
+      <Form onSubmit={onSubmit} style={{ minWidth: '50%' }}>
         <Fields.FormInput label="Début du cours" name="start" type="datetime-local" onChange={handleInputChange} value={values.start} required />
         <Fields.FormInput label="Fin du cours" name="end" type="datetime-local" onChange={handleInputChange} value={values.end} required />
 

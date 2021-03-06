@@ -2,8 +2,7 @@ import withSession from "../../../lib/session";
 import { query } from '../../../lib/db';
 
 async function handler(req, res, session) {
-  const user = req.session.get('user');
-  if (!user || user.userType !== 2) return res.status(401).send('NOT_AUTHORIZED');
+  if (!req?.session?.get('user')) return res.status(401).send({ error: 'NOT_AUTHORIZED', success: false });
 
   try {
     for (let i = 0; i < req.body.concernedGroups.length; i++) {

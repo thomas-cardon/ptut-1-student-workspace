@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 import useServiceWorker from '../lib/workers';
 
-import use from '../lib/use';
+import { usePosts } from '../lib/hooks';
 import withSession from "../lib/session";
 
 import { HiArrowNarrowRight } from "react-icons/hi";
@@ -19,7 +19,7 @@ export default function Dashboard({ user }) {
   useServiceWorker(user);
 
   const { darkModeActive } = useDarkMode();
-  const { data : posts } = use({ url: '/api/posts/recent' });
+  const { data : posts } = usePosts();
 
   let content = <Title>Chargement</Title>;
 
@@ -31,11 +31,11 @@ export default function Dashboard({ user }) {
             <Chat clientId={"user-" + user.userId + '-' + Math.floor(Math.random() * Math.floor(10000))} />
           </div>
         )}
-        {posts?.data.filter(x => x.isHomework).length > 0 && (
+        {posts.filter(x => x.isHomework).length > 0 && (
           <div className={`card ${darkModeActive ? 'dark' : ''}`}>
             <h1>Devoirs à faire</h1>
             <ul className="homework">
-              {posts.data.filter(x => x.isHomework).map((post, i) => <li key={i}>
+              {posts.filter(x => x.isHomework).map((post, i) => <li key={i}>
                 <Link href={"/posts/" + post.id}>
                   <a>
                     <p>Pour le {format(Date.parse(post.homeworkDate), 'd MMMM yyyy à HH:mm', { locale: fr })}</p>
@@ -51,11 +51,11 @@ export default function Dashboard({ user }) {
             </ul>
           </div>
         )}
-        {posts?.data.filter(x => !x.isHomework).length > 0 && (
+        {posts.filter(x => !x.isHomework).length > 0 && (
           <div className={`card ${darkModeActive ? 'dark' : ''}`}>
             <h1>Derniers posts</h1>
             <ul>
-              {posts.data.filter(x => !x.isHomework).map((post, i) => <li key={i}>
+              {posts.filter(x => !x.isHomework).map((post, i) => <li key={i}>
                 <Link href={"/posts/" + post.id}>
                   <a>
                     <HiArrowNarrowRight style={{ verticalAlign: 'middle' }}/>

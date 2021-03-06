@@ -5,19 +5,16 @@ import Highlight from "../../components/Highlight";
 import Title from "../../components/Title";
 import Post from "../../components/Post";
 
-import { getAvatar } from '../../lib/useUser';
-
-import use from '../../lib/use';
+import { usePosts, getAvatar } from '../../lib/hooks';
 import withSession from "../../lib/session";
 
 export default function Posts({ user, module }) {
-  const { data : posts } = use({ url: `/api/posts/recent?type=0${module ? '&module=' + module : ''}` + (user.userType == 0 && user?.group?.id ? '&filterByGroup=' + user?.group?.id : '') });
+  const { data : posts } = usePosts(user, 0, module);
 
-  let content;
+  let content = <h2 className={'title'}>Chargement</h2>;
 
-  if (!posts) content = <h2 className={'title'}>Chargement</h2>;
-  else if (!posts.data || posts.data.length === 0) content = <h2 className={'title'}>Aucun post disponible</h2>;
-  else content = posts.data.map((post, i) => <Post id={post.id} key={'post-' + post.id} authorName={post.firstName + ' ' + post.lastName} creationTime={new Date(post.creation_time)} avatar={getAvatar(user)} {...post}></Post>);
+  if (posts && posts?.length === 0) content = <h2 className={'title'}>Aucun post disponible</h2>;
+  else if (posts) content = posts.map((post, i) => <Post id={post.id} key={'post-' + post.id} authorName={post.firstName + ' ' + post.lastName} creationTime={new Date(post.creation_time)} avatar={getAvatar(user)} {...post}></Post>);
 
   return (
     <UserLayout user={user} flex={true}>
