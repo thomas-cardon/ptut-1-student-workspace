@@ -1,7 +1,6 @@
 import FormGroup from "./FormGroup.js";
 
 import styles from "./FormSelect.module.css";
-import { useFormContext } from 'react-hook-form';
 
 export default function FormSelect({ label, options, noOption, name, ...rest }) {
   if (!options) return null;

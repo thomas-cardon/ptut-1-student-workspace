@@ -3,8 +3,6 @@ import React, { useRef } from 'react';
 import styles from "./FormInput.module.css";
 import FormGroup from "./FormGroup.js";
 
-import { useFormContext } from 'react-hook-form';
-
 export default function FormInput({ label, name, disableStyle, groupStyle = {}, disableLogic, type: enumType, ...rest }) {
   const type = enumType.toLowerCase();
 

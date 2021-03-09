@@ -1,8 +1,6 @@
 import styles from "./FormCheckboxList.module.css";
 import FormGroup from "./FormGroup.js";
 
-import { useFormContext } from 'react-hook-form';
-
 export default function FormCheckboxList({ label, options, ...rest }) {
   return (<div className={styles.list}>
     <h3>{label}</h3>
