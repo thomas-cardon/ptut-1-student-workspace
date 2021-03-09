@@ -19,7 +19,7 @@ export default function Dashboard({ user }) {
   useServiceWorker(user);
 
   const { darkModeActive } = useDarkMode();
-  const { data : posts } = usePosts();
+  const { data : posts } = usePosts(user);
 
   let content = <Title>Chargement</Title>;
 
