@@ -67,6 +67,9 @@ export default function Schedule({ data, children }) {
         if (!document.getElementById(event.currentTarget.id).getAttribute('meetingurl')) alert("Aucune réunion n'est encore disponible pour ce cours.");
         else window.open(document.getElementById(event.currentTarget.id).getAttribute('meetingurl'), '_blank').focus();
         break;
+      case "edit-meeting-url":
+        alert('Meeting URL edit WIP');
+      break;
       case "remove":
         if (!confirm('Voulez-vous vraiment supprimer ce cours?'))
           return;
@@ -91,9 +94,10 @@ export default function Schedule({ data, children }) {
           <Item id="notify" onClick={handleItemClick}>🔔 Notifier le groupe</Item>
           <Separator />
 
-          <Item id="edit-teacher" onClick={handleItemClick}>✏️ Modifier le professeur</Item>
-          <Item id="edit-room" onClick={handleItemClick}>&#x1F392; Modifier la salle</Item>
-          <Item id="edit-date" onClick={handleItemClick}>&#x1F4C6; Modifier la date</Item>
+          <Item disabled={true} id="edit-teacher" onClick={handleItemClick}>✏️ Modifier le professeur</Item>
+          <Item disabled={true} id="edit-room" onClick={handleItemClick}>&#x1F392; Modifier la salle</Item>
+          <Item disabled={true} id="edit-meeting-url" onClick={handleItemClick}>&#x1F4BB; Modifier la réunion</Item>
+          <Item disabled={true} id="edit-date" onClick={handleItemClick}>&#x1F4C6; Modifier la date</Item>
           <Separator />
           <Item id="remove" onClick={handleItemClick}>&#x274C; Supprimer</Item>
         </Submenu>

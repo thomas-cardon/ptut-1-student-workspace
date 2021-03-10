@@ -11,6 +11,8 @@ import withSession from "../../lib/session";
 
 import { lightFormat, getDay } from 'date-fns';
 
+import { HiPlus } from "react-icons/hi";
+
 export default function SchedulePage({ user, selectedWeek }) {
   const { data : schedule } = useSchedule(user);
 
@@ -50,6 +52,9 @@ export default function SchedulePage({ user, selectedWeek }) {
 
   return (
     <UserLayout user={user} flex={true} header={<>
+      <Link href={{ pathname: '/schedule/edit' }}>
+        <a><button><HiPlus /></button></a>
+      </Link>
       <ButtonGroup>
         {[-3, -2, -1, 0, 1, 2, 3].map((e, i) => {
           let week = Math.ceil((todaydate.getDay() + 1 + numberOfDays) / 7);

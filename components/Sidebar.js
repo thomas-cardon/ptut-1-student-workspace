@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { HiOutlineMenu } from "react-icons/hi";
 
 import styles from './Sidebar.module.css';
+import { getAvatar } from '../lib/useUser';
 
 export default function Sidebar({ user, children, active, setActive }) {
   return (
@@ -11,6 +12,10 @@ export default function Sidebar({ user, children, active, setActive }) {
       <div className={styles.closeIcon} onClick={() => setActive(!active)}>
         <HiOutlineMenu />
       </div>
+      <img style={{ borderRadius: '50%', width: '50%', margin: '2em auto 1em auto', display: 'block' }} src={getAvatar(user)} />
+      <h2 style={{ margin: '0 auto', color: 'white' }}>
+        {user.firstName} {user.lastName}
+      </h2>
       <ul className={styles.list}>
         <Link href="/dashboard">
           <a className={styles.item}>Tableau de bord</a>
@@ -40,15 +45,7 @@ export default function Sidebar({ user, children, active, setActive }) {
           <Link href="/grades/list">
             <a className={styles.item}>Notes enregistrées</a>
           </Link>
-          <Link href="/schedule/edit">
-            <a className={styles.item}>Ajouter à l'emploi du temps</a>
-          </Link>
         </>)}
-        <hr style={{ width: '85%' }} />
-
-        <Link href="/settings">
-          <a className={styles.item}>Réglages</a>
-        </Link>
       </ul>
       </aside>);
 };
