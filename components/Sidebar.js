@@ -84,7 +84,7 @@ export default function Sidebar({ user, children, active, setActive }) {
           </Link>
 
           <Link href="/logout">
-            <a style={{ textAlign: 'center', display: 'block', color: darkModeActive ? '#282828' : '#FAFAFA' }}>
+            <a style={{ textAlign: 'center', display: 'block', color: '#FAFAFA' }}>
               Se déconnecter
             </a>
           </Link>

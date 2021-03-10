@@ -50,7 +50,7 @@ a {
 }
 
 a:hover {
-  color: #282828;
+  color: #282828 !important;
   cursor: pointer;
 }
 
