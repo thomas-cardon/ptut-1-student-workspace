@@ -111,7 +111,7 @@ export default function Schedule({ data, children }) {
         <span className={styles.timeSlot} style={{ gridRow: 'time-1200' }}>12:00</span>
         <span className={styles.timeSlot} style={{ gridRow: 'time-1230' }}>12:30</span>
         <span className={styles.timeSlot} style={{ gridRow: 'time-1300' }}>13:00</span>
-        <span className={styles.timeSlot} style={{ gridRow: 'time-1330' }}>13:00</span>
+        <span className={styles.timeSlot} style={{ gridRow: 'time-1330' }}>13:30</span>
         <span className={styles.timeSlot} style={{ gridRow: 'time-1400' }}>14:00</span>
         <span className={styles.timeSlot} style={{ gridRow: 'time-1430' }}>14:30</span>
         <span className={styles.timeSlot} style={{ gridRow: 'time-1500' }}>15:00</span>
