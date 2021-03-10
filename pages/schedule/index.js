@@ -58,7 +58,6 @@ export default function SchedulePage({ user, selectedWeek }) {
       <ButtonGroup>
         {[-3, -2, -1, 0, 1, 2, 3].map((e, i) => {
           let week = Math.ceil((todaydate.getDay() + 1 + numberOfDays) / 7);
-          console.log(selectedWeek);
           return (
             <Link href={{ pathname: '/schedule', query: { selectedWeek: week + e } }}>
               <a>
@@ -84,8 +83,6 @@ export const getServerSideProps = withSession(async function ({ req, res, query 
     res.end();
     return { props: {} };
   }
-
-  console.log(req.query, req.params);
 
   return {
     props: { user: req.session.get('user'), ...query },
