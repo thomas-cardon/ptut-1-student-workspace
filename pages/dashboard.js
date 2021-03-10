@@ -76,7 +76,7 @@ export default function Dashboard({ user }) {
       <Title appendGradient={user.firstName + ' !'}>
         Salut,
       </Title>
-      <code>{user ? (user?.group?.name || 'Groupe inconnu') : 'Chargement'}</code>
+      <p className={`group ${darkModeActive ? 'group-dark' : ''}`}>{user ? (user?.group?.name || 'Groupe inconnu') : 'Chargement'}</p>
 
       <style jsx global>{`
         .cards {
@@ -144,6 +144,15 @@ export default function Dashboard({ user }) {
 
         li a > * {
           margin-right: .5em;
+        }
+
+        .group {
+          font-family: "Raleway";
+          font-weight: 400;
+        }
+
+        .group-dark {
+          color: #FAFAFA;
         }
       `}</style>
       {content}
