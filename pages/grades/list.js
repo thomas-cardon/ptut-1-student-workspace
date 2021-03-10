@@ -54,7 +54,7 @@ export default function GradesListPage({ user, id }) {
           </>)}
         </h3>
         <hr style={{ width: '50%', margin: '1em 2em 2em 0' }} />
-        <Table head={['Matière', 'Nom', 'Professeur', 'Note', 'Coef.', 'Absent', 'Appréciations', 'Date']} fixed={true}>
+        <Table head={['Matière', 'Nom', 'Professeur', 'Note', 'Coef.', 'Présent', 'Appréciations', 'Date']} fixed={true}>
           {Object.keys(user).map((m, x) => (<React.Fragment key={i + '-m-' + x}>
             <tr style={{ backgroundColor: darkModeActive ? '#272c34' : '#ddd' }}>
               <td data-type='subject'>
@@ -75,7 +75,7 @@ export default function GradesListPage({ user, id }) {
               <td data-type='teacher'>{note.teacherFirstName} {note.teacherLastName}</td>
               <td data-type='value'>{(note.value || 0) + '/' + note.max}</td>
               <td data-type='coefficient'>{note.coefficient}</td>
-              <td data-type='absent'>{note.wasAbsent === 1 ? '❌' : '✔️'}</td>
+              <td data-type='wasHere'>{note.wasAbsent === 1 ? '❌' : '✔️'}</td>
               <td data-type='notes'>{note.notes || 'N/A'}</td>
               <td data-type='date'>{format(Date.parse(note.date), 'd MMMM yyyy', { locale: fr }) || 'N/A'}</td>
             </tr>))}
