@@ -21,29 +21,25 @@ export default function Sidebar({ user, children, active, setActive }) {
           <a className={styles.item}>Tableau de bord</a>
         </Link>
 
-        <hr style={{ width: '85%' }} />
-
         <Link href="/schedule">
           <a className={styles.item}>Emploi du temps</a>
         </Link>
 
-        <hr style={{ width: '85%' }} />
-
         <Link href="/posts/list">
-          <a className={styles.item}>Derniers posts</a>
+          <a className={styles.item}>Posts</a>
         </Link>
 
         <Link href="/subjects/list">
-          <a className={styles.item}>Liste des cours</a>
+          <a className={styles.item}>Mes notes</a>
         </Link>
 
         {user?.userType == 2 && (<>
           <hr style={{ width: '85%' }} />
           <Link href="/users/list">
-            <a className={styles.item}>Liste des utilisateurs</a>
+            <a className={styles.item}>Liste des cours</a>
           </Link>
           <Link href="/grades/list">
-            <a className={styles.item}>Notes enregistrées</a>
+            <a className={styles.item}>Utilisateurs</a>
           </Link>
         </>)}
       </ul>
