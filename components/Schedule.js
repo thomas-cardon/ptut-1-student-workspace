@@ -88,7 +88,21 @@ export default function Schedule({ data, children }) {
         break;
       }
       case "edit-meeting-url": {
-        alert('Meeting URL edit WIP');
+        let meetingUrl = window.prompt('Saisissez le lien de la réunion (Google Meet, Zoom, jit.si...)');
+
+        fetcher(location.protocol + '//' + location.host + '/api/schedule/' + props.id, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ meetingUrl })
+         })
+        .then(() => addToast(`Modification réussie du cours #${props.id}`, { appearance: 'success' }))
+        .catch(err => {
+          addToast("Une erreur s'est produite.", { appearance: 'error' });
+          console.error(err);
+        });
+
         break;
       }
       case "remove": {
@@ -118,7 +132,6 @@ export default function Schedule({ data, children }) {
 
           <Item id="edit-room" onClick={handleItemClick}>&#x1F392;&nbsp;&nbsp;Modifier la salle</Item>
           <Item disabled={true} id="edit-meeting-url" onClick={handleItemClick}>&#x1F4BB;&nbsp;&nbsp;Modifier la réunion</Item>
-          <Item disabled={true} id="edit-date" onClick={handleItemClick}>&#x1F4C6;&nbsp;&nbsp;Modifier la date</Item>
           <Separator />
           <Item id="remove" onClick={handleItemClick}>&#x274C;&nbsp;&nbsp;Supprimer</Item>
         </Submenu>
