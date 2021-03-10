@@ -13,9 +13,9 @@ export default function Sidebar({ user, children, active, setActive }) {
         <HiOutlineMenu />
       </div>
       <img style={{ borderRadius: '50%', width: '50%', margin: '2em auto 1em auto', display: 'block' }} src={getAvatar(user)} />
-      <h2 style={{ margin: '0 auto', color: 'white' }}>
+      <h3 style={{ margin: '0 auto', color: 'white' }}>
         {user.firstName} {user.lastName}
-      </h2>
+      </h3>
       <ul className={styles.list}>
         <Link href="/dashboard">
           <a className={styles.item}>Tableau de bord</a>
