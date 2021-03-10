@@ -10,7 +10,7 @@ import { HiOutlineMenu } from "react-icons/hi";
 
 import { useDarkMode } from 'next-dark-mode';
 
-export default function UserLayout({ title, user, children, flex = true, ...rest }) {
+export default function UserLayout({ title, user, children, header, flex = true, ...rest }) {
   const [active, setActive] = useState(false);
   const { darkModeActive } = useDarkMode();
 
@@ -32,6 +32,7 @@ export default function UserLayout({ title, user, children, flex = true, ...rest
 
       <header className={[styles.header, darkModeActive ? styles.dark : ''].join(' ')}>
         {user && <div className="header-avatar">{user?.firstName + ' ' + user?.lastName} — <Link href="/logout"><a style={{ color: '#34495e' }}>Se déconnecter</a></Link></div>}
+        {header}
       </header>
       <Sidebar user={user} active={active} setActive={setActive}></Sidebar>
 

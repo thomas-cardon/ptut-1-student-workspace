@@ -4,13 +4,14 @@ import UserLayout from '../../components/UserLayout';
 import GroupList from '../../components/GroupList';
 
 import Schedule from '../../components/Schedule';
+import { ButtonGroup } from '../../components/FormFields';
 
 import { useSchedule } from '../../lib/hooks';
 import withSession from "../../lib/session";
 
 import { lightFormat, getDay } from 'date-fns';
 
-export default function SchedulePage({ user }) {
+export default function SchedulePage({ user, selectedWeek }) {
   const { data : schedule } = useSchedule(user);
 
   let content = <h2 className={'title'}>Chargement</h2>;
@@ -32,10 +33,28 @@ export default function SchedulePage({ user }) {
     };
   });
 
-  if (user) content = <Schedule data={data} />
+  if (user) content = <Schedule data={data} />;
+
+  /* Calcul semaines */
+  let todaydate = new Date();
+  let oneJan =  new Date(todaydate.getFullYear(), 0, 1);
+  let numberOfDays =  Math.floor((todaydate - oneJan) / (24 * 60 * 60 * 1000));
 
   return (
-    <UserLayout user={user} flex={true}>
+    <UserLayout user={user} flex={true} header={<>
+      <ButtonGroup>
+        {[-3, -2, -1, 0, 1, 2, 3].map((e, i) => {
+          let week = Math.ceil((todaydate.getDay() + 1 + numberOfDays) / 7);
+          console.log(selectedWeek);
+          return (
+            <Link href={{ pathname: '/schedule', query: { selectedWeek: week + e } }}>
+              <a>
+                <button key={i} disabled={selectedWeek ? (week + e) == selectedWeek : e === 0}>S-{week + e}</button>
+              </a>
+            </Link>);
+        })}
+      </ButtonGroup>
+    </>}>
       <div className={'grid'} style={{ width: '100%', margin: '0' }}>
         {content}
       </div>
@@ -43,7 +62,7 @@ export default function SchedulePage({ user }) {
   );
 };
 
-export const getServerSideProps = withSession(async function ({ req, res }) {
+export const getServerSideProps = withSession(async function ({ req, res, query }) {
   const user = req.session.get('user');
 
   if (!user) {
@@ -53,7 +72,9 @@ export const getServerSideProps = withSession(async function ({ req, res }) {
     return { props: {} };
   }
 
+  console.log(req.query, req.params);
+
   return {
-    props: { user: req.session.get('user') },
+    props: { user: req.session.get('user'), ...query },
   };
 });
