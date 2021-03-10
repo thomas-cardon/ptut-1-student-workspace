@@ -36,10 +36,6 @@
   list-style-type: none;
 }
 
-.list-dark a {
-  color: #282828;
-}
-
 .item {
   color: #FAFAFA;
 
@@ -53,8 +49,15 @@
   cursor: pointer;
 }
 
+.list-dark a {
+  color: #282828 !important;
+}
+
+.list-dark a:hover {
+  color: #FAFAFA !important;
+}
+
 .list-dark .item:hover {
-  color: #FAFAFA;
   background-color: #282828;
 }
 
@@ -84,7 +87,7 @@
 }
 
 .settings-dark:hover {
-  color: #FAFAFA;
+  color: #FAFAFA !important;
 }
 
 .closeIcon {
