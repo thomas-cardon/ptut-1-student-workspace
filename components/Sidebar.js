@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 
-import { HiOutlineMenu } from "react-icons/hi";
+import { HiOutlineMenu, HiViewGridAdd, HiCalendar, HiAnnotation, HiPencilAlt, HiTable, HiUsers } from "react-icons/hi";
 import { useDarkMode } from 'next-dark-mode';
 
 import styles from './Sidebar.module.css';
@@ -20,29 +20,59 @@ export default function Sidebar({ user, children, active, setActive }) {
       </h3>
       <ul className={[styles.list, darkModeActive ? styles['list-dark'] : ''].join(' ')}>
         <Link href="/dashboard">
-          <a className={styles.item}>Tableau de bord</a>
+          <a className={styles.item}>
+            <div className={styles.icon}>
+              <HiViewGridAdd />
+            </div>
+            Tableau de bord
+          </a>
         </Link>
 
         <Link href="/schedule">
-          <a className={styles.item}>Emploi du temps</a>
+          <a className={styles.item}>
+            <div className={styles.icon}>
+              <HiCalendar />
+            </div>
+            Emploi du temps
+          </a>
         </Link>
 
         <Link href="/posts/list">
-          <a className={styles.item}>Posts</a>
+          <a className={styles.item}>
+            <div className={styles.icon}>
+              <HiAnnotation />
+            </div>
+            Posts
+          </a>
         </Link>
 
         <Link href="/subjects/list">
-          <a className={styles.item}>Mes notes</a>
+          <a className={styles.item}>
+            <div className={styles.icon}>
+              <HiPencilAlt />
+            </div>
+            Mes notes
+          </a>
         </Link>
 
         {user?.userType == 2 && (<>
           <hr style={{ width: '85%', border: 'none', borderBottom: `1px solid ${darkModeActive ? '#282828' : '#FAFAFA'}` }} />
 
           <Link href="/users/list">
-            <a className={styles.item}>Liste des cours</a>
+            <a className={styles.item}>
+              <div className={styles.icon}>
+                <HiTable />
+              </div>
+              Liste des cours
+            </a>
           </Link>
           <Link href="/grades/list">
-            <a className={styles.item}>Utilisateurs</a>
+            <a className={styles.item}>
+              <div className={styles.icon}>
+                <HiUsers />
+              </div>
+              Utilisateurs
+            </a>
           </Link>
         </>)}
       </ul>
