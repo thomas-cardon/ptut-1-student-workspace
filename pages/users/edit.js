@@ -17,8 +17,8 @@ export default function EditUserPage({ user, id }) {
   const { addToast } = useToasts();
   const router = useRouter();
 
-  const { data: groups } = useGroups();
-  const { data: u } = useUser(id);
+  const { data : groups } = useGroups();
+  const { data : u } = useUser(id);
 
   const onSubmit = async (e) => {
     e.preventDefault();

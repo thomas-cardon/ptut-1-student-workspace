@@ -7,7 +7,7 @@ export default function FormSelect({ label, options, noOption, name, ...rest }) 
 
   return (
     <FormGroup label={label} name={name}>
-      <select className={styles.input} id={name} {...rest}>
+      <select className={styles.input} id={name} name={name} {...rest}>
         {noOption && (
           <option value="">{noOption}</option>
         )}
