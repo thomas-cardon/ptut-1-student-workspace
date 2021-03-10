@@ -86,12 +86,12 @@ export default function GradesListPage({ user, id }) {
   };
 
   return (
-    <UserLayout user={user} flex={true}>
+    <UserLayout user={user} flex={true} header={<>
+      <Fields.FormInput name="search" type="text" onChange={e => setQuery(e.target.value)} value={query} placeholder="Recherchez un utilisateur..." autoComplete="off" disableLogic={true} />
+      </>}>
       <Title appendGradient="enregistrées">
         Notes
       </Title>
-      <Fields.FormInput name="search" type="text" onChange={e => setQuery(e.target.value)} value={query} placeholder="Recherchez un utilisateur..." autoComplete="off" disableLogic={true} groupStyle={{ width: '50%' }} />
-      <i style={{ marginBottom: '1em', marginTop: '-0.5em' }}>{users.length} résultats pour {query}...</i>
       {user.userType == 2 && (
         <h3 className={'subtitle'}>
           <Link href="/grades/create">
@@ -103,6 +103,7 @@ export default function GradesListPage({ user, id }) {
         <Highlight title={'A savoir'}>
           {!id ? 'Vous ne verrez que les étudiants dans la liste des notes.' : "Vous ne voyez qu'un seul étudiant actuellement. Pour tous les voir, cliquez sur le lien dans la barre latérale."}
         </Highlight>
+        <p style={{ textAlign: 'center'}}><i style={{ marginBottom: '1em', marginTop: '-0.5em' }}>{users.length} résultats pour {query}...</i></p>
         {content}
       </div>
     </UserLayout>
