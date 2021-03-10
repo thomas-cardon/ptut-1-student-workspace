@@ -16,12 +16,20 @@ export default function SchedulePage({ user, selectedWeek }) {
 
   let content = <h2 className={'title'}>Chargement</h2>;
   let data = (schedule || []).map(x => {
-    let start = new Date(x.start);
+    let start = new Date(x.start), end = new Date(start.getTime() + x.duration * 60 * 1000);
+
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+      start.setHours(start.getHours() + 1);
+      end.setHours(end.getHours() + 1);
+    }
+
+    const startIso = start.toISOString(), endIso = end.toISOString();
+
     return {
       id: x.id,
       day: getDay(start),
-      start: lightFormat(start, 'HHmm'),
-      end: lightFormat(new Date(start.getTime() + x.duration * 60000), 'HHmm'),
+      start: startIso.slice(11, 16).replace(':', ''),
+      end: endIso.slice(11, 16).replace(':', ''),
       module: x.module,
       name: x.subjectName,
       room: x.room,
