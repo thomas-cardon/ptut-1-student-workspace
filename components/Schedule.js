@@ -51,26 +51,47 @@ export default function Schedule({ data, children }) {
 
   function handleItemClick({ event, props, data, triggerEvent }) {
     switch (event.currentTarget.id) {
-      case "notify":
-        let title = window.prompt('Saisissez le titre de la notification', 'Rappel de cours');
-        let body = window.prompt('Saisissez le corps de la notification', document.getElementById(props.id).children[1].innerText);
+      case "notify": {
+          let title = window.prompt('Saisissez le titre de la notification', 'Rappel de cours');
+          let body = window.prompt('Saisissez le corps de la notification', document.getElementById(props.id).children[1].innerText);
 
-        fetcher(location.protocol + '//' + location.host + `/api/notifications/broadcast?title=${title}&body=${body}&interests=group-${document.getElementById(props.id).lastChild.getAttribute('groupid')}`)
-        .then(() => addToast('Tous les utilisateurs concernés ont été notifiés.', { appearance: 'success' }))
+          fetcher(location.protocol + '//' + location.host + `/api/notifications/broadcast?title=${title}&body=${body}&interests=group-${document.getElementById(props.id).lastChild.getAttribute('groupid')}`)
+          .then(() => addToast('Tous les utilisateurs concernés ont été notifiés.', { appearance: 'success' }))
+          .catch(err => {
+            addToast("Une erreur s'est produite.", { appearance: 'error' });
+            console.error(err);
+          });
+
+          break;
+      }
+      case "connect": {
+        if (!document.getElementById(event.currentTarget.id).getAttribute('meetingurl')) alert("Aucune réunion n'est encore disponible pour ce cours.");
+        else window.open(document.getElementById(event.currentTarget.id).getAttribute('meetingurl'), '_blank').focus();
+        break;
+      }
+      case "edit-room": {
+        let room = window.prompt('Saisissez le nom de la nouvelle salle', document.getElementById(props.id).children[3].innerText);
+
+        fetcher(location.protocol + '//' + location.host + '/api/schedule/' + props.id, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ room })
+         })
+        .then(() => addToast(`Modification réussie du cours #${props.id}`, { appearance: 'success' }))
         .catch(err => {
           addToast("Une erreur s'est produite.", { appearance: 'error' });
           console.error(err);
         });
 
         break;
-      case "connect":
-        if (!document.getElementById(event.currentTarget.id).getAttribute('meetingurl')) alert("Aucune réunion n'est encore disponible pour ce cours.");
-        else window.open(document.getElementById(event.currentTarget.id).getAttribute('meetingurl'), '_blank').focus();
-        break;
-      case "edit-meeting-url":
+      }
+      case "edit-meeting-url": {
         alert('Meeting URL edit WIP');
-      break;
-      case "remove":
+        break;
+      }
+      case "remove": {
         if (!confirm('Voulez-vous vraiment supprimer ce cours?'))
           return;
 
@@ -81,25 +102,25 @@ export default function Schedule({ data, children }) {
           console.error(err);
         });
         break;
+      }
     }
   }
 
   return (
     <>
       <Menu id={MENU_ID}>
-        <Item id="view" onClick={handleItemClick}>&#x1F4DC; Voir le post attaché</Item>
-        <Item id="connect" onClick={handleItemClick}>&#x1F4BB; Se connecter à la réunion</Item>
+        <Item id="view" onClick={handleItemClick}>&#x1F4DC;&nbsp;&nbsp;Voir le post attaché</Item>
+        <Item id="connect" onClick={handleItemClick}>&#x1F4BB;&nbsp;&nbsp;Se connecter à la réunion</Item>
         <Separator />
         <Submenu label="Modération">
-          <Item id="notify" onClick={handleItemClick}>🔔 Notifier le groupe</Item>
+          <Item id="notify" onClick={handleItemClick}>🔔&nbsp;&nbsp;Notifier le groupe</Item>
           <Separator />
 
-          <Item disabled={true} id="edit-teacher" onClick={handleItemClick}>✏️ Modifier le professeur</Item>
-          <Item disabled={true} id="edit-room" onClick={handleItemClick}>&#x1F392; Modifier la salle</Item>
-          <Item disabled={true} id="edit-meeting-url" onClick={handleItemClick}>&#x1F4BB; Modifier la réunion</Item>
-          <Item disabled={true} id="edit-date" onClick={handleItemClick}>&#x1F4C6; Modifier la date</Item>
+          <Item id="edit-room" onClick={handleItemClick}>&#x1F392;&nbsp;&nbsp;Modifier la salle</Item>
+          <Item disabled={true} id="edit-meeting-url" onClick={handleItemClick}>&#x1F4BB;&nbsp;&nbsp;Modifier la réunion</Item>
+          <Item disabled={true} id="edit-date" onClick={handleItemClick}>&#x1F4C6;&nbsp;&nbsp;Modifier la date</Item>
           <Separator />
-          <Item id="remove" onClick={handleItemClick}>&#x274C; Supprimer</Item>
+          <Item id="remove" onClick={handleItemClick}>&#x274C;&nbsp;&nbsp;Supprimer</Item>
         </Submenu>
       </Menu>
 
