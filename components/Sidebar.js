@@ -46,19 +46,19 @@ export default function Sidebar({ user, children, active, setActive }) {
           </a>
         </Link>
 
-        <Link href="/subjects/list">
+        <Link href="/grades/list">
           <a className={styles.item}>
             <div className={styles.icon}>
               <HiPencilAlt />
             </div>
-            Mes notes
+            {user?.userType === 2 ? 'Notes' : 'Mes notes'}
           </a>
         </Link>
 
         {user?.userType == 2 && (<>
           <hr style={{ width: '85%', border: 'none', borderBottom: `1px solid ${darkModeActive ? '#282828' : '#FAFAFA'}` }} />
 
-          <Link href="/users/list">
+          <Link href="/subjects/list">
             <a className={styles.item}>
               <div className={styles.icon}>
                 <HiTable />
@@ -66,7 +66,7 @@ export default function Sidebar({ user, children, active, setActive }) {
               Liste des cours
             </a>
           </Link>
-          <Link href="/grades/list">
+          <Link href="/users/list">
             <a className={styles.item}>
               <div className={styles.icon}>
                 <HiUsers />
