@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 
-import { HiOutlineMenu, HiViewGridAdd, HiCalendar, HiAnnotation, HiPencilAlt, HiTable, HiUsers } from "react-icons/hi";
+import { HiOutlineMenu, HiViewGridAdd, HiCalendar, HiAnnotation, HiPencilAlt, HiTable, HiUsers, HiAdjustments } from "react-icons/hi";
 import { useDarkMode } from 'next-dark-mode';
 
 import styles from './Sidebar.module.css';
@@ -14,7 +14,7 @@ export default function Sidebar({ user, children, active, setActive }) {
       <div className={styles.closeIcon} onClick={() => setActive(!active)}>
         <HiOutlineMenu />
       </div>
-      <img style={{ borderRadius: '50%', width: '50%', margin: '2em auto 1em auto', display: 'block' }} src={getAvatar(user)} />
+      <img style={{ borderRadius: '50%', width: '35%', margin: '2em auto 1em auto', display: 'block' }} src={getAvatar(user)} />
       <h3 style={{ margin: '0 auto', color: '#FAFAFA' }}>
         {user.firstName} {user.lastName}
       </h3>
@@ -72,6 +72,20 @@ export default function Sidebar({ user, children, active, setActive }) {
                 <HiUsers />
               </div>
               Utilisateurs
+            </a>
+          </Link>
+
+          <Link href="/settings">
+            <a className={[styles.settings, darkModeActive ? styles['settings-dark'] : ''].join(' ')}>
+              <div className={styles.icon}>
+                <HiAdjustments />
+              </div>
+            </a>
+          </Link>
+
+          <Link href="/logout">
+            <a style={{ textAlign: 'center', display: 'block', color: darkModeActive ? '#282828' : '#FAFAFA' }}>
+              Se déconnecter
             </a>
           </Link>
         </>)}
