@@ -59,7 +59,7 @@ export default function SchedulePage({ user, selectedWeek }) {
         {[-3, -2, -1, 0, 1, 2, 3].map((e, i) => {
           let week = Math.ceil((todaydate.getDay() + 1 + numberOfDays) / 7);
           return (
-            <Link href={{ pathname: '/schedule', query: { selectedWeek: week + e } }}>
+            <Link key={'week-' + i} href={{ pathname: '/schedule', query: { selectedWeek: week + e } }}>
               <a>
                 <button key={i} disabled={selectedWeek ? (week + e) == selectedWeek : e === 0}>S-{week + e}</button>
               </a>
