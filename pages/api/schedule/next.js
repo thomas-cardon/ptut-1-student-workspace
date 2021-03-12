@@ -4,29 +4,23 @@ import { isFuture, addMinutes } from 'date-fns';
 
 async function handler(req, res, session) {
   if (!req?.session?.get('user')) return res.status(401).send({ error: 'NOT_AUTHORIZED', success: false });
-  const { filterByGroup, filterByTeacher, omitPassedEntries } = req.query;
 
   try {
-    let params = [];
-    if (filterByGroup && filterByTeacher) params = [filterByGroup, filterByTeacher];
-    else if (filterByGroup) params = [filterByGroup];
-    else if (filterByTeacher) params = [filterByTeacher];
-
     let schedule = await query(
       `
       SELECT schedule.id, start, duration, subjectId, room, schedule.groupId, meetingUrl, subjects.module, subjects.name as subjectName, color as moduleColor, firstName AS teacherFirstName, lastName as teacherLastName, email as teacherEmail, schedule.teacherId, groups.name as groupName FROM schedule
       INNER JOIN users ON teacherId = users.userId
       INNER JOIN subjects ON subjectId = subjects.id
       LEFT OUTER JOIN groups ON schedule.groupId = groups.id
-      ${filterByGroup ? 'WHERE schedule.groupId = ?' : ''}
-      ${filterByTeacher ? 'WHERE schedule.teacherId = ?' : ''}
+      WHERE schedule.groupId = ?
       ORDER BY start ASC
-      `, params);
+      LIMIT 1
+    `, params);
 
-    if (omitPassedEntries)
-      schedule = schedule.filter(x => isFuture(addMinutes(Date.parse(x.start), x.duration)));
+    schedule = schedule.filter(x => isFuture(addMinutes(Date.parse(x.start), x.duration)));
 
-    res.send(schedule);
+    if (schedule.length > 0) res.send(schedule[0]);
+    else res.status(404).send({ error: 'NOT_FOUND', success: false });
   }
   catch (e) {
     res.status(500).json({ message: e.message, success: false });

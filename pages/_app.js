@@ -1,5 +1,9 @@
 import { ToastProvider } from 'react-toast-notifications';
 
+/*
+* Voir pour importer ces fonts par page ou composant, car là on les importe dans toute les pages alors
+* qu'elles ne sont pas forcément utilisées partout
+*/
 import "@fontsource/open-sans";
 import "@fontsource/lato";
 import "@fontsource/raleway/100.css";

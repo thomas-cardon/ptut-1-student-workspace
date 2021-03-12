@@ -1,6 +1,7 @@
 import UserLayout from '../components/UserLayout';
 import Title from '../components/Title';
 import Chat from '../components/Chat';
+import Highlight from '../components/Highlight';
 
 import Link from 'next/link';
 
@@ -23,8 +24,18 @@ export default function Dashboard({ user }) {
 
   let content = <Title>Chargement</Title>;
 
+  // Indication présentiel ou distanciel ce serait bien dans l'EDT
   if (posts) {
-    content = (
+    content = (<>
+      <Highlight title={'Attention'}>
+        Vous êtes actuellement en cours en distanciel: <b>(M1101) Introduction aux Systèmes Informatiques</b>,
+        &nbsp;avec <i>Klélia Amoura</i>. Cliquez&nbsp;
+        <Link href="/posts/list">
+          <a>ici</a>
+        </Link>
+        pour rejoindre la réunion.
+      </Highlight>
+
       <div className="cards">
         {true && (
           <div className={`card ${darkModeActive ? 'dark' : ''} card-xl chat`}>
@@ -68,7 +79,7 @@ export default function Dashboard({ user }) {
         )}
 
       </div>
-    );
+    </>);
   }
 
   return (
