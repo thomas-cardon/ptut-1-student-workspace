@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 import useServiceWorker from '../lib/workers';
 
-import { usePosts } from '../lib/hooks';
+import { usePosts, useNextCourse } from '../lib/hooks';
 import withSession from "../lib/session";
 
 import { HiArrowNarrowRight } from "react-icons/hi";
@@ -21,20 +21,27 @@ export default function Dashboard({ user }) {
 
   const { darkModeActive } = useDarkMode();
   const { data : posts } = usePosts(user);
+  const { data : nextCourse } = useNextCourse();
 
   let content = <Title>Chargement</Title>;
 
   // Indication présentiel ou distanciel ce serait bien dans l'EDT
   if (posts) {
     content = (<>
-      <Highlight title={'Attention'}>
-        Vous êtes actuellement en cours en distanciel: <b>(M1101) Introduction aux Systèmes Informatiques</b>,
-        &nbsp;avec <i>Klélia Amoura</i>. Cliquez&nbsp;
-        <Link href="/posts/list">
-          <a>ici</a>
-        </Link>
-        pour rejoindre la réunion.
-      </Highlight>
+      {nextCourse?.success && (
+        <Highlight title="Attention" icon="⏳">
+          <p>
+            En cours -> <b>(M1101) Introduction aux Systèmes Informatiques</b> <i>en distanciel</i>,
+            &nbsp;enseigné par <i>Klélia Amoura</i>.
+            <br />
+            Cliquez&nbsp;
+            <Link href="/posts/list">
+              <a>ici</a>
+            </Link>
+            &nbsp;pour rejoindre la réunion.
+          </p>
+        </Highlight>
+      )}
 
       <div className="cards">
         {true && (

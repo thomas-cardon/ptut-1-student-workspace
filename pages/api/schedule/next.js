@@ -15,11 +15,11 @@ async function handler(req, res, session) {
       WHERE schedule.groupId = ?
       ORDER BY start ASC
       LIMIT 1
-    `, params);
+    `, [req.session.get('user').group.id]);
 
     schedule = schedule.filter(x => isFuture(addMinutes(Date.parse(x.start), x.duration)));
 
-    if (schedule.length > 0) res.send(schedule[0]);
+    if (schedule.length > 0) res.send({ data: schedule[0], success: true });
     else res.status(404).send({ error: 'NOT_FOUND', success: false });
   }
   catch (e) {

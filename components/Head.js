@@ -4,7 +4,7 @@ export default function CustomHead({ title }) {
   return (
     <Head>
       <title>{title || 'Student Workspace'}</title>
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <meta name="description" content="Votre nouvel environnement de travail" />
       <meta charSet="UTF-8" />
       <link rel="icon" href="/favicon.ico" />
