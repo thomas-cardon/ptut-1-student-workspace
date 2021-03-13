@@ -6,8 +6,12 @@ import { getAvatar } from '../lib/useUser';
 import UserLayout from '../components/UserLayout';
 import Title from '../components/Title';
 
+import Form from "../components/Form";
+import * as Fields from "../components/FormFields";
+
 export default function SettingsPage({ user }) {
   let permsDesc;
+  const onSubmit = async (e) => {};
 
   if (user.userType == 0) permsDesc = 'vous disposez des permissions les plus basiques.';
   else if (user.userType == 1) permsDesc = 'vous êtes professeur. Vous pouvez créer des posts, ajouter des devoirs, notifier les élèves, etc.';
@@ -24,9 +28,14 @@ export default function SettingsPage({ user }) {
       <p style={{ width: '50%', textAlign: 'center' }}>
         <i>Vous êtes un utilisateur de type {user.userType}, c'est-à-dire que {permsDesc}</i>
       </p>
-      <Link href="">
-        <a>Mot de passe oublié ?</a>
-      </Link>
+
+      <h2>Changer son mot de passe</h2>
+      <hr style={{ width: '60%' }} />
+      <Form onSubmit={onSubmit}>
+        <Fields.FormInput label="Ancien mot de passe" id="oldPassword" name="oldPassword" type="password" required />
+        <Fields.FormInput label="Nouveau mot de passe" id="newPassword" name="newPassword" type="password" required />
+        <Fields.FormButton type="submit">Changer</Fields.FormButton>
+      </Form>
     </UserLayout>
   );
 };
