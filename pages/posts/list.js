@@ -14,7 +14,7 @@ export default function Posts({ user, module }) {
   let content = <h2 className={'title'}>Chargement</h2>;
 
   if (posts && posts?.length === 0) content = <h2 className={'title'}>Aucun post disponible</h2>;
-  else if (posts) content = posts.map((post, i) => <Post id={post.id} key={'post-' + post.id} authorName={post.firstName + ' ' + post.lastName} creationTime={new Date(post.creation_time)} avatar={useAvatar(user)} {...post}></Post>);
+  else if (posts) content = posts.map((post, i) => <Post id={post.id} key={'post-' + post.id} authorName={post.firstName + ' ' + post.lastName} creationTime={new Date(post.creation_time)} email={post.email} {...post}></Post>);
 
   return (
     <UserLayout user={user} flex={true}>
@@ -28,13 +28,13 @@ export default function Posts({ user, module }) {
           </Link>...
         </h3>
       )}
+      <Highlight title={'Le saviez-vous?'}>
+        Cliquez sur le titre d'un post pour y accéder. Ou retournez à la&nbsp;
+        <Link href="/posts/list">
+          <a>liste sans filtre</a>
+        </Link>.
+      </Highlight>
       <div className={'grid'}>
-        <Highlight title={'Le saviez-vous?'}>
-          Cliquez sur le titre d'un post pour y accéder. Ou retournez à la&nbsp;
-          <Link href="/posts/list">
-            <a>liste sans filtre</a>
-          </Link>.
-        </Highlight>
         {content}
       </div>
     </UserLayout>
