@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Gravatar from 'react-gravatar';
 
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
@@ -7,7 +8,7 @@ import styles from "./Post.module.css";
 
 import { useDarkMode } from 'next-dark-mode';
 
-export default function Post({ id, title, content, module, authorName, creationTime, avatar }) {
+export default function Post({ id, title, content, module, authorName, creationTime, email }) {
   const { darkModeActive } = useDarkMode();
 
   return (
@@ -27,7 +28,7 @@ export default function Post({ id, title, content, module, authorName, creationT
       <div className={styles.meta}>
          <span className={styles.author}>
             <span className={styles.avatar}>
-               <img src={avatar} width="30" height="30" alt={authorName} className={styles.avatarImage} />
+              <Gravatar size={30} email={email} alt={authorName} className={styles.avatarImage} draggable={false} />
             </span>
             {authorName}
          </span>
