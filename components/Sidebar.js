@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 
+import Gravatar from 'react-gravatar';
+
 import { HiOutlineMenu, HiViewGridAdd, HiCalendar, HiAnnotation, HiPencilAlt, HiTable, HiUsers, HiAdjustments } from "react-icons/hi";
 import { useDarkMode } from 'next-dark-mode';
 
 import styles from './Sidebar.module.css';
-import { getAvatar } from '../lib/useUser';
 
 export default function Sidebar({ user, children, active, setActive }) {
   const { darkModeActive } = useDarkMode();
@@ -14,7 +15,7 @@ export default function Sidebar({ user, children, active, setActive }) {
       <div className={styles.closeIcon} onClick={() => setActive(!active)}>
         <HiOutlineMenu />
       </div>
-      <img style={{ borderRadius: '50%', width: '35%', margin: '2em auto 1em auto', display: 'block' }} src={getAvatar(user)} />
+      <Gravatar size={96} email={user.email} style={{ borderRadius: '50%', margin: '2em auto 1em auto', display: 'block' }} draggable={false} />
       <h3 style={{ margin: '0 auto', color: '#FAFAFA' }}>
         {user.firstName} {user.lastName}
       </h3>
