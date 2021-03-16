@@ -5,7 +5,7 @@ import Highlight from "../../components/Highlight";
 import Title from "../../components/Title";
 import Post from "../../components/Post";
 
-import { usePosts, getAvatar } from '../../lib/hooks';
+import { usePosts, useAvatar } from '../../lib/hooks';
 import withSession from "../../lib/session";
 
 export default function Posts({ user, module }) {
@@ -14,7 +14,7 @@ export default function Posts({ user, module }) {
   let content = <h2 className={'title'}>Chargement</h2>;
 
   if (posts && posts?.length === 0) content = <h2 className={'title'}>Aucun post disponible</h2>;
-  else if (posts) content = posts.map((post, i) => <Post id={post.id} key={'post-' + post.id} authorName={post.firstName + ' ' + post.lastName} creationTime={new Date(post.creation_time)} avatar={getAvatar(user)} {...post}></Post>);
+  else if (posts) content = posts.map((post, i) => <Post id={post.id} key={'post-' + post.id} authorName={post.firstName + ' ' + post.lastName} creationTime={new Date(post.creation_time)} avatar={useAvatar(user)} {...post}></Post>);
 
   return (
     <UserLayout user={user} flex={true}>
