@@ -1,5 +1,7 @@
+import React, { useState } from 'react';
+
+import Router from 'next/router';
 import Link from 'next/link';
-import Image from 'next/image';
 
 import Gravatar from 'react-gravatar';
 
@@ -17,42 +19,49 @@ import Highlight from '../components/Highlight';
 import { useToasts } from 'react-toast-notifications';
 
 export default function SettingsPage({ user }) {
-  const { addToast } = useToasts();
+  /*
+   * Variable definitions
+   */
+   let permsDesc;
 
-  let permsDesc;
-  const onSubmit = async (e) => {};
-  const onAvatarChange = async (e) => {
-    addToast('Changement en cours', { appearance: 'info' });
-    let avatar = await encodeImageAsBase64(e);
+   const [values, setValues] = useState({ oldPassword: '', confirmPassword: '', newPassword: '' });
+   const { addToast } = useToasts();
 
-    try {
-      const res = await fetch(location.protocol + '//' + location.host + '/api/me/avatar', {
-        body: JSON.stringify({ avatar }),
-        headers: { 'Content-Type': 'application/json' },
-        method: 'POST'
-      });
+   const handleInputChange = e => {
+     const {name, value, checked, type } = e.target;
+     setValues({ ...values, [name]: type === 'checkbox' ? checked : value });
+   };
 
-      const result = await res.json();
-      console.dir(result);
+  /*
+   * End of variable definitions
+   */
+   let res;
+   const onSubmit = async (e) => {
+     e.preventDefault();
 
-      if (result.success) addToast('Avatar changé', { appearance: 'success' });
-      else addToast(result.error || 'Une erreur s\'est produite', { appearance: 'error' });
-    }
-    catch(error) {
-      console.error(error);
-      addToast(error || 'Une erreur s\'est produite', { appearance: 'error' });
-    }
+     try {
+       if (values.oldPassword !== values.confirmPassword) return addToast('❌ ➜  Les deux mots de passe ne correspondent pas.', { appearance: 'error' });
+       else if (values.oldPassword === values.newPassword) return addToast("❌ ➜  L'ancien mot de passe est le même que le nouveau.", { appearance: 'error' });
+
+       res = await fetch(location.protocol + '//' + location.host + '/api/me', {
+         body: JSON.stringify({ oldPassword: values.oldPassword, newPassword: values.newPassword }),
+         headers: { 'Content-Type': 'application/json' },
+         method: 'PATCH'
+       });
+
+       if (res.ok) {
+         addToast('Mot de passe changé', { appearance: 'success' });
+         Router.push('/login');
+       }
+       else addToast(res.error || 'Une erreur s\'est produite', { appearance: 'error' });
+     }
+     catch(error) {
+       console.error(error);
+
+       if (res.status === 401) addToast('Vous ne pouvez pas effectuer cette action.', { appearance: 'error'});
+       else addToast('Une erreur s\'est produite', { appearance: 'error' });
+     }
   };
-
-  const encodeImageAsBase64 = e => {
-    return new Promise((resolve, reject) => {
-      let file = e.target.files[0];
-
-      let reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result);
-      reader.readAsDataURL(file);
-    });
-  }
 
   if (user.userType == 0) permsDesc = 'vous disposez des permissions les plus basiques.';
   else if (user.userType == 1) permsDesc = 'vous êtes professeur. Vous pouvez créer des posts, ajouter des devoirs, notifier les élèves, etc.';
@@ -76,9 +85,10 @@ export default function SettingsPage({ user }) {
       <h2>Changer son mot de passe</h2>
       <hr style={{ width: '60%' }} />
       <Form onSubmit={onSubmit}>
-        <Fields.FormInput label="Ancien mot de passe" id="oldPassword" name="oldPassword" type="password" disabled={true} />
-        <Fields.FormInput label="Nouveau mot de passe" id="newPassword" name="newPassword" type="password" disabled={true} />
-        <Fields.FormButton type="submit" disabled={true}>Changer</Fields.FormButton>
+        <Fields.FormInput label="Ancien mot de passe" id="oldPassword" name="oldPassword" minLength="8" onChange={handleInputChange} value={values.oldPassword} type="password" required />
+        <Fields.FormInput label="Confirmer le mot de passe" id="confirmPassword" name="confirmPassword" minLength="8" onChange={handleInputChange} value={values.confirmPassword} type="password" required />
+        <Fields.FormInput label="Nouveau mot de passe" id="newPassword" name="newPassword" minLength="8" onChange={handleInputChange} value={values.newPassword} type="password" required />
+        <Fields.FormButton type="submit">Changer</Fields.FormButton>
       </Form>
     </UserLayout>
   );

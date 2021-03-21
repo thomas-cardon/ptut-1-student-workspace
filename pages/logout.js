@@ -5,10 +5,11 @@ export default function LogoutPage(props) {
 };
 
 export const getServerSideProps = withSession(async function ({ req, res }) {
-  req.session.destroy();
+  await req.session.destroy();
 
   res.statusCode = 302;
   res.setHeader('location', '/login');
-  
+  res.setHeader('cache-control', 'no-store, max-age=0');
+
   return { props: {} };
 });
