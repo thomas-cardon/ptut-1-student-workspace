@@ -24,7 +24,7 @@ export default function SettingsPage({ user }) {
    */
    let permsDesc;
 
-   const [values, setValues] = useState({ oldPassword: '', confirmPassword: '', newPassword: '' });
+   const [values, setValues] = useState({ oldPassword: '', newPassword: '' });
    const { addToast } = useToasts();
 
    const handleInputChange = e => {
@@ -40,8 +40,7 @@ export default function SettingsPage({ user }) {
      e.preventDefault();
 
      try {
-       if (values.oldPassword !== values.confirmPassword) return addToast('❌ ➜  Les deux mots de passe ne correspondent pas.', { appearance: 'error' });
-       else if (values.oldPassword === values.newPassword) return addToast("❌ ➜  L'ancien mot de passe est le même que le nouveau.", { appearance: 'error' });
+       if (values.oldPassword === values.newPassword) return addToast("❌ ➜  L'ancien mot de passe est le même que le nouveau.", { appearance: 'error' });
 
        res = await fetch(location.protocol + '//' + location.host + '/api/me', {
          body: JSON.stringify({ oldPassword: values.oldPassword, newPassword: values.newPassword }),
@@ -86,7 +85,6 @@ export default function SettingsPage({ user }) {
       <hr style={{ width: '60%' }} />
       <Form onSubmit={onSubmit}>
         <Fields.FormInput label="Ancien mot de passe" id="oldPassword" name="oldPassword" minLength="8" onChange={handleInputChange} value={values.oldPassword} type="password" required />
-        <Fields.FormInput label="Confirmer le mot de passe" id="confirmPassword" name="confirmPassword" minLength="8" onChange={handleInputChange} value={values.confirmPassword} type="password" required />
         <Fields.FormInput label="Nouveau mot de passe" id="newPassword" name="newPassword" minLength="8" onChange={handleInputChange} value={values.newPassword} type="password" required />
         <Fields.FormButton type="submit">Changer</Fields.FormButton>
       </Form>
