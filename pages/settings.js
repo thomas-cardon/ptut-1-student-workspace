@@ -48,11 +48,16 @@ export default function SettingsPage({ user }) {
          method: 'PATCH'
        });
 
+       const result = await res.text();
+       console.dir(result);
+
        if (res.ok) {
          addToast('Mot de passe changé', { appearance: 'success' });
          Router.push('/login');
        }
-       else addToast(res.error || 'Une erreur s\'est produite', { appearance: 'error' });
+       else {
+         addToast('Une erreur s\'est produite', { appearance: 'error' });
+       }
      }
      catch(error) {
        console.error(error);
