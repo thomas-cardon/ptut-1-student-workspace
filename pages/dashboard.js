@@ -146,7 +146,7 @@ export default function Dashboard({ user }) {
         .group {
           font-family: "Raleway";
           font-weight: 400;
-          text-align: center;
+          text-align: left;
         }
 
         .group-dark {
