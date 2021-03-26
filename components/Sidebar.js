@@ -12,13 +12,12 @@ export default function Sidebar({ user, children, active, setActive }) {
   const { darkModeActive } = useDarkMode();
   return (
     <aside className={styles.sidebar} data-active={active ? 1 : 0}>
-      <div className={styles.closeIcon} onClick={() => setActive(!active)}>
-        <HiOutlineMenu />
-      </div>
-      <Gravatar size={96} email={user.email} style={{ borderRadius: '50%', margin: '2em auto 1em auto', display: 'block' }} draggable={false} />
-      <h3 style={{ margin: '0 auto', color: '#FAFAFA' }}>
-        {user.firstName} {user.lastName}
-      </h3>
+      <Link href="/dashboard">
+        <div className={styles.brand}>
+          <img width="40px" height="40px" src="/icon-384x384.png" />
+          <h3>Student Workspace</h3>
+        </div>
+      </Link>
       <ul className={[styles.list, darkModeActive ? styles['list-dark'] : ''].join(' ')}>
         <Link href="/dashboard" className={styles.item}>
           <div className={styles.icon}>
@@ -65,18 +64,5 @@ export default function Sidebar({ user, children, active, setActive }) {
           </Link>
         </>)}
       </ul>
-      <div className={[styles.iconsGroup, darkModeActive ? styles['dark'] : ''].join(' ')} style={{ flex: 'auto' }}>
-        <Link href="/settings">
-          <div className={styles.icon}>
-            <HiAdjustments />
-          </div>
-        </Link>
-
-        <Link href="/logout">
-          <div className={styles.icon}>
-            <HiLogout />
-          </div>
-        </Link>
-      </div>
     </aside>);
 };

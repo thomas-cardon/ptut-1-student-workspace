@@ -1,33 +1,24 @@
 .sidebar {
-  grid-area: sidebar;
   display: flex;
   flex-direction: column;
-  height: 100%;
-  width: 250px;
-  position: fixed;
-  overflow-y: auto;
-  transform: translateX(-245px);
-  transition: all .6s ease-in-out;
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
-  z-index: 2; /* Needs to sit above the hamburger menu icon */
-  background-color: #546DE5;
-  overflow-x: hidden;
+
+  height: 100vh;
+
+  top: 30px;
+  position: sticky;
+  padding: 0 10% 10% 10%;
+
+  color: white;
 }
 
-.sidebar[data-active="1"] {
-  transform: translateX(0);
+.brand {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
 }
 
-/* Non-mobile styles, 750px breakpoint */
-@media only screen and (min-width: 46.875em) {
-  .sidebar {
-    position: relative;
-    transform: translateX(0);
-  }
-
-  .closeIcon {
-    visibility: hidden;
-  }
+.brand > * {
+  margin: auto;
 }
 
 .list {
@@ -45,54 +36,10 @@
 }
 
 .item:hover {
-  background-color: #FAFAFA;
   cursor: pointer;
-}
-
-.list-dark a, .dark .icon {
-  color: #282828 !important;
-}
-
-.list-dark a:hover, .dark .icon:hover {
-  color: #FAFAFA !important;
-}
-
-.list-dark .item:hover {
-  background-color: #282828;
 }
 
 .icon {
   display: inline-block;
   margin-right: .6em;
-}
-
-
-.iconsGroup .icon:hover {
-  cursor: pointer;
-  color: #282828;
-}
-
-.dark .icon:hover {
-  color: #FAFAFA !important;
-}
-
-.iconsGroup {
-  display: flex;
-}
-
-.iconsGroup a, .iconsGroup .icon {
-  margin: 0 auto;
-
-  font-size: xx-large;
-  text-align: center;
-}
-
-.closeIcon {
-  position: absolute;
-  visibility: visible;
-  top: 8px;
-  right: 12px;
-  cursor: pointer;
-  font-size: 20px;
-  color: #FAFAFA;
 }
