@@ -55,12 +55,6 @@ p {
   box-sizing: border-box;
 }
 
-.subtitle {
-  margin: 0;
-  font-weight: 300;
-  font-size: x-large;
-}
-
 .code {
   background: #fafafa;
   border-radius: 5px;
@@ -70,11 +64,9 @@ p {
     Bitstream Vera Sans Mono, Courier New, monospace;
 }
 
-.grid {
+.buttons {
+  gap: 10px;
   display: flex;
-  flex-direction: column;
-  width: 70%;
-  margin-top: 2em;
 }
 
 input[type="datetime-local"] {
