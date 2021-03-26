@@ -1,6 +1,5 @@
-import UserLayout from '../components/ModernLayout';
+import UserLayout from '../components/UserLayout';
 import Title from '../components/Title';
-import Chat from '../components/Chat';
 import Highlight from '../components/Highlight';
 
 import Link from '../components/Link';
@@ -44,11 +43,6 @@ export default function Dashboard({ user }) {
       )}
 
       <div className="cards">
-        {true && (
-          <div className={`card ${darkModeActive ? 'dark' : ''} card-xl chat`}>
-            <Chat clientId={"user-" + user.userId + '-' + Math.floor(Math.random() * Math.floor(10000))} />
-          </div>
-        )}
         {posts.filter(x => x.isHomework).length > 0 && (
           <div className={`card ${darkModeActive ? 'dark' : ''}`}>
             <h1>Devoirs à faire</h1>
@@ -167,6 +161,7 @@ export default function Dashboard({ user }) {
         .group {
           font-family: "Raleway";
           font-weight: 400;
+          text-align: center;
         }
 
         .group-dark {
