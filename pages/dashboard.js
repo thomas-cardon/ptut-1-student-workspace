@@ -1,6 +1,8 @@
 import UserLayout from '../components/UserLayout';
 import Title from '../components/Title';
-import Highlight from '../components/Highlight';
+
+import CardList from '../components/CardList';
+import Card from '../components/Card';
 
 import Link from '../components/Link';
 
@@ -27,10 +29,10 @@ export default function Dashboard({ user }) {
   // Indication présentiel ou distanciel ce serait bien dans l'EDT
   if (posts) {
     content = (<>
-      <div className="cards">
+      <CardList>
         {posts.filter(x => x.isHomework).length > 0 && (
-          <div className={`card ${darkModeActive ? 'dark' : ''}`}>
-            <h1>Devoirs à faire</h1>
+          <Card>
+            <span className="title">Devoirs à faire</span>
             <ul className="homework">
               {posts.filter(x => x.isHomework).map((post, i) => <li key={i}>
                 <Link href={"/posts/" + post.id}>
@@ -46,11 +48,11 @@ export default function Dashboard({ user }) {
                 </Link>
               </li>)}
             </ul>
-          </div>
+          </Card>
         )}
         {posts.filter(x => !x.isHomework).length > 0 && (
-          <div className={`card ${darkModeActive ? 'dark' : ''}`}>
-            <h1>Derniers posts</h1>
+          <Card>
+            <span className="title">Derniers posts</span>
             <ul>
               {posts.filter(x => !x.isHomework).map((post, i) => <li key={i}>
                 <Link href={"/posts/" + post.id}>
@@ -61,10 +63,10 @@ export default function Dashboard({ user }) {
                 </Link>
               </li>)}
             </ul>
-          </div>
+          </Card>
         )}
 
-      </div>
+      </CardList>
     </>);
   }
 
@@ -76,47 +78,6 @@ export default function Dashboard({ user }) {
       <p className={`group ${darkModeActive ? 'group-dark' : ''}`}>{user ? (user?.group?.name || 'Groupe inconnu') : 'Chargement'}</p>
 
       <style jsx global>{`
-        .cards {
-          margin: 3em;
-
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          grid-auto-rows: auto;
-          grid-gap: 1rem;
-        }
-
-        .card {
-          border-radius: 5px;
-          box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-          transition: 0.3s;
-          padding: 1em;
-        }
-
-        .dark {
-          background-color: #1E1E1E;
-        }
-
-        .card-lg {
-          min-width: 20vw;
-          min-height: 30vh;
-        }
-
-        .card-xl {
-          min-width: 30vw;
-          min-height: 40vh;
-        }
-
-        .card:hover {
-          box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-        }
-
-        .card h3 {
-          font-family: 'Lato', system-ui;
-          font-weight: 300;
-
-          text-align: center;
-        }
-
         ul {
           margin-left: 0;
           padding-left: 0;
