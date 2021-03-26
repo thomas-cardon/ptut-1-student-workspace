@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from '../../components/Link';
 
 import UserLayout from '../../components/UserLayout';
 import Highlight from "../../components/Highlight";
@@ -24,14 +24,14 @@ export default function Posts({ user, module }) {
       {user.userType !== 0 && (
         <h3 className={'subtitle'}>
           <Link href="/posts/create">
-            <a>Ajouter</a>
+            Ajouter
           </Link>...
         </h3>
       )}
       <Highlight title={'Le saviez-vous?'}>
         Cliquez sur le titre d'un post pour y accéder. Ou retournez à la&nbsp;
         <Link href="/posts/list">
-          <a>liste sans filtre</a>
+          liste sans filtre
         </Link>.
       </Highlight>
       <div className={'grid'}>

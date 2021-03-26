@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Link from 'next/link';
+import Link from './Link';
 
 import Gravatar from 'react-gravatar';
 
@@ -20,79 +20,63 @@ export default function Sidebar({ user, children, active, setActive }) {
         {user.firstName} {user.lastName}
       </h3>
       <ul className={[styles.list, darkModeActive ? styles['list-dark'] : ''].join(' ')}>
-        <Link href="/dashboard">
-          <a className={styles.item}>
-            <div className={styles.icon}>
-              <HiViewGridAdd />
-            </div>
-            Tableau de bord
-          </a>
+        <Link href="/dashboard" className={styles.item}>
+          <div className={styles.icon}>
+            <HiViewGridAdd />
+          </div>
+          Tableau de bord
         </Link>
 
-        <Link href="/schedule">
-          <a className={styles.item}>
-            <div className={styles.icon}>
-              <HiCalendar />
-            </div>
-            Emploi du temps
-          </a>
+        <Link href="/schedule" className={styles.item}>
+          <div className={styles.icon}>
+            <HiCalendar />
+          </div>
+          Emploi du temps
         </Link>
 
-        <Link href="/posts/list">
-          <a className={styles.item}>
-            <div className={styles.icon}>
-              <HiAnnotation />
-            </div>
-            Posts
-          </a>
+        <Link href="/posts/list" className={styles.item}>
+          <div className={styles.icon}>
+            <HiAnnotation />
+          </div>
+          Posts
         </Link>
 
-        <Link href="/grades/list">
-          <a className={styles.item}>
-            <div className={styles.icon}>
-              <HiPencilAlt />
-            </div>
-            {user?.userType === 2 ? 'Notes' : 'Mes notes'}
-          </a>
+        <Link href="/grades/list" className={styles.item}>
+          <div className={styles.icon}>
+            <HiPencilAlt />
+          </div>
+          {user?.userType === 2 ? 'Notes' : 'Mes notes'}
         </Link>
 
         {user?.userType == 2 && (<>
           <hr style={{ width: '85%', border: 'none', borderBottom: `1px solid ${darkModeActive ? '#282828' : '#FAFAFA'}` }} />
 
-          <Link href="/subjects/list">
-            <a className={styles.item}>
-              <div className={styles.icon}>
-                <HiTable />
-              </div>
-              Liste des cours
-            </a>
+          <Link href="/subjects/list" className={styles.item}>
+            <div className={styles.icon}>
+              <HiTable />
+            </div>
+            Liste des cours
           </Link>
-          <Link href="/users/list">
-            <a className={styles.item}>
-              <div className={styles.icon}>
-                <HiUsers />
-              </div>
-              Utilisateurs
-            </a>
+          <Link href="/users/list" className={styles.item}>
+            <div className={styles.icon}>
+              <HiUsers />
+            </div>
+            Utilisateurs
           </Link>
         </>)}
       </ul>
       <div className={[styles.iconsGroup, darkModeActive ? styles['dark'] : ''].join(' ')} style={{ flex: 'auto' }}>
         <Link href="/settings">
-          <a>
-            <div className={styles.icon}>
-              <HiAdjustments />
-            </div>
-          </a>
+          <div className={styles.icon}>
+            <HiAdjustments />
+          </div>
         </Link>
 
         <Link href="/logout">
-          <a>
-            <div className={styles.icon}>
-              <HiLogout />
-            </div>
-          </a>
+          <div className={styles.icon}>
+            <HiLogout />
+          </div>
         </Link>
       </div>
-      </aside>);
+    </aside>);
 };

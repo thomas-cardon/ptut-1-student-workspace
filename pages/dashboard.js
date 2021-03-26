@@ -3,7 +3,7 @@ import Title from '../components/Title';
 import Chat from '../components/Chat';
 import Highlight from '../components/Highlight';
 
-import Link from 'next/link';
+import Link from '../components/Link';
 
 import useServiceWorker from '../lib/workers';
 
@@ -36,7 +36,7 @@ export default function Dashboard({ user }) {
             <br />
             Cliquez&nbsp;
             <Link href="/posts/list">
-              <a>ici</a>
+              ici
             </Link>
             &nbsp;pour rejoindre la réunion.
           </p>

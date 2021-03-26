@@ -20,6 +20,10 @@
   margin-bottom: 1em;
 }
 
+.dark:hover {
+  color: #FAFAFA;
+}
+
 .article:last-child {
   border-bottom: none;
 }

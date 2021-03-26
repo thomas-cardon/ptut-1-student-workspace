@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import Link from 'next/link';
+import Link from '../../components/Link';
 
 import UserLayout from '../../components/UserLayout';
 import Table from '../../components/Table';
@@ -74,7 +74,7 @@ export default function ClassListPage({ user }) {
       {user.userType == 2 && (
         <h3 className={'subtitle'}>
           <Link href="/subjects/create">
-            <a>Ajouter</a>
+            Ajouter
           </Link>...
         </h3>
       )}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import Router from 'next/router';
-import Link from 'next/link';
+import Link from '../components/Link';
 
 import Gravatar from 'react-gravatar';
 
@@ -76,7 +76,7 @@ export default function SettingsPage({ user }) {
         Paramètres utilisateur:
       </Title>
       <Highlight>
-        Cliquez&nbsp;<Link href="http://en.gravatar.com/emails/"><a>ici</a></Link>&nbsp;pour accéder à&nbsp;<b>Gravatar</b>&nbsp;et ainsi changer votre photo de profil.
+        Cliquez&nbsp;<Link href="http://en.gravatar.com/emails/" style={{ color: 'red' }}>ici</Link>&nbsp;pour accéder à&nbsp;<b>Gravatar</b>&nbsp;et ainsi changer votre photo de profil.
       </Highlight>
       <Gravatar size={128} email={user.email} style={{ borderRadius: '50%', margin: '0.5em' }} draggable={false} />
       <h3 style={{ fontSize: 'xx-large', fontWeight: 'normal', margin: '0 0 1em 0' }}>

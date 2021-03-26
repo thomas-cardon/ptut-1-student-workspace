@@ -1,5 +1,5 @@
 import Router from 'next/router';
-import Link from 'next/link'
+import Link from '../components/Link';
 
 import BasicLayout from '../components/BasicLayout';
 

@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from '../../components/Link';
 
 import UserLayout from '../../components/UserLayout';
 import GroupList from '../../components/GroupList';
@@ -53,16 +53,16 @@ export default function SchedulePage({ user, selectedWeek }) {
   return (
     <UserLayout user={user} flex={true} header={<>
       <Link href={{ pathname: '/schedule/edit' }}>
-        <a><button><HiPlus /></button></a>
+        <button><HiPlus /></button>
       </Link>
       <ButtonGroup>
         {[-3, -2, -1, 0, 1, 2, 3].map((e, i) => {
           let week = Math.ceil((todaydate.getDay() + 1 + numberOfDays) / 7);
           return (
             <Link key={'week-' + i} href={{ pathname: '/schedule', query: { selectedWeek: week + e } }}>
-              <a>
+
                 <button key={i} disabled={selectedWeek ? (week + e) == selectedWeek : e === 0}>S-{week + e}</button>
-              </a>
+
             </Link>);
         })}
       </ButtonGroup>

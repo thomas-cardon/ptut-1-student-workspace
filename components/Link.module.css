@@ -1,0 +1,24 @@
+.link {
+  color: #4393e6;
+  transition: all 0.2s ease;
+}
+
+.link:hover {
+  color: #282828;
+  cursor: pointer;
+}
+
+.dark {
+  color: #FAFAFA;
+}
+
+.dark:hover {
+  color: #4393e6;
+}
+
+.link,
+.link:hover,
+.link:focus,
+.link:active {
+  text-decoration: none;
+}

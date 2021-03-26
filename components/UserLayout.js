@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 
 import Head from './Head';
-import Link from 'next/link';
-
 import Sidebar from './Sidebar';
+
 import styles from './UserLayout.module.css';
 
 import { HiOutlineMenu } from "react-icons/hi";

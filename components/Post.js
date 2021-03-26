@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from './Link';
 import Gravatar from 'react-gravatar';
 
 import { format } from 'date-fns';
@@ -16,13 +16,13 @@ export default function Post({ id, title, content, module, authorName, creationT
       <div className={styles.module}>
         {module && (
           <Link href={{ pathname: '/posts/list', query: { module } }}>
-            <a>{module}</a>
+            {module}
           </Link>
         )}
       </div>
       <h2 className={styles.title}>
         <Link href={'/posts/' + id}>
-          <a>{title}</a>
+          {title}
         </Link>
       </h2>
       <div className={styles.meta}>

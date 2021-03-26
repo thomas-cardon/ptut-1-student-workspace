@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 
 import UserLayout from '../../components/UserLayout';
 import Highlight from "../../components/Highlight";

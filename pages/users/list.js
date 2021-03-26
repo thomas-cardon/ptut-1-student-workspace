@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import Link from 'next/link';
+import Link from '../../components/Link';
 
 import {
   contextMenu,
@@ -85,7 +85,7 @@ export default function UserListPage({ user, module }) {
       </Title>
       <h3 className={'subtitle'}>
         <Link href='/users/edit'>
-          <a>Ajouter...</a>
+          Ajouter...
         </Link>
       </h3>
       <div className={'grid'} style={{ width: '92%' }}>

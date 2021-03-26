@@ -43,17 +43,6 @@ p {
   font-size: x-large;
 }
 
-a {
-  color: #4393e6;
-  transition: all 0.2s ease;
-  text-decoration: none;
-}
-
-a:hover {
-  color: #282828 !important;
-  cursor: pointer;
-}
-
 .code {
   background: #fafafa;
   border-radius: 5px;
