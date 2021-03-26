@@ -11,7 +11,7 @@ import styles from './Sidebar.module.css';
 export default function Sidebar({ user, children, active, setActive }) {
   const { darkModeActive } = useDarkMode();
   return (
-    <aside className={styles.sidebar} data-active={active ? 1 : 0}>
+    <aside data-active={active ? 1 : 0}>
       <Link href="/dashboard">
         <div className={styles.brand}>
           <img width="40px" height="40px" src="/icon-384x384.png" />

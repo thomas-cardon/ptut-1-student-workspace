@@ -89,22 +89,14 @@ export default function GradesListPage({ user, id }) {
 
   return (
     <UserLayout user={user} flex={true} header={<>
-      <Title appendGradient="enregistrées">
+      <Title appendGradient="enregistrées" button={user.userType == 2 ?
+        <Link href="/grades/create">
+          <Button is="action" icon={<HiPlusCircle />}>Ajouter</Button>
+        </Link> : <></>}>
         Notes
       </Title>
       </>}>
-      {user.userType == 2 && (
-        <h3 className={'subtitle'}>
-          <Link href="/grades/create">
-
-            <Button is="action" icon={<HiPlusCircle />}>Ajouter</Button>
-          </Link>
-        </h3>
-      )}
       <div className={'grid'} style={{ width: '92%' }}>
-        <Highlight title={'A savoir'}>
-          {!id ? 'Vous ne verrez que les étudiants dans la liste des notes.' : "Vous ne voyez qu'un seul étudiant actuellement. Pour tous les voir, cliquez sur le lien dans la barre latérale."}
-        </Highlight>
         {(users.length > 0 && query !== "") && (
           <p style={{ textAlign: 'center'}}><i style={{ marginBottom: '1em', marginTop: '-0.5em' }}>{users.length} résultats pour {query}...</i></p>
         )}

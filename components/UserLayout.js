@@ -43,7 +43,7 @@ export default function UserLayout({ title, user, children, header, flex = true,
         {children}
       </section>
 
-      <aside className={[styles.sidebar, styles['cards-list']].join(' ')}>
+      <aside className={styles['cards-list']}>
         <div className={styles.card}>
           <div className="">
             <div className={styles.profile}>
