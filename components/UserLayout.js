@@ -12,6 +12,8 @@ import { useDarkMode } from 'next-dark-mode';
 import FormInput from './FormFields/FormInput';
 import Button from './FormFields/FormButton';
 
+import Link from './Link';
+
 export default function UserLayout({ title, user, children, header, flex = true, ...rest }) {
   const [active, setActive] = useState(false);
   const { darkModeActive } = useDarkMode();
@@ -66,14 +68,19 @@ export default function UserLayout({ title, user, children, header, flex = true,
           </p>
 
           <div className="buttons">
-            <Button>
-              <HiAdjustments />
-            </Button>
-            <Button is="danger">
-              <div style={{ display: 'flex' }}>
-                <HiLogout />&nbsp;Déconnexion
-              </div>
-            </Button>
+            <Link href="/settings">
+              <Button>
+                <HiAdjustments />
+              </Button>
+            </Link>
+
+            <Link href="/logout">
+              <Button is="danger">
+                <div style={{ display: 'flex' }}>
+                  <HiLogout />&nbsp;Déconnexion
+                </div>
+              </Button>
+            </Link>
           </div>
         </div>
       </aside>
