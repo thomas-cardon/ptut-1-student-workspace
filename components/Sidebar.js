@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import Gravatar from 'react-gravatar';
 
-import { HiOutlineMenu, HiViewGridAdd, HiCalendar, HiAnnotation, HiPencilAlt, HiTable, HiUsers, HiAdjustments } from "react-icons/hi";
+import { HiOutlineMenu, HiViewGridAdd, HiCalendar, HiAnnotation, HiPencilAlt, HiTable, HiUsers, HiAdjustments, HiLogout } from "react-icons/hi";
 import { useDarkMode } from 'next-dark-mode';
 
 import styles from './Sidebar.module.css';
@@ -75,21 +75,24 @@ export default function Sidebar({ user, children, active, setActive }) {
               Utilisateurs
             </a>
           </Link>
-
-          <Link href="/settings">
-            <a className={[styles.settings, darkModeActive ? styles['settings-dark'] : ''].join(' ')}>
-              <div className={styles.icon}>
-                <HiAdjustments />
-              </div>
-            </a>
-          </Link>
-
-          <Link href="/logout">
-            <a style={{ textAlign: 'center', display: 'block', color: '#FAFAFA' }}>
-              Se déconnecter
-            </a>
-          </Link>
         </>)}
       </ul>
+      <div className={[styles.iconsGroup, darkModeActive ? styles['dark'] : ''].join(' ')} style={{ flex: 'auto' }}>
+        <Link href="/settings">
+          <a>
+            <div className={styles.icon}>
+              <HiAdjustments />
+            </div>
+          </a>
+        </Link>
+
+        <Link href="/logout">
+          <a>
+            <div className={styles.icon}>
+              <HiLogout />
+            </div>
+          </a>
+        </Link>
+      </div>
       </aside>);
 };

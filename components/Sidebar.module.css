@@ -49,11 +49,11 @@
   cursor: pointer;
 }
 
-.list-dark a {
+.list-dark a, .dark .icon {
   color: #282828 !important;
 }
 
-.list-dark a:hover {
+.list-dark a:hover, .dark .icon:hover {
   color: #FAFAFA !important;
 }
 
@@ -63,31 +63,28 @@
 
 .icon {
   display: inline-block;
-  margin-right: 0.6em;
+  margin-right: .6em;
 }
 
-.settings {
-  width: 4rem;
-  height: auto;
-  margin: auto;
-  display: block;
-  color: #FAFAFA;
-}
 
-.settings .icon {
-    width: 100%;
-    height: 100%;
-    font-size: 2.5em;
-    text-align: center;
-}
-
-.settings:hover {
+.iconsGroup .icon:hover {
   cursor: pointer;
   color: #282828;
 }
 
-.settings-dark:hover {
+.dark .icon:hover {
   color: #FAFAFA !important;
+}
+
+.iconsGroup {
+  display: flex;
+}
+
+.iconsGroup a, .iconsGroup .icon {
+  margin: 0 auto;
+
+  font-size: xx-large;
+  text-align: center;
 }
 
 .closeIcon {
