@@ -1,4 +1,4 @@
-import UserLayout from '../components/UserLayout';
+import UserLayout from '../components/ModernLayout';
 import Title from '../components/Title';
 import Chat from '../components/Chat';
 import Highlight from '../components/Highlight';
