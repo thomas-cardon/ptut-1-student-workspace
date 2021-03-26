@@ -84,12 +84,12 @@ h1, h2, h3, h4, h5, h6, h7 {
   color: var(--color-primary-100);
 }
 
-span.title {
+span.title, p.title {
   font-weight: bold;
   font-size: 1.2rem;
   color: var(--color-primary-100);
 }
 
-span.subtitle {
+span.subtitle, p.subtitle {
   color: var(--color-primary-300);
 }
