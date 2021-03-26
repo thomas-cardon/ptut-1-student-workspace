@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import Link from './Link';
 
-import Gravatar from 'react-gravatar';
-
-import { HiOutlineMenu, HiViewGridAdd, HiCalendar, HiAnnotation, HiPencilAlt, HiTable, HiUsers, HiAdjustments, HiLogout } from "react-icons/hi";
+import { HiOutlineMenu, HiViewGridAdd, HiCalendar, HiAnnotation, HiPencilAlt, HiTable, HiUsers } from "react-icons/hi";
 import { useDarkMode } from 'next-dark-mode';
 
 import styles from './Sidebar.module.css';
