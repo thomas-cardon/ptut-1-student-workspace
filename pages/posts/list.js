@@ -5,6 +5,10 @@ import Highlight from "../../components/Highlight";
 import Title from "../../components/Title";
 import Post from "../../components/Post";
 
+import Button from '../../components/FormFields/FormButton';
+
+import { HiPlusCircle } from "react-icons/hi";
+
 import { usePosts, useAvatar } from '../../lib/hooks';
 import withSession from "../../lib/session";
 
@@ -18,21 +22,20 @@ export default function Posts({ user, module }) {
 
   return (
     <UserLayout user={user} flex={true}>
-      <Title appendGradient="posts">
+      <Title appendGradient="posts" button={user.userType !== 0 ?
+        <Link href="/grades/create">
+          <Button is="action" icon={<HiPlusCircle />}>Ajouter</Button>
+        </Link> : <></>}>
         Derniers
       </Title>
-      {user.userType !== 0 && (
-        <h3 className={'subtitle'}>
-          <Link href="/posts/create">
-            Ajouter
-          </Link>...
-        </h3>
-      )}
-      <Highlight title={'Le saviez-vous?'}>
-        Cliquez sur le titre d'un post pour y accéder. Ou retournez à la&nbsp;
-        <Link href="/posts/list" style={{ color: 'red' }}>
-          liste sans filtre
-        </Link>.
+
+      <Highlight title={'Le saviez-vous?'} style={{ width: '100%' }}>
+        <div>
+          Cliquez sur le titre d'un post pour y accéder. Ou retournez à la&nbsp;
+          <Link href="/posts/list" style={{ color: 'red' }}>
+            liste sans filtre
+          </Link>.
+        </div>
       </Highlight>
       <div className={'grid'}>
         {content}
