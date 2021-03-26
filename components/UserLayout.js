@@ -5,6 +5,7 @@ import Sidebar from './Sidebar';
 
 import styles from './UserLayout.module.css';
 
+import Gravatar from 'react-gravatar';
 import { HiAdjustments, HiLogout } from "react-icons/hi";
 
 import { useDarkMode } from 'next-dark-mode';
@@ -49,11 +50,11 @@ export default function UserLayout({ title, user, children, header, flex = true,
         <div className={styles.card}>
           <div className="">
             <div className={styles.profile}>
-              <img alt="avatar" className={styles.avatar} src="https://avatars.githubusercontent.com/u/5779685?v=4" />
+              <Gravatar size={80} email={user.email} alt="Votre photo de profil" className={styles.avatar} draggable={false} />
               <p className={styles.text}>
-                <span className={styles.name}>Thomas Cardon</span>
+                <span className={styles.name}>{user.firstName} {user.lastName}</span>
                 <br />
-                <span className={styles.id}>#9ARPYBH6I0IH</span>
+                <span className={styles.id}>#{user.userId}</span>
               </p>
             </div>
             <div className="mt-2"></div>
