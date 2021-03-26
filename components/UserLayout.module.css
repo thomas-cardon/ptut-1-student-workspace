@@ -1,97 +1,171 @@
-.container {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 50px 1fr 50px;
-  grid-template-areas:
-    'header'
-    'main'
-    'footer';
-  height: 100vh;
-}
-
-.container.dark {
-  color: #D4D4D4;
-  background-color: #282828;
-}
-
-/* Non-mobile styles, 750px breakpoint */
-@media only screen and (min-width: 46.875em) {
-  /* Show the sidenav */
-  .container {
-    grid-template-columns: 240px 1fr; /* Show the side nav for non-mobile screens */
-    grid-template-areas:
-      "sidebar header"
-      "sidebar main"
-      "sidebar footer";
-  }
-
-  .header-search {
-    margin-left: 0;
-  }
-}
-
-.header {
-  grid-area: header;
-}
-
-.header.dark, .footer.dark {
-  background-color: #1F1F1F;
-}
-
-.header-search {
-  margin-left: 42px;
-}
-
 .main {
-  grid-area: main;
-}
+  width: 100%;
+  height: 100%;
 
-.main.dark {
+  display: grid;
+  grid-template-columns: 1fr 2.5fr 1fr;
+  gap: 0px 2%;
+
   background-color: var(--color-primary-900);
 }
 
-.footer {
-  grid-area: footer;
-}
-
-.footer p {
-  margin: 0;
-}
-
-.header, .footer {
+.sidebar {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 1em;
-  background-color: #F3F4F6;
-}
-
-.menuIcon {
-  position: fixed; /* Needs to stay visible for all mobile scrolling */
-  display: flex;
-  top: 5px;
-  left: 10px;
-  align-items: center;
-  justify-content: center;
-  background-color: #DADAE3;
-  border-radius: 50%;
-  z-index: 1;
-  cursor: pointer;
-  padding: 12px;
-}
-
-.overview {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(265px, 1fr));
-  grid-auto-rows: 94px;
-  grid-gap: 20px;
-  margin: 20px;
-}
-
-.flex {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
   flex-direction: column;
+
+  height: 100vh;
+
+  top: 30px;
+  position: sticky;
+  padding: 0 10% 10% 10%;
+}
+
+.cards-list {
+  align-items: flex-end;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  padding: 20px;
+  margin-bottom: 1.8em;
+  border-radius: 8px;
+
+  background-color: var(--color-primary-800);
+}
+
+.profile {
+  display: flex;
+  flex-direction: row-reverse;
+  margin: auto;
+}
+
+.profile > img {
+  float: left;
+}
+
+.profile > .text {
+  width: 100%;
+  height: 100%;
+  display: block;
+  float: right;
+}
+
+.id {
+  font-size: .875rem;
+  color: var(--color-primary-300);
+}
+
+.name {
+  font-size: .875rem;
+  font-weight: 700;
+  color: var(--color-primary-100);
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  position: relative;
+  display: inline-block;
+  object-fit: cover;
+  border-radius: 9999px;
+}
+
+.mt-2 {
+  margin-top: 10px;
+}
+
+.input-container {
+  display: flex;
+  width: 100%;
+  margin-bottom: 15px;
+
+  align-items: center;
+
+  height: 40px;
+
+  border-radius: .5rem;
+  color: var(--color-primary-300);
+  background-color: var(--color-primary-700);
+
+  z-index: 10;
+  margin-top: 30px;
+
+  opacity: 0.9;
+  transition: all 0.2s;
+}
+
+.input-container:hover {
+  opacity: 1;
+}
+
+
+.input-container > .icon {
+  pointer-events: none;
+  color: var(--color-primary-300);
+  margin: 5px 0 0 10px;
+  text-align: center;
+}
+
+.input-container > input {
+  width: 100%;
+  margin: 0;
+  padding: 10px 0 10px 20px;
+
+  border: none;
+  outline: none;
+
+  border-radius: 8px;
+
+  color: var(--color-primary-100);
+  background-color: transparent;
+  font-family: inherit;
+  font-size: 100%;
+}
+
+.actions {
+  gap: 20px;
+}
+
+.card h4 {
+  color: var(--color-primary-100);
+}
+
+.card span.title {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: var(--color-primary-100);
+}
+
+.card span.subtitle {
+  color: var(--color-primary-300);
+}
+
+
+.buttons {
+  gap: 10px;
+  display: flex;
+}
+
+.buttons > button {
+  height: 30px;
+  min-width: 30px;
+
+  font-size: .875rem;
+  font-weight: 700;
+  color: var(--color-button-text);
+  background-color: var(--color-primary-700);
+
+  border: none;
+  border-radius: .25rem;
+}
+
+.buttons > button.danger {
+  background-color: var(--color-accent);
+}
+
+.buttons > button:hover {
+  cursor: pointer;
 }
