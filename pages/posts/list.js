@@ -30,7 +30,7 @@ export default function Posts({ user, module }) {
       )}
       <Highlight title={'Le saviez-vous?'}>
         Cliquez sur le titre d'un post pour y accéder. Ou retournez à la&nbsp;
-        <Link href="/posts/list">
+        <Link href="/posts/list" style={{ color: 'red' }}>
           liste sans filtre
         </Link>.
       </Highlight>
