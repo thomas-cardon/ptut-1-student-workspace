@@ -27,21 +27,6 @@ export default function Dashboard({ user }) {
   // Indication présentiel ou distanciel ce serait bien dans l'EDT
   if (posts) {
     content = (<>
-      {nextCourse?.success && (
-        <Highlight title="Attention" icon="⏳">
-          <p>
-            En cours -> <b>(M1101) Introduction aux Systèmes Informatiques</b> <i>en distanciel</i>,
-            &nbsp;enseigné par <i>Klélia Amoura</i>.
-            <br />
-            Cliquez&nbsp;
-            <Link href="/posts/list">
-              ici
-            </Link>
-            &nbsp;pour rejoindre la réunion.
-          </p>
-        </Highlight>
-      )}
-
       <div className="cards">
         {posts.filter(x => x.isHomework).length > 0 && (
           <div className={`card ${darkModeActive ? 'dark' : ''}`}>
