@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import Link from 'next/link';
+import Link from '../../components/Link';
 
 import UserLayout from '../../components/UserLayout';
 import Highlight from '../../components/Highlight';
@@ -95,7 +95,7 @@ export default function GradesListPage({ user, id }) {
       {user.userType == 2 && (
         <h3 className={'subtitle'}>
           <Link href="/grades/create">
-            <a>Ajouter</a>
+            Ajouter
           </Link>...
         </h3>
       )}
@@ -103,7 +103,15 @@ export default function GradesListPage({ user, id }) {
         <Highlight title={'A savoir'}>
           {!id ? 'Vous ne verrez que les étudiants dans la liste des notes.' : "Vous ne voyez qu'un seul étudiant actuellement. Pour tous les voir, cliquez sur le lien dans la barre latérale."}
         </Highlight>
-        <p style={{ textAlign: 'center'}}><i style={{ marginBottom: '1em', marginTop: '-0.5em' }}>{users.length} résultats pour {query}...</i></p>
+        {(users.length > 0 && query !== "") && (
+          <p style={{ textAlign: 'center'}}><i style={{ marginBottom: '1em', marginTop: '-0.5em' }}>{users.length} résultats pour {query}...</i></p>
+        )}
+        {(users.length === 0 && query !== "") && (
+          <p style={{ textAlign: 'center'}}><i style={{ marginBottom: '1em', marginTop: '-0.5em' }}>Aucun résultat</i></p>
+        )}
+        {(users.length === 0 && query === "") && (
+          <p style={{ textAlign: 'center'}}><i style={{ marginBottom: '1em', marginTop: '-0.5em' }}>Il n'y a aucune note ou utilisateur enregistré dans la base de données...</i></p>
+        )}
         {content}
       </div>
     </UserLayout>
