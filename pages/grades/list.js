@@ -7,7 +7,9 @@ import Highlight from '../../components/Highlight';
 import Table from '../../components/Table';
 import Title from '../../components/Title';
 
-import * as Fields from "../../components/FormFields";
+import Button from '../../components/FormFields/FormButton';
+
+import { HiPlusCircle } from "react-icons/hi";
 
 import {
   contextMenu,
@@ -87,16 +89,16 @@ export default function GradesListPage({ user, id }) {
 
   return (
     <UserLayout user={user} flex={true} header={<>
-      <Fields.FormInput name="search" type="text" onChange={e => setQuery(e.target.value)} value={query} placeholder="Recherchez un utilisateur..." autoComplete="off" disableLogic={true} />
-      </>}>
       <Title appendGradient="enregistrées">
         Notes
       </Title>
+      </>}>
       {user.userType == 2 && (
         <h3 className={'subtitle'}>
           <Link href="/grades/create">
-            Ajouter
-          </Link>...
+
+            <Button is="action" icon={<HiPlusCircle />}>Ajouter</Button>
+          </Link>
         </h3>
       )}
       <div className={'grid'} style={{ width: '92%' }}>

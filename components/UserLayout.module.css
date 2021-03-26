@@ -9,6 +9,24 @@
   background-color: var(--color-primary-900);
 }
 
+.header {
+  top: -1px;
+  position: sticky;
+
+  background-color: var(--color-primary-900);
+  width: 100%;
+}
+
+.header > div {
+  display: flex;
+  flex-direction: column;
+
+  margin-top: 30px;
+  padding-bottom: 2em;
+  width: 100%;
+  height: 100%;
+}
+
 .sidebar {
   display: flex;
   flex-direction: column;
@@ -141,31 +159,4 @@
 
 .card span.subtitle {
   color: var(--color-primary-300);
-}
-
-
-.buttons {
-  gap: 10px;
-  display: flex;
-}
-
-.buttons > button {
-  height: 30px;
-  min-width: 30px;
-
-  font-size: .875rem;
-  font-weight: 700;
-  color: var(--color-button-text);
-  background-color: var(--color-primary-700);
-
-  border: none;
-  border-radius: .25rem;
-}
-
-.buttons > button.danger {
-  background-color: var(--color-accent);
-}
-
-.buttons > button:hover {
-  cursor: pointer;
 }
