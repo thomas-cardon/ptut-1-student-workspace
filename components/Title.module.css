@@ -31,5 +31,5 @@
   font-weight: 800;
   color: transparent;
   background-clip: text;
-  background-image: linear-gradient(to top right, #546DE5, #546DE5);
+  background-color: var(--color-secondary);
 }
