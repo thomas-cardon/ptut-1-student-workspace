@@ -4,5 +4,16 @@
 
 .list {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+
+  color: var(--color-primary-300);
+}
+
+.list > h3 {
+  flex: 1 1 100%;
+}
+
+.list > div {
+  width: fit-content;
+  padding: 0.5em;
 }

@@ -1,21 +1,56 @@
-.input {
-  display: block;
+.input-container {
+  display: flex;
   width: 100%;
-  padding: .375rem .75rem;
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5;
-  color: #212529;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid #ced4da;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  border-radius: .25rem;
-  transition: all .15s ease-in-out,box-shadow .15s ease-in-out;
+  margin-bottom: 15px;
+
+  align-items: center;
+
+  height: 40px;
+
+  border-radius: .5rem;
+  color: var(--color-primary-300);
+  background-color: var(--color-primary-700);
+
+  z-index: 10;
+  margin-top: 30px;
+
+  opacity: 0.9;
+  transition: all 0.2s;
 }
 
-.input:disabled {
-  background: #ccc;
+.input-container:hover {
+  opacity: 1;
+}
+
+
+.input-container > .icon {
+  pointer-events: none;
+  color: var(--color-primary-300);
+  margin: 5px 0 0 10px;
+  text-align: center;
+}
+
+.input-container > input {
+  width: 100%;
+  margin: 0;
+  padding: 10px 0 10px 20px;
+
+  border: none;
+  outline: none;
+
+  border-radius: 8px;
+
+  color: var(--color-primary-100);
+  background-color: transparent;
+  font-family: inherit;
+  font-size: 100%;
+}
+
+.input-container > input::-webkit-calendar-picker-indicator {
+  color: red;
+  margin-right: 1em;
+}
+
+.input-container > input[type="datetime-local"]:hover, .input-container > input::-webkit-calendar-picker-indicator:hover {
+  cursor: pointer;
 }
