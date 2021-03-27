@@ -1,11 +1,15 @@
 .brand {
   display: flex;
   flex-direction: row;
-  width: 100%;
+  width: fit-content;
 }
 
-.brand > * {
+.brand, .brand > * {
   margin: auto;
+}
+
+.brand > img {
+  border-radius: 9999px;
 }
 
 .list {
@@ -18,7 +22,7 @@
   color: #FAFAFA;
 
   display: block;
-  padding: 20px 20px 20px 40px;
+  padding: 1.5em 1.5em 1.5em 2em;
   transition: all 0.3s ease;
 }
 
@@ -29,4 +33,43 @@
 .icon {
   display: inline-block;
   margin-right: .6em;
+}
+
+.sidebar {}
+
+@media (max-width:641px)  { /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */
+  .list {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .item {
+    visibility: collapse;
+    overflow: hidden;
+
+    margin: auto;
+    padding: 2em;
+
+    width: 1em;
+    height: 1em;
+  }
+
+  .icon {
+    visibility: visible;
+  }
+
+  .sidebar {
+    position: relative;
+    top: 0;
+    margin-top: 30px;
+    padding: 0 5%;
+  }
+
+  .brand h3 {
+    display: none;
+  }
+
+  .sidebar hr {
+    display: none;
+  }
 }

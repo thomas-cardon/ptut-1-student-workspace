@@ -9,14 +9,14 @@ import styles from './Sidebar.module.css';
 export default function Sidebar({ user, children, active, setActive }) {
   const { darkModeActive } = useDarkMode();
   return (
-    <aside data-active={active ? 1 : 0}>
+    <aside data-active={active ? 1 : 0} className={styles.sidebar}>
       <Link href="/dashboard">
         <div className={styles.brand}>
           <img width="40px" height="40px" src="/icon-384x384.png" />
           <h3>Student Workspace</h3>
         </div>
       </Link>
-      <ul className={[styles.list, darkModeActive ? styles['list-dark'] : ''].join(' ')}>
+      <div className={[styles.list, darkModeActive ? styles['list-dark'] : ''].join(' ')}>
         <Link href="/dashboard" className={styles.item}>
           <div className={styles.icon}>
             <HiViewGridAdd />
@@ -70,6 +70,6 @@ export default function Sidebar({ user, children, active, setActive }) {
             Notes
           </Link>
         </>)}
-      </ul>
+      </div>
     </aside>);
 };
