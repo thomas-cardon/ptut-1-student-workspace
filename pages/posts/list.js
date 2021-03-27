@@ -21,15 +21,16 @@ export default function Posts({ user, module }) {
   else if (posts) content = posts.map((post, i) => <Post id={post.id} key={'post-' + post.id} authorName={post.firstName + ' ' + post.lastName} creationTime={new Date(post.creation_time)} email={post.email} {...post}></Post>);
 
   return (
-    <UserLayout user={user} flex={true}>
-      <Title appendGradient="posts" button={user.userType !== 0 ?
-        <Link href="/grades/create">
+    <UserLayout user={user} flex={true} header={<>
+      <Title appendGradient="informations" button={user.userType > 0 ?
+        <Link href="/subjects/create">
           <Button is="action" icon={<HiPlusCircle />}>Ajouter</Button>
         </Link> : <></>}>
-        Derniers
+        Dernières
       </Title>
+      </>}>
 
-      <Highlight title={'Le saviez-vous?'} style={{ width: '100%' }}>
+      <Highlight title="Le saviez-vous?">
         <div>
           Cliquez sur le titre d'un post pour y accéder. Ou retournez à la&nbsp;
           <Link href="/posts/list" style={{ color: 'red' }}>
