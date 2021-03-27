@@ -23,6 +23,8 @@ async function handler(req, res, session) {
       ORDER BY start ASC
       `, params);
 
+    schedule = schedule.map(o => ({ ...o, start: new Date(o.start).getTime(), end: new Date(o.start).getTime() + (o.duration * 60000) }));
+
     if (omitPassedEntries)
       schedule = schedule.filter(x => isFuture(addMinutes(Date.parse(x.start), x.duration)));
 
