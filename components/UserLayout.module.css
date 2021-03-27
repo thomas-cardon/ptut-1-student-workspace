@@ -18,6 +18,8 @@
 
   background-color: var(--color-primary-900);
   width: 100%;
+
+  z-index: 100;
 }
 
 .header > div {
@@ -32,7 +34,7 @@
 @media (max-width:641px)  { /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */
   .main {
     grid-template-columns: 1fr;
-    
+
     display: flex;
     flex-direction: column;
   }
