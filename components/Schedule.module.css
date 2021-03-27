@@ -17,6 +17,14 @@
   color: black;
 }
 
+.schedule.dark {
+  background-color: var(--color-primary-800);
+  color: var(--color-primary-100);
+
+  border-radius: 8px;
+  margin: 0;
+}
+
 @media screen and (max-width: 700px) {
   .schedule {
     background-color: unset;
@@ -36,10 +44,11 @@
     display: grid;
     overflow: hidden;
     position: relative;
-    width: 100%;
 
-    grid-gap: 0 1em;
-    grid-template-rows: [tracks] auto [time-0800] 1em [time-0815] 1em [time-0830] 1em [time-0845] 1em [time-0900] 1em [time-0915] 1em [time-0930] 1em [time-0945] 1em [time-1000] 1em [time-1015] 1em [time-1030] 1em [time-1045] 1em [time-1100] 1em [time-1115] 1em [time-1130] 1em [time-1145] 1em [time-1200] 1em [time-1215] 1em [time-1230] 1em [time-1245] 1em [time-1300] 1em [time-1315] 1em [time-1330] 1em [time-1345] 1em [time-1400] 1em [time-1415] 1em [time-1430] 1em [time-1445] 1em [time-1500] 1em [time-1515] 1em [time-1530] 1em [time-1545] 1em [time-1600] 1em [time-1615] 1em [time-1630] 1em [time-1645] 1em [time-1700] 1em [time-1715] 1em [time-1730] 1em [time-1745] 1em [time-1800] 1em [time-1815] 1em [time-1830] 1em [time-1845] 1em [time-1900] 1em;
+    width: 100%;
+    height: 100vh;
+
+    grid-template-rows: [tracks] minmax(40px, 3em) [time-0800] minmax(1em, 1fr) [time-0815] minmax(1em, 1fr) [time-0830] minmax(1em, 1fr) [time-0845] minmax(1em, 1fr) [time-0900] minmax(1em, 1fr) [time-0915] minmax(1em, 1fr) [time-0930] minmax(1em, 1fr) [time-0945] minmax(1em, 1fr) [time-1000] minmax(1em, 1fr) [time-1015] minmax(1em, 1fr) [time-1030] minmax(1em, 1fr) [time-1045] minmax(1em, 1fr) [time-1100] minmax(1em, 1fr) [time-1115] minmax(1em, 1fr) [time-1130] minmax(1em, 1fr) [time-1145] minmax(1em, 1fr) [time-1200] minmax(1em, 1fr) [time-1215] minmax(1em, 1fr) [time-1230] minmax(1em, 1fr) [time-1245] minmax(1em, 1fr) [time-1300] minmax(1em, 1fr) [time-1315] minmax(1em, 1fr) [time-1330] minmax(1em, 1fr) [time-1345] minmax(1em, 1fr) [time-1400] minmax(1em, 1fr) [time-1415] minmax(1em, 1fr) [time-1430] minmax(1em, 1fr) [time-1445] minmax(1em, 1fr) [time-1500] minmax(1em, 1fr) [time-1515] minmax(1em, 1fr) [time-1530] minmax(1em, 1fr) [time-1545] minmax(1em, 1fr) [time-1600] minmax(1em, 1fr) [time-1615] minmax(1em, 1fr) [time-1630] minmax(1em, 1fr) [time-1645] minmax(1em, 1fr) [time-1700] minmax(1em, 1fr) [time-1715] minmax(1em, 1fr) [time-1730] minmax(1em, 1fr) [time-1745] minmax(1em, 1fr) [time-1800] minmax(1em, 1fr) [time-1815] minmax(1em, 1fr) [time-1830] minmax(1em, 1fr) [time-1845] minmax(1em, 1fr) [time-1900] minmax(1em, 1fr);
     grid-template-columns: [times] 4em [track-1-start] minmax(0, 1fr) [track-1-end track-2-start] minmax(0, 1fr) [track-2-end track-3-start] minmax(0, 1fr) [track-3-end track-4-start] minmax(0, 1fr) [track-4-end track-5-start] minmax(0, 1fr) [track-5-end track-6-start] minmax(0, 1fr) [track-7-end];
   }
 }
@@ -67,7 +76,7 @@
   font-size: 1em;
   font-family: system-ui;
   text-transform: uppercase;
-  margin-left: 1em;
+  margin: 0 0.5em;
 }
 
 .trackSlot {
@@ -94,12 +103,12 @@
   cursor: pointer;
 }
 
-.session .hours, .session .teacher, .session .room, .session .module, .session .name {
+.session .top, .session .teacher, .session .bottom, .session .module, .session .name {
   margin: 5% 0 0 5%;
 
   text-overflow: ellipsis;
   overflow: hidden;
-  white-space: nowrap;
+  white-space: pre-wrap;
 }
 
 .teacher {
@@ -109,11 +118,12 @@
   margin-top: 0 !important;
 }
 
-.hours {
-  font-size: small;
+.top {
+  flex-wrap: wrap;
+  display: flex;
+  padding: 0.2em;
 
-  margin-top: 1em;
-  margin-bottom: 1em;
+  font-size: small;
 }
 
 .name {
@@ -121,9 +131,14 @@
   font-size: 0.8em;
 }
 
-.room {
+.bottom {
+  display: flex;
+  flex-direction: column;
+
   text-transform: uppercase;
   font-size: .6em;
+}
 
-  padding-bottom: 5px;
+.bottom * {
+  margin: 0;
 }
