@@ -78,11 +78,7 @@ export default function ClassListPage({ user }) {
         Modules
       </Title>
       </>}>
-      <div className={'grid'}>
-        <ul>
-          {content}
-        </ul>
-      </div>
+      {content}
     </UserLayout>
   );
 };
