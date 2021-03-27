@@ -17,3 +17,13 @@
   width: fit-content;
   padding: 0.5em;
 }
+
+.list input {
+  margin: 0;
+  height: 100%;
+}
+
+.list label {
+  float: right;
+  margin-left: 5px;
+}

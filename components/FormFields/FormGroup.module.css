@@ -1,8 +1,12 @@
+.formGroup {
+  display: flex;
+  flex-direction: column;
+}
+
 .formGroup > * {
   flex: 1;
   display: block;
-
-  margin: 1em 0 1em 0;
+  margin: 5px 0;
 }
 
 .formGroup label {
@@ -10,5 +14,5 @@
 }
 
 .inline > * {
-  display: unset;
+  display: inline-block;
 }
