@@ -1,8 +1,8 @@
 import styles from "./ButtonGroup.module.css";
 
-export default function ButtonGroup({ disableStyle = false, children, ...rest }) {
+export default function ButtonGroup({ style = {}, children, ...rest }) {
   return (
-    <div className={styles.btnGroup}>
+    <div className={styles.btnGroup} style={style}>
       {children}
     </div>
   );
