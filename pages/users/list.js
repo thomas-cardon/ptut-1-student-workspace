@@ -9,12 +9,13 @@ import {
   Submenu
 } from "react-contexify";
 
-import * as Fields from "../../components/FormFields";
-
 import UserLayout from '../../components/UserLayout';
 import Highlight from "../../components/Highlight";
 import Table from '../../components/Table';
 import Title from '../../components/Title';
+
+import Button from '../../components/FormFields/FormButton';
+import { HiPlusCircle } from "react-icons/hi";
 
 import use from '../../lib/use';
 import withSession from "../../lib/session";
@@ -74,26 +75,23 @@ export default function UserListPage({ user, module }) {
           <td data-type="type">{user.userType === 0 ? 'Étudiant' : user.userType === 1 ? 'Professeur' : 'Administration'}</td>
         </tr>)}
       </Table>
-      <Fields.FormButton onClick={() => setSize(size + 1)}>Charger plus...</Fields.FormButton>
+      <Button onClick={() => setSize(size + 1)}>Charger plus...</Button>
     </>;
   }
 
   return (
-    <UserLayout user={user} flex={true}>
-      <Title appendGradient="utilisateurs">
-        Liste des
+    <UserLayout user={user} flex={true} header={<>
+      <Title appendGradient="enregistrés" button={user.userType == 2 ?
+        <Link href="/users/edit">
+          <Button is="action" icon={<HiPlusCircle />}>Ajouter</Button>
+        </Link> : <></>}>
+        Modules
       </Title>
-      <h3 className={'subtitle'}>
-        <Link href='/users/edit'>
-          Ajouter...
-        </Link>
-      </h3>
-      <div className={'grid'} style={{ width: '92%' }}>
-        <Highlight title={'Le saviez-vous?'}>
-          Cliquez sur un utilisateur pour éditer des propriétés.
-        </Highlight>
-        {content}
-      </div>
+      </>}>
+      <Highlight title="Le saviez-vous?">
+        Cliquez sur un utilisateur pour éditer des propriétés.
+      </Highlight>
+      {content}
     </UserLayout>
   );
 };
