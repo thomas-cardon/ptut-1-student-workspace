@@ -149,8 +149,12 @@
   font-size: 100%;
 }
 
-.actions {
+.actions, .currentClass {
   gap: 20px;
+}
+
+.currentClass {
+  border: 1px solid var(--color-accent);
 }
 
 .card h4 {

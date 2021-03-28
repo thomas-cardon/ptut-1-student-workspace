@@ -11,6 +11,8 @@
   border-radius: .25rem;
 
   transition: all 0.2s;
+
+  padding: 0.5em;
 }
 
 .button.danger {
@@ -19,6 +21,14 @@
 
 .button.danger:hover {
   background-color: var(--color-accent-hover);
+}
+
+.button.success {
+  background-color: #2ecc71;
+}
+
+.button.success:hover {
+  background-color: #40d47e;
 }
 
 .button.action {

@@ -6,18 +6,25 @@ import Sidebar from './Sidebar';
 import styles from './UserLayout.module.css';
 
 import Gravatar from 'react-gravatar';
-import { HiAdjustments, HiLogout } from "react-icons/hi";
+import { HiAdjustments, HiLogout, HiArrowRight, HiDotsHorizontal, HiMoon } from "react-icons/hi";
 
 import { useDarkMode } from 'next-dark-mode';
+
+import { formatDistanceToNow } from 'date-fns';
+import { fr } from 'date-fns/locale';
 
 import FormInput from './FormFields/FormInput';
 import Button from './FormFields/FormButton';
 
 import Link from './Link';
 
+import { useCurrentClass } from '../lib/hooks';
+
 export default function UserLayout({ title, user, children, header, flex = true, ...rest }) {
-  const [active, setActive] = useState(false);
   const { darkModeActive } = useDarkMode();
+
+  const { data : current } = useCurrentClass();
+  console.dir(current);
 
   return (<>
     <Head>
@@ -29,7 +36,7 @@ export default function UserLayout({ title, user, children, header, flex = true,
       <link rel="manifest" href="/site.webmanifest" />
     </Head>
     <main className={styles.main} {...rest}>
-      <Sidebar user={user} active={active} setActive={setActive}></Sidebar>
+      <Sidebar user={user}></Sidebar>
 
       <section className={styles.content}>
         <header className={styles.header}>
@@ -84,6 +91,42 @@ export default function UserLayout({ title, user, children, header, flex = true,
             </Link>
           </div>
         </div>
+
+        {current && !current.error && (
+          <div className={[styles.card, styles.currentClass].join(' ')}>
+            <p className={styles.text}>
+              <span className={styles.title}>{current.module} {current.subjectName}</span>
+              <br />
+              <span className={styles.subtitle}>Klélia Amoura</span>
+              <br />
+              <span className={styles.subtitle} style={{ color: 'var(--color-accent)' }}>Démarré {formatDistanceToNow(Date.parse(current.start), { addSuffix: true, locale: fr })}</span>
+            </p>
+
+            <div className="buttons">
+              <Button is="warning" onClick={() => confirm('(WIP) Se déclarer absent ?')}>
+                <HiMoon />
+              </Button>
+
+              {current.meetingUrl && (
+                <Link href={current.meetingUrl} target="_blank">
+                  <Button is="success">
+                    <div style={{ display: 'flex' }}>
+                      <HiArrowRight />&nbsp;Connexion
+                    </div>
+                  </Button>
+                </Link>
+              )}
+
+              <Link href="/schedule/current">
+                <Button is="danger">
+                  <div style={{ display: 'flex' }}>
+                    <HiDotsHorizontal />&nbsp;Voir
+                  </div>
+                </Button>
+              </Link>
+            </div>
+          </div>
+        )}
       </aside>
     </main>
   </>);
