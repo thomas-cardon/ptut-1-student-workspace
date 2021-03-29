@@ -42,7 +42,7 @@ function pickTextColorBasedOnBgColorAdvanced(bgColor, lightColor, darkColor) {
   return (L > 0.179) ? darkColor : lightColor;
 }
 
-export default function Schedule({ data, children }) {
+export default function Schedule({ data, week, children }) {
   const { darkModeActive } = useDarkMode();
   const { addToast } = useToasts();
 
@@ -188,6 +188,7 @@ export default function Schedule({ data, children }) {
             <div className={styles.bottom}>
               <p>{x.room}</p>
               <p groupid={x.groupId}>{x.groupName}</p>
+              <p>{x.dates.start.toLocaleDateString()}</p>
             </div>
           </div>
         )}

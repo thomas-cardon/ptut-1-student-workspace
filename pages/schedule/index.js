@@ -16,28 +16,24 @@ import { HiPlusCircle } from "react-icons/hi";
 
 const HOURS_MIN = 8, HOURS_MAX = 19;
 
-export default function SchedulePage({ user, selectedWeek }) {
+export default function SchedulePage({ user, selectedWeek = getWeek(new Date()) }) {
   const { data : schedule } = useSchedule(user);
   console.log('[EDT] Affichage semaine', selectedWeek);
+  console.dir(schedule);
 
   let content = <h2 className={'title'}>Chargement</h2>;
   let data = (schedule || []).map(x => {
     x.start = new Date(x.start);
     x.end = new Date(x.end);
 
-    console.dir(x.start);
-
-    x.start.setMinutes(x.start.getMinutes() + x.start.getTimezoneOffset());
-    x.end.setMinutes(x.end.getMinutes() + x.end.getTimezoneOffset());
-
-    console.dir(x.start);
     return x;
   }).filter(x => {
     if ((getHours(x.end) > 19 && getMinutes(x.end) > 0) || getHours(x.start) < HOURS_MIN) {
       return false;
     }
 
-    if (getWeek(x.start) === selectedWeek || getWeek(new Date())) return true;
+    console.log(x.subjectName, x.start.toLocaleDateString(), getWeek(x.start), selectedWeek);
+    if (getWeek(x.start) == selectedWeek) return true;
     return false;
   }).map(x => {
     const start = new Date(x.start), end = new Date(x.end);
@@ -45,6 +41,7 @@ export default function SchedulePage({ user, selectedWeek }) {
     return {
       id: x.id,
       day: getDay(x.start),
+      dates: { start, end, },
       start: start.toLocaleTimeString().slice(0, 5).replace(':', ''),
       end: end.toLocaleTimeString().slice(0, 5).replace(':', ''),
       module: x.module,
@@ -58,7 +55,7 @@ export default function SchedulePage({ user, selectedWeek }) {
     };
   });
 
-  if (user) content = <Schedule data={data} />;
+  if (user) content = <Schedule data={data} week={selectedWeek} />;
 
   /* Calcul semaines */
   let todaydate = new Date();
