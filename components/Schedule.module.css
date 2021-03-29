@@ -48,7 +48,19 @@
     width: 100%;
     height: 100vh;
 
-    grid-template-rows: [tracks] minmax(40px, 3em) [time-0800] minmax(1em, 1fr) [time-0815] minmax(1em, 1fr) [time-0830] minmax(1em, 1fr) [time-0845] minmax(1em, 1fr) [time-0900] minmax(1em, 1fr) [time-0915] minmax(1em, 1fr) [time-0930] minmax(1em, 1fr) [time-0945] minmax(1em, 1fr) [time-1000] minmax(1em, 1fr) [time-1015] minmax(1em, 1fr) [time-1030] minmax(1em, 1fr) [time-1045] minmax(1em, 1fr) [time-1100] minmax(1em, 1fr) [time-1115] minmax(1em, 1fr) [time-1130] minmax(1em, 1fr) [time-1145] minmax(1em, 1fr) [time-1200] minmax(1em, 1fr) [time-1215] minmax(1em, 1fr) [time-1230] minmax(1em, 1fr) [time-1245] minmax(1em, 1fr) [time-1300] minmax(1em, 1fr) [time-1315] minmax(1em, 1fr) [time-1330] minmax(1em, 1fr) [time-1345] minmax(1em, 1fr) [time-1400] minmax(1em, 1fr) [time-1415] minmax(1em, 1fr) [time-1430] minmax(1em, 1fr) [time-1445] minmax(1em, 1fr) [time-1500] minmax(1em, 1fr) [time-1515] minmax(1em, 1fr) [time-1530] minmax(1em, 1fr) [time-1545] minmax(1em, 1fr) [time-1600] minmax(1em, 1fr) [time-1615] minmax(1em, 1fr) [time-1630] minmax(1em, 1fr) [time-1645] minmax(1em, 1fr) [time-1700] minmax(1em, 1fr) [time-1715] minmax(1em, 1fr) [time-1730] minmax(1em, 1fr) [time-1745] minmax(1em, 1fr) [time-1800] minmax(1em, 1fr) [time-1815] minmax(1em, 1fr) [time-1830] minmax(1em, 1fr) [time-1845] minmax(1em, 1fr) [time-1900] minmax(1em, 1fr);
+    grid-template-rows: [tracks] minmax(40px, 3em)
+    [time-0800] minmax(1em, 1fr) [time-0815] minmax(1em, 1fr) [time-0830] minmax(1em, 1fr) [time-0845] minmax(1em, 1fr)
+    [time-0900] minmax(1em, 1fr) [time-0915] minmax(1em, 1fr) [time-0930] minmax(1em, 1fr) [time-0945] minmax(1em, 1fr)
+    [time-1000] minmax(1em, 1fr) [time-1015] minmax(1em, 1fr) [time-1030] minmax(1em, 1fr) [time-1045] minmax(1em, 1fr)
+    [time-1100] minmax(1em, 1fr) [time-1115] minmax(1em, 1fr) [time-1130] minmax(1em, 1fr) [time-1145] minmax(1em, 1fr)
+    [time-1200] minmax(1em, 1fr) [time-1215] minmax(1em, 1fr) [time-1230] minmax(1em, 1fr) [time-1245] minmax(1em, 1fr)
+    [time-1300] minmax(1em, 1fr) [time-1315] minmax(1em, 1fr) [time-1330] minmax(1em, 1fr) [time-1345] minmax(1em, 1fr)
+    [time-1400] minmax(1em, 1fr) [time-1415] minmax(1em, 1fr) [time-1430] minmax(1em, 1fr) [time-1445] minmax(1em, 1fr)
+    [time-1500] minmax(1em, 1fr) [time-1515] minmax(1em, 1fr) [time-1530] minmax(1em, 1fr) [time-1545] minmax(1em, 1fr)
+    [time-1600] minmax(1em, 1fr) [time-1615] minmax(1em, 1fr) [time-1630] minmax(1em, 1fr) [time-1645] minmax(1em, 1fr)
+    [time-1700] minmax(1em, 1fr) [time-1715] minmax(1em, 1fr) [time-1730] minmax(1em, 1fr) [time-1745] minmax(1em, 1fr)
+    [time-1800] minmax(1em, 1fr) [time-1815] minmax(1em, 1fr) [time-1830] minmax(1em, 1fr) [time-1845] minmax(1em, 1fr)
+    [time-1900] minmax(1em, 1fr);
     grid-template-columns: [times] 4em [track-1-start] minmax(0, 1fr) [track-1-end track-2-start] minmax(0, 1fr) [track-2-end track-3-start] minmax(0, 1fr) [track-3-end track-4-start] minmax(0, 1fr) [track-4-end track-5-start] minmax(0, 1fr) [track-5-end track-6-start] minmax(0, 1fr) [track-7-end];
   }
 }
