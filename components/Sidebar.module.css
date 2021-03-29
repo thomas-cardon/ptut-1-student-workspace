@@ -10,6 +10,7 @@
 
 .brand > img {
   border-radius: 9999px;
+  margin-right: 1em;
 }
 
 .list {
