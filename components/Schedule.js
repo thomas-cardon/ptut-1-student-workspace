@@ -165,6 +165,7 @@ export default function Schedule({ data, children }) {
         <span className={styles.timeSlot} style={{ gridRow: 'time-1730' }}>17:30</span>
         <span className={styles.timeSlot} style={{ gridRow: 'time-1800' }}>18:00</span>
         <span className={styles.timeSlot} style={{ gridRow: 'time-1830' }}>18:30</span>
+        <span className={styles.timeSlot} style={{ gridRow: 'time-1900' }}>19:00</span>
 
         <span className={styles.trackSlot} aria-hidden="true" style={{ gridColumn: 'track-1', gridRow: 'tracks' }}>Lundi</span>
         <span className={styles.trackSlot} aria-hidden="true" style={{ gridColumn: 'track-2', gridRow: 'tracks' }}>Mardi</span>
