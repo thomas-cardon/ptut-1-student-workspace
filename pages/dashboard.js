@@ -29,43 +29,22 @@ export default function Dashboard({ user }) {
   // Indication présentiel ou distanciel ce serait bien dans l'EDT
   if (posts) {
     content = (<>
+      <Title style={{textAlign: "center"}} appendGradient={'AMU :'}>
+        Mes outils
+      </Title>
       <CardList>
-        {posts.filter(x => x.isHomework).length > 0 && (
           <Card>
-            <span className="title">Devoirs à faire</span>
-            <ul className="homework">
-              {posts.filter(x => x.isHomework).map((post, i) => <li key={i}>
-                <Link href={"/posts/" + post.id}>
-                  <a>
-                    <p>Pour le {format(Date.parse(post.homeworkDate), 'd MMMM yyyy à HH:mm', { locale: fr })}</p>
-                    <hr />
-                    <HiArrowNarrowRight style={{ verticalAlign: 'middle' }}/>
-                    <span>{post.title}</span>
-                    <p>
-                      <i>({post.moduleName} — {post.firstName + ' ' + post.lastName})</i>
-                    </p>
-                  </a>
-                </Link>
-              </li>)}
-            </ul>
+            <span className="title">MESSAGERIE</span>
           </Card>
-        )}
-        {posts.filter(x => !x.isHomework).length > 0 && (
           <Card>
-            <span className="title">Derniers posts</span>
-            <ul>
-              {posts.filter(x => !x.isHomework).map((post, i) => <li key={i}>
-                <Link href={"/posts/" + post.id}>
-                  <a>
-                    <HiArrowNarrowRight style={{ verticalAlign: 'middle' }}/>
-                    <span>{post.title}</span>
-                  </a>
-                </Link>
-              </li>)}
-            </ul>
+            <span className="title">AMETICE</span>
           </Card>
-        )}
-
+          <Card>
+            <span className="title">DOSSIER ÉTUDIANT</span>
+          </Card>
+          <Card>
+            <span className="title">ENT</span>
+          </Card>
       </CardList>
     </>);
   }

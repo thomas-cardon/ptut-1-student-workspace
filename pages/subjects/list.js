@@ -75,7 +75,7 @@ export default function ClassListPage({ user }) {
         <Link href="/subjects/create">
           <Button is="action" icon={<HiPlusCircle />}>Ajouter</Button>
         </Link> : <></>}>
-        Modules
+        Matières
       </Title>
       </>}>
       {content}

@@ -3,8 +3,13 @@
   flex-direction: column;
 
   width: 100%;
-  padding: 20px;
+  height: 130px;
+  padding: 10px;
   border-radius: 8px;
+
+  text-align: center;
+  white-space: pre;
+  place-content: flex-end;
 
   background-color: var(--color-primary-800);
 }
