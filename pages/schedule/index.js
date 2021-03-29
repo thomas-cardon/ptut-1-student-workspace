@@ -10,16 +10,17 @@ import { ButtonGroup, FormButton } from '../../components/FormFields';
 import { useSchedule } from '../../lib/hooks';
 import withSession from "../../lib/session";
 
-import { lightFormat, getDay } from 'date-fns';
+import { lightFormat, getDay, getWeek } from 'date-fns';
 
 import { HiPlusCircle } from "react-icons/hi";
 
 export default function SchedulePage({ user, selectedWeek }) {
   const { data : schedule } = useSchedule(user);
+  console.log(selectedWeek);
 
   let content = <h2 className={'title'}>Chargement</h2>;
-  let data = (schedule || []).map(x => {
-    const start = new Date(x.start), end = new Date(x.end);
+  let data = (schedule || []).filter(x => getWeek(x.start) === selectedWeek || getWeek(new Date())).map(x => {
+    const start = new Date(x.start + 2*60*60*1000), end = new Date(x.end + 2*60*60*1000);
 
     return {
       id: x.id,
