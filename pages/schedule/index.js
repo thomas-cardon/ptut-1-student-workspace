@@ -10,17 +10,29 @@ import { ButtonGroup, FormButton } from '../../components/FormFields';
 import { useSchedule } from '../../lib/hooks';
 import withSession from "../../lib/session";
 
-import { lightFormat, getDay, getWeek } from 'date-fns';
+import { lightFormat, getDay, getWeek, getHours, getMinutes } from 'date-fns';
 
 import { HiPlusCircle } from "react-icons/hi";
+
+const HOURS_MIN = 8, HOURS_MAX = 19;
 
 export default function SchedulePage({ user, selectedWeek }) {
   const { data : schedule } = useSchedule(user);
   console.log(selectedWeek);
 
   let content = <h2 className={'title'}>Chargement</h2>;
-  let data = (schedule || []).filter(x => getWeek(x.start) === selectedWeek || getWeek(new Date())).map(x => {
-    const start = new Date(x.start + 2*60*60*1000), end = new Date(x.end + 2*60*60*1000);
+  let data = (schedule || []).filter(x => {
+    if ((getHours(x.end) > 19 && getMinutes(x.end) > 0) || getHours(x.start) < HOURS_MIN) {
+      console.warn('Un bloc non sécurisé ne sera pas affiché dans l\'emploi du temps !');
+      console.dir(x);
+
+      return false;
+    }
+
+    if (getWeek(x.start) === selectedWeek || getWeek(new Date())) return true;
+    return false;
+  }).map(x => {
+    const start = new Date(x.start), end = new Date(x.end);
 
     return {
       id: x.id,
