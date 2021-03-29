@@ -15,32 +15,44 @@ body {
 
 /* Scrollbar */
 body::-webkit-scrollbar {
-  width: 0.3em;
+  width: 5px;
 }
 
 body::-webkit-scrollbar-track {
   box-shadow: none !important;
-  background-color: black;
+  background-color: var(--color-primary-900);
 }
 
 body::-webkit-scrollbar-thumb {
-  background-color: #2ecc71;
+  background-color: var(--color-accent);
   border-radius: 25px;
 }
 
-p {
-  margin-bottom: 1rem;
-  margin-top: 0;
+:root {
+    font-size: 14px;
+    --color-button-text: #fff;
+    --color-primary-100: #dee3ea;
+    --color-primary-200: #b2bdcd;
+    --color-primary-300: #5d7290;
+    --color-primary-600: #323d4d;
+    --color-primary-700: #242c37;
+    --color-primary-800: #151a21;
+    --color-primary-900: #0b0e11;
+    --color-secondary-washed-out: #879eed;
+    --color-secondary: #5575e7;
+    --color-accent-glow: rgba(253,77,77,0.3);
+    --color-accent: #fd4d4d;
+    --color-accent-hover: #fd6868;
+    --color-accent-disabled: #f5bfbf;
 }
 
 * {
   box-sizing: border-box;
 }
 
-.subtitle {
-  margin: 0;
-  font-weight: 300;
-  font-size: x-large;
+p {
+  margin-bottom: 1rem;
+  margin-top: 0;
 }
 
 .code {
@@ -52,27 +64,32 @@ p {
     Bitstream Vera Sans Mono, Courier New, monospace;
 }
 
-.grid {
+.buttons {
+  gap: 10px;
   display: flex;
-  flex-direction: column;
-  width: 70%;
-  margin-top: 2em;
 }
 
-input[type="datetime-local"] {
-  display: block;
-  width: 100%;
-  padding: .375rem .75rem;
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5;
-  color: #212529;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid #ced4da;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  border-radius: .25rem;
-  transition: all .15s ease-in-out,box-shadow .15s ease-in-out;
+aside {
+  display: flex;
+  flex-direction: column;
+
+  height: max-content;
+
+  top: 30px;
+  position: sticky;
+  padding: 0 10% 10% 10%;
+}
+
+h1, h2, h3, h4, h5, h6, h7 {
+  color: var(--color-primary-100);
+}
+
+span.title, p.title {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: var(--color-primary-100);
+}
+
+span.subtitle, p.subtitle {
+  color: var(--color-primary-300);
 }

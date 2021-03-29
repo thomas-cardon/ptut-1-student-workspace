@@ -58,11 +58,6 @@ export default function Chat({ clientId, room = 'global' }) {
         Chat: <code style={{ color: 'red' }}>{room}</code>
       </h2>
 
-      <div className={styles.ringContainer}>
-        <div className={styles.ringring}></div>
-        <div className={styles.circle}></div>
-      </div>
-
       <textarea className={[styles.textarea, darkModeActive ? styles['textarea-dark'] : ''].join(' ')} value={messages.map(x => x.userId + ' : ' + x.msg).join('\n')} readOnly></textarea>
       <div style={{ display: 'flex', width: '100%' }}>
         <input type="text" placeholder="Ecrire un message" />

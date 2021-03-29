@@ -1,33 +1,16 @@
-.sidebar {
-  grid-area: sidebar;
+.brand {
   display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 250px;
-  position: fixed;
-  overflow-y: auto;
-  transform: translateX(-245px);
-  transition: all .6s ease-in-out;
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
-  z-index: 2; /* Needs to sit above the hamburger menu icon */
-  background-color: #546DE5;
-  overflow-x: hidden;
+  flex-direction: row;
+  width: fit-content;
 }
 
-.sidebar[data-active="1"] {
-  transform: translateX(0);
+.brand, .brand > * {
+  margin: auto;
 }
 
-/* Non-mobile styles, 750px breakpoint */
-@media only screen and (min-width: 46.875em) {
-  .sidebar {
-    position: relative;
-    transform: translateX(0);
-  }
-
-  .closeIcon {
-    visibility: hidden;
-  }
+.brand > img {
+  border-radius: 9999px;
+  margin-right: 1em;
 }
 
 .list {
@@ -40,25 +23,12 @@
   color: #FAFAFA;
 
   display: block;
-  padding: 20px 20px 20px 40px;
+  padding: 1.5em 1.5em 1.5em 2em;
   transition: all 0.3s ease;
 }
 
 .item:hover {
-  background-color: #FAFAFA;
   cursor: pointer;
-}
-
-.list-dark a, .dark .icon {
-  color: #282828 !important;
-}
-
-.list-dark a:hover, .dark .icon:hover {
-  color: #FAFAFA !important;
-}
-
-.list-dark .item:hover {
-  background-color: #282828;
 }
 
 .icon {
@@ -66,33 +36,41 @@
   margin-right: .6em;
 }
 
+.sidebar {}
 
-.iconsGroup .icon:hover {
-  cursor: pointer;
-  color: #282828;
-}
+@media (max-width:641px)  { /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */
+  .list {
+    display: flex;
+    flex-direction: row;
+  }
 
-.dark .icon:hover {
-  color: #FAFAFA !important;
-}
+  .item {
+    visibility: collapse;
+    overflow: hidden;
 
-.iconsGroup {
-  display: flex;
-}
+    margin: auto;
+    padding: 2em;
 
-.iconsGroup a, .iconsGroup .icon {
-  margin: 0 auto;
+    width: 1em;
+    height: 1em;
+  }
 
-  font-size: xx-large;
-  text-align: center;
-}
+  .icon {
+    visibility: visible;
+  }
 
-.closeIcon {
-  position: absolute;
-  visibility: visible;
-  top: 8px;
-  right: 12px;
-  cursor: pointer;
-  font-size: 20px;
-  color: #FAFAFA;
+  .sidebar {
+    position: relative;
+    top: 0;
+    margin-top: 30px;
+    padding: 0 5%;
+  }
+
+  .brand h3 {
+    display: none;
+  }
+
+  .sidebar hr {
+    display: none;
+  }
 }

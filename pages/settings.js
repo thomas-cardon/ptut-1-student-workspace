@@ -49,7 +49,6 @@ export default function SettingsPage({ user }) {
        });
 
        const result = await res.text();
-       console.dir(result);
 
        if (res.ok) {
          addToast('Mot de passe changé', { appearance: 'success' });
@@ -78,21 +77,31 @@ export default function SettingsPage({ user }) {
       <Highlight>
         Cliquez&nbsp;<Link href="http://en.gravatar.com/emails/" style={{ color: 'red' }}>ici</Link>&nbsp;pour accéder à&nbsp;<b>Gravatar</b>&nbsp;et ainsi changer votre photo de profil.
       </Highlight>
-      <Gravatar size={128} email={user.email} style={{ borderRadius: '50%', margin: '0.5em' }} draggable={false} />
-      <h3 style={{ fontSize: 'xx-large', fontWeight: 'normal', margin: '0 0 1em 0' }}>
-        {user.firstName} <b style={{ color: '#686de0' }}>{user.lastName}</b>
-      </h3>
-      <p style={{ width: '50%', textAlign: 'center' }}>
-        <i>Vous êtes un utilisateur de type {user.userType}, c'est-à-dire que {permsDesc}</i>
-      </p>
 
-      <h2>Changer son mot de passe</h2>
-      <hr style={{ width: '60%' }} />
+      <div className="content">
+        <Gravatar size={128} email={user.email} style={{ borderRadius: '50%', margin: '0.5em' }} draggable={false} />
+        <h3 style={{ fontSize: 'xx-large', fontWeight: 'normal', margin: '0 0 1em 0' }}>
+          {user.firstName} <b style={{ color: '#686de0' }}>{user.lastName}</b>
+        </h3>
+        <p className="subtitle">
+          <i>Vous êtes un utilisateur de type {user.userType}, c'est-à-dire que {permsDesc}</i>
+        </p>
+
+        <h2>Changer son mot de passe</h2>
+        <hr style={{ width: '60%' }} />
+      </div>
       <Form onSubmit={onSubmit}>
         <Fields.FormInput label="Ancien mot de passe" id="oldPassword" name="oldPassword" minLength="8" onChange={handleInputChange} value={values.oldPassword} type="password" required />
         <Fields.FormInput label="Nouveau mot de passe" id="newPassword" name="newPassword" minLength="8" onChange={handleInputChange} value={values.newPassword} type="password" required />
         <Fields.FormButton type="submit">Changer</Fields.FormButton>
       </Form>
+      <style jsx global>{`
+      .content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      `}</style>
     </UserLayout>
   );
 };

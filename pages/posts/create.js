@@ -12,15 +12,16 @@ import * as Fields from "../../components/FormFields";
 
 import { useToasts } from 'react-toast-notifications';
 
-import use from '../../lib/use';
-import withSession from "../../lib/session";
+import { useSubjects, useSchedule } from '../../lib/hooks';
 
 import { formatDistance } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
+import withSession from "../../lib/session";
+
 const Editor = dynamic(() => import("../../components/Editor"), { ssr: false });
 
-export default function CreatePostPage({ user, moduleId }) {
+export default function CreatePostPage({ user }) {
  /*
   * Variable definitions
   */
@@ -31,8 +32,8 @@ export default function CreatePostPage({ user, moduleId }) {
     setValues({ ...values, [name]: type === 'checkbox' ? checked : value });
   };
 
-  const { data : subjects } = use({ url: '/api/subjects/list' });
-  const { data : scheduleList } = use({ url: `/api/schedule?omitPassedEntries=1${user.userType == 1 ? '&filterByTeacher=' + user.userId : ''}` });
+  const { data : subjects } = useSubjects();
+  const { data : schedule } = useSchedule(user, 1, user.userType === 1 ? user.userId : 0);
 
   const { addToast } = useToasts();
 
@@ -85,8 +86,8 @@ export default function CreatePostPage({ user, moduleId }) {
     addToast(errors || 'Une erreur s\'est produite', { appearance: 'error' });
   }
 
-  let scheduleSelector = scheduleList && scheduleList.schedule ? (<>
-    <Fields.FormSelect disabled={values.homework == "1"} label="Attacher à l'emploi du temps ?" name="courseId" onChange={handleInputChange} value={values.courseId} noOption="-- Ne pas attacher à l'emploi du temps --" options={scheduleList.schedule.map(x => { return { option: formatDistance(Date.parse(x.start), new Date(), { locale: fr, addSuffix: true }) + (x.groupName ? ' avec: ' + x.groupName : ''), value: x.id } })} />
+  let scheduleSelector = schedule ? (<>
+    <Fields.FormSelect disabled={values.homework == "1"} label="Attacher à l'emploi du temps ?" name="courseId" onChange={handleInputChange} value={values.courseId} noOption="-- Ne pas attacher à l'emploi du temps --" options={(schedule || []).map(x => { return { option: formatDistance(Date.parse(x.start), new Date(), { locale: fr, addSuffix: true }) + (x.groupName ? ' avec: ' + x.groupName : ''), value: x.id } })} />
     <p>
       <i>Il se peut que vous n'ayez pas de cours disponible si vous n'avez pas de cours de programmé dans l'emploi du temps.</i>
     </p>
@@ -103,19 +104,34 @@ export default function CreatePostPage({ user, moduleId }) {
     </Title>
 
     <Highlight title={'Le saviez-vous?'}>Le contenu du post est enregistré sur votre navigateur tant qu'il n'est pas envoyé.</Highlight>
-    <Form style={{ width: '60%' }} onSubmit={onSubmit} onError={onError}>
-      <Fields.FormInput label="Titre du post" name="title" type="text" onChange={handleInputChange} value={values.title} placeholder="Titre" required />
-      <Fields.FormSelect label="Matière (Module)" name="subjectId" onChange={handleInputChange} noOption="-- Sélectionnez un module --" value={values.subjectId} options={subjects.modules.map(x => { return { option: 'Cours ' + x.module, value: x.id } })} required />
-      <Fields.FormCheckbox label="Est-ce un devoir ?" name="homework" inline={true} onChange={handleInputChange} value={values.homework} />
-      <Fields.FormInput disabled={values.homework == "0"} label="Date du devoir" name="homeworkDate" type="datetime-local" onChange={handleInputChange} value={values.homeworkDate} />
-      {scheduleSelector}
-      <Fields.FormButton type="submit">Créer un nouveau post</Fields.FormButton>
-    </Form>
-    <Editor style={{ width: '60%' }} />
+
+    <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', columnGap: '20px' }}>
+      <Form onSubmit={onSubmit} style={{ flex: '1', padding: '1em', margin: '0 auto', borderRadius: '8px', backgroundColor: 'var(--color-primary-800)' }}>
+        <Fields.FormInput label="Titre du post" name="title" type="text" onChange={handleInputChange} value={values.title} placeholder="Titre" required />
+        <Fields.FormSelect label="Matière (Module)" name="subjectId" onChange={handleInputChange} noOption="-- Sélectionnez un module --" value={values.subjectId} options={(subjects || []).map(x => { return { option: 'Cours ' + x.module, value: x.id } })} required />
+        <Fields.FormCheckbox label="Est-ce un devoir ?" name="homework" inline={true} onChange={handleInputChange} value={values.homework} />
+        <Fields.FormInput disabled={values.homework == "0"} label="Date du devoir" name="homeworkDate" type="datetime-local" onChange={handleInputChange} value={values.homeworkDate} />
+        {scheduleSelector}
+
+        <Fields.FormButton type="submit">Créer un nouveau post</Fields.FormButton>
+      </Form>
+
+      <div style={{ flex: '1', padding: '1em', borderRadius: '8px', backgroundColor: 'var(--color-primary-700)', color: 'white' }}>
+        <Editor style={{ width: '100%', boxShadow: 'none' }} />
+      </div>
+
+      <Fields.FormButton is="danger" style={{ width: '100%', flex: '1 1 100%', margin: '2em 0' }}>Créer un nouveau post</Fields.FormButton>
+    </div>
   </>);
 
   return (
     <UserLayout user={user} flex={true}>
+      <style jsx global>{`
+        body::selection {
+          background-color: rebeccapurple !important;
+        }
+        `}</style>
+
       {content}
     </UserLayout>
   );

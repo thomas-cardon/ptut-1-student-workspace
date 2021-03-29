@@ -44,8 +44,7 @@ export default function EditSchedulePage({ user }) {
     e.preventDefault();
 
     let body = {
-      start: values.start.slice(0, 19).replace('T', ' '),
-      end: values.end.slice(0, 19).replace('T', ' '),
+      start: new Date(values.start).getTime() / 1000,
       duration: differenceInMinutes(new Date(values.end.slice(0, 19).replace('T', ' ')), new Date(values.start.slice(0, 19).replace('T', ' '))),
       subjectId: parseInt(values.subjectId),
       teacherId: parseInt(values.teacherId),
@@ -116,11 +115,12 @@ export default function EditSchedulePage({ user }) {
   }
 
   return (
-    <UserLayout user={user} flex={true}>
-      <Title appendGradient="l'emploi du temps">
-        Edition de
-      </Title>
-      <Form onSubmit={onSubmit} style={{ minWidth: '50%' }}>
+    <UserLayout user={user} flex={true} header={<>
+        <Title appendGradient="l'emploi du temps">
+          Edition de
+        </Title>
+      </>}>
+      <Form onSubmit={onSubmit} style={{ width: '80%', padding: '1em', margin: 'auto', borderRadius: '8px', backgroundColor: 'var(--color-primary-800)' }}>
         <Fields.FormInput label="Début du cours" name="start" type="datetime-local" onChange={handleInputChange} value={values.start} required />
         <Fields.FormInput label="Fin du cours" name="end" type="datetime-local" onChange={handleInputChange} value={values.end} required />
 
@@ -133,7 +133,7 @@ export default function EditSchedulePage({ user }) {
         <Fields.FormInput label="Salle (facultatif)" name="room" onChange={handleInputChange} value={values.room} type="text" placeholder="Exemple: Salle 100, Salle TD 1, Bâtiment B..." />
         <hr />
         <Fields.FormCheckboxList label="Groupes affectés" options={(groups || []).map(x => { return { label: x.name, id: x.id } })} />
-        <Fields.FormButton type="submit">Ajouter à l'emploi du temps</Fields.FormButton>
+        <Fields.FormButton is="danger" type="submit" style={{ margin: '2em 0', width: '100%' }}>Ajouter à l'emploi du temps</Fields.FormButton>
       </Form>
     </UserLayout>
   );

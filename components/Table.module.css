@@ -1,12 +1,12 @@
 .table {
-  margin: 0;
+  margin: 0 0 1em;
   padding: 0;
   width: 100%;
   border-collapse: collapse;
 
   font-family: "Lato";
 
-  margin-bottom: 1em;
+  color: var(--color-primary-100);
 }
 
 .table-fixed {
@@ -24,11 +24,11 @@
 
 .table th:first-child {
   padding: 1em 0 1em 1em;
-  border-radius: 15px 0 0 0;
+  border-radius: 8px 0 0 0;
 }
 
 .table th:last-child {
-  border-radius: 0 15px 0 0;
+  border-radius: 0 8px 0 0;
 }
 
 .table td:first-child {
@@ -48,7 +48,7 @@
 }
 
 .table-dark th {
-  background-color: #1D1D1D;
+  background-color: var(--color-primary-800);
 }
 
 .table-dark tr {
@@ -57,4 +57,5 @@
 
 .table-dark tr:nth-child(even) {
   background-color: #2D2D2D;
+  color: var(--color-primary-200);
 }

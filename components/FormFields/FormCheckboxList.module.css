@@ -4,5 +4,26 @@
 
 .list {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+
+  color: var(--color-primary-300);
+}
+
+.list > h3 {
+  flex: 1 1 100%;
+}
+
+.list > div {
+  width: fit-content;
+  padding: 0.5em;
+}
+
+.list input {
+  margin: 0;
+  height: 100%;
+}
+
+.list label {
+  float: right;
+  margin-left: 5px;
 }

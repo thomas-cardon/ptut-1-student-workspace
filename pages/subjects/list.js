@@ -5,6 +5,9 @@ import UserLayout from '../../components/UserLayout';
 import Table from '../../components/Table';
 import Title from '../../components/Title';
 
+import Button from '../../components/FormFields/FormButton';
+import { HiPlusCircle } from "react-icons/hi";
+
 import {
   contextMenu,
   Menu,
@@ -67,22 +70,15 @@ export default function ClassListPage({ user }) {
   </>);
 
   return (
-    <UserLayout user={user} flex={true}>
-      <Title appendGradient="enregistrés">
-        Cours
+    <UserLayout user={user} flex={true} header={<>
+      <Title appendGradient="enregistrés" button={user.userType == 2 ?
+        <Link href="/subjects/create">
+          <Button is="action" icon={<HiPlusCircle />}>Ajouter</Button>
+        </Link> : <></>}>
+        Matières
       </Title>
-      {user.userType == 2 && (
-        <h3 className={'subtitle'}>
-          <Link href="/subjects/create">
-            Ajouter
-          </Link>...
-        </h3>
-      )}
-      <div className={'grid'}>
-        <ul>
-          {content}
-        </ul>
-      </div>
+      </>}>
+      {content}
     </UserLayout>
   );
 };

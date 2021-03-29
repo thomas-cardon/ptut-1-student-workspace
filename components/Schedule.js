@@ -1,13 +1,16 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { useToasts } from 'react-toast-notifications';
 
-import { useContextMenu, Submenu, Menu, Item, Separator } from "react-contexify";
-import "react-contexify/dist/ReactContexify.css";
+import { useToasts } from 'react-toast-notifications';
+import { useDarkMode } from 'next-dark-mode';
+import { useContextMenu, Submenu, Menu, Item, Separator } from 'react-contexify';
 
 import fetcher from '../lib/fetchJson';
 import styles from "./Schedule.module.css";
 
+
 const MENU_ID = "schedule-menu";
+
+import "react-contexify/dist/ReactContexify.css";
 
 function stringToColor(str) {
   var hash = 0;
@@ -39,8 +42,10 @@ function pickTextColorBasedOnBgColorAdvanced(bgColor, lightColor, darkColor) {
   return (L > 0.179) ? darkColor : lightColor;
 }
 
-export default function Schedule({ data, children }) {
+export default function Schedule({ data, week, children }) {
+  const { darkModeActive } = useDarkMode();
   const { addToast } = useToasts();
+
   const { show } = useContextMenu({
     id: MENU_ID,
   });
@@ -55,7 +60,7 @@ export default function Schedule({ data, children }) {
           let title = window.prompt('Saisissez le titre de la notification', 'Rappel de cours');
           let body = window.prompt('Saisissez le corps de la notification', document.getElementById(props.id).children[1].innerText);
 
-          fetcher(location.protocol + '//' + location.host + `/api/notifications/broadcast?title=${title}&body=${body}&interests=group-${document.getElementById(props.id).lastChild.getAttribute('groupid')}`)
+          fetcher(location.protocol + '//' + location.host + `/api/notifications/broadcast?title=${title}&body=${body}&interests=group-${document.querySelector('[groupid]').getAttribute('groupid')}`)
           .then(() => addToast('Tous les utilisateurs concernés ont été notifiés.', { appearance: 'success' }))
           .catch(err => {
             addToast("Une erreur s'est produite.", { appearance: 'error' });
@@ -137,7 +142,7 @@ export default function Schedule({ data, children }) {
         </Submenu>
       </Menu>
 
-      <div className={styles.schedule}>
+      <div className={[styles.schedule, darkModeActive ? styles.dark : ''].join(' ')}>
         <span className={styles.timeSlot} style={{ gridRow: 'time-0800' }}>8:00</span>
         <span className={styles.timeSlot} style={{ gridRow: 'time-0830' }}>8:30</span>
         <span className={styles.timeSlot} style={{ gridRow: 'time-0900' }}>9:00</span>
@@ -160,6 +165,7 @@ export default function Schedule({ data, children }) {
         <span className={styles.timeSlot} style={{ gridRow: 'time-1730' }}>17:30</span>
         <span className={styles.timeSlot} style={{ gridRow: 'time-1800' }}>18:00</span>
         <span className={styles.timeSlot} style={{ gridRow: 'time-1830' }}>18:30</span>
+        <span className={styles.timeSlot} style={{ gridRow: 'time-1900' }}>19:00</span>
 
         <span className={styles.trackSlot} aria-hidden="true" style={{ gridColumn: 'track-1', gridRow: 'tracks' }}>Lundi</span>
         <span className={styles.trackSlot} aria-hidden="true" style={{ gridColumn: 'track-2', gridRow: 'tracks' }}>Mardi</span>
@@ -170,11 +176,20 @@ export default function Schedule({ data, children }) {
 
         {data.map((x, i) =>
           <div id={x.id} key={i} onContextMenu={displayMenu} className={styles.session} meetingurl={x.meetingUrl} style={{ gridColumn: 'track-' + x.day, backgroundColor: x.color || stringToColor(x.name), color: pickTextColorBasedOnBgColorAdvanced(x.color || stringToColor(x.name), 'white', 'black'), gridRow: 'time-' + x.start + ' / time-' + x.end }}>
-            <span className={styles.hours}><b>{x.module}</b> - {x.start.slice(0, 2)}:{x.start.slice(2)} - {x.end.slice(0, 2)}:{x.end.slice(2)}</span>
+            <div className={styles.top} style={{ display: 'flex' }}>
+              <b>{x.module}</b>
+              <span> - </span>
+              <span>{x.start.slice(0, 2)}:{x.start.slice(2)} - {x.end.slice(0, 2)}:{x.end.slice(2)}</span>
+            </div>
+
             <p className={styles.name}>{x.name}</p>
             <p className={styles.teacher}>{x.teacher}</p>
-            <p className={styles.room}>{x.room}</p>
-            <p className={styles.room} style={{ margin: '0 0 0 5%' }} groupid={x.groupId}>{x.groupName}</p>
+
+            <div className={styles.bottom}>
+              <p>{x.room}</p>
+              <p groupid={x.groupId}>{x.groupName}</p>
+              <p>{x.dates.start.toLocaleDateString()}</p>
+            </div>
           </div>
         )}
       </div>
