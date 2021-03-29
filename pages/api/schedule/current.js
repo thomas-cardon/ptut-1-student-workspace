@@ -20,8 +20,8 @@ async function handler(req, res, session) {
 
     let current = schedule
     .filter(x => isWithinInterval(new Date(), {
-      start: Date.parse(x.start),
-      end: addMinutes(Date.parse(x.start), x.duration)
+      start: new Date(x.start * 1000),
+      end: addMinutes(new Date(x.start * 1000), x.duration)
     }));
 
     if (current[0]) {
@@ -31,7 +31,7 @@ async function handler(req, res, session) {
       `, [req.session.get('user').group.id]);
     }
 
-    let next = schedule.filter(x => isFuture(addMinutes(Date.parse(x.start), x.duration)));
+    let next = schedule.filter(x => isFuture(addMinutes(new Date(x.start * 1000), x.duration)));
 
     if (current[0]) res.send(current[0]);
     else res.status(404).send({ error: 'NOT_FOUND', success: false });

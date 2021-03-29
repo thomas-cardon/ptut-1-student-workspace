@@ -18,14 +18,22 @@ const HOURS_MIN = 8, HOURS_MAX = 19;
 
 export default function SchedulePage({ user, selectedWeek }) {
   const { data : schedule } = useSchedule(user);
-  console.log(selectedWeek);
+  console.log('[EDT] Affichage semaine', selectedWeek);
 
   let content = <h2 className={'title'}>Chargement</h2>;
-  let data = (schedule || []).filter(x => {
-    if ((getHours(x.end) > 19 && getMinutes(x.end) > 0) || getHours(x.start) < HOURS_MIN) {
-      console.warn('Un bloc non sécurisé ne sera pas affiché dans l\'emploi du temps !');
-      console.dir(x);
+  let data = (schedule || []).map(x => {
+    x.start = new Date(x.start);
+    x.end = new Date(x.end);
 
+    console.dir(x.start);
+
+    x.start.setMinutes(x.start.getMinutes() + x.start.getTimezoneOffset());
+    x.end.setMinutes(x.end.getMinutes() + x.end.getTimezoneOffset());
+
+    console.dir(x.start);
+    return x;
+  }).filter(x => {
+    if ((getHours(x.end) > 19 && getMinutes(x.end) > 0) || getHours(x.start) < HOURS_MIN) {
       return false;
     }
 

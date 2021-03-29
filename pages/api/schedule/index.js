@@ -21,10 +21,10 @@ async function handler(req, res, session) {
       ORDER BY start ASC
       `, params);
 
-    schedule = schedule.map(o => ({ ...o, start: new Date(o.start).getTime(), end: new Date(o.start).getTime() + (o.duration * 60000) }));
+    schedule = schedule.map(o => ({ ...o, start: new Date(o.start * 1000), end: addMinutes(new Date(o.start * 1000), o.duration) }));
 
     if (omitPassedEntries === '1')
-      schedule = schedule.filter(x => isFuture(addMinutes(x.start, x.duration)));
+      schedule = schedule.filter(o => isFuture(addMinutes(new Date(o.start * 1000), o.duration)));
 
     res.send(schedule);
   }
