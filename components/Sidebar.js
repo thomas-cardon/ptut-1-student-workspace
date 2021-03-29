@@ -35,7 +35,7 @@ export default function Sidebar({ user, children, active, setActive }) {
           <div className={styles.icon}>
             <HiAnnotation />
           </div>
-          Posts
+          Informations
         </Link>
 
         {user?.userType !== 2 && (
@@ -54,13 +54,13 @@ export default function Sidebar({ user, children, active, setActive }) {
             <div className={styles.icon}>
               <HiTable />
             </div>
-            Liste des cours
+            Matières
           </Link>
           <Link href="/users/list" className={styles.item}>
             <div className={styles.icon}>
               <HiUsers />
             </div>
-            Utilisateurs
+            Étudiants
           </Link>
 
           <Link href="/grades/list" className={styles.item}>

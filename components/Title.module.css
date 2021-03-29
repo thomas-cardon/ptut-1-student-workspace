@@ -4,6 +4,9 @@
   line-height: 0;
   color: #282828;
   font-family: "Raleway";
+  
+  width: 100%;
+  height: 100%;
 }
 
 .dark {

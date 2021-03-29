@@ -29,27 +29,22 @@ export default function Dashboard({ user }) {
   // Indication présentiel ou distanciel ce serait bien dans l'EDT
   if (posts) {
     content = (<>
+      <Title style={{textAlign: "center"}} appendGradient={'AMU :'}>
+        Mes outils
+      </Title>
       <CardList>
-        {posts.filter(x => x.isHomework).length > 0 && (
           <Card>
             <span className="title">MESSAGERIE</span>
           </Card>
-        )}
-        {posts.filter(x => !x.isHomework).length > 0 && (
           <Card>
             <span className="title">AMETICE</span>
           </Card>
-        )}
-        {posts.filter(x => !x.isHomework).length > 0 && (
           <Card>
             <span className="title">DOSSIER ÉTUDIANT</span>
           </Card>
-        )}
-        {posts.filter(x => !x.isHomework).length > 0 && (
           <Card>
             <span className="title">ENT</span>
           </Card>
-        )}
       </CardList>
     </>);
   }
