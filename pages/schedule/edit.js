@@ -44,8 +44,7 @@ export default function EditSchedulePage({ user }) {
     e.preventDefault();
 
     let body = {
-      start: new Date(values.start).getTime(),
-      end: new Date(values.end).getTime(),
+      start: new Date(values.start).getTime() / 1000,
       duration: differenceInMinutes(new Date(values.end.slice(0, 19).replace('T', ' ')), new Date(values.start.slice(0, 19).replace('T', ' '))),
       subjectId: parseInt(values.subjectId),
       teacherId: parseInt(values.teacherId),
