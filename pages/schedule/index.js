@@ -10,17 +10,37 @@ import { ButtonGroup, FormButton } from '../../components/FormFields';
 import { useSchedule } from '../../lib/hooks';
 import withSession from "../../lib/session";
 
-import { lightFormat, getDay, getWeek } from 'date-fns';
+import { lightFormat, getDay, getWeek, getHours, getMinutes } from 'date-fns';
 
 import { HiPlusCircle } from "react-icons/hi";
 
+const HOURS_MIN = 8, HOURS_MAX = 19;
+
 export default function SchedulePage({ user, selectedWeek }) {
   const { data : schedule } = useSchedule(user);
-  console.log(selectedWeek);
+  console.log('[EDT] Affichage semaine', selectedWeek);
 
   let content = <h2 className={'title'}>Chargement</h2>;
-  let data = (schedule || []).filter(x => getWeek(x.start) === selectedWeek || getWeek(new Date())).map(x => {
-    const start = new Date(x.start + 2*60*60*1000), end = new Date(x.end + 2*60*60*1000);
+  let data = (schedule || []).map(x => {
+    x.start = new Date(x.start);
+    x.end = new Date(x.end);
+
+    console.dir(x.start);
+
+    x.start.setMinutes(x.start.getMinutes() + x.start.getTimezoneOffset());
+    x.end.setMinutes(x.end.getMinutes() + x.end.getTimezoneOffset());
+
+    console.dir(x.start);
+    return x;
+  }).filter(x => {
+    if ((getHours(x.end) > 19 && getMinutes(x.end) > 0) || getHours(x.start) < HOURS_MIN) {
+      return false;
+    }
+
+    if (getWeek(x.start) === selectedWeek || getWeek(new Date())) return true;
+    return false;
+  }).map(x => {
+    const start = new Date(x.start), end = new Date(x.end);
 
     return {
       id: x.id,

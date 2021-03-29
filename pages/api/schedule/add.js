@@ -4,6 +4,9 @@ import { query } from '../../../lib/db';
 async function handler(req, res, session) {
   if (!req?.session?.get('user')) return res.status(401).send({ error: 'NOT_AUTHORIZED', success: false });
 
+  console.dir(req.body);
+  return;
+
   try {
     for (let i = 0; i < req.body.concernedGroups.length; i++) {
       const results = await query(
