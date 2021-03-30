@@ -11,5 +11,6 @@
   white-space: pre;
   place-content: flex-end;
 
+  color: var(--color-primary-100);
   background-color: var(--color-primary-800);
 }

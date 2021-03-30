@@ -34,16 +34,16 @@ export default function Dashboard({ user }) {
       </Title>
       <CardList>
           <Card>
-            <span className="title">MESSAGERIE</span>
+            <span className="subtitle">MESSAGERIE</span>
           </Card>
           <Card>
-            <span className="title">AMETICE</span>
+            <span className="subtitle">AMETICE</span>
           </Card>
           <Card>
-            <span className="title">DOSSIER ÉTUDIANT</span>
+            <span className="subtitle">DOSSIER ÉTUDIANT</span>
           </Card>
           <Card>
-            <span className="title">ENT</span>
+            <span className="subtitle">ENT</span>
           </Card>
       </CardList>
     </>);
@@ -54,43 +54,13 @@ export default function Dashboard({ user }) {
       <Title appendGradient={user.firstName + ' !'}>
         Salut,
       </Title>
-      <p className={`group ${darkModeActive ? 'group-dark' : ''}`}>{user ? (user?.group?.name || 'Groupe inconnu') : 'Chargement'}</p>
+      <p className="group">{user ? (user?.group?.name || 'Groupe inconnu') : 'Chargement'}</p>
 
       <style jsx global>{`
-        ul {
-          margin-left: 0;
-          padding-left: 0;
-        }
-
-        ul.homework p {
-          margin: 0;
-        }
-
-        li {
-          list-style: none;
-          text-align: left;
-        }
-
-        li span {
-          display: inline-block;
-        }
-
-        li span:first-letter {
-          text-transform: uppercase;
-        }
-
-        li a > * {
-          margin-right: .5em;
-        }
-
         .group {
           font-family: "Raleway";
           font-weight: 400;
           text-align: left;
-        }
-
-        .group-dark {
-          color: #FAFAFA;
         }
       `}</style>
       {content}
