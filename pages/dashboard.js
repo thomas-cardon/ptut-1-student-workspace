@@ -71,7 +71,6 @@ export default function Dashboard({ user }) {
       <style jsx global>{`
         .links > div {
           background-color: #feca57;
-          border-left: solid 10px ${darkModeActive ? 'white' : 'black'};
           color: ${darkModeActive ? 'white' : 'black'};
           transition: all 0.2s ease;
         }
