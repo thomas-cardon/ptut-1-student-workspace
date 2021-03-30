@@ -5,6 +5,8 @@ import { isFuture, isWithinInterval, addMinutes } from 'date-fns';
 async function handler(req, res, session) {
   if (!req?.session?.get('user')) return res.status(401).send({ error: 'NOT_AUTHORIZED', success: false });
 
+  console.log('Schedule');
+
   try {
     let schedule = await query(
       `
@@ -14,9 +16,7 @@ async function handler(req, res, session) {
       LEFT OUTER JOIN groups ON schedule.groupId = groups.id
       WHERE schedule.groupId = ?
       ORDER BY start ASC
-      LIMIT 1
     `, [req.session.get('user').group.id]);
-
 
     let current = schedule
     .filter(x => isWithinInterval(new Date(), {
