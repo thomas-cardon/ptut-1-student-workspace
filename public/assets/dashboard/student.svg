@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <use id="Arrière-plan" xlink:href="#_Image1" x="2.628" y="7.018" width="19.006px" height="11.062px" transform="matrix(0.950277,0,0,0.921818,0,0)"/>
+    <defs>
+        <image id="_Image1" width="20px" height="12px" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAMCAYAAABiDJ37AAAACXBIWXMAAA7EAAAOxAGVKw4bAAABUUlEQVQokZ3TPUscURTG8d8sGlMETGFGECbKIMHWRkgZMJIyYIoUi5B8AtFKsYtW9tpZSArB4BcQLAJCkiKlYF4mkUk1WCgYQcWXYu7C7sqs4GkO9557/vec89wb6WBZXgziOd6FrTV8SZP4oConqgANYwnjeIxaCF3hCNuYT5M4qwRmeTGECUziBbo7VY9L7GAT22kS/4Uoy4sEywHUdQekE/wTZmoYwM9wW44/9wDuBcbT5pY/YwV1pRCP8KACcI4TfMNimsS7jUBXgA1hDAv4h1X8wAheBw/72Ar+GXrxtfmmxsym0YNjvMIgrpVqflCq27D3mFMK+guzLcAsL2p4G9aHTbFIqfrLsB+hr2IELRX2hDYL/MdZ25kITyryT0MnLYdledGrfLxHeIN1PLyjmAtMpUm8cQvYbuGn1DGKBP2hkkL5tL7jY5rEv9tzbwDTR1Z0lP/1BwAAAABJRU5ErkJggg=="/>
+    </defs>
+</svg>
