@@ -35,7 +35,7 @@ export default function Dashboard({ user }) {
       <CardList className="links">
           <Card>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <img srcset="/assets/dashboard/mail.svg" />
+              <img className="invert" srcset="/assets/dashboard/mail.svg" />
               <span className="subtitle">MESSAGERIE</span>
             </div>
           </Card>
@@ -86,6 +86,10 @@ export default function Dashboard({ user }) {
           width: 100px !important;
           height: auto;
           margin: auto;
+        }
+
+        .invert {
+          ${!darkModeActive ? 'filter: invert(1);' : ''}
         }
 
         .group {
