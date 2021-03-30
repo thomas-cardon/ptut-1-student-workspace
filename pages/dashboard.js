@@ -34,16 +34,28 @@ export default function Dashboard({ user }) {
       </Title>
       <CardList className="links">
           <Card>
-            <span className="subtitle">MESSAGERIE</span>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <img srcset="/assets/dashboard/mail.svg" />
+              <span className="subtitle">MESSAGERIE</span>
+            </div>
           </Card>
           <Card>
-            <span className="subtitle">AMETICE</span>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <img srcset="/assets/dashboard/folder.svg" />
+              <span className="subtitle">AMETICE</span>
+            </div>
           </Card>
           <Card>
-            <span className="subtitle">DOSSIER ÉTUDIANT</span>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <img srcset="/assets/dashboard/student.svg" />
+              <span className="subtitle">DOSSIER ETUDIANT</span>
+            </div>
           </Card>
           <Card>
-            <span className="subtitle">ENT</span>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <img srcset="/assets/dashboard/amu.svg" />
+              <span className="subtitle">ENT</span>
+            </div>
           </Card>
       </CardList>
     </>);
@@ -68,6 +80,12 @@ export default function Dashboard({ user }) {
           opacity: 1;
           transform: scale(1.1, 1.1);
           cursor: pointer;
+        }
+
+        .links img {
+          width: 100px !important;
+          height: auto;
+          margin: auto;
         }
 
         .group {
