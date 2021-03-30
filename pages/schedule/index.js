@@ -18,10 +18,7 @@ const HOURS_MIN = 8, HOURS_MAX = 19;
 
 export default function SchedulePage({ user, selectedWeek = getWeek(new Date()) }) {
   const { data : schedule } = useSchedule(user);
-  console.log('[EDT] Affichage semaine', selectedWeek);
-  console.dir(schedule);
 
-  let content = <h2 className={'title'}>Chargement</h2>;
   let data = (schedule || []).map(x => {
     x.start = new Date(x.start);
     x.end = new Date(x.end);
@@ -32,7 +29,6 @@ export default function SchedulePage({ user, selectedWeek = getWeek(new Date()) 
       return false;
     }
 
-    console.log(x.subjectName, x.start.toLocaleDateString(), getWeek(x.start), selectedWeek);
     if (getWeek(x.start) == selectedWeek) return true;
     return false;
   }).map(x => {
@@ -54,8 +50,6 @@ export default function SchedulePage({ user, selectedWeek = getWeek(new Date()) 
       meetingUrl: x?.meetingUrl
     };
   });
-
-  if (user) content = <Schedule data={data} week={selectedWeek} />;
 
   /* Calcul semaines */
   let todaydate = new Date();
@@ -80,7 +74,7 @@ export default function SchedulePage({ user, selectedWeek = getWeek(new Date()) 
         })}
       </ButtonGroup>
     </>}>
-      {content}
+      <Schedule data={data} week={selectedWeek} />
     </UserLayout>
   );
 };

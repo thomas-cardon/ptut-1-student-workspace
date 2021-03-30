@@ -16,6 +16,7 @@
   "repository": "github:Ryzzzen/ptut-1-student-workspace",
   "dependencies": {
     "@fontsource/lato": "^4.2.1",
+    "@fontsource/nunito": "^4.2.2",
     "@fontsource/open-sans": "^4.2.1",
     "@fontsource/raleway": "^4.2.2",
     "@pusher/push-notifications-server": "^1.2.1",

@@ -116,10 +116,14 @@ export default function UserLayout({ title, user, children, header, flex = true,
               </p>
             </div>
             <div className="mt-2">
-              <Button onClick={() => setDarkMode(darkMode === -1 ? 1 : darkMode - 1)}>
-                {darkMode === -1 && (<><HiColorSwatch />&nbsp;Auto</>)}
-                {darkMode === 0  && (<><HiColorSwatch />&nbsp;Clair</>)}
-                {darkMode === 1  && (<><HiColorSwatch />&nbsp;Sombre</>)}
+              <Button icon={<>
+                {darkMode === -1 && <HiColorSwatch />}
+                {darkMode === 0  && <HiColorSwatch />}
+                {darkMode === 1  && <HiColorSwatch />}
+              </>} onClick={() => setDarkMode(darkMode === -1 ? 1 : darkMode - 1)}>
+                {darkMode === -1 && (<span>Auto</span>)}
+                {darkMode === 0  && (<span>Clair</span>)}
+                {darkMode === 1  && (<span>Sombre</span>)}
               </Button>
             </div>
           </div>
@@ -136,26 +140,15 @@ export default function UserLayout({ title, user, children, header, flex = true,
             </p>
 
             <div className="buttons">
-              <Button is="warning" onClick={() => confirm('(WIP) Se déclarer absent ?')}>
-                <HiMoon />
-              </Button>
-
+              <Button is="danger" icon={<HiMoon />} onClick={() => confirm('(WIP) Se déclarer absent ?')}>Absent ?</Button>
               {current.meetingUrl && (
                 <Link href={current.meetingUrl} target="_blank">
-                  <Button is="success">
-                    <div style={{ display: 'flex' }}>
-                      <HiArrowRight />&nbsp;Connexion
-                    </div>
-                  </Button>
+                  <Button is="success" icon={<HiArrowRight />}>Connexion</Button>
                 </Link>
               )}
 
               <Link href="/schedule/current">
-                <Button is="danger">
-                  <div style={{ display: 'flex' }}>
-                    <HiDotsHorizontal />&nbsp;Voir
-                  </div>
-                </Button>
+                <Button icon={<HiDotsHorizontal />}>Voir</Button>
               </Link>
             </div>
           </div>
@@ -170,17 +163,11 @@ export default function UserLayout({ title, user, children, header, flex = true,
 
           <div className="buttons">
             <Link href="/settings">
-              <Button>
-                <HiAdjustments />
-              </Button>
+              <Button is="warning" icon={<HiAdjustments />}></Button>
             </Link>
 
             <Link href="/logout">
-              <Button is="danger">
-                <div style={{ display: 'flex' }}>
-                  <HiLogout />&nbsp;Déconnexion
-                </div>
-              </Button>
+              <Button is="danger" icon={<HiLogout />}></Button>
             </Link>
           </div>
         </div>

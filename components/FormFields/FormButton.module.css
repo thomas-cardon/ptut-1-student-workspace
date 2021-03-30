@@ -1,20 +1,24 @@
 .button {
-  height: 30px;
-  min-width: 30px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 
-  font-size: .875rem;
-  font-weight: 700;
+  height: 1em;
+  min-width: 1em;
+  padding: 1em;
+  border-radius: .25rem;
+
+  font-family: "Nunito";
+  font-weight: 800;
+  text-transform: uppercase;
+
   color: var(--color-button-text);
   background-color: var(--color-primary-700);
 
   border: none;
   outline: none;
 
-  border-radius: .25rem;
-
   transition: all 0.2s;
-
-  padding: 0.5em;
 }
 
 .button:hover:not([disabled]) {
@@ -27,6 +31,14 @@
 
 .button.danger:hover:not([disabled]) {
   background-color: var(--color-accent-hover);
+}
+
+.button.warning {
+  background-color: #ffc107;
+}
+
+.button.warning:hover:not([disabled]) {
+  background-color: #f9ca24;
 }
 
 .button.success {
