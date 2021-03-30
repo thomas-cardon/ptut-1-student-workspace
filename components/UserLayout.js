@@ -22,9 +22,7 @@ import { useCurrentClass } from '../lib/hooks';
 
 export default function UserLayout({ title, user, children, header, flex = true, ...rest }) {
   const { darkModeActive } = useDarkMode();
-
   const { data : current } = useCurrentClass();
-  console.dir(current);
 
   return (<>
     <Head>
@@ -35,7 +33,7 @@ export default function UserLayout({ title, user, children, header, flex = true,
       <link rel="apple-touch-icon" href="/favicon-192x192.png" />
       <link rel="manifest" href="/site.webmanifest" />
     </Head>
-    <main className={styles.main} {...rest}>
+    <main className={[styles.main, darkModeActive ? styles.dark : ''].join(' ')} {...rest}>
       <Sidebar user={user}></Sidebar>
 
       <section className={styles.content}>
@@ -68,38 +66,14 @@ export default function UserLayout({ title, user, children, header, flex = true,
           </div>
         </div>
 
-        <div className={[styles.card, styles.actions].join(' ')}>
-          <p className={styles.text}>
-            <span className={styles.title}>Actions</span>
-            <br />
-            <span className={styles.subtitle}>Que souhaitez-vous faire ?</span>
-          </p>
-
-          <div className="buttons">
-            <Link href="/settings">
-              <Button>
-                <HiAdjustments />
-              </Button>
-            </Link>
-
-            <Link href="/logout">
-              <Button is="danger">
-                <div style={{ display: 'flex' }}>
-                  <HiLogout />&nbsp;Déconnexion
-                </div>
-              </Button>
-            </Link>
-          </div>
-        </div>
-
         {current && !current.error && (
           <div className={[styles.card, styles.currentClass].join(' ')}>
             <p className={styles.text}>
               <span className={styles.title}>{current.module} {current.subjectName}</span>
               <br />
-              <span className={styles.subtitle}>Klélia Amoura</span>
+              <span className={styles.subtitle}>{current.teacherFirstName} {current.teacherLastName}</span>
               <br />
-              <span className={styles.subtitle} style={{ color: 'var(--color-accent)' }}>Démarré {formatDistanceToNow(Date.parse(current.start), { addSuffix: true, locale: fr })}</span>
+              <span className={styles.subtitle} style={{ color: 'var(--color-accent)' }}>Démarré {formatDistanceToNow(new Date(current.start * 1000), { addSuffix: true, locale: fr })}</span>
             </p>
 
             <div className="buttons">
@@ -127,6 +101,30 @@ export default function UserLayout({ title, user, children, header, flex = true,
             </div>
           </div>
         )}
+
+        <div className={[styles.card, styles.actions].join(' ')}>
+          <p className={styles.text}>
+            <span className={styles.title}>Actions</span>
+            <br />
+            <span className={styles.subtitle}>Que souhaitez-vous faire ?</span>
+          </p>
+
+          <div className="buttons">
+            <Link href="/settings">
+              <Button>
+                <HiAdjustments />
+              </Button>
+            </Link>
+
+            <Link href="/logout">
+              <Button is="danger">
+                <div style={{ display: 'flex' }}>
+                  <HiLogout />&nbsp;Déconnexion
+                </div>
+              </Button>
+            </Link>
+          </div>
+        </div>
       </aside>
     </main>
   </>);

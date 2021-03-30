@@ -90,7 +90,7 @@ export default function LoginPage(props) {
         margin: 0%;
         padding-bottom: 0%;
         font-family: 'Segoe';
-        color: #${darkModeActive ? 'DCDCDC' : '282828'};
+        color: #${darkModeActive ? 'DCDCDC' : '282828'} !important;
         font-size: 3.125em;
         text-align: center;
       }
@@ -129,7 +129,7 @@ export default function LoginPage(props) {
       }
 
       form label {
-        color: #${darkModeActive ? 'DCDCDC' : '282828'};
+        color: #${darkModeActive ? 'DCDCDC' : '282828'} !important;
 
         font-family: 'Marianne';
         font-weight: bolder;
@@ -141,11 +141,15 @@ export default function LoginPage(props) {
         display: block;
       }
 
-      form > div {
-        min-width: 60%;
+      form > div, form > button {
+        min-width: 60% !important;
       }
 
-      input, button {
+      form > div > div {
+        margin: 0 !important;
+      }
+
+      input {
         outline: 0;
         border: none;
 
@@ -171,14 +175,17 @@ export default function LoginPage(props) {
       }
 
       button {
-        background-color: rgba(0, 152, 255, 0.34);
-        color: #${darkModeActive ? 'DCDCDC' : '282828'};
-
-        padding: 1.5% 2%;
-        cursor: pointer;
         font-family: 'Segoe';
-        font-size: 1.25em;
         text-transform: uppercase;
+
+        font-size: 1.15rem !important;
+
+        text-align: center;
+        line-height: 0;
+      }
+
+      button:hover {
+        transform: scale(1.05, 1.05);
       }
 
       @media (max-width: 600px) {
@@ -186,11 +193,6 @@ export default function LoginPage(props) {
           padding: 3%;
           font-size: 0.93em;
         }
-      }
-
-      button:hover {
-        background-color: ${darkModeActive ? '#282828' : 'white'};
-        color: ${darkModeActive ? 'white' : '#0098FF'};
       }
 
       a {
@@ -215,7 +217,7 @@ export default function LoginPage(props) {
       <Form className={'flex'} style={{ marginTop: '6em' }} onSubmit={onSubmit}>
         <Fields.FormInput disableStyle={true} label="Adresse mail" id="email" name="email" type="email" placeholder="exemple@exemple.fr" />
         <Fields.FormInput disableStyle={true} label="Mot de passe" id="password" name="password" type="password" placeholder="Mot de passe difficile à trouver" />
-        <Fields.FormButton disableStyle={true} type="submit">Se connecter</Fields.FormButton>
+        <Fields.FormButton type="submit" is="light">Se connecter</Fields.FormButton>
         <Link href="">
           <a>Mot de passe oublié ?</a>
         </Link>

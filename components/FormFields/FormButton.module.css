@@ -8,6 +8,8 @@
   background-color: var(--color-primary-700);
 
   border: none;
+  outline: none;
+  
   border-radius: .25rem;
 
   transition: all 0.2s;
@@ -29,6 +31,15 @@
 
 .button.success:hover {
   background-color: #40d47e;
+}
+
+.button.light {
+  background-color: #f8f9fa;
+  color: black;
+}
+
+.button.light:hover {
+  background-color: white;
 }
 
 .button.action {

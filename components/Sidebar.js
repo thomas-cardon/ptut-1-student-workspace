@@ -48,7 +48,7 @@ export default function Sidebar({ user, children, active, setActive }) {
         )}
 
         {user?.userType === 2 && (<>
-          <hr style={{ width: '85%', border: 'none', borderBottom: `1px solid ${darkModeActive ? '#282828' : '#FAFAFA'}` }} />
+          <hr />
 
           <Link href="/subjects/list" className={styles.item}>
             <div className={styles.icon}>

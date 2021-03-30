@@ -20,7 +20,7 @@
 }
 
 .item {
-  color: #FAFAFA;
+  color: var(--color-primary-100);
 
   display: block;
   padding: 1.5em 1.5em 1.5em 2em;
@@ -37,6 +37,12 @@
 }
 
 .sidebar {}
+
+.sidebar hr {
+  width: 85%;
+  border: none;
+  border-bottom: 1px solid var(--color-primary-100);
+}
 
 @media (max-width:641px)  { /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */
   .list {
