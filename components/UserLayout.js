@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Head from './Head';
 import Sidebar from './Sidebar';
@@ -6,7 +6,7 @@ import Sidebar from './Sidebar';
 import styles from './UserLayout.module.css';
 
 import Gravatar from 'react-gravatar';
-import { HiAdjustments, HiLogout, HiArrowRight, HiDotsHorizontal, HiMoon } from "react-icons/hi";
+import { HiAdjustments, HiLogout, HiArrowRight, HiDotsHorizontal, HiMoon, HiColorSwatch } from "react-icons/hi";
 
 import { useDarkMode } from 'next-dark-mode';
 
@@ -21,8 +21,23 @@ import Link from './Link';
 import { useCurrentClass } from '../lib/hooks';
 
 export default function UserLayout({ title, user, children, header, flex = true, ...rest }) {
-  const { darkModeActive } = useDarkMode();
+  const {
+    autoModeActive,    // boolean - whether the auto mode is active or not
+    autoModeSupported, // boolean - whether the auto mode is supported on this browser
+    darkModeActive,    // boolean - whether the dark mode is active or not
+    switchToAutoMode,  // function - toggles the auto mode on
+    switchToDarkMode,  // function - toggles the dark mode on
+    switchToLightMode, // function - toggles the light mode on
+  } = useDarkMode();
+
+  const [darkMode, setDarkMode] = useState(-1);
   const { data : current } = useCurrentClass();
+
+  useEffect(() => {
+    if (darkMode === -1) switchToAutoMode();
+    else if (darkMode === 0) switchToLightMode();
+    else if (darkMode === 1) switchToDarkMode();
+  }, [darkMode]);
 
   return (<>
     <Head>
@@ -100,7 +115,13 @@ export default function UserLayout({ title, user, children, header, flex = true,
                 <span className={styles.id}>#{user.userId}</span>
               </p>
             </div>
-            <div className="mt-2"></div>
+            <div className="mt-2">
+              <Button onClick={() => setDarkMode(darkMode === -1 ? 1 : darkMode - 1)}>
+                {darkMode === -1 && (<><HiColorSwatch />&nbsp;Auto</>)}
+                {darkMode === 0  && (<><HiColorSwatch />&nbsp;Clair</>)}
+                {darkMode === 1  && (<><HiColorSwatch />&nbsp;Sombre</>)}
+              </Button>
+            </div>
           </div>
         </div>
 

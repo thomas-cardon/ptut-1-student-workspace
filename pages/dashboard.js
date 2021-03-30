@@ -32,7 +32,7 @@ export default function Dashboard({ user }) {
       <Title style={{textAlign: "center"}} appendGradient={'AMU :'}>
         Mes outils
       </Title>
-      <CardList>
+      <CardList className="links">
           <Card>
             <span className="subtitle">MESSAGERIE</span>
           </Card>
@@ -57,6 +57,19 @@ export default function Dashboard({ user }) {
       <p className="group">{user ? (user?.group?.name || 'Groupe inconnu') : 'Chargement'}</p>
 
       <style jsx global>{`
+        .links > div {
+          background-color: #feca57;
+          border-left: solid 10px ${darkModeActive ? 'white' : 'black'};
+          color: ${darkModeActive ? 'white' : 'black'};
+          transition: all 0.2s ease;
+        }
+
+        .links > div:hover {
+          opacity: 1;
+          transform: scale(1.1, 1.1);
+          cursor: pointer;
+        }
+
         .group {
           font-family: "Raleway";
           font-weight: 400;
