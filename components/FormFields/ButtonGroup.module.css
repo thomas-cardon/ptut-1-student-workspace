@@ -1,13 +1,14 @@
 .btnGroup button {
-  background-color: unset;
-  border: 1px solid #20c997;
-  color: #20c997;
-  padding: 0.7em;
+  border: 0.5px solid var(--color-primary-200);
+  padding: 1.15em 1em;
   cursor: pointer;
   float: left;
 
-  border-radius: 0.4rem;
+  border-radius: 8px;
   transition: all 0.2s ease;
+
+  line-height: 0;
+  font-weight: lighter;
 }
 
 .btnGroup button {
@@ -29,8 +30,7 @@
 }
 
 .btnGroup button:disabled {
-  background-color: darkgrey;
-  color: white;
+    border: 0.5px solid var(--color-primary-200);
   cursor: not-allowed;
 }
 
@@ -39,10 +39,4 @@
   content: "";
   clear: both;
   display: table;
-}
-
-/* Add a background color on hover */
-.btnGroup button:hover {
-  background-color: #20c997;
-  color: white;
 }

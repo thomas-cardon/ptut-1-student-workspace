@@ -9,7 +9,7 @@
 
   border: none;
   outline: none;
-  
+
   border-radius: .25rem;
 
   transition: all 0.2s;
@@ -17,11 +17,15 @@
   padding: 0.5em;
 }
 
+.button:hover:not([disabled]) {
+  background-color: var(--color-primary-800);
+}
+
 .button.danger {
   background-color: var(--color-accent);
 }
 
-.button.danger:hover {
+.button.danger:hover:not([disabled]) {
   background-color: var(--color-accent-hover);
 }
 
@@ -29,7 +33,7 @@
   background-color: #2ecc71;
 }
 
-.button.success:hover {
+.button.success:hover:not([disabled]) {
   background-color: #40d47e;
 }
 
@@ -38,7 +42,7 @@
   color: black;
 }
 
-.button.light:hover {
+.button.light:hover:not([disabled]) {
   background-color: white;
 }
 
@@ -46,16 +50,16 @@
   background-color: var(--color-secondary);
 }
 
-.button.action:hover {
+.button.action:hover:not([disabled]) {
   background-color: var(--color-secondary-washed-out);
 }
 
-.button:hover {
+.button:hover:not([disabled]) {
   cursor: pointer;
 }
 
 
 .button:disabled {
-  background: #f53b57;
-  color: #dfe6e9;
+  background-color: var(--color-primary-800);
+  color: var(--color-primary-100);
 }
