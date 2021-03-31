@@ -48,6 +48,11 @@ const Table = React.forwardRef((props, ref) => {
       <tbody>
         {props.children}
       </tbody>
+      {props.footer && (
+        <tfoot>
+          {props.footer}
+        </tfoot>
+      )}
     </table>
   </div>);
 });

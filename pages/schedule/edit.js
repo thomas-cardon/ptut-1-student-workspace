@@ -9,7 +9,6 @@ import * as Fields from "../../components/FormFields";
 
 import { useToasts } from 'react-toast-notifications';
 
-import use from '../../lib/use';
 import { useGroups, useUsers, useSubjects } from '../../lib/hooks';
 import withSession from "../../lib/session";
 

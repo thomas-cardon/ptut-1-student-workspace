@@ -5,8 +5,6 @@ import { isFuture, isWithinInterval, addMinutes } from 'date-fns';
 async function handler(req, res, session) {
   if (!req?.session?.get('user')) return res.status(401).send({ error: 'NOT_AUTHORIZED', success: false });
 
-  console.log('Schedule');
-
   try {
     let schedule = await query(
       `
