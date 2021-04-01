@@ -46,7 +46,7 @@ export default function CreateClassPage({ user }) {
     <UserLayout user={user} flex={true} header={<>
       <Title appendGradient="nouveau cours">Edition d'un</Title>
     </>}>
-      <Form onSubmit={onSubmit} style={{ width: '80%', padding: '1em', margin: 'auto', borderRadius: '8px', backgroundColor: 'var(--color-primary-800)' }}>
+      <Form onSubmit={onSubmit} style={{ width: '80%', padding: '1em', margin: 'auto auto 2em auto', borderRadius: '8px', backgroundColor: 'var(--color-primary-800)' }}>
         <Fields.FormInput label="Module" id="moduleId" name="moduleId" type="text" placeholder="M1101" required />
         <Fields.FormInput label="Nom du cours" id="name" name="name" type="text" placeholder="Introduction aux systèmes en informatique" required />
         <div className="buttons" style={{ marginTop: '1em', justifyContent: 'center' }}>
