@@ -24,10 +24,9 @@ export default function Dashboard({ user }) {
 
   return (
     <UserLayout user={user} flex={true}>
-      <Title appendGradient={user.firstName + ' !'}>
+      <Title appendGradient={user.firstName + ' !'} subtitle={' — ' + (user?.group?.name || 'Groupe inconnu')}>
         Salut,
       </Title>
-      <p className="group">{user ? (user?.group?.name || 'Groupe inconnu') : 'Chargement'}</p>
       <div className="block">
         <h3 className="title">Mes outils AMU</h3>
         <CardList className="links">
@@ -81,6 +80,12 @@ export default function Dashboard({ user }) {
           font-size: xx-large;
         }
 
+        @media (max-width:641px)  { /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */
+          .block .title {
+            margin: auto auto;
+          }
+        }
+
         .link {
           background-color: #feca57;
           color: ${darkModeActive ? 'white' : 'black'};
@@ -95,6 +100,9 @@ export default function Dashboard({ user }) {
         }
 
         .link > div {
+          width: 100%;
+          margin: auto auto;
+
           display: flex;
           flex-direction: column;
         }
@@ -109,12 +117,6 @@ export default function Dashboard({ user }) {
           width: 100px !important;
           height: auto;
           margin: auto;
-        }
-
-        .group {
-          font-family: "Raleway";
-          font-weight: 400;
-          text-align: left;
         }
       `}</style>
       {content}

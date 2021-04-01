@@ -18,6 +18,8 @@ import Button from './FormFields/FormButton';
 
 import Link from './Link';
 
+import Card from './Card';
+
 import { useCurrentClass } from '../lib/hooks';
 
 export default function UserLayout({ title, user, children, header, flex = true, ...rest }) {
@@ -91,7 +93,7 @@ export default function UserLayout({ title, user, children, header, flex = true,
 
       <section className={styles.content}>
         <header className={styles.header}>
-          <div className={styles.content}>
+          <div className={styles.content} style={{ padding: '1em 10%' }}>
             <div className={styles['input-container']}>
               <div className={styles.icon}>
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#sm-solid-search_svg__clip0)" fill-rule="evenodd" clip-rule="evenodd"><path d="M7.212 1.803a5.409 5.409 0 100 10.818 5.409 5.409 0 000-10.818zM0 7.212a7.212 7.212 0 1114.424 0A7.212 7.212 0 010 7.212z"></path><path d="M11.03 11.03a.901.901 0 011.275 0l3.43 3.432a.902.902 0 01-1.274 1.275l-3.431-3.431a.901.901 0 010-1.275z"></path></g><defs><clipPath id="sm-solid-search_svg__clip0"><path d="M0 0h16v16H0z"></path></clipPath></defs></svg>
@@ -105,32 +107,27 @@ export default function UserLayout({ title, user, children, header, flex = true,
       </section>
 
       <aside className={styles['cards-list']}>
-        <div className={styles.card}>
-          <div className="">
-            <div className={styles.profile}>
-              <Gravatar size={80} email={user.email} alt="Votre photo de profil" className={styles.avatar} draggable={false} />
-              <p className={styles.text}>
-                <span className={styles.name}>{user.firstName} {user.lastName}</span>
-                <br />
-                <span className={styles.id}>#{user.userId}</span>
-              </p>
+        <Card className={styles.card}>
+          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%' }}>
+            <div className={styles.text}>
+              <span className={styles.name}>{user.firstName} {user.lastName}</span>
+              <span className={styles.id}>#{user.userId}</span>
             </div>
-            <div className="mt-2">
-              <Button icon={<>
-                {darkMode === -1 && <HiColorSwatch />}
-                {darkMode === 0  && <HiColorSwatch />}
-                {darkMode === 1  && <HiColorSwatch />}
-              </>} onClick={() => setDarkMode(darkMode === -1 ? 1 : darkMode - 1)}>
-                {darkMode === -1 && (<span>Auto</span>)}
-                {darkMode === 0  && (<span>Clair</span>)}
-                {darkMode === 1  && (<span>Sombre</span>)}
-              </Button>
-            </div>
+            <Gravatar size={80} email={user.email} alt="Votre photo de profil" className={styles.avatar} draggable={false} />
           </div>
-        </div>
+          <Button style={{ marginTop: '1em' }} icon={<>
+            {darkMode === -1 && <HiColorSwatch />}
+            {darkMode === 0  && <HiColorSwatch />}
+            {darkMode === 1  && <HiColorSwatch />}
+          </>} onClick={() => setDarkMode(darkMode === -1 ? 1 : darkMode - 1)}>
+            {darkMode === -1 && (<span>Auto</span>)}
+            {darkMode === 0  && (<span>Clair</span>)}
+            {darkMode === 1  && (<span>Sombre</span>)}
+          </Button>
+        </Card>
 
         {current && !current.error && (
-          <div className={[styles.card, styles.currentClass].join(' ')}>
+          <Card className={[styles.card, styles.currentClass].join(' ')}>
             <p className={styles.text}>
               <span className={styles.title}>{current.module} {current.subjectName}</span>
               <br />
@@ -151,13 +148,12 @@ export default function UserLayout({ title, user, children, header, flex = true,
                 <Button icon={<HiDotsHorizontal />}>Voir</Button>
               </Link>
             </div>
-          </div>
+          </Card>
         )}
 
-        <div className={[styles.card, styles.actions].join(' ')}>
+        <Card className={[styles.card, styles.actions].join(' ')}>
           <p className={styles.text}>
             <span className={styles.title}>Actions</span>
-            <br />
             <span className={styles.subtitle}>Que souhaitez-vous faire ?</span>
           </p>
 
@@ -170,7 +166,7 @@ export default function UserLayout({ title, user, children, header, flex = true,
               <Button is="danger" icon={<HiLogout />}></Button>
             </Link>
           </div>
-        </div>
+        </Card>
       </aside>
     </main>
   </>);

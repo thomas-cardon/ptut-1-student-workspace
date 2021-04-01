@@ -5,4 +5,21 @@
 
   gap: 20px;
   width: 100%;
+
+  flex-wrap: wrap;
+}
+
+.list > * {
+  margin: auto 0;
+}
+
+@media (max-width:641px)  { /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */
+  .list, .list * {
+    margin: auto auto;
+  }
+
+  .list > * {
+    width: 100%;
+    padding: 0.5em 10%;
+  }
 }

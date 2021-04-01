@@ -22,7 +22,8 @@
 }
 
 .button:hover:not([disabled]) {
-  background-color: var(--color-primary-800);
+  color: var(--color-primary-100);
+  background-color: var(--color-primary-900);
 }
 
 .button.danger {
@@ -74,4 +75,16 @@
 .button:disabled {
   background-color: var(--color-primary-800);
   color: var(--color-primary-100);
+}
+
+.content {
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  height: 100%;
+}
+
+.content span {
+  width: 100%;
 }
