@@ -48,15 +48,16 @@
   .list {
     display: flex;
     flex-direction: row;
+    margin: 0;
   }
 
   .item {
     visibility: collapse;
     overflow: hidden;
 
+    padding: 1em;
     margin: auto;
-    padding: 2em;
-
+    
     width: 1em;
     height: 1em;
   }
@@ -68,8 +69,7 @@
   .sidebar {
     position: relative;
     top: 0;
-    margin-top: 30px;
-    padding: 0 5%;
+    margin-top: 1em;
   }
 
   .brand h3 {

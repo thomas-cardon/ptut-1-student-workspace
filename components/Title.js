@@ -1,7 +1,7 @@
 import * as defaultStyles from './Title.module.css';
 import { useDarkMode } from 'next-dark-mode';
 
-export default function Title({ appendGradient, button, style = {}, children }) {
+export default function Title({ appendGradient, subtitle, button, style = {}, children }) {
   const { darkModeActive } = useDarkMode();
 
   return (
@@ -9,6 +9,10 @@ export default function Title({ appendGradient, button, style = {}, children }) 
       <h1 className={[defaultStyles.title, darkModeActive ? defaultStyles.dark : ''].join(' ')}>
         {children}&nbsp;
         <span className={defaultStyles.gradient}>{appendGradient}</span>
+        {subtitle && (<>
+          <br />
+          <span className={defaultStyles.subtitle}>{subtitle}</span>
+        </>)}
       </h1>
       {button || <></>}
     </div>
