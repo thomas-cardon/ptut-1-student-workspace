@@ -34,6 +34,7 @@
     "react-dom": "17.0.1",
     "react-gravatar": "^2.6.3",
     "react-icons": "^4.2.0",
+    "react-loader-spinner": "^4.0.0",
     "react-toast-notifications": "^2.4.3",
     "serverless-mysql": "^1.5.4",
     "styled-content-loader": "^1.2.2",

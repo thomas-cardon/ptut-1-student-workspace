@@ -14,13 +14,15 @@ import Highlight from "../../components/Highlight";
 import Table from '../../components/Table';
 import Title from '../../components/Title';
 
-import Button from '../../components/FormFields/FormButton';
+import { FormButton as Button } from '../../components/FormFields';
 import { HiPlusCircle } from "react-icons/hi";
 
 import use from '../../lib/use';
 import withSession from "../../lib/session";
 
 import { useToasts } from 'react-toast-notifications';
+
+import Loader from 'react-loader-spinner';
 
 export default function UserListPage({ user, module }) {
   const { data: users, setSize, size } = use({ url: '/api/users/list', infinite: true });
@@ -55,11 +57,10 @@ export default function UserListPage({ user, module }) {
     }
   }
 
-  let content;
+  let content = <Loader type="Oval" color="var(--color-accent)" height="5em" width="100%" />;
 
-  if (!users) content = <h2 className={'title'}>Chargement</h2>;
-  else {
-    content = <>
+  if (users) {
+    content = <div style={{ display: 'flex', flexDirection: 'column' }}>
       <Table head={['#', 'Nom', 'Prénom', 'E-mail', 'Groupe', 'Type']} menuId="userTable" onContextMenu={displayMenu} menu={<Menu id="userTable">
         <Item id="edit" onClick={handleItemClick}>📝 Editer </Item>
         <Item id="notes" onClick={handleItemClick}>📑 Voir les notes</Item>
@@ -75,8 +76,8 @@ export default function UserListPage({ user, module }) {
           <td data-type="type">{user.userType === 0 ? 'Étudiant' : user.userType === 1 ? 'Professeur' : 'Administration'}</td>
         </tr>)}
       </Table>
-      <Button onClick={() => setSize(size + 1)}>Charger plus...</Button>
-    </>;
+      <Button onClick={() => setSize(size + 1)} style={{ marginBottom: '1em', height: 'unset' }}>Charger plus...</Button>
+    </div>;
   }
 
   return (
