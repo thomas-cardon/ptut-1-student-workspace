@@ -8,6 +8,8 @@ import Title from '../../components/Title';
 import Button from '../../components/FormFields/FormButton';
 import { HiPlusCircle } from "react-icons/hi";
 
+import Loader from 'react-loader-spinner';
+
 import {
   contextMenu,
   Menu,
@@ -51,7 +53,7 @@ export default function ClassListPage({ user }) {
     }
   }
 
-  let content = <h2 className={'title'}>Chargement</h2>;
+  let content = <Loader type="Oval" color="var(--color-accent)" height="5em" width="100%" />;
 
   if (subjects?.length == 0) content = <h2 className={'title'}>Aucun cours disponible</h2>;
   else if (subjects) content = (<>
@@ -94,6 +96,6 @@ export const getServerSideProps = withSession(async function ({ req, res, query,
   }
 
   return {
-    props: { user: req.session.get('user'), ...query, ...params },
+    props: { user: req.session.get('user') }
   };
 });
