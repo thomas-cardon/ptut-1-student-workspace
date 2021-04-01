@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 
+import { useToasts } from 'react-toast-notifications';
+import Loader from 'react-loader-spinner';
+
 import Router from 'next/router';
 import dynamic from 'next/dynamic';
 
@@ -10,8 +13,6 @@ import Title from '../../components/Title';
 import Form from "../../components/Form";
 import * as Fields from "../../components/FormFields";
 
-import { useToasts } from 'react-toast-notifications';
-
 import { useSubjects, useSchedule } from '../../lib/hooks';
 
 import { formatDistance } from 'date-fns';
@@ -20,8 +21,6 @@ import { fr } from 'date-fns/locale';
 import withSession from "../../lib/session";
 
 const Editor = dynamic(() => import("../../components/Editor"), { ssr: false });
-
-import Loader from 'react-loader-spinner';
 
 export default function CreatePostPage({ user }) {
  /*
