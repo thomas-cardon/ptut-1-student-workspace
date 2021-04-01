@@ -1,14 +1,8 @@
 import React, { useState } from 'react';
 
-import Link from '../../components/Link';
-
-import UserLayout from '../../components/UserLayout';
-import Highlight from '../../components/Highlight';
-import Table from '../../components/Table';
-import Title from '../../components/Title';
-
-import Button from '../../components/FormFields/FormButton';
+import { useToasts } from 'react-toast-notifications';
 import { HiPlusCircle } from "react-icons/hi";
+import Loader from 'react-loader-spinner';
 
 import {
   contextMenu,
@@ -18,8 +12,17 @@ import {
   Submenu
 } from "react-contexify";
 
+import Link from '../../components/Link';
+
+import UserLayout from '../../components/UserLayout';
+import Highlight from '../../components/Highlight';
+import Table from '../../components/Table';
+import Title from '../../components/Title';
+
+import Button from '../../components/FormFields/FormButton';
+
 import { useGrades } from '../../lib/hooks';
-import withSession from "../../lib/session";
+import withSession from '../../lib/session';
 import { useDarkMode } from 'next-dark-mode';
 
 import { format } from 'date-fns';
@@ -36,15 +39,17 @@ export default function GradesListPage({ user, id }) {
    const { data } = useGrades(id);
    const { darkModeActive } = useDarkMode();
 
-  let content, users = [];
+   let content = <Loader type="Oval" color="var(--color-accent)" height="5em" width="100%" />, users = [];
+  /*
+  * End of variable definitions
+  */
 
-  if (!data) content = <h2 className={'title'}>Chargement</h2>;
-  else if (data === {}) content = <h2 className={'title'}>Aucune note disponible</h2>;
-  else {
+  if (data === {}) content = <h2 className={'title'}>Aucune note disponible</h2>;
+  else if (data) {
     users = fuzzy(Object.values(data), query);
     content = (<>
-      {users.map((user, i) => (<div key={i}>
-        <h3 style={{ margin: '1em 0 0 0' }}>
+      {users.map((user, i) => (<div className="block" key={i}>
+        <h3 className="title">
           <span>{user[Object.keys(user)[0]][0].userFirstName} {user[Object.keys(user)[0]][0].userLastName}</span>
           {user[0]?.userGroupName && (<>
             <span style={{ margin: '0 0.5em' }}>→</span>
@@ -54,7 +59,6 @@ export default function GradesListPage({ user, id }) {
             </span>
           </>)}
         </h3>
-        <hr style={{ width: '50%', margin: '1em 2em 2em 0' }} />
         <Table head={['Matière', 'Nom', 'Professeur', 'Note', 'Coef.', 'Présent', 'Appréciations', 'Date']} fixed={true}>
           {Object.keys(user).map((m, x) => (<React.Fragment key={i + '-m-' + x}>
             <tr style={{ backgroundColor: darkModeActive ? '#272c34' : '#ddd' }}>
@@ -95,6 +99,22 @@ export default function GradesListPage({ user, id }) {
         Notes
       </Title>
       </>}>
+      <style jsx global>{`
+        .block {
+          padding: 1em 0;
+        }
+
+        .block .title {
+          width: fit-content;
+          margin: 0 0 1em;
+          border-bottom: var(--color-primary-200) solid 2px;
+
+          color: var(--color-primary-200);
+          font-family: 'Nunito';
+          font-weight: lighter;
+          font-size: xx-large;
+        }
+      `}</style>
       <div className={'grid'} style={{ width: '92%' }}>
         {(users.length > 0 && query !== "") && (
           <p style={{ textAlign: 'center'}}><i style={{ marginBottom: '1em', marginTop: '-0.5em' }}>{users.length} résultats pour {query}...</i></p>

@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 
+import { useToasts } from 'react-toast-notifications';
+import Loader from 'react-loader-spinner';
+
 import Router from 'next/router';
 import dynamic from 'next/dynamic';
 
@@ -9,8 +12,6 @@ import Title from '../../components/Title';
 
 import Form from "../../components/Form";
 import * as Fields from "../../components/FormFields";
-
-import { useToasts } from 'react-toast-notifications';
 
 import { useSubjects, useSchedule } from '../../lib/hooks';
 
@@ -25,6 +26,8 @@ export default function CreatePostPage({ user }) {
  /*
   * Variable definitions
   */
+  let content = <Loader type="Oval" color="var(--color-accent)" height="5em" width="100%" />;;
+
   const [values, setValues] = useState({ homework: false, title: 'Sans titre', subjectId: '', courseId: '', homeworkDate: '' });
 
   const handleInputChange = e => {
@@ -40,8 +43,6 @@ export default function CreatePostPage({ user }) {
  /*
   * End of variable definitions
   */
-
-  let content = <h1 className={'title'}>Chargement...</h1>;
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -120,7 +121,7 @@ export default function CreatePostPage({ user }) {
         <Editor style={{ width: '100%', boxShadow: 'none' }} />
       </div>
 
-      <Fields.FormButton is="danger" style={{ width: '100%', flex: '1 1 100%', margin: '2em 0' }}>Créer un nouveau post</Fields.FormButton>
+      <Fields.FormButton is="danger" style={{ flex: '1 1 100%', margin: '2em 0' }}>Créer un nouveau post</Fields.FormButton>
     </div>
   </>);
 

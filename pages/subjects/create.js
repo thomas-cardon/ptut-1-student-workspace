@@ -1,21 +1,18 @@
 import React, { useState } from 'react';
-import { SketchPicker } from 'react-color';
 
 import { useToasts } from 'react-toast-notifications';
+import fetch from 'isomorphic-unfetch';
 
+import withSession from "../../lib/session";
 import UserLayout from '../../components/UserLayout';
 
-import fetch from 'isomorphic-unfetch';
-import withSession from "../../lib/session";
-
-import Form from "../../components/Form";
+import Title from '../../components/Title';
+import Form from '../../components/Form';
 import * as Fields from "../../components/FormFields";
 
 export default function CreateClassPage({ user }) {
-  const [color, setColor] = useState('#AB2567');
+  const [color, setColor] = useState(null);
   const { addToast } = useToasts();
-
-  let content = <h1 className={'title'}>Chargement...</h1>;
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -45,30 +42,18 @@ export default function CreateClassPage({ user }) {
     }
   }
 
-  const onError = (errors, e) => {
-    console.error(errors, e);
-    addToast(errors || 'Une erreur s\'est produite', { appearance: 'error' });
-  }
-
-  if (user) content = (<>
-    <h1 className={'title'}>
-      Edition d'un <span className={'gradient'}>nouveau cours</span>
-    </h1>
-
-    <div style={{ display: 'flex', flexDirection: 'row', marginTop: '5em' }}>
-      <SketchPicker color={color} onChangeComplete={color => setColor(color.hex)} />
-
-      <Form onSubmit={onSubmit} onError={onError}>
+  return (
+    <UserLayout user={user} flex={true} header={<>
+      <Title appendGradient="nouveau cours">Edition d'un</Title>
+    </>}>
+      <Form onSubmit={onSubmit} style={{ width: '80%', padding: '1em', margin: 'auto auto 2em auto', borderRadius: '8px', backgroundColor: 'var(--color-primary-800)' }}>
         <Fields.FormInput label="Module" id="moduleId" name="moduleId" type="text" placeholder="M1101" required />
         <Fields.FormInput label="Nom du cours" id="name" name="name" type="text" placeholder="Introduction aux systèmes en informatique" required />
-        <Fields.FormButton type="submit">Créer</Fields.FormButton>
+        <div className="buttons" style={{ marginTop: '1em', justifyContent: 'center' }}>
+          <Fields.ColorPickerButton type="submit" handleChange={color => setColor(useState)}>Choisir la couleur</Fields.ColorPickerButton>
+          <Fields.FormButton type="submit" is="danger">Créer</Fields.FormButton>
+        </div>
       </Form>
-    </div>
-  </>);
-
-  return (
-    <UserLayout user={user} flex={true}>
-      {content}
     </UserLayout>
   );
 };
