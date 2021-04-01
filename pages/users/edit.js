@@ -50,31 +50,25 @@ export default function EditUserPage({ user, id }) {
   }
 
   return (
-    <UserLayout user={user} flex={true}>
-      <Title appendGradient="utilisateur">
-        {id ? 'Edition d\'un' : 'Création d\'un nouvel'}
-      </Title>
-      {id && (
-        <Title appendGradient={'#' + id}>
-          Utilisateur
-        </Title>
+    <UserLayout user={user} flex={true} header={<>
+      <Title appendGradient={id ? "" : "utilisateur"}>{id ? 'Edition de l\'utilisateur #' + id : 'Création d\'un nouvel'}</Title>
+    </>}>
+      {!id && (
+        <Highlight title="IMPORTANT" style={{ width: '80%', margin: 'auto auto 1em auto' }}>L'utilisateur devra réinitialiser son mot de passe depuis la page de connexion afin de pouvoir se connecter</Highlight>
       )}
-      <div className={'grid'}>
-        {!id && (
-          <Highlight title="IMPORTANT">L'utilisateur devra réinitialiser son mot de passe depuis la page de connexion afin de pouvoir se connecter</Highlight>
-        )}
-        <Form onSubmit={onSubmit}>
-          <Fields.FormInput defaultValue={u?.user?.email} label="Adresse e-mail" id="email" name="email" type="email" placeholder="exemple@exemple.fr" required />
-          <Fields.FormInput defaultValue={u?.user?.firstName} label="Prénom" id="firstName" name="firstName" type="text" placeholder="DUJARDIN" required />
-          <Fields.FormInput defaultValue={u?.user?.lastName} label="Nom" id="lastName" name="lastName" type="text" placeholder="Jean" required />
-          <Fields.FormInput defaultValue={u?.user?.birthDate.slice(0, 10)} label="Date de naissance" id="birthDate" name="birthDate" type="date" placeholder="DUJARDIN" required />
+      <Form onSubmit={onSubmit} style={{ width: '80%', padding: '1em', margin: 'auto auto 2em auto', borderRadius: '8px', backgroundColor: 'var(--color-primary-800)' }}>
+        <Fields.FormInput defaultValue={u?.user?.email} label="Adresse e-mail" id="email" name="email" type="email" placeholder="exemple@exemple.fr" required />
+        <Fields.FormInput defaultValue={u?.user?.firstName} label="Prénom" id="firstName" name="firstName" type="text" placeholder="DUJARDIN" required />
+        <Fields.FormInput defaultValue={u?.user?.lastName} label="Nom" id="lastName" name="lastName" type="text" placeholder="Jean" required />
+        <Fields.FormInput defaultValue={u?.user?.birthDate.slice(0, 10)} label="Date de naissance" id="birthDate" name="birthDate" type="date" placeholder="DUJARDIN" required />
 
-          <Fields.FormSelect defaultValue="-1" label="Groupe" id="groupId" name="groupId" options={[{ name: 'Aucun groupe', id: -1 }].concat(groups || []).map(x => { return { option: x.name, value: x.id } })} />
-          <Fields.FormSelect defaultValue="0" label="Type" id="userType" name="userType" options={[{ option: 'Etudiant', value: 0 }, { option: 'Professeur', value: 1 }, { option: 'Administration', value: 2 }]} />
+        <Fields.FormSelect defaultValue="-1" label="Groupe" id="groupId" name="groupId" options={[{ name: 'Aucun groupe', id: -1 }].concat(groups || []).map(x => { return { option: x.name, value: x.id } })} />
+        <Fields.FormSelect defaultValue="0" label="Type" id="userType" name="userType" options={[{ option: 'Etudiant', value: 0 }, { option: 'Professeur', value: 1 }, { option: 'Administration', value: 2 }]} />
 
+        <div className="buttons" style={{ justifyContent: 'center' }}>
           <Fields.FormButton type="submit">{id ? 'Editer cet utilisateur' : 'Créer un nouvel utilisateur'}</Fields.FormButton>
-        </Form>
-      </div>
+        </div>
+      </Form>
     </UserLayout>
   );
 };
