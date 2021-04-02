@@ -47,8 +47,7 @@ export default function GradesListPage({ user, id }) {
   if (data === {}) content = <h2 className={'title'}>Aucune note disponible</h2>;
   else if (data) {
     users = fuzzy(Object.values(data), query);
-    content = (<>
-      {users.map((user, i) => (<div className="block" key={i}>
+    content = users.map((user, i) => (<div className="block" key={i}>
         <h3 className="title">
           <span>{user[Object.keys(user)[0]][0].userFirstName} {user[Object.keys(user)[0]][0].userLastName}</span>
           {user[0]?.userGroupName && (<>
@@ -86,9 +85,8 @@ export default function GradesListPage({ user, id }) {
             </tr>))}
           </React.Fragment>))}
         </Table>
-      </div>))}
-    </>);
-  };
+      </div>));
+  }
 
   return (
     <UserLayout user={user} flex={true} header={<>

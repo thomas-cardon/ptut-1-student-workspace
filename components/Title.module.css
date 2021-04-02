@@ -7,14 +7,8 @@
   width: 100%;
   height: 100%;
 
-  line-height: 0;
-}
-
-@media (max-width:641px)  { /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */
-  .title {
-    padding: 1em 10%;
-    margin: auto auto;
-  }
+  margin: 0.25em 0em;
+  line-height: 40px;
 }
 
 .dark {
@@ -39,6 +33,8 @@
 }
 
 .gradient {
+  display: inline-block;
+
   font-weight: 800;
   color: transparent;
   background-clip: text;

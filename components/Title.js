@@ -9,10 +9,7 @@ export default function Title({ appendGradient, subtitle, button, style = {}, ch
       <h1 className={[defaultStyles.title, darkModeActive ? defaultStyles.dark : ''].join(' ')}>
         {children}&nbsp;
         <span className={defaultStyles.gradient}>{appendGradient}</span>
-        {subtitle && (<>
-          <br />
-          <span className={defaultStyles.subtitle}>{subtitle}</span>
-        </>)}
+        {subtitle && (<span className={defaultStyles.subtitle}>{subtitle}</span>)}
       </h1>
       {button || <></>}
     </div>
