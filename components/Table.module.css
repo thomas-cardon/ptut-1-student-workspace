@@ -9,8 +9,12 @@
   color: var(--color-primary-100);
 }
 
-.table-fixed {
+.fixed {
   table-layout: fixed;
+}
+
+.fixed th, .fixed tbody td {
+  text-align: center !important;
 }
 
 .table th {
@@ -47,15 +51,15 @@
   background-color: #F8F6FF;
 }
 
-.table-dark th {
+.dark th {
   background-color: var(--color-primary-800);
 }
 
-.table-dark tr {
+.dark tr {
   background-color: #373737;
 }
 
-.table-dark tr:nth-child(even) {
+.dark tr:nth-child(even) {
   background-color: #2D2D2D;
   color: var(--color-primary-200);
 }

@@ -23,7 +23,7 @@ const Table = React.forwardRef((props, ref) => {
 
     return (<div>
       {props.menu}
-      <table ref={ref} className={[styles.table, props.fixed ? styles['table-fixed'] : '', darkModeActive ? styles['table-dark'] : ''].join(' ')}>
+      <table ref={ref} className={[styles.table, props.fixed ? styles.fixed : '', darkModeActive ? styles.dark : ''].join(' ')}>
         <thead>
           <tr>
             {props.head.map((x, i) => <th key={'head-' + i}>{x}</th>)}
@@ -38,23 +38,17 @@ const Table = React.forwardRef((props, ref) => {
     </div>);
   }
 
-  return (<div>
-    <table ref={ref} className={[styles.table, darkModeActive ? styles['table-dark'] : ''].join(' ')}>
-      <thead>
-        <tr>
-          {props.head.map((x, i) => <th key={'head-' + i}>{x}</th>)}
-        </tr>
-      </thead>
-      <tbody>
-        {props.children}
-      </tbody>
-      {props.footer && (
-        <tfoot>
-          {props.footer}
-        </tfoot>
-      )}
-    </table>
-  </div>);
+  return (<table className={[styles.table, props.fixed ? styles.fixed : '', darkModeActive ? styles.dark : ''].join(' ')}>
+    <thead>
+      <tr>
+        {props.head.map((x, i) => <th key={'head-' + i}>{x}</th>)}
+      </tr>
+    </thead>
+    <tbody>
+      {props.children}
+    </tbody>
+    {props.footer && <tfoot>{props.footer}</tfoot>}
+  </table>);
 });
 
 export default Table;
