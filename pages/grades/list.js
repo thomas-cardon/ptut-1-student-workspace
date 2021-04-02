@@ -115,18 +115,16 @@ export default function GradesListPage({ user, id }) {
           font-size: xx-large;
         }
       `}</style>
-      <div className={'grid'} style={{ width: '92%' }}>
-        {(users.length > 0 && query !== "") && (
-          <p style={{ textAlign: 'center'}}><i style={{ marginBottom: '1em', marginTop: '-0.5em' }}>{users.length} résultats pour {query}...</i></p>
-        )}
-        {(users.length === 0 && query !== "") && (
-          <p style={{ textAlign: 'center'}}><i style={{ marginBottom: '1em', marginTop: '-0.5em' }}>Aucun résultat</i></p>
-        )}
-        {(users.length === 0 && query === "") && (
-          <p style={{ textAlign: 'center'}}><i style={{ marginBottom: '1em', marginTop: '-0.5em' }}>Il n'y a aucune note ou utilisateur enregistré dans la base de données...</i></p>
-        )}
-        {content}
-      </div>
+      {(data && users.length > 0 && query !== "") && (
+        <p style={{ textAlign: 'center'}}><i style={{ marginBottom: '1em', marginTop: '-0.5em' }}>{users.length} résultats pour {query}...</i></p>
+      )}
+      {(data && users.length === 0 && query !== "") && (
+        <p style={{ textAlign: 'center'}}><i style={{ marginBottom: '1em', marginTop: '-0.5em' }}>Aucun résultat</i></p>
+      )}
+      {(data && users.length === 0 && query === "") && (
+        <p style={{ textAlign: 'center'}}><i style={{ marginBottom: '1em', marginTop: '-0.5em' }}>Il n'y a aucune note ou utilisateur enregistré dans la base de données...</i></p>
+      )}
+      {content}
     </UserLayout>
   );
 };
