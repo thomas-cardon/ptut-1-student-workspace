@@ -15,7 +15,7 @@ import Table from '../../components/Table';
 import Title from '../../components/Title';
 
 import { FormButton as Button } from '../../components/FormFields';
-import { HiPlusCircle } from "react-icons/hi";
+import { HiPlusCircle, HiRefresh } from "react-icons/hi";
 
 import use from '../../lib/use';
 import withSession from "../../lib/session";
@@ -76,7 +76,7 @@ export default function UserListPage({ user, module }) {
           <td data-type="type">{user.userType === 0 ? 'Étudiant' : user.userType === 1 ? 'Professeur' : 'Administration'}</td>
         </tr>)}
       </Table>
-      <Button onClick={() => setSize(size + 1)} style={{ marginBottom: '1em', height: 'unset' }}>Charger plus...</Button>
+      <Button icon={<HiRefresh />} onClick={() => setSize(size + 1)} style={{ marginBottom: '1em', height: 'unset' }}>Charger plus...</Button>
     </div>;
   }
 
