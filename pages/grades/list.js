@@ -58,16 +58,15 @@ export default function GradesListPage({ user, id }) {
             </span>
           </>)}
         </h3>
-        <Table head={['Matière', 'Nom', 'Professeur', 'Note', 'Coef.', 'Présent', 'Appréciations', 'Date']} fixed={true}>
+        <Table head={['Nom', 'Professeur', 'Note', 'Coef.', 'Présent', 'Appréciations', 'Date']} fixed={true}>
           {Object.keys(user).map((m, x) => (<React.Fragment key={i + '-m-' + x}>
             <tr style={{ backgroundColor: 'var(--color-accent)', filter: 'brightness(0.85)' }}>
-              <td colspan="8">
+              <td colspan="7">
                 <p style={{ margin: '0' }}>{user[m][0].subjectModule}</p>
                 <p style={{ fontSize: 'x-small', margin: '0' }}>{user[m][0].subjectName}</p>
               </td>
             </tr>
             {user[m].map((note, y) => (<tr key={i + '-m-' + x + '-n-' + y}>
-              <td />
               <td data-type='name'>{note.name}</td>
               <td data-type='teacher'>{note.teacherFirstName} {note.teacherLastName}</td>
               <td data-type='value'>{(note.value || 0) + '/' + note.max}</td>
