@@ -47,7 +47,7 @@ const Table = React.forwardRef((props, ref) => {
     <tbody>
       {props.children}
     </tbody>
-    {props.footer && <tfoot>{props.footer}</tfoot>}
+    {props.footer && <tfoot><tr><td colspan={props.head.length}>{props.footer}</td></tr></tfoot>}
   </table>);
 });
 

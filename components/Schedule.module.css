@@ -95,8 +95,9 @@
 @supports (display: grid) {
   @media screen and (min-width: 700px) {
     .trackSlot {
-      display: block;
-      padding: 10px 5px 5px;
+      display: flex;
+      flex-direction: column;
+      align-content: space-between;
     }
   }
 }
@@ -112,6 +113,7 @@
 .trackSlot {
   text-align: center;
   border-bottom: darkgrey solid 1px;
+  margin: 0 0 -0.5em 1em;
 }
 
 .session {

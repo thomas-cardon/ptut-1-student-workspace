@@ -130,9 +130,7 @@ export default function UserLayout({ title, user, children, header, flex = true,
           <Card className={[styles.card, styles.currentClass].join(' ')}>
             <p className={styles.text}>
               <span className={styles.title}>{current.module} {current.subjectName}</span>
-              <br />
               <span className={styles.subtitle}>{current.teacherFirstName} {current.teacherLastName}</span>
-              <br />
               <span className={styles.subtitle} style={{ color: 'var(--color-accent)' }}>Démarré {formatDistanceToNow(new Date(current.start * 1000), { addSuffix: true, locale: fr })}</span>
             </p>
 

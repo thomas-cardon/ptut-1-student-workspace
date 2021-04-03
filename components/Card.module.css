@@ -18,3 +18,7 @@
 .card > div {
   padding: 0.5em;
 }
+
+.card h4 {
+  color: var(--color-primary-100);
+}

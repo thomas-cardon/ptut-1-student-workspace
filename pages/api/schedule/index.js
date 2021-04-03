@@ -6,8 +6,6 @@ async function handler(req, res, session) {
   if (!req?.session?.get('user')) return res.status(401).send({ error: 'NOT_AUTHORIZED', success: false });
   const { filterByGroup, filterByTeacher, omitPassedEntries } = req.query;
 
-  console.log(filterByGroup, filterByTeacher, omitPassedEntries);
-
   try {
     let params = [filterByGroup, filterByTeacher].filter(x => x && x != 0);
     let schedule = await query(

@@ -22,10 +22,12 @@ async function handler(req, res, session) {
       end: addMinutes(new Date(x.start * 1000), x.duration)
     }));
 
-    if (current[0]) {
+    if (current[0] && req.session.get('user').userType !== 0) {
       current[0].students = await query(
         `
-        SELECT email, birthDate, firstName, lastName FROM users WHERE groupId = ?
+        SELECT userId, email, birthDate, firstName, lastName, groups.name as groupName, groupId FROM users
+        LEFT OUTER JOIN groups ON groups.id = users.groupId
+        WHERE groupId = ?
       `, [req.session.get('user').group.id]);
     }
 

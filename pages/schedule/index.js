@@ -10,13 +10,14 @@ import { ButtonGroup, FormButton } from '../../components/FormFields';
 import { useSchedule } from '../../lib/hooks';
 import withSession from "../../lib/session";
 
-import { lightFormat, getDay, getWeek, getHours, getMinutes } from 'date-fns';
+import { lightFormat, getDay, getWeek, getHours, getMinutes, endOfISOWeek } from 'date-fns';
 
 import { HiPlusCircle } from "react-icons/hi";
 
 const HOURS_MIN = 8, HOURS_MAX = 19;
 
 export default function SchedulePage({ user, selectedWeek = getWeek(new Date()) }) {
+  selectedWeek = parseInt(selectedWeek) || getWeek(new Date());
   const { data : schedule } = useSchedule(user);
 
   let data = (schedule || []).map(x => {
@@ -29,7 +30,7 @@ export default function SchedulePage({ user, selectedWeek = getWeek(new Date()) 
       return false;
     }
 
-    if (getWeek(x.start) == selectedWeek) return true;
+    if (getWeek(x.start) === selectedWeek) return true;
     return false;
   }).map(x => {
     const start = new Date(x.start), end = new Date(x.end);
@@ -58,20 +59,26 @@ export default function SchedulePage({ user, selectedWeek = getWeek(new Date()) 
 
   return (
     <UserLayout user={user} flex={true} header={<>
-      <Title appendGradient="temps" button={user.userType > 0 ?
+      <Title appendGradient="temps" subtitle={`Semaine ${selectedWeek}`} button={user.userType > 0 ?
         <Link href={{ pathname: '/schedule/edit' }}>
           <FormButton is="action" icon={<HiPlusCircle />}>Ajouter</FormButton>
         </Link> : <></>}>
         Emploi du
       </Title>
       <ButtonGroup style={{ width: 'fit-content', margin: 'auto'}}>
+        <Link href={{ pathname: '/schedule', query: { selectedWeek: selectedWeek - 1 } }}>
+            <FormButton is="action" disabled={selectedWeek === 0}>{"<"}</FormButton>
+        </Link>
         {[-3, -2, -1, 0, 1, 2, 3].map((e, i) => {
           let week = Math.ceil((todaydate.getDay() + 1 + numberOfDays) / 7);
           return (
             <Link key={'week-' + i} href={{ pathname: '/schedule', query: { selectedWeek: week + e } }}>
-                <FormButton is="action" key={i} disabled={selectedWeek ? (week + e) == selectedWeek : e === 0}>{week + e}</FormButton>
+                <FormButton is="action" key={i} disabled={selectedWeek ? (week + e) === selectedWeek : e === 0}>{week + e}</FormButton>
             </Link>);
         })}
+        <Link href={{ pathname: '/schedule', query: { selectedWeek: selectedWeek + 1 } }}>
+            <FormButton is="action" disabled={selectedWeek === 52}>{">"}</FormButton>
+        </Link>
       </ButtonGroup>
     </>}>
       <Schedule data={data} week={selectedWeek} />

@@ -4,9 +4,10 @@ import { useToasts } from 'react-toast-notifications';
 import { useDarkMode } from 'next-dark-mode';
 import { useContextMenu, Submenu, Menu, Item, Separator } from 'react-contexify';
 
+import { lightFormat, addDays } from 'date-fns';
+
 import fetcher from '../lib/fetchJson';
 import styles from "./Schedule.module.css";
-
 
 const MENU_ID = "schedule-menu";
 
@@ -40,6 +41,17 @@ function pickTextColorBasedOnBgColorAdvanced(bgColor, lightColor, darkColor) {
   let L = (0.2126 * c[0]) + (0.7152 * c[1]) + (0.0722 * c[2]);
 
   return (L > 0.179) ? darkColor : lightColor;
+}
+
+function getDateOfISOWeek(w, y) {
+    var simple = new Date(y, 0, 1 + (w - 1) * 7);
+    var dow = simple.getDay();
+    var ISOweekStart = simple;
+    if (dow <= 4)
+        ISOweekStart.setDate(simple.getDate() - simple.getDay() + 1);
+    else
+        ISOweekStart.setDate(simple.getDate() + 8 - simple.getDay());
+    return ISOweekStart;
 }
 
 export default function Schedule({ data, week, children }) {
@@ -167,12 +179,12 @@ export default function Schedule({ data, week, children }) {
         <span className={styles.timeSlot} style={{ gridRow: 'time-1830' }}>18:30</span>
         <span className={styles.timeSlot} style={{ gridRow: 'time-1900' }}>19:00</span>
 
-        <span className={styles.trackSlot} aria-hidden="true" style={{ gridColumn: 'track-1', gridRow: 'tracks' }}>Lundi</span>
-        <span className={styles.trackSlot} aria-hidden="true" style={{ gridColumn: 'track-2', gridRow: 'tracks' }}>Mardi</span>
-        <span className={styles.trackSlot} aria-hidden="true" style={{ gridColumn: 'track-3', gridRow: 'tracks' }}>Mercredi</span>
-        <span className={styles.trackSlot} aria-hidden="true" style={{ gridColumn: 'track-4', gridRow: 'tracks' }}>Jeudi</span>
-        <span className={styles.trackSlot} aria-hidden="true" style={{ gridColumn: 'track-5', gridRow: 'tracks' }}>Vendredi</span>
-        <span className={styles.trackSlot} aria-hidden="true" style={{ gridColumn: 'track-6', gridRow: 'tracks' }}>Samedi</span>
+        {['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'].map((x, i) => (
+          <div className={styles.trackSlot} aria-hidden="true" style={{ gridColumn: 'track-' + (i + 1), gridRow: 'tracks' }}>
+            <span>{x}</span>
+            <small>{lightFormat(addDays(getDateOfISOWeek(week, new Date().getFullYear()), i), 'dd/MM')}</small>
+          </div>
+        ))}
 
         {data.map((x, i) =>
           <div id={x.id} key={i} onContextMenu={displayMenu} className={styles.session} meetingurl={x.meetingUrl} style={{ gridColumn: 'track-' + x.day, backgroundColor: x.color || stringToColor(x.name), color: pickTextColorBasedOnBgColorAdvanced(x.color || stringToColor(x.name), 'white', 'black'), gridRow: 'time-' + x.start + ' / time-' + x.end }}>
