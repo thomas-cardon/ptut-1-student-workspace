@@ -9,6 +9,6 @@ export default function FormButton({ is, children, icon, ...rest }) {
     <div className={styles.content}>
       {icon}&nbsp;{children}
     </div>
-  ) : (<span>{children}</span> || icon)}
+  ) : icon || <span>{children}</span>}
   </button>;
 }
