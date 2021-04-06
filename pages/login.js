@@ -57,10 +57,13 @@ export default function LoginPage(props) {
 
       body {
         background: #${darkModeActive ? '282828' : 'EBEBEB'};
-        background-image: url(/assets/login/background.png);
+        background-image: url(/assets/login/bg-1.webp), url(/assets/login/bg-1.png);
         background-repeat: no-repeat;
         background-size: cover;
         overflow: hidden;
+
+        font-family: 'Segoe UI', 'Segoe';
+        font-weight: bolder;
       }
 
       @media (max-width: 600px) {
@@ -72,7 +75,7 @@ export default function LoginPage(props) {
       .bgLogo {
         height: 100vh;
         width: 100vw;
-        background-image: url(/assets/login/background2.png);
+        background-image: url(/assets/login/bg-overlay.webp), url(/assets/login/bg-overlay.png);
         background-repeat: no-repeat;
         background-position: center;
         background-size: 100%;
@@ -87,12 +90,14 @@ export default function LoginPage(props) {
       }
 
       h3 {
-        margin: 0%;
-        padding-bottom: 0%;
-        font-family: 'Segoe';
+        margin: 1em 0 0 0;
+        padding-bottom: 0;
         color: #${darkModeActive ? 'DCDCDC' : '282828'} !important;
         font-size: 3.125em;
         text-align: center;
+        text-transform: uppercase;
+
+        font-weight: bolder;
       }
 
       @media (max-width: 600px) {
@@ -103,11 +108,15 @@ export default function LoginPage(props) {
       }
 
       p {
-        margin: 0%;
-        font-family: 'Segoe';
-        color: #0098FF;
-        font-size: 2.5em;
+        margin: 0;
+
         text-align: center;
+        color: #0098FF;
+        
+        font-size: 2.5em;
+        font-weight: bolder;
+
+        text-transform: uppercase;
       }
 
       @media (max-width: 600px) {
@@ -122,7 +131,7 @@ export default function LoginPage(props) {
         align-items: center;
         justify-content: space-between;
 
-        margin: 0 auto;
+        margin: auto auto;
 
         width: 100%;
         height: 50vh;
@@ -131,7 +140,7 @@ export default function LoginPage(props) {
       form label {
         color: #${darkModeActive ? 'DCDCDC' : '282828'} !important;
 
-        font-family: 'Marianne';
+        font-family: 'Marianne', 'Segoe UI', 'Segoe';
         font-weight: bolder;
         font-size: large;
 
@@ -141,8 +150,12 @@ export default function LoginPage(props) {
         display: block;
       }
 
-      form > div, form > button {
-        min-width: 60% !important;
+      form > div {
+        width: 60% !important;
+      }
+
+      button {
+        padding: 1em 2em !important;
       }
 
       form > div > div {
@@ -156,7 +169,7 @@ export default function LoginPage(props) {
         width: 100%;
         padding: 1.5% 2%;
 
-        border-radius: 10px;
+        border-radius: 0.7em;
 
         transition: color 0.5s, background-color 0.5s;
       }
@@ -175,17 +188,11 @@ export default function LoginPage(props) {
       }
 
       button {
-        font-family: 'Segoe';
-        text-transform: uppercase;
-
-        font-size: 1.15rem !important;
-
-        text-align: center;
-        line-height: 0;
+        font-size: 1.15rem;
       }
 
       button:hover {
-        transform: scale(1.05, 1.05);
+        transform: scale(1.1, 1.1);
       }
 
       @media (max-width: 600px) {
@@ -198,7 +205,7 @@ export default function LoginPage(props) {
       a {
       	margin: 0%;
       	padding-bottom: 0%;
-      	font-family: 'Segoe';
+      	font-family: 'Segoe UI', 'Segoe';
         color: #${darkModeActive ? 'DCDCDC' : '282828'};
       	font-size: 1.125em;
       	text-align: center;
@@ -211,16 +218,13 @@ export default function LoginPage(props) {
       	}
       }
     `}</style>
-    <BasicLayout title="Connexion">
-      <h3>STUDENT WORKSPACE</h3>
-      <p>CONNEXION</p>
-      <Form className={'flex'} style={{ marginTop: '6em' }} onSubmit={onSubmit}>
+    <BasicLayout title="SWS -> Connexion">
+      <h3>Student Workspace</h3>
+      <p>Connexion</p>
+      <Form onSubmit={onSubmit}>
         <Fields.FormInput disableStyle={true} label="Adresse mail" id="email" name="email" type="email" placeholder="exemple@exemple.fr" />
         <Fields.FormInput disableStyle={true} label="Mot de passe" id="password" name="password" type="password" placeholder="Mot de passe difficile à trouver" />
         <Fields.FormButton type="submit" is="light">Se connecter</Fields.FormButton>
-        <Link href="">
-          <a>Mot de passe oublié ?</a>
-        </Link>
       </Form>
     </BasicLayout>
   </div>);

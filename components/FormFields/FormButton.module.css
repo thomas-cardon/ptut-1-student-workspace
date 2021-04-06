@@ -8,17 +8,22 @@
   padding: 1em;
   border-radius: .25rem;
 
-  font-family: "Nunito";
+  font-family: 'Nunito', 'system-ui';
   font-weight: 800;
   text-transform: uppercase;
 
   color: var(--color-button-text);
   background-color: var(--color-primary-700);
 
-  border: none;
-  outline: none;
+  border: 0;
+  outline: 0;
 
-  transition: all 0.2s;
+  transition: all 0.2s ease;
+}
+
+.button span {
+  text-align: center;
+  width: 100%;
 }
 
 .button:hover:not([disabled]) {

@@ -1,32 +1,11 @@
-.flex {
+.main {
+  width: 100%;
+
+  min-height: 100vh;
+  height: 100%;
+
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding-top: 1.5em;
-}
 
-.flex .dark {
-  color: #D4D4D4;
-  background-color: #121212;
-}
-
-.footer {
-  position: relative;
-  min-height: 10em;
-  padding: 1.5em;
-  margin: 1.5em;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-}
-
-.gradient {
-  font-weight: 800;
-  font-size: 2.25rem;
-  line-height: 1.33;
-  color: transparent;
-  -webkit-background-clip: text;
-  background-clip: text;
-  background-image: linear-gradient(to top right, #63b3ed, #48BB78);
+  background-color: var(--color-primary-900);
 }

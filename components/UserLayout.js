@@ -1,5 +1,17 @@
 import React, { useState, useEffect } from 'react';
 
+/*
+* Voir pour importer ces fonts par page ou composant, car là on les importe dans toute les pages alors
+* qu'elles ne sont pas forcément utilisées partout
+*/
+import "@fontsource/lato";
+
+import "@fontsource/nunito/800.css";
+
+import "@fontsource/raleway/100.css";
+import "@fontsource/raleway/400.css";
+import "@fontsource/raleway/800.css";
+
 import Head from './Head';
 import Sidebar from './Sidebar';
 
@@ -17,7 +29,6 @@ import FormInput from './FormFields/FormInput';
 import Button from './FormFields/FormButton';
 
 import Link from './Link';
-
 import Card from './Card';
 
 import { useCurrentClass } from '../lib/hooks';
@@ -42,14 +53,7 @@ export default function UserLayout({ title, user, children, header, flex = true,
   }, [darkMode]);
 
   return (<>
-    <Head>
-      <title>{title || 'Student Workspace'}</title>
-      <link rel="icon" href="/favicon.ico" />
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <meta name="description" content="Votre nouvel environnement de travail" />
-      <link rel="apple-touch-icon" href="/favicon-192x192.png" />
-      <link rel="manifest" href="/site.webmanifest" />
-    </Head>
+    <Head />
     {darkModeActive ? <style jsx global>{`
         :root {
           --color-button-text: #fff;
