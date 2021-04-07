@@ -1,19 +1,21 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import fetch from 'isomorphic-unfetch';
+import useSWR from 'swr';
 
+import { useContextMenu, Submenu, Menu, Item, Separator } from 'react-contexify';
 import { useToasts } from 'react-toast-notifications';
 import { useDarkMode } from 'next-dark-mode';
-import { useContextMenu, Submenu, Menu, Item, Separator } from 'react-contexify';
 
-import { lightFormat, addDays } from 'date-fns';
+import { parseISO, lightFormat, addDays, getDay, getWeek, getHours, getMinutes } from 'date-fns';
+import { getDateOfISOWeek } from '../lib/date';
 
 import fetcher from '../lib/fetchJson';
 import styles from "./Schedule.module.css";
 
-const MENU_ID = "schedule-menu";
+const HOURS_MIN = 8, HOURS_MAX = 19, MENU_ID = "schedule-menu";
 
 import "react-contexify/dist/ReactContexify.css";
 
-function stringToColor(str) {
+function stringToColor(str = 'xxx') {
   var hash = 0;
   for (var i = 0; i < str.length; i++) {
     hash = str.charCodeAt(i) + ((hash << 5) - hash);
@@ -43,18 +45,13 @@ function pickTextColorBasedOnBgColorAdvanced(bgColor, lightColor, darkColor) {
   return (L > 0.179) ? darkColor : lightColor;
 }
 
-function getDateOfISOWeek(w, y) {
-    var simple = new Date(y, 0, 1 + (w - 1) * 7);
-    var dow = simple.getDay();
-    var ISOweekStart = simple;
-    if (dow <= 4)
-        ISOweekStart.setDate(simple.getDate() - simple.getDay() + 1);
-    else
-        ISOweekStart.setDate(simple.getDate() + 8 - simple.getDay());
-    return ISOweekStart;
-}
+export default function Schedule({ user, index }) {
+  /*
+  * Variable definitions
+  */
+  const { data : schedule } = useSWR(`/api/schedule/by-week/${index}` + (user.userType == 0 && user?.group?.id ? '?filterByGroup=' + user?.group?.id : ''), fetcher);
 
-export default function Schedule({ data, week, children }) {
+
   const { darkModeActive } = useDarkMode();
   const { addToast } = useToasts();
 
@@ -72,7 +69,7 @@ export default function Schedule({ data, week, children }) {
           let title = window.prompt('Saisissez le titre de la notification', 'Rappel de cours');
           let body = window.prompt('Saisissez le corps de la notification', document.getElementById(props.id).children[1].innerText);
 
-          fetcher(location.protocol + '//' + location.host + `/api/notifications/broadcast?title=${title}&body=${body}&interests=group-${document.querySelector('[groupid]').getAttribute('groupid')}`)
+          fetcher(location.protocol + '//' + location.host + `/api/notifications/broadcast?title=${title}&body=${body}&interests=${document.querySelector('[interests]').getAttribute('interests')}`)
           .then(() => addToast('Tous les utilisateurs concernés ont été notifiés.', { appearance: 'success' }))
           .catch(err => {
             addToast("Une erreur s'est produite.", { appearance: 'error' });
@@ -137,6 +134,10 @@ export default function Schedule({ data, week, children }) {
     }
   }
 
+  /*
+  * End of variable definitions
+  */
+
   return (
     <>
       <Menu id={MENU_ID}>
@@ -182,25 +183,25 @@ export default function Schedule({ data, week, children }) {
         {['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'].map((x, i) => (
           <div className={styles.trackSlot} aria-hidden="true" style={{ gridColumn: 'track-' + (i + 1), gridRow: 'tracks' }}>
             <span>{x}</span>
-            <small>{lightFormat(addDays(getDateOfISOWeek(week, new Date().getFullYear()), i), 'dd/MM')}</small>
+            <small>{lightFormat(addDays(getDateOfISOWeek(index, new Date().getFullYear()), i), 'dd/MM')}</small>
           </div>
         ))}
 
-        {data.map((x, i) =>
-          <div id={x.id} key={i} onContextMenu={displayMenu} className={styles.session} meetingurl={x.meetingUrl} style={{ gridColumn: 'track-' + x.day, backgroundColor: x.color || stringToColor(x.name), color: pickTextColorBasedOnBgColorAdvanced(x.color || stringToColor(x.name), 'white', 'black'), gridRow: 'time-' + x.start + ' / time-' + x.end }}>
+        {schedule && schedule.map((x, i) =>
+          <div id={x.id} key={i} onContextMenu={displayMenu} className={styles.session} meetingurl={x.meetingUrl} style={{ gridColumn: 'track-' + getDay(parseISO(x.start)), backgroundColor: x.moduleColor || stringToColor(x.subjectName), color: pickTextColorBasedOnBgColorAdvanced(x.color || stringToColor(x.name), 'white', 'black'), gridRow: 'time-' + parseISO(x.start).toLocaleTimeString().slice(0,5).replace(':', '') + ' / time-' + parseISO(x.end).toLocaleTimeString().slice(0,5).replace(':', '') }}>
             <div className={styles.top} style={{ display: 'flex' }}>
-              <b>{x.module}</b>
+              <b>{x.subject.module}</b>
               <span> - </span>
-              <span>{x.start.slice(0, 2)}:{x.start.slice(2)} - {x.end.slice(0, 2)}:{x.end.slice(2)}</span>
+              <span>{parseISO(x.start).toLocaleTimeString().slice(0,5)} - {parseISO(x.end).toLocaleTimeString().slice(0,5)}</span>
             </div>
 
-            <p className={styles.name}>{x.name}</p>
-            <p className={styles.teacher}>{x.teacher}</p>
+            <p className={styles.name}>{x.subject.name}</p>
+            <p className={styles.teacher}>{x.teacher.firstName} {x.teacher.lastName}</p>
 
             <div className={styles.bottom}>
               <p>{x.room}</p>
-              <p groupid={x.groupId}>{x.groupName}</p>
-              <p>{x.dates.start.toLocaleDateString()}</p>
+              <p interests={x.groups.map(x => 'group-' + x.id).join(';')}>{x.groups.map(x => x.name).join(',\n')}</p>
+              <p>{parseISO(x.start).toLocaleDateString()}</p>
             </div>
           </div>
         )}

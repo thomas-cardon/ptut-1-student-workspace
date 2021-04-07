@@ -1,56 +1,29 @@
+import dynamic from 'next/dynamic';
+
 import Title from '../../components/Title';
 import Link from '../../components/Link';
 
 import UserLayout from '../../components/UserLayout';
 import GroupList from '../../components/GroupList';
 
-import Schedule from '../../components/Schedule';
 import { ButtonGroup, FormButton } from '../../components/FormFields';
 
 import { useSchedule } from '../../lib/hooks';
 import withSession from "../../lib/session";
 
-import { lightFormat, getDay, getWeek, getHours, getMinutes, endOfISOWeek } from 'date-fns';
+import { getWeek } from 'date-fns';
 
 import { HiPlusCircle } from "react-icons/hi";
+import Loader from 'react-loader-spinner';
+
+const Schedule = dynamic(() => import('../../components/Schedule'), {
+  loading: () => <Loader type="Oval" color="var(--color-accent)" height="5em" width="100%" />
+});
 
 const HOURS_MIN = 8, HOURS_MAX = 19;
 
 export default function SchedulePage({ user, selectedWeek = getWeek(new Date()) }) {
   selectedWeek = parseInt(selectedWeek) || getWeek(new Date());
-  const { data : schedule } = useSchedule(user);
-
-  let data = (schedule || []).map(x => {
-    x.start = new Date(x.start);
-    x.end = new Date(x.end);
-
-    return x;
-  }).filter(x => {
-    if ((getHours(x.end) > 19 && getMinutes(x.end) > 0) || getHours(x.start) < HOURS_MIN) {
-      return false;
-    }
-
-    if (getWeek(x.start) === selectedWeek) return true;
-    return false;
-  }).map(x => {
-    const start = new Date(x.start), end = new Date(x.end);
-
-    return {
-      id: x.id,
-      day: getDay(x.start),
-      dates: { start, end, },
-      start: start.toLocaleTimeString().slice(0, 5).replace(':', ''),
-      end: end.toLocaleTimeString().slice(0, 5).replace(':', ''),
-      module: x.module,
-      name: x.subjectName,
-      room: x.room,
-      groupId: x.groupId,
-      groupName: x.groupName,
-      color: x.color,
-      teacher: x.teacherFirstName + ' ' + x.teacherLastName,
-      meetingUrl: x?.meetingUrl
-    };
-  });
 
   /* Calcul semaines */
   let todaydate = new Date();
@@ -81,7 +54,7 @@ export default function SchedulePage({ user, selectedWeek = getWeek(new Date()) 
         </Link>
       </ButtonGroup>
     </>}>
-      <Schedule data={data} week={selectedWeek} />
+      <Schedule index={selectedWeek} user={user} />
     </UserLayout>
   );
 };
