@@ -50,7 +50,7 @@ export default function Schedule({ user, index }) {
   * Variable definitions
   */
   const { data : schedule } = useSWR(`/api/schedule/by-week/${index}` + (user.userType == 0 && user?.group?.id ? '?filterByGroup=' + user?.group?.id : ''), fetcher);
-
+  console.dir(schedule);
 
   const { darkModeActive } = useDarkMode();
   const { addToast } = useToasts();
@@ -188,7 +188,7 @@ export default function Schedule({ user, index }) {
         ))}
 
         {schedule && schedule.map((x, i) =>
-          <div id={x.id} key={i} onContextMenu={displayMenu} className={styles.session} meetingurl={x.meetingUrl} style={{ gridColumn: 'track-' + getDay(parseISO(x.start)), backgroundColor: x.moduleColor || stringToColor(x.subjectName), color: pickTextColorBasedOnBgColorAdvanced(x.color || stringToColor(x.name), 'white', 'black'), gridRow: 'time-' + parseISO(x.start).toLocaleTimeString().slice(0,5).replace(':', '') + ' / time-' + parseISO(x.end).toLocaleTimeString().slice(0,5).replace(':', '') }}>
+          <div id={x.id} key={i} onContextMenu={displayMenu} className={styles.session} meetingurl={x.meetingUrl} style={{ gridColumn: 'track-' + getDay(parseISO(x.start)), backgroundColor: '#' + x.subject.color || stringToColor(x.subject.name), color: pickTextColorBasedOnBgColorAdvanced(x.subject.color || stringToColor(x.subject.name), 'white', 'black'), gridRow: 'time-' + parseISO(x.start).toLocaleTimeString().slice(0,5).replace(':', '') + ' / time-' + parseISO(x.end).toLocaleTimeString().slice(0,5).replace(':', '') }}>
             <div className={styles.top} style={{ display: 'flex' }}>
               <b>{x.subject.module}</b>
               <span> - </span>
