@@ -22,7 +22,7 @@ import { HiAdjustments, HiLogout, HiArrowRight, HiDotsHorizontal, HiMoon, HiColo
 
 import { useDarkMode } from 'next-dark-mode';
 
-import { formatDistanceToNow } from 'date-fns';
+import { parseISO, formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
 import FormInput from './FormFields/FormInput';
@@ -133,9 +133,9 @@ export default function UserLayout({ title, user, children, header, flex = true,
         {current && !current.error && (
           <Card className={[styles.card, styles.currentClass].join(' ')}>
             <p className={styles.text}>
-              <span className={styles.title}>{current.module} {current.subjectName}</span>
-              <span className={styles.subtitle}>{current.teacherFirstName} {current.teacherLastName}</span>
-              <span className={styles.subtitle} style={{ color: 'var(--color-accent)' }}>Démarré {formatDistanceToNow(new Date(current.start * 1000), { addSuffix: true, locale: fr })}</span>
+              <span className={styles.title}>{current.subject.module} {current.subject.name}</span>
+              <span className={styles.subtitle}>{current.teacher.firstName} {current.teacher.lastName}</span>
+              <span className={styles.subtitle} style={{ color: 'var(--color-accent)' }}>Démarré {formatDistanceToNow(parseISO(current.start), { addSuffix: true, locale: fr })}</span>
             </p>
 
             <div className="buttons">
