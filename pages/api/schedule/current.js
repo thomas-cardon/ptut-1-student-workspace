@@ -12,9 +12,8 @@ async function handler(req, res, session) {
       INNER JOIN users ON teacherId = users.userId
       INNER JOIN subjects ON subjectId = subjects.id
       LEFT OUTER JOIN groups ON schedule.groupId = groups.id
-      WHERE schedule.groupId = ?
       ORDER BY start ASC
-      `, [req.session.get('user').group.id]);
+      `);
 
     schedule = schedule.map(o => ({
       start: new Date(o.start * 1000),
@@ -34,6 +33,7 @@ async function handler(req, res, session) {
     }
 
     let current = Object.values(results)
+    .filter(x => x.groups.find(g => g.id === req.session.get('user').group.id))
     .filter(x => isWithinInterval(new Date(), {
       start: x.start,
       end: x.end
@@ -44,8 +44,8 @@ async function handler(req, res, session) {
         `
         SELECT userId, email, birthDate, firstName, lastName, groups.name as groupName, groupId FROM users
         LEFT OUTER JOIN groups ON groups.id = users.groupId
-        WHERE groupId = ?
-      `, [req.session.get('user').group.id]);
+        WHERE ${current[0].groups.map(x => 'groupId = ?').join(' OR ')}
+      `, [...current[0].groups.map(x => x.id)]);
     }
 
     if (current[0]) res.send(current[0]);
