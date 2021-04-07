@@ -11,7 +11,7 @@ import { ButtonGroup, FormButton } from '../../components/FormFields';
 import { useSchedule } from '../../lib/hooks';
 import withSession from "../../lib/session";
 
-import { getWeek } from 'date-fns';
+import { getISOWeek } from 'date-fns';
 
 import { HiPlusCircle } from "react-icons/hi";
 import Loader from 'react-loader-spinner';
@@ -22,8 +22,8 @@ const Schedule = dynamic(() => import('../../components/Schedule'), {
 
 const HOURS_MIN = 8, HOURS_MAX = 19;
 
-export default function SchedulePage({ user, selectedWeek = getWeek(new Date()) }) {
-  selectedWeek = parseInt(selectedWeek) || getWeek(new Date());
+export default function SchedulePage({ user, selectedWeek }) {
+  selectedWeek = parseInt(selectedWeek) || getISOWeek(new Date());
 
   /* Calcul semaines */
   let todaydate = new Date();

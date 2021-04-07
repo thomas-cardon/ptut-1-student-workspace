@@ -23,27 +23,28 @@ async function handler(req, res, session) {
       ${filterByTeacher && filterByTeacher != 0 ? 'WHERE schedule.teacherId = ?' : ''}
       WHERE WEEK(FROM_UNIXTIME(start)) = ?
       ORDER BY start ASC
-      `, params);
+    `, params);
 
     schedule = schedule.map(o => ({
+      id: `${o.start}-${o.subjectId}-${o.teacherId}`,
       start: new Date(o.start * 1000),
       end: addMinutes(new Date(o.start * 1000), o.duration),
       duration: o.duration,
-      subject: { id: o.subjectId, name: o.subjectName, module: o.module, color: o.color },
+      subject: { id: o.subjectId, name: o.subjectName, module: o.module, color: o.color ? '#' + o.color : null },
       teacher: { firstName: o.teacherFirstName, lastName: o.teacherLastName, email: o.teacherEmail, id: o.teacherId },
       meetingUrl: o.meetingUrl,
       groups: [{ id: o.groupId, name: o.groupName }],
       room: o.room
     }));
 
-    let results = {};
-    for (let i = 0; i < schedule.length; i++) {
-      if (results[`${schedule[i].start}-${schedule[i].subject.id}-${schedule[i].teacher.id}`]) results[`${schedule[i].start}-${schedule[i].subject.id}-${schedule[i].teacher.id}`].groups.push(schedule[i].groups[0]);
-      else results[`${schedule[i].start}-${schedule[i].subject.id}-${schedule[i].teacher.id}`] = schedule[i];
-    }
-
     if (omitPassedEntries === '1')
       schedule = schedule.filter(o => isFuture(addMinutes(new Date(o.start * 1000), o.duration)));
+
+    let results = {};
+    for (let block of schedule) {
+      if (results[block.id]) results[block.id].groups.push(block.groups[0]);
+      else results[block.id] = block;
+    }
 
     res.send(Object.values(results));
   }

@@ -42,6 +42,10 @@
   .header {
     position: unset;
   }
+
+  .header > div {
+    padding: 0 2%;
+  }
 }
 
 .cards-list {
