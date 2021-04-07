@@ -32,6 +32,8 @@ function pickTextColorBasedOnBgColorAdvanced(bgColor, lightColor, darkColor) {
 }
 
 export default function ScheduleBlock({ data, onContextMenu }) {
+  console.dir(data);
+
   return <div
       id={data.id}
       className={styles.session}
@@ -65,9 +67,9 @@ export default function ScheduleBlock({ data, onContextMenu }) {
       </p>
 
       <div className={styles.bottom}>
-        <p>{data.room}</p>
+        <p>{data.room || <i>Aucune salle</i>}</p>
         <p interests={data.groups.map((x) => "group-" + data.id).join(";")}>
-          {data.groups.map((x) => data.name).join(",\n")}
+          {data.groups.map(x => x.name).join(",\n")}
         </p>
         <p>{parseISO(data.start).toLocaleDateString()}</p>
       </div>
