@@ -14,12 +14,29 @@ async function handler(req, res, session) {
       LEFT OUTER JOIN groups ON schedule.groupId = groups.id
       WHERE schedule.groupId = ?
       ORDER BY start ASC
-    `, [req.session.get('user').group.id]);
+      `, [req.session.get('user').group.id]);
 
-    let current = schedule
+    schedule = schedule.map(o => ({
+      start: new Date(o.start * 1000),
+      end: addMinutes(new Date(o.start * 1000), o.duration),
+      duration: o.duration,
+      subject: { id: o.subjectId, name: o.subjectName, module: o.module, color: o.color },
+      teacher: { firstName: o.teacherFirstName, lastName: o.teacherLastName, email: o.teacherEmail, id: o.teacherId },
+      meetingUrl: o.meetingUrl,
+      groups: [{ id: o.groupId, name: o.groupName }],
+      room: o.room
+    }));
+
+    let results = {};
+    for (let i = 0; i < schedule.length; i++) {
+      if (results[`${schedule[i].start}-${schedule[i].subject.id}-${schedule[i].teacher.id}`]) results[`${schedule[i].start}-${schedule[i].subject.id}-${schedule[i].teacher.id}`].groups.push(schedule[i].groups[0]);
+      else results[`${schedule[i].start}-${schedule[i].subject.id}-${schedule[i].teacher.id}`] = schedule[i];
+    }
+
+    let current = Object.values(results)
     .filter(x => isWithinInterval(new Date(), {
-      start: new Date(x.start * 1000),
-      end: addMinutes(new Date(x.start * 1000), x.duration)
+      start: x.start,
+      end: x.end
     }));
 
     if (current[0] && req.session.get('user').userType !== 0) {
@@ -30,8 +47,6 @@ async function handler(req, res, session) {
         WHERE groupId = ?
       `, [req.session.get('user').group.id]);
     }
-
-    let next = schedule.filter(x => isFuture(addMinutes(new Date(x.start * 1000), x.duration)));
 
     if (current[0]) res.send(current[0]);
     else res.status(404).send({ error: 'NOT_FOUND', success: false });
