@@ -1,7 +1,7 @@
 import withSession from '../../../../lib/session';
 import { query } from '../../../../lib/db';
 
-import { isFuture, addMinutes } from 'date-fns';
+import { isFuture, addMinutes, addDays } from 'date-fns';
 import { getDateOfISOWeek } from '../../../../lib/date';
 
 async function handler(req, res, session) {
@@ -11,7 +11,7 @@ async function handler(req, res, session) {
   const { filterByGroup, filterByTeacher, omitPassedEntries } = req.query;
 
   try {
-    let params = [getDateOfISOWeek(parseInt(req.query.week), new Date().getFullYear()), filterByGroup, filterByTeacher].filter(x => x && x != 0);
+    let params = [getDateOfISOWeek(parseInt(req.query.week), new Date().getFullYear()), addDays(getDateOfISOWeek(parseInt(req.query.week), new Date().getFullYear()), 7), filterByGroup, filterByTeacher].filter(x => x && x != 0);
     let schedule = await query(
       `
       SELECT start, duration, subjectId, room, schedule.groupId, meetingUrl, subjects.module, subjects.name as subjectName, color, firstName AS teacherFirstName, lastName as teacherLastName, email as teacherEmail, schedule.teacherId, groups.id as groupId, groups.name as groupName
@@ -22,6 +22,7 @@ async function handler(req, res, session) {
       ${filterByGroup && filterByGroup != 0 ? 'WHERE schedule.groupId = ?' : ''}
       ${filterByTeacher && filterByTeacher != 0 ? 'WHERE schedule.teacherId = ?' : ''}
       WHERE FROM_DAYS(TO_DAYS(FROM_UNIXTIME(start)) - MOD(TO_DAYS(FROM_UNIXTIME(start)) -2, 7)) >= ?
+            AND FROM_DAYS(TO_DAYS(FROM_UNIXTIME(start)) - MOD(TO_DAYS(FROM_UNIXTIME(start)) -2, 7)) < ?
       ORDER BY start ASC
       `, params);
 
