@@ -12,14 +12,32 @@ async function handler(req, res, session) {
       INNER JOIN users ON teacherId = users.userId
       INNER JOIN subjects ON subjectId = subjects.id
       LEFT OUTER JOIN groups ON schedule.groupId = groups.id
-      WHERE schedule.groupId = ?
       ORDER BY start ASC
-    `, [req.session.get('user').group.id]);
+    `);
 
-    let current = schedule
+    schedule = schedule.map(o => ({
+      id: `${o.start}-${o.subjectId}-${o.teacherId}`,
+      start: new Date(o.start * 1000),
+      end: addMinutes(new Date(o.start * 1000), o.duration),
+      duration: o.duration,
+      subject: { id: o.subjectId, name: o.subjectName, module: o.module, color: o.color ? '#' + o.color : null },
+      teacher: { firstName: o.teacherFirstName, lastName: o.teacherLastName, email: o.teacherEmail, id: o.teacherId },
+      meetingUrl: o.meetingUrl,
+      groups: [{ id: o.groupId, name: o.groupName }],
+      room: o.room
+    }));
+
+    let results = {};
+    for (let block of schedule) {
+      if (results[block.id]) results[block.id].groups.push(block.groups[0]);
+      else results[block.id] = block;
+    }
+
+    let current = Object.values(results)
+    .filter(x => x.groups.find(g => g.id === req.session.get('user').group.id))
     .filter(x => isWithinInterval(new Date(), {
-      start: new Date(x.start * 1000),
-      end: addMinutes(new Date(x.start * 1000), x.duration)
+      start: x.start,
+      end: x.end
     }));
 
     if (current[0] && req.session.get('user').userType !== 0) {
@@ -27,17 +45,15 @@ async function handler(req, res, session) {
         `
         SELECT userId, email, birthDate, firstName, lastName, groups.name as groupName, groupId FROM users
         LEFT OUTER JOIN groups ON groups.id = users.groupId
-        WHERE groupId = ?
-      `, [req.session.get('user').group.id]);
+        WHERE ${current[0].groups.map(x => 'groupId = ?').join(' OR ')}
+      `, [...current[0].groups.map(x => x.id)]);
     }
 
-    let next = schedule.filter(x => isFuture(addMinutes(new Date(x.start * 1000), x.duration)));
-
     if (current[0]) res.send(current[0]);
-    else res.status(404).send({ error: 'NOT_FOUND', success: false });
+    else res.send('');
   }
   catch (e) {
-    res.status(500).json({ message: e.message, success: false });
+    res.status(500).json({ error: 'FATAL', message: e.message, success: false });
   }
 }
 

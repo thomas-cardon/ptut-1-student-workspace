@@ -1,0 +1,112 @@
+@font-face {
+        font-family: MarianneBOLD;
+        src : url(/assets/schedule/marianne-bold-webfont.ttf);
+}
+
+@font-face {
+        font-family: Marianne;
+        src: url(/assets/schedule/marianne-regular-webfont.ttf);
+}
+
+@media screen and (max-width: 700px) {
+  .timeSlot, .trackSlot {
+    display: none;
+  }
+
+  .session {
+    margin: 1em;
+  }
+}
+
+.timeSlot {
+  line-height: 0;
+  grid-column: times;
+}
+
+.trackSlot {
+  display: none;
+  /* hidden on small screens and browsers without grid support */
+}
+
+@supports (display: grid) {
+  @media screen and (min-width: 700px) {
+    .trackSlot {
+      display: flex;
+      flex-direction: column;
+      align-content: space-between;
+    }
+  }
+}
+
+.trackSlot,
+.timeSlot {
+  font-size: 1em;
+  font-family: system-ui;
+  text-transform: uppercase;
+  margin: 0 0.5em;
+}
+
+.trackSlot {
+  text-align: center;
+  border-bottom: darkgrey solid 1px;
+  margin: 0 0 -0.5em 1em;
+}
+
+.session {
+  display: flex;
+  flex-direction: column;
+
+  border-color: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  border-left-style: solid;
+  border-left-width: .5em;
+
+  font-family: Marianne;
+
+  transition: all 0.2s ease;
+}
+
+.session:hover {
+  border-left-width: 1em;
+  cursor: pointer;
+}
+
+.session .top, .session .teacher, .session .bottom, .session .module, .session .name {
+  margin-left: 5%;
+
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: pre-wrap;
+}
+
+.teacher {
+  font-size: .6em;
+  font-style: italic;
+  font-family: 'MarianneBOLD';
+  margin-top: 0 !important;
+}
+
+.top {
+  flex-wrap: wrap;
+  display: flex;
+  padding: 0.2em;
+
+  font-size: small;
+}
+
+.name {
+  font-family: MarianneBOLD;
+  font-size: 0.8em;
+}
+
+.bottom {
+  display: flex;
+  flex-direction: column;
+
+  text-transform: uppercase;
+  font-size: .6em;
+}
+
+.bottom * {
+  margin: 0;
+}
