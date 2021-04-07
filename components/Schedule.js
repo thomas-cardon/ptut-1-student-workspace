@@ -149,7 +149,7 @@ export default function Schedule({ user, index }) {
         <small>{lightFormat(addDays(getDateOfISOWeek(index, new Date().getFullYear()), i), 'dd/MM')}</small>
       </div>)}
 
-      {schedule && schedule.map((x, i) => <ScheduleBlock data={x} key={i} onContextMenu={event => show(event, { props: { id: x.id } })} />)}
+      {schedule && schedule.filter(x => new Date(x.start).getHours() >= HOURS_MIN && new Date(x.end).getHours() >= HOURS_MIN && new Date(x.start).getHours() <= HOURS_MAX && new Date(x.end).getHours() <= HOURS_MAX).map((x, i) => <ScheduleBlock data={x} key={i} onContextMenu={event => show(event, { props: { id: x.id } })} />)}
     </div>
     </>);
 }

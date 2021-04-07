@@ -52,32 +52,32 @@
     position: relative;
 
     width: 100%;
-    min-height: 100vh;
+    min-height: 50vh;
 
     grid-template-rows: [tracks] minmax(40px, 3em)
-    [time-0800] minmax(0.5em, 0.25fr) [time-0805] minmax(0.5em, 0.25fr) [time-0810] minmax(0.5em, 0.25fr) [time-0815] minmax(0.5em, 0.25fr) [time-0820] minmax(0.5em, 0.25fr) [time-0825] minmax(0.5em, 0.25fr)
-    [time-0830] minmax(0.5em, 0.25fr) [time-0835] minmax(0.5em, 0.25fr) [time-0840] minmax(0.5em, 0.25fr) [time-0845] minmax(0.5em, 0.25fr) [time-0850] minmax(0.5em, 0.25fr) [time-0855] minmax(0.5em, 0.25fr)
-    [time-0900] minmax(0.5em, 0.25fr) [time-0905] minmax(0.5em, 0.25fr) [time-0910] minmax(0.5em, 0.25fr) [time-0915] minmax(0.5em, 0.25fr) [time-0920] minmax(0.5em, 0.25fr) [time-0925] minmax(0.5em, 0.25fr)
-    [time-0930] minmax(0.5em, 0.25fr) [time-0935] minmax(0.5em, 0.25fr) [time-0940] minmax(0.5em, 0.25fr) [time-0945] minmax(0.5em, 0.25fr) [time-0950] minmax(0.5em, 0.25fr) [time-0955] minmax(0.5em, 0.25fr)
-    [time-1000] minmax(0.5em, 0.25fr) [time-1005] minmax(0.5em, 0.25fr) [time-1010] minmax(0.5em, 0.25fr) [time-1015] minmax(0.5em, 0.25fr) [time-1020] minmax(0.5em, 0.25fr) [time-1025] minmax(0.5em, 0.25fr)
-    [time-1030] minmax(0.5em, 0.25fr) [time-1035] minmax(0.5em, 0.25fr) [time-1040] minmax(0.5em, 0.25fr) [time-1045] minmax(0.5em, 0.25fr) [time-1050] minmax(0.5em, 0.25fr) [time-1055] minmax(0.5em, 0.25fr)
-    [time-1100] minmax(0.5em, 0.25fr) [time-1105] minmax(0.5em, 0.25fr) [time-1110] minmax(0.5em, 0.25fr) [time-1115] minmax(0.5em, 0.25fr) [time-1120] minmax(0.5em, 0.25fr) [time-1125] minmax(0.5em, 0.25fr)
-    [time-1130] minmax(0.5em, 0.25fr) [time-1135] minmax(0.5em, 0.25fr) [time-1140] minmax(0.5em, 0.25fr) [time-1145] minmax(0.5em, 0.25fr) [time-1150] minmax(0.5em, 0.25fr) [time-1155] minmax(0.5em, 0.25fr)
-    [time-1200] minmax(0.5em, 0.25fr) [time-1205] minmax(0.5em, 0.25fr) [time-1210] minmax(0.5em, 0.25fr) [time-1215] minmax(0.5em, 0.25fr) [time-1220] minmax(0.5em, 0.25fr) [time-1225] minmax(0.5em, 0.25fr)
-    [time-1230] minmax(0.5em, 0.25fr) [time-1235] minmax(0.5em, 0.25fr) [time-1240] minmax(0.5em, 0.25fr) [time-1245] minmax(0.5em, 0.25fr) [time-1250] minmax(0.5em, 0.25fr) [time-1255] minmax(0.5em, 0.25fr)
-    [time-1300] minmax(0.5em, 0.25fr) [time-1305] minmax(0.5em, 0.25fr) [time-1310] minmax(0.5em, 0.25fr) [time-1315] minmax(0.5em, 0.25fr) [time-1320] minmax(0.5em, 0.25fr) [time-1325] minmax(0.5em, 0.25fr)
-    [time-1330] minmax(0.5em, 0.25fr) [time-1335] minmax(0.5em, 0.25fr) [time-1340] minmax(0.5em, 0.25fr) [time-1345] minmax(0.5em, 0.25fr) [time-1350] minmax(0.5em, 0.25fr) [time-1355] minmax(0.5em, 0.25fr)
-    [time-1400] minmax(0.5em, 0.25fr) [time-1405] minmax(0.5em, 0.25fr) [time-1410] minmax(0.5em, 0.25fr) [time-1415] minmax(0.5em, 0.25fr) [time-1420] minmax(0.5em, 0.25fr) [time-1425] minmax(0.5em, 0.25fr)
-    [time-1430] minmax(0.5em, 0.25fr) [time-1435] minmax(0.5em, 0.25fr) [time-1440] minmax(0.5em, 0.25fr) [time-1445] minmax(0.5em, 0.25fr) [time-1450] minmax(0.5em, 0.25fr) [time-1455] minmax(0.5em, 0.25fr)
-    [time-1500] minmax(0.5em, 0.25fr) [time-1505] minmax(0.5em, 0.25fr) [time-1510] minmax(0.5em, 0.25fr) [time-1515] minmax(0.5em, 0.25fr) [time-1520] minmax(0.5em, 0.25fr) [time-1525] minmax(0.5em, 0.25fr)
-    [time-1530] minmax(0.5em, 0.25fr) [time-1535] minmax(0.5em, 0.25fr) [time-1540] minmax(0.5em, 0.25fr) [time-1545] minmax(0.5em, 0.25fr) [time-1550] minmax(0.5em, 0.25fr) [time-1555] minmax(0.5em, 0.25fr)
-    [time-1600] minmax(0.5em, 0.25fr) [time-1605] minmax(0.5em, 0.25fr) [time-1610] minmax(0.5em, 0.25fr) [time-1615] minmax(0.5em, 0.25fr) [time-1620] minmax(0.5em, 0.25fr) [time-1625] minmax(0.5em, 0.25fr)
-    [time-1630] minmax(0.5em, 0.25fr) [time-1635] minmax(0.5em, 0.25fr) [time-1640] minmax(0.5em, 0.25fr) [time-1645] minmax(0.5em, 0.25fr) [time-1650] minmax(0.5em, 0.25fr) [time-1655] minmax(0.5em, 0.25fr)
-    [time-1700] minmax(0.5em, 0.25fr) [time-1705] minmax(0.5em, 0.25fr) [time-1710] minmax(0.5em, 0.25fr) [time-1715] minmax(0.5em, 0.25fr) [time-1720] minmax(0.5em, 0.25fr) [time-1725] minmax(0.5em, 0.25fr)
-    [time-1730] minmax(0.5em, 0.25fr) [time-1735] minmax(0.5em, 0.25fr) [time-1740] minmax(0.5em, 0.25fr) [time-1745] minmax(0.5em, 0.25fr) [time-1750] minmax(0.5em, 0.25fr) [time-1755] minmax(0.5em, 0.25fr)
-    [time-1800] minmax(0.5em, 0.25fr) [time-1805] minmax(0.5em, 0.25fr) [time-1810] minmax(0.5em, 0.25fr) [time-1815] minmax(0.5em, 0.25fr) [time-1820] minmax(0.5em, 0.25fr) [time-1825] minmax(0.5em, 0.25fr)
-    [time-1830] minmax(0.5em, 0.25fr) [time-1835] minmax(0.5em, 0.25fr) [time-1840] minmax(0.5em, 0.25fr) [time-1845] minmax(0.5em, 0.25fr) [time-1850] minmax(0.5em, 0.25fr) [time-1855] minmax(0.5em, 0.25fr)
-    [time-1900] minmax(0.5em, 0.25fr);
+    [time-0800] 5px [time-0805] 5px [time-0810] 5px [time-0815] 5px [time-0820] 5px [time-0825] 5px
+    [time-0830] 5px [time-0835] 5px [time-0840] 5px [time-0845] 5px [time-0850] 5px [time-0855] 5px
+    [time-0900] 5px [time-0905] 5px [time-0910] 5px [time-0915] 5px [time-0920] 5px [time-0925] 5px
+    [time-0930] 5px [time-0935] 5px [time-0940] 5px [time-0945] 5px [time-0950] 5px [time-0955] 5px
+    [time-1000] 5px [time-1005] 5px [time-1010] 5px [time-1015] 5px [time-1020] 5px [time-1025] 5px
+    [time-1030] 5px [time-1035] 5px [time-1040] 5px [time-1045] 5px [time-1050] 5px [time-1055] 5px
+    [time-1100] 5px [time-1105] 5px [time-1110] 5px [time-1115] 5px [time-1120] 5px [time-1125] 5px
+    [time-1130] 5px [time-1135] 5px [time-1140] 5px [time-1145] 5px [time-1150] 5px [time-1155] 5px
+    [time-1200] 5px [time-1205] 5px [time-1210] 5px [time-1215] 5px [time-1220] 5px [time-1225] 5px
+    [time-1230] 5px [time-1235] 5px [time-1240] 5px [time-1245] 5px [time-1250] 5px [time-1255] 5px
+    [time-1300] 5px [time-1305] 5px [time-1310] 5px [time-1315] 5px [time-1320] 5px [time-1325] 5px
+    [time-1330] 5px [time-1335] 5px [time-1340] 5px [time-1345] 5px [time-1350] 5px [time-1355] 5px
+    [time-1400] 5px [time-1405] 5px [time-1410] 5px [time-1415] 5px [time-1420] 5px [time-1425] 5px
+    [time-1430] 5px [time-1435] 5px [time-1440] 5px [time-1445] 5px [time-1450] 5px [time-1455] 5px
+    [time-1500] 5px [time-1505] 5px [time-1510] 5px [time-1515] 5px [time-1520] 5px [time-1525] 5px
+    [time-1530] 5px [time-1535] 5px [time-1540] 5px [time-1545] 5px [time-1550] 5px [time-1555] 5px
+    [time-1600] 5px [time-1605] 5px [time-1610] 5px [time-1615] 5px [time-1620] 5px [time-1625] 5px
+    [time-1630] 5px [time-1635] 5px [time-1640] 5px [time-1645] 5px [time-1650] 5px [time-1655] 5px
+    [time-1700] 5px [time-1705] 5px [time-1710] 5px [time-1715] 5px [time-1720] 5px [time-1725] 5px
+    [time-1730] 5px [time-1735] 5px [time-1740] 5px [time-1745] 5px [time-1750] 5px [time-1755] 5px
+    [time-1800] 5px [time-1805] 5px [time-1810] 5px [time-1815] 5px [time-1820] 5px [time-1825] 5px
+    [time-1830] 5px [time-1835] 5px [time-1840] 5px [time-1845] 5px [time-1850] 5px [time-1855] 5px
+    [time-1900] 5px;
     grid-template-columns: [times] 4em [track-1-start] minmax(0, 1fr) [track-1-end track-2-start] minmax(0, 1fr) [track-2-end track-3-start] minmax(0, 1fr) [track-3-end track-4-start] minmax(0, 1fr) [track-4-end track-5-start] minmax(0, 1fr) [track-5-end track-6-start] minmax(0, 1fr) [track-7-end];
   }
 }

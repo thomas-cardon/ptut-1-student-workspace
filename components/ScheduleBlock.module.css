@@ -72,7 +72,7 @@
 }
 
 .session .top, .session .teacher, .session .bottom, .session .module, .session .name {
-  margin: 5% 0 0 5%;
+  margin-left: 5%;
 
   text-overflow: ellipsis;
   overflow: hidden;
