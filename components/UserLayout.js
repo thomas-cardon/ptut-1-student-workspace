@@ -30,9 +30,13 @@ import Button from './FormFields/FormButton';
 import Link from './Link';
 import Card from './Card';
 
+import { useADE } from '../lib/ade';
+
 import { useCurrentClass } from '../lib/hooks';
 
 export default function UserLayout({ title, user, children, header, flex = true, ...rest }) {
+  useADE(user);
+
   const {
     autoModeActive,    // boolean - whether the auto mode is active or not
     autoModeSupported, // boolean - whether the auto mode is supported on this browser

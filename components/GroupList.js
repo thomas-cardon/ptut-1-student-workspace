@@ -1,5 +1,7 @@
 import useSWR from 'swr';
-import fetcher from '../lib/fetchJson';
+
+import fetch from 'isomorphic-unfetch';
+const fetcher = url => fetch(url).then(r => r.json());
 
 import styles from './GroupList.module.css';
 

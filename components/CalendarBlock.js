@@ -1,4 +1,4 @@
-import styles from "./ScheduleBlock.module.css";
+import styles from "./CalendarBlock.module.css";
 import { parseISO, getDay } from 'date-fns';
 
 function stringToColor(str = 'xxx') {
@@ -31,45 +31,37 @@ function pickTextColorBasedOnBgColorAdvanced(bgColor, lightColor, darkColor) {
   return (L > 0.179) ? darkColor : lightColor;
 }
 
-export default function ScheduleBlock({ data, onContextMenu }) {
+export default function CalendarBlock({ start, end, summary, description, location }) {
   return <div
-      id={data.id}
       className={styles.session}
-      meetingurl={data.meetingUrl}
-      onContextMenu={onContextMenu}
       style={{
-        gridColumn: "track-" + getDay(parseISO(data.start)),
-        backgroundColor: data.subject.color || stringToColor(data.subject.name),
+        gridColumn: "track-" + getDay(parseISO(start)),
+        backgroundColor: stringToColor(summary),
         color: pickTextColorBasedOnBgColorAdvanced(
-          data.subject.color || stringToColor(data.subject.name),
+          stringToColor(summary),
           "white",
           "black"
         ),
         gridRow:
-          "time-" + parseISO(data.start).toLocaleTimeString().slice(0, 5).replace(":", "") +
-          " / time-" + parseISO(data.end).toLocaleTimeString().slice(0, 5).replace(":", "")
+          "time-" + parseISO(start).toLocaleTimeString().slice(0, 5).replace(":", "") +
+          " / time-" + parseISO(end).toLocaleTimeString().slice(0, 5).replace(":", "")
       }}
     >
       <div className={styles.top} style={{ display: "flex" }}>
-        <b>{data.subject.module}</b>
-        <span> - </span>
         <span>
-          {parseISO(data.start).toLocaleTimeString().slice(0, 5)} -{" "}
-          {parseISO(data.end).toLocaleTimeString().slice(0, 5)}
+          {parseISO(start).toLocaleTimeString().slice(0, 5)} -{" "}
+          {parseISO(end).toLocaleTimeString().slice(0, 5)}
         </span>
       </div>
 
-      <p className={styles.name}>{data.subject.name}</p>
+      <p className={styles.name}>{summary}</p>
       <p className={styles.teacher}>
-        {data.teacher.firstName} {data.teacher.lastName}
+        {description}
       </p>
 
       <div className={styles.bottom}>
-        <p>{data.room || <i>Aucune salle</i>}</p>
-        <p interests={data.groups.map((x) => "group-" + data.id).join(";")}>
-          {data.groups.map(x => x.name).join(",\n")}
-        </p>
-        <p>{parseISO(data.start).toLocaleDateString()}</p>
+        <p>{location}</p>
+        <p>{parseISO(start).toLocaleDateString()}</p>
       </div>
     </div>;
 }
