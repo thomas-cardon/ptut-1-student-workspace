@@ -23,23 +23,29 @@ const HOURS_MIN = 8, HOURS_MAX = 19, MENU_ID = "schedule-menu";
 
 import "react-contexify/dist/ReactContexify.css";
 
+function getICalendarData() {
+  try {
+    const data = sessionStorage.getItem('ade_data');
+    if (!data) return [];
+
+    let jcalData = ICAL.parse(data);
+    let vcalendar = new ICAL.Component(jcalData);
+
+    return vcalendar.getAllSubcomponents().map(x => x.toJSON()[1]);
+  }
+  catch(error) {
+    console.error(error);
+    sessionStorage.removeItem('ade_data');
+  }
+
+  return [];
+}
+
 export default function Schedule({ user, index }) {
   /*
   * Variable definitions
   */
-  const [vevents, setVEvents] = useState([]);
-
-  useEffect(() => {
-    if (sessionStorage.getItem('ade_data')) {
-      let jcalData = ICAL.parse(sessionStorage.getItem('ade_data'));
-      let vcalendar = new ICAL.Component(jcalData);
-
-      setVEvents(vcalendar.getAllSubcomponents().map(x => x.toJSON()[1]));
-    }
-  }, []);
-
-  console.dir(vevents);
-
+  const vevents = typeof window === `undefined` ? [] : getICalendarData();
   const { data : schedule } = useSWR(`/api/schedule/by-week/${index}` + (user.userType == 0 && user?.group?.id ? '?filterByGroup=' + user?.group?.id : ''), fetcher);
 
   const { darkModeActive } = useDarkMode();
