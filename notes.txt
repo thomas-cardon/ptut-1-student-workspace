@@ -1,0 +1,9 @@
+Lien iCalendar ->
+https://ade-web-consult.univ-amu.fr/jsp/custom/modules/plannings/anonymous_cal.jsp?projectId=8&resources=8383&calType=ical&firstDate=2021-01-11&lastDate=2021-07-01
+
+- Prendre une année d'avance
+- Actualiser toute les 12h
+- Sauvegarder dans localStorage
+- Récupérer les projectId et resources nécessaires
+- Se servir de Next.js+MySQL comme cache des données d'ADE, et laisser le côté client gérer le parsing des données iCalendar
+(et les mélanger avec les données de la BDD)

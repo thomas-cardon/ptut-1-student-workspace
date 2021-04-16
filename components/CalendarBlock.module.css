@@ -28,11 +28,12 @@
 }
 
 .session .top, .session .teacher, .session .bottom, .session .module, .session .name {
-  margin-left: 5%;
-
+  margin-left: 5% !important;
   text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: pre-wrap;
+}
+
+.session * {
+  margin: 0;
 }
 
 .teacher {

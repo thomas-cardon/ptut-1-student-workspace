@@ -1,4 +1,7 @@
+import React, { useEffect, useState } from 'react';
+
 import useSWR from 'swr';
+
 import fetch from 'isomorphic-unfetch';
 const fetcher = url => fetch(url).then(r => r.json());
 
@@ -6,20 +9,43 @@ import { useContextMenu, Submenu, Menu, Item, Separator } from 'react-contexify'
 import { useToasts } from 'react-toast-notifications';
 import { useDarkMode } from 'next-dark-mode';
 
-import { lightFormat, addDays } from 'date-fns';
+import { lightFormat, addDays, getISOWeek } from 'date-fns';
+import ICAL from 'ical.js';
+
 import { getDateOfISOWeek } from '../lib/date';
 
 import ScheduleBlock from './ScheduleBlock';
+import CalendarBlock from './CalendarBlock';
+
 import styles from "./Schedule.module.css";
 
 const HOURS_MIN = 8, HOURS_MAX = 19, MENU_ID = "schedule-menu";
 
 import "react-contexify/dist/ReactContexify.css";
 
+function getICalendarData() {
+  try {
+    const data = sessionStorage.getItem('ade_data');
+    if (!data) return [];
+
+    let jcalData = ICAL.parse(data);
+    let vcalendar = new ICAL.Component(jcalData);
+
+    return vcalendar.getAllSubcomponents().map(x => x.toJSON()[1]);
+  }
+  catch(error) {
+    console.error(error);
+    sessionStorage.removeItem('ade_data');
+  }
+
+  return [];
+}
+
 export default function Schedule({ user, index }) {
   /*
   * Variable definitions
   */
+  const vevents = typeof window === `undefined` ? [] : getICalendarData();
   const { data : schedule } = useSWR(`/api/schedule/by-week/${index}` + (user.userType == 0 && user?.group?.id ? '?filterByGroup=' + user?.group?.id : ''), fetcher);
 
   const { darkModeActive } = useDarkMode();
@@ -149,7 +175,12 @@ export default function Schedule({ user, index }) {
         <small>{lightFormat(addDays(getDateOfISOWeek(index, new Date().getFullYear()), i), 'dd/MM')}</small>
       </div>)}
 
-      {schedule && schedule.filter(x => new Date(x.start).getHours() >= HOURS_MIN && new Date(x.end).getHours() >= HOURS_MIN && new Date(x.start).getHours() <= HOURS_MAX && new Date(x.end).getHours() <= HOURS_MAX).map((x, i) => <ScheduleBlock data={x} key={i} onContextMenu={event => show(event, { props: { id: x.id } })} />)}
+      {vevents
+        .filter(x => getISOWeek(new Date(x[1][3])) === index)
+        .filter(x => new Date(x[1][3]).getHours() >= HOURS_MIN && new Date(x[2][3]).getHours() >= HOURS_MIN && new Date(x[1][3]).getHours() <= HOURS_MAX && new Date(x[2][3]).getHours() <= HOURS_MAX)
+        .map((x, i) => <CalendarBlock key={i} start={x[1][3]} end={x[2][3]} summary={x[3][3]} description={x[5][3]} location={x[4][3]} />
+      )}
+      {/*schedule && schedule.filter(x => new Date(x.start).getHours() >= HOURS_MIN && new Date(x.end).getHours() >= HOURS_MIN && new Date(x.start).getHours() <= HOURS_MAX && new Date(x.end).getHours() <= HOURS_MAX).map((x, i) => <ScheduleBlock data={x} key={i} onContextMenu={event => show(event, { props: { id: x.id } })} />)*/}
     </div>
     </>);
 }

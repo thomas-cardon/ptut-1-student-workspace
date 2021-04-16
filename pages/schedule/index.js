@@ -1,3 +1,5 @@
+import React, { useEffect, useState } from 'react';
+
 import dynamic from 'next/dynamic';
 
 import Title from '../../components/Title';
@@ -25,10 +27,16 @@ const HOURS_MIN = 8, HOURS_MAX = 19;
 export default function SchedulePage({ user, selectedWeek }) {
   selectedWeek = parseInt(selectedWeek) || getISOWeek(new Date());
 
-  /* Calcul semaines */
-  let todaydate = new Date();
-  let oneJan =  new Date(todaydate.getFullYear(), 0, 1);
-  let numberOfDays =  Math.floor((todaydate - oneJan) / (24 * 60 * 60 * 1000));
+  const [week, setWeek] = useState(0);
+
+  useEffect(() => {
+    /* Calcul semaines */
+    let todaydate = new Date();
+    let oneJan =  new Date(todaydate.getFullYear(), 0, 1);
+    let numberOfDays =  Math.floor((todaydate - oneJan) / (24 * 60 * 60 * 1000));
+
+    setWeek(Math.ceil((todaydate.getDay() + 1 + numberOfDays) / 7));
+  }, []);
 
   return (
     <UserLayout user={user} flex={true} header={<>
@@ -43,7 +51,6 @@ export default function SchedulePage({ user, selectedWeek }) {
             <FormButton is="action" disabled={selectedWeek === 0}>{"<"}</FormButton>
         </Link>
         {[-3, -2, -1, 0, 1, 2, 3].map((e, i) => {
-          let week = Math.ceil((todaydate.getDay() + 1 + numberOfDays) / 7);
           return (
             <Link key={'week-' + i} href={{ pathname: '/schedule', query: { selectedWeek: week + e } }}>
                 <FormButton is="action" key={i} disabled={selectedWeek ? (week + e) === selectedWeek : e === 0}>{week + e}</FormButton>

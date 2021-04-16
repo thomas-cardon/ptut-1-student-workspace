@@ -1,10 +1,12 @@
 import UserLayout from '../../../components/UserLayout';
 
+import fetch from 'isomorphic-unfetch';
+const fetcher = url => fetch(url).then(r => r.json());
+
 import { useSubject, usePosts } from '../../../lib/hooks';
-import fetcher from '../../../lib/fetchJson';
 import withSession from "../../../lib/session";
 
-export default function ClassPage({ user, moduleId }) {
+export default function SubjectPage({ user, moduleId }) {
   const { data : subject } = useSubject(moduleId);
   const { data : posts } = usePosts(null, 0, moduleId);
 
