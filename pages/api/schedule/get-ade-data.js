@@ -20,9 +20,9 @@ async function handler(req, res, session) {
 
       await query(
         `
-        INSERT INTO ade_cache (url, body)
-        VALUES (?, ?)
-        `, [url, ics]);
+        INSERT INTO ade_cache (url, body, timestamp)
+        VALUES (?, ?, ?)
+        `, [url, ics, Date.now()]);
     }
 
     res.send(ics);

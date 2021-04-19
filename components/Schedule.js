@@ -19,7 +19,7 @@ import CalendarBlock from './CalendarBlock';
 
 import styles from "./Schedule.module.css";
 
-const HOURS_MIN = 8, HOURS_MAX = 19, MENU_ID = "schedule-menu";
+const HOURS_MIN = 8, HOURS_MAX = 19, MENU_SWS = "schedule-menu", MENU_ADE = "ade-menu";
 
 import "react-contexify/dist/ReactContexify.css";
 
@@ -51,7 +51,8 @@ export default function Schedule({ user, index }) {
   const { darkModeActive } = useDarkMode();
   const { addToast } = useToasts();
 
-  const { show } = useContextMenu({ id: MENU_ID });
+  const { showSWS } = useContextMenu({ id: MENU_SWS });
+  const { showADE } = useContextMenu({ id: MENU_ADE });
 
   function handleItemClick({ event, props, data, triggerEvent }) {
     switch (event.currentTarget.id) {
@@ -123,25 +124,45 @@ export default function Schedule({ user, index }) {
       }
     }
   }
-
   /*
   * End of variable definitions
   */
 
+  console.dir(user);
+
   return (<>
-    <Menu id={MENU_ID}>
+    <Menu id={MENU_ADE}>
       <Item id="view" onClick={handleItemClick}>&#x1F4DC;&nbsp;&nbsp;Voir le post attaché</Item>
       <Item id="connect" onClick={handleItemClick}>&#x1F4BB;&nbsp;&nbsp;Se connecter à la réunion</Item>
       <Separator />
-      <Submenu label="Modération">
-        <Item id="notify" onClick={handleItemClick}>🔔&nbsp;&nbsp;Notifier le groupe</Item>
-        <Separator />
+      {user.userType > 0 && (
+        <Submenu label="Modération">
+          <Item id="notify" onClick={handleItemClick}>🔔&nbsp;&nbsp;Notifier le groupe</Item>
+          <Separator />
 
-        <Item id="edit-room" onClick={handleItemClick}>&#x1F392;&nbsp;&nbsp;Modifier la salle</Item>
-        <Item disabled={true} id="edit-meeting-url" onClick={handleItemClick}>&#x1F4BB;&nbsp;&nbsp;Modifier la réunion</Item>
-        <Separator />
-        <Item id="remove" onClick={handleItemClick}>&#x274C;&nbsp;&nbsp;Supprimer</Item>
-      </Submenu>
+          <Item id="edit-room" onClick={handleItemClick}>&#x1F392;&nbsp;&nbsp;Modifier la salle</Item>
+          <Item disabled={true} id="edit-meeting-url" onClick={handleItemClick}>&#x1F4BB;&nbsp;&nbsp;Modifier la réunion</Item>
+          <Separator />
+          <Item id="remove" onClick={handleItemClick}>&#x274C;&nbsp;&nbsp;Supprimer</Item>
+        </Submenu>
+      )}
+    </Menu>
+
+    <Menu id={MENU_SWS}>
+      <Item id="view" onClick={handleItemClick}>&#x1F4DC;&nbsp;&nbsp;Voir le post attaché</Item>
+      <Item id="connect" onClick={handleItemClick}>&#x1F4BB;&nbsp;&nbsp;Se connecter à la réunion</Item>
+      <Separator />
+      {user.userType > 0 && (
+          <Submenu label="Modération">
+          <Item id="notify" onClick={handleItemClick}>🔔&nbsp;&nbsp;Notifier le groupe</Item>
+          <Separator />
+
+          <Item id="edit-room" onClick={handleItemClick}>&#x1F392;&nbsp;&nbsp;Modifier la salle</Item>
+          <Item disabled={true} id="edit-meeting-url" onClick={handleItemClick}>&#x1F4BB;&nbsp;&nbsp;Modifier la réunion</Item>
+          <Separator />
+          <Item id="remove" onClick={handleItemClick}>&#x274C;&nbsp;&nbsp;Supprimer</Item>
+        </Submenu>
+      )}
     </Menu>
 
     <div className={[styles.schedule, darkModeActive ? styles.dark : ''].join(' ')}>
@@ -178,9 +199,10 @@ export default function Schedule({ user, index }) {
       {vevents
         .filter(x => getISOWeek(new Date(x[1][3])) === index)
         .filter(x => new Date(x[1][3]).getHours() >= HOURS_MIN && new Date(x[2][3]).getHours() >= HOURS_MIN && new Date(x[1][3]).getHours() <= HOURS_MAX && new Date(x[2][3]).getHours() <= HOURS_MAX)
-        .map((x, i) => <CalendarBlock key={i} start={x[1][3]} end={x[2][3]} summary={x[3][3]} description={x[5][3]} location={x[4][3]} />
+        .map((x, i) => <CalendarBlock key={'ade' + i} start={x[1][3]} end={x[2][3]} summary={x[3][3]} description={x[5][3]} location={x[4][3]} onContextMenu={event => showADE(event, { props: {} })} />
       )}
-      {/*schedule && schedule.filter(x => new Date(x.start).getHours() >= HOURS_MIN && new Date(x.end).getHours() >= HOURS_MIN && new Date(x.start).getHours() <= HOURS_MAX && new Date(x.end).getHours() <= HOURS_MAX).map((x, i) => <ScheduleBlock data={x} key={i} onContextMenu={event => show(event, { props: { id: x.id } })} />)*/}
+
+      {/*schedule && schedule.filter(x => new Date(x.start).getHours() >= HOURS_MIN && new Date(x.end).getHours() >= HOURS_MIN && new Date(x.start).getHours() <= HOURS_MAX && new Date(x.end).getHours() <= HOURS_MAX).map((x, i) => <ScheduleBlock data={x} key={'sws' + i} onContextMenu={event => showSWS(event, { props: { id: x.id } })} />)*/}
     </div>
     </>);
 }
