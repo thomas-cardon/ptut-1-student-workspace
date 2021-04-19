@@ -112,7 +112,7 @@ export default function LoginPage(props) {
 
         text-align: center;
         color: #0098FF;
-        
+
         font-size: 2.5em;
         font-weight: bolder;
 
@@ -218,7 +218,7 @@ export default function LoginPage(props) {
       	}
       }
     `}</style>
-    <BasicLayout title="SWS -> Connexion">
+    <BasicLayout title="SWS -> Connexion" disableBackground={true}>
       <h3>Student Workspace</h3>
       <p>Connexion</p>
       <Form onSubmit={onSubmit}>

@@ -9,3 +9,7 @@
 
   background-color: var(--color-primary-900);
 }
+
+.nobg {
+  background-color: unset;
+}
