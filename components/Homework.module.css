@@ -1,0 +1,25 @@
+.title {
+  font-family: "Raleway";
+  font-weight: bolder;
+  font-size: 1.3rem;
+
+  color: var(--color-primary-900);
+  background-color: #dbdfff;
+
+  border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;
+
+  width: 22.5rem;
+  height: 100%;
+  margin: 0 0 0.2em 0;
+
+  line-height: normal;
+}
+
+.title > *:first-child {
+  padding-left: 0.5em;
+}
+
+
+.module {
+  color: var(--color-secondary);
+}
