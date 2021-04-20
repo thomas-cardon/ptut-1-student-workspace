@@ -5,13 +5,16 @@ import { isFuture, addMinutes, addDays } from 'date-fns';
 import { getDateOfISOWeek } from '../../../../lib/date';
 
 async function handler(req, res, session) {
+  const week = req.query.week || req.params.week;
+
   if (!req?.session?.get('user')) return res.status(401).send({ error: 'NOT_AUTHORIZED', success: false });
-  if (isNaN(req.query.week)) return res.status(400).send({ error: 'WEEK_NAN', success: false });
+  if (isNaN(week)) return res.status(400).send({ error: 'WEEK_NAN', success: false });
 
   const { filterByGroup, filterByTeacher, omitPassedEntries } = req.query;
 
   try {
-    let params = [parseInt(req.query.week), filterByGroup, filterByTeacher].filter(x => x && x != 0);
+    let params = [parseInt(week), isNaN(filterByGroup) ? 0 : parseInt(filterByGroup), isNaN(filterByTeacher) ? 0 : parseInt(filterByTeacher)].filter(x => x && x != 0);
+
     let schedule = await query(
       `
       SELECT start, duration, subjectId, room, schedule.groupId, meetingUrl, subjects.module, subjects.name as subjectName, color, firstName AS teacherFirstName, lastName as teacherLastName, email as teacherEmail, schedule.teacherId, groups.id as groupId, groups.name as groupName
@@ -19,9 +22,9 @@ async function handler(req, res, session) {
       INNER JOIN users ON teacherId = users.userId
       INNER JOIN subjects ON subjectId = subjects.id
       LEFT OUTER JOIN groups ON schedule.groupId = groups.id
-      ${filterByGroup && filterByGroup != 0 ? 'WHERE schedule.groupId = ?' : ''}
-      ${filterByTeacher && filterByTeacher != 0 ? 'WHERE schedule.teacherId = ?' : ''}
       WHERE WEEK(FROM_UNIXTIME(start)) = ?
+      ${filterByGroup && filterByGroup != 0 ? 'AND schedule.groupId = ?' : ''}
+      ${filterByTeacher && filterByTeacher != 0 ? 'AND schedule.teacherId = ?' : ''}
       ORDER BY start ASC
     `, params);
 
