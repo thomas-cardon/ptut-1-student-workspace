@@ -3,6 +3,9 @@ import { parseISO, getDay } from 'date-fns';
 
 import styles from "./CalendarBlock.module.css";
 
+import { useContextMenu, Submenu, Menu, Item, Separator } from 'react-contexify';
+import "react-contexify/dist/ReactContexify.css";
+
 /**
  * Permet de transformer une description iCalendar en données utilisables
  * @param  {string} description
@@ -34,12 +37,33 @@ function bakeSummary(summary) {
   return matches ? { module: matches[1], subject: matches[2], type: matches[3] } : summary;
 }
 
-export default function CalendarBlock({ start, end, summary, description, location }) {
+export default function CalendarBlock({ user, start, end, summary, description, location }) {
   summary = bakeSummary(summary);
-
   let subject = summary?.subject || summary;
 
-  return <div
+  const id = `${start}-${encodeURIComponent(summary)}-${user.group.id}`;
+  const { show } = useContextMenu({ id });
+
+  function handleItemClick({ event, props, data, triggerEvent }) {
+    switch (event.currentTarget.id) {}
+  }
+
+  console.log(id);
+
+  return <>
+    <Menu id={id}>
+      <Item id="connect" onClick={handleItemClick}>&#x1F4BB;&nbsp;&nbsp;Se connecter à la réunion</Item>
+      <Separator />
+      {user.userType > 0 && (
+        <Submenu label="Modération">
+          <Item id="notify" onClick={handleItemClick}>🔔&nbsp;&nbsp;Notifier le groupe</Item>
+          <Separator />
+          <Item id="edit" onClick={handleItemClick}>&#x1F392;&nbsp;&nbsp;Modifier les données</Item>
+        </Submenu>
+      )}
+    </Menu>
+    <div
+      onContextMenu={event => show(event, { props: {} })}
       className={styles.session}
       style={{
         gridColumn: "track-" + getDay(parseISO(start)),
@@ -72,5 +96,6 @@ export default function CalendarBlock({ start, end, summary, description, locati
       <div className={styles.bottom}>
         <p>{location}</p>
       </div>
-    </div>;
+    </div>
+  </>;
 }
