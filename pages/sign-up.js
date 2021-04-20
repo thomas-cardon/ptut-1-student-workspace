@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 
-import Router from 'next/router';
 import Link from '../components/Link';
 
 import BasicLayout from '../components/BasicLayout';
@@ -15,9 +15,11 @@ import withSession from "../lib/session";
 
 import { Line } from 'rc-progress';
 
-import { uni as schools } from '../lib/ade';
+import { uni as schools, emails } from '../lib/ade';
 
 export default function LoginPage({ email }) {
+  const router = useRouter();
+
   const { darkModeActive } = useDarkMode();
   const { addToast } = useToasts();
 
@@ -55,9 +57,12 @@ export default function LoginPage({ email }) {
 
         if (result.success) {
           addToast('Inscription réussie', { appearance: 'success' });
-          Router.push('/dashboard');
+          router.push('/login');
         }
-        else addToast(result.error || 'Une erreur s\'est produite', { appearance: 'error' });
+        else {
+          addToast(result.error || 'Une erreur s\'est produite', { appearance: 'error' });
+          console.dir(result);
+        }
       }
       catch(error) {
         console.error(error);
@@ -65,10 +70,9 @@ export default function LoginPage({ email }) {
       }
     }
     else {
-      console.log(step);
-
       if (step === 1) {
         if (!values.email) return addToast('Entrez votre adresse e-mail pour continuer.', { appearance: 'error' });
+        if (!emails.includes(values.email.slice(values.email.indexOf('@')))) return addToast('Veuillez entrer une adresse-mail universitaire (ex. @etu.univ-amu.fr).', { appearance: 'error' });
 
         let data = values.email.split('@')[0].split('.');
         setValues({ ...values, firstName: data[0].charAt(0).toUpperCase() + data[0].slice(1), lastName: data[1].toUpperCase() });
@@ -239,8 +243,6 @@ export default function LoginPage({ email }) {
 
         font-weight: bolder;
         text-align: center;
-
-        width: 60%;
       }
 
       .buttons {
@@ -251,9 +253,26 @@ export default function LoginPage({ email }) {
 
         margin-bottom: 2em;
       }
+
+      .login {
+        margin-top: -1em;
+        margin-bottom: 1em;
+        margin-left: auto;
+        margin-right: auto;
+
+        color: var(--color-accent);
+        transition: color 0.2s ease;
+      }
+
+      .login:hover {
+        color: var(--color-accent-hover);
+      }
     `}</style>
     <BasicLayout title="SWS -> Inscription" disableBackground={true}>
       <h3>Student Workspace</h3>
+      <Link href="/login">
+        <p className="login">Vous avez déjà un compte?</p>
+      </Link>
       <h5>Inscription</h5>
 
       <div style={{ margin: '0 auto', width: '30%' }}>

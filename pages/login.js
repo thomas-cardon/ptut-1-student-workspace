@@ -1,4 +1,6 @@
-import Router from 'next/router';
+import { useCallback, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+
 import Link from '../components/Link';
 
 import BasicLayout from '../components/BasicLayout';
@@ -15,33 +17,68 @@ export default function LoginPage(props) {
   const { darkModeActive } = useDarkMode();
   const { addToast } = useToasts();
 
-  const onSubmit = async (e) => {
+  const router = useRouter();
+
+  /*
+   * Variable definitions
+   */
+   const [values, setValues] = useState({ email: '', password: '' });
+
+   const handleInputChange = e => {
+     const { name, value } = e.target;
+     setValues({ ...values, [name]: value});
+   };
+
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
+
+    console.dir({
+      email: e.target.email.value,
+      password: e.target.password.value
+    });
+
+    console.dir({
+      email: values.email || e.target.email.value,
+      password: values.password || e.target.password.value
+    });
 
     try {
       const res = await fetch(process.env.NEXT_PUBLIC_URL_PREFIX + '/api/me/login', {
         body: JSON.stringify({
-          email: e.target.email.value,
-          password: e.target.password.value
+          email: values.email || e.target.email.value,
+          password: values.password || e.target.password.value
         }),
         headers: { 'Content-Type': 'application/json' },
         method: 'POST'
       });
 
-      if (!res.ok) return addToast('Une erreur s\'est produite', { appearance: 'error' });
+      if (!res.ok) {
+        console.dir(await res.text());
+        return addToast('Une erreur s\'est produite', { appearance: 'error' });
+      }
       const result = await res.json();
 
       if (result.success) {
         addToast('Connexion réussie', { appearance: 'success' });
-        Router.push('/dashboard');
+        router.push('/dashboard');
       }
-      else addToast(result.error || 'Une erreur s\'est produite', { appearance: 'error' });
+      else {
+        addToast(result.error || 'Une erreur s\'est produite', { appearance: 'error' });
+        console.dir(result);
+      }
     }
     catch(error) {
       console.error(error);
       addToast(error || 'Une erreur s\'est produite', { appearance: 'error' });
     }
-  }
+  }, []);
+
+  /*
+   * End of variable definitions
+   */
+
+  /* Précharge le tableau de bord */
+  useEffect(() => router.prefetch('/dashboard'), []);
 
   return (<div className={'bgLogo'}>
     <style global jsx>{`
@@ -217,14 +254,29 @@ export default function LoginPage(props) {
       		font-size: 0.81em;
       	}
       }
+
+      .buttons {
+        display: flex;
+        gap: 20px;
+        align-self: flex-end;
+      }
     `}</style>
     <BasicLayout title="SWS -> Connexion" disableBackground={true}>
       <h3>Student Workspace</h3>
       <p>Connexion</p>
-      <Form onSubmit={onSubmit}>
-        <Fields.FormInput disableStyle={true} label="Adresse mail" id="email" name="email" type="email" placeholder="exemple@exemple.fr" />
-        <Fields.FormInput disableStyle={true} label="Mot de passe" id="password" name="password" type="password" placeholder="Mot de passe difficile à trouver" />
-        <Fields.FormButton type="submit" is="light">Se connecter</Fields.FormButton>
+      <Form onSubmit={handleSubmit}>
+        <Fields.FormInput disableStyle={true} label="Adresse mail" name="email" type="email" placeholder="exemple@exemple.fr" onChange={handleInputChange} defaultValue={values.email} />
+        <Fields.FormInput disableStyle={true} label="Mot de passe" name="password" type="password" placeholder="Mot de passe difficile à trouver" onChange={handleInputChange} defaultValue={values.password} />
+
+        <div className="buttons">
+          <Fields.FormButton type="submit" is="light">Se connecter</Fields.FormButton>
+          <Link href={{
+            pathname: '/sign-up',
+            query: { email: values.email },
+          }}>
+            <Fields.FormButton is="danger">Inscription</Fields.FormButton>
+          </Link>
+        </div>
       </Form>
     </BasicLayout>
   </div>);
