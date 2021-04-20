@@ -249,6 +249,8 @@ export default function LoginPage(props) {
         display: flex;
         gap: 20px;
         align-self: flex-end;
+        margin: 0 auto;
+        width: fit-content !important;
       }
     `}</style>
     <BasicLayout title="SWS -> Connexion" disableBackground={true}>
