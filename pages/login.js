@@ -19,7 +19,7 @@ export default function LoginPage(props) {
     e.preventDefault();
 
     try {
-      const res = await fetch(location.protocol + '//' + location.host + '/api/me/login', {
+      const res = await fetch(process.env.NEXT_PUBLIC_URL_PREFIX + '/api/me/login', {
         body: JSON.stringify({
           email: e.target.email.value,
           password: e.target.password.value
@@ -28,8 +28,8 @@ export default function LoginPage(props) {
         method: 'POST'
       });
 
+      if (!res.ok) return addToast('Une erreur s\'est produite', { appearance: 'error' });
       const result = await res.json();
-      console.dir(result);
 
       if (result.success) {
         addToast('Connexion réussie', { appearance: 'success' });

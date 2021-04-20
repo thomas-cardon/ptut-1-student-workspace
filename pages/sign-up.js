@@ -15,6 +15,8 @@ import withSession from "../lib/session";
 
 import { Line } from 'rc-progress';
 
+import { uni as schools } from '../lib/ade';
+
 export default function LoginPage({ email }) {
   const { darkModeActive } = useDarkMode();
   const { addToast } = useToasts();
@@ -22,37 +24,57 @@ export default function LoginPage({ email }) {
   /*
    * Variable definitions
    */
-   const [values, setValues] = useState({ firstName: '', lastName: '', email: email || '', password: '', birthDate: "1970-01-01" });
+   const MAX_STEPS = 4;
+
+   const [values, setValues] = useState({ firstName: '', lastName: '', email: email || '', password: '', school: '', degree: '', year: '', birthDate: "1970-01-01" });
+   const [step, setStep] = useState(1);
 
    const handleInputChange = e => {
      const { name, value } = e.target;
      setValues({ ...values, [name]: value});
    };
 
-  const [step, setStep] = useState(1);
-
-  const MAX_STEPS = 3;
-
   function previousStep(e) {
     e.preventDefault();
     setStep(step - 1);
   }
 
-  function nextStep(e) {
+  async function nextStep(e) {
     e.preventDefault();
 
     if (step === MAX_STEPS) {
-      console.dir(values);
+      try {
+        const res = await fetch(process.env.NEXT_PUBLIC_URL_PREFIX + '/api/me/sign-up', {
+          body: JSON.stringify(values),
+          headers: { 'Content-Type': 'application/json' },
+          method: 'POST'
+        });
+
+        if (!res.ok) return addToast('Une erreur s\'est produite', { appearance: 'error' });
+        const result = await res.json();
+
+        if (result.success) {
+          addToast('Inscription réussie', { appearance: 'success' });
+          Router.push('/dashboard');
+        }
+        else addToast(result.error || 'Une erreur s\'est produite', { appearance: 'error' });
+      }
+      catch(error) {
+        console.error(error);
+        addToast(error || 'Une erreur s\'est produite', { appearance: 'error' });
+      }
     }
     else {
       console.log(step);
 
       if (step === 1) {
+        if (!values.email) return addToast('Entrez votre adresse e-mail pour continuer.', { appearance: 'error' });
+
         let data = values.email.split('@')[0].split('.');
         setValues({ ...values, firstName: data[0].charAt(0).toUpperCase() + data[0].slice(1), lastName: data[1].toUpperCase() });
+        setStep(step + 1);
       }
-
-      setStep(step + 1);
+      else setStep(step + 1);
     }
   }
 
@@ -247,13 +269,21 @@ export default function LoginPage({ email }) {
 
       {step === 2 && (
         <Form onSubmit={e => e.preventDefault()}>
+          <Fields.FormSelect label="Université" name="school" onChange={handleInputChange} noOption="-- Sélectionnez une université --" value={values.school} options={Object.keys(schools).map(x => { return { option: x, value: x } })} required />
+          <Fields.FormSelect label="Formation" name="degree" onChange={handleInputChange} noOption="-- Sélectionnez une formation --" value={values.degree} options={(values.school ? Object.keys(schools[values.school]) : []).map(x => { return { option: x, value: x } })} required />
+          <Fields.FormSelect label="Groupe" name="year" onChange={handleInputChange} noOption="-- Sélectionnez un groupe --" value={values.year} options={(values.school && values.degree ? Object.keys(schools[values.school][values.degree]) : []).filter(x => !x.startsWith('_')).map(x => { return { option: x, value: x } })} required />
+        </Form>
+      )}
+
+      {step === 3 && (
+        <Form onSubmit={e => e.preventDefault()}>
           <Fields.FormInput disableStyle={true} label="Prénom" name="firstName" type="text" placeholder="Jean" onChange={handleInputChange} defaultValue={values.firstName} />
           <Fields.FormInput disableStyle={true} label="Nom" name="lastName" type="text" placeholder="Dujardin" onChange={handleInputChange} defaultValue={values.lastName} />
           <Fields.FormInput disableStyle={true} label="Date de naissance" name="birthDate" type="date" onChange={handleInputChange} value={values.birthDate} min="1920-01-01" />
         </Form>
       )}
 
-      {step === 3 && (
+      {step === 4 && (
         <Form onSubmit={e => e.preventDefault()}>
           <p>Veuillez écrire un mot de passe de 8 caractères contenant au moins une minuscule, une majuscule, et un chiffre.</p>
           <Fields.FormInput disableStyle={true} label="Définissez votre mot de passe" name="password" type="password" minLength={8} pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}$" onChange={handleInputChange} value={values.password} />
