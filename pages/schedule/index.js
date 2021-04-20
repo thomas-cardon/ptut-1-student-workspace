@@ -73,10 +73,21 @@ export const getServerSideProps = withSession(async function ({ req, res, query 
     res.setHeader('location', '/login');
     res.statusCode = 302;
     res.end();
-    return { props: {} };
+
+    return;
+  }
+
+  if (!user?.school) {
+    await req.session.destroy();
+
+    res.setHeader('location', '/login');
+    res.statusCode = 302;
+    res.end();
+
+    return;
   }
 
   return {
-    props: { user: req.session.get('user'), ...query },
+    props: { user, ...query },
   };
 });

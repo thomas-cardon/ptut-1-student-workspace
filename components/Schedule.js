@@ -123,11 +123,17 @@ export default function Schedule({ user, index }) {
       }
     }
   }
+
+  useEffect(() => {
+    if (schedule?.success === undefined) return;
+
+    addToast("Une erreur s'est produite pendant le chargement de l'emploi du temps SWS.", { appearance: 'error' });
+    console.error(schedule);
+  }, [schedule])
+
   /*
   * End of variable definitions
   */
-
-  console.dir(user);
 
   return (<>
     <Menu id="MENU_SWS">
@@ -184,7 +190,7 @@ export default function Schedule({ user, index }) {
         .map((x, i) => <CalendarBlock key={'ade-' + i} user={user} start={x[1][3]} end={x[2][3]} summary={x[3][3]} description={x[5][3]} location={x[4][3]} />
       )}
 
-      {schedule && schedule.filter(x => new Date(x.start).getHours() >= HOURS_MIN && new Date(x.end).getHours() >= HOURS_MIN && new Date(x.start).getHours() <= HOURS_MAX && new Date(x.end).getHours() <= HOURS_MAX).map((x, i) => <ScheduleBlock data={x} key={'sws' + i} onContextMenu={event => show(event, { props: { id: x.id } })} />)}
+      {!schedule?.message && schedule && schedule.filter(x => new Date(x.start).getHours() >= HOURS_MIN && new Date(x.end).getHours() >= HOURS_MIN && new Date(x.start).getHours() <= HOURS_MAX && new Date(x.end).getHours() <= HOURS_MAX).map((x, i) => <ScheduleBlock data={x} key={'sws' + i} onContextMenu={event => show(event, { props: { id: x.id } })} />)}
     </div>
     </>);
 }
