@@ -32,16 +32,6 @@ export default function LoginPage(props) {
   const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
 
-    console.dir({
-      email: e.target.email.value,
-      password: e.target.password.value
-    });
-
-    console.dir({
-      email: values.email || e.target.email.value,
-      password: values.password || e.target.password.value
-    });
-
     try {
       const res = await fetch(process.env.NEXT_PUBLIC_URL_PREFIX + '/api/me/login', {
         body: JSON.stringify({
