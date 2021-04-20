@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Link from './Link';
 
-import { HiOutlineMenu, HiViewGridAdd, HiCalendar, HiAnnotation, HiPencilAlt, HiTable, HiUsers } from "react-icons/hi";
+import { HiOutlineMenu, HiViewGridAdd, HiCalendar, HiAnnotation, HiPencilAlt, HiTable, HiUsers, HiSparkles } from "react-icons/hi";
 import { useDarkMode } from 'next-dark-mode';
 
 import styles from './Sidebar.module.css';
@@ -70,6 +70,13 @@ export default function Sidebar({ user, children, active, setActive }) {
             Notes
           </Link>
         </>)}
+
+        <Link href="/legal" className={styles.item}>
+          <div className={styles.icon}>
+            <HiSparkles />
+          </div>
+          Mentions légales
+        </Link>
       </div>
     </aside>);
 };
