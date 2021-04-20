@@ -15,7 +15,7 @@ import { usePosts, useAvatar } from '../../lib/hooks';
 import withSession from "../../lib/session";
 
 export default function Posts({ user, module }) {
-  const { data : posts } = usePosts(user, 0, module);
+  const { data : posts } = usePosts(user, module);
 
   let content = (<Post>
     <Loader type="Oval" color="var(--color-accent)" height="2em" width="100%" />
