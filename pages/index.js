@@ -51,7 +51,7 @@ export default function Dashboard({ user }) {
               <Card className="link">
                 <div>
                   <img srcSet="/assets/dashboard/student.svg" />
-                  <span>DOSSIER ETUDIANT</span>
+                  <span>MON DOSSIER</span>
                 </div>
               </Card>
             </Link>
@@ -67,6 +67,10 @@ export default function Dashboard({ user }) {
         <Homework author="Thomas Cardon" timestamp="1618837526" subjectId="M2103" name="Réseaux" userId={1} isDone={1} groupId={47} description="Finir le TP4 pour le TD Noté prévu Samedi" />
       </div>
       <style jsx global>{`
+        .links > * {
+          flex: 1 1 0;
+        }
+
         .block {
           padding: 1em 0;
         }
@@ -82,16 +86,22 @@ export default function Dashboard({ user }) {
           font-size: xx-large;
         }
 
-        @media (max-width:641px)  { /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */
+        @media (max-width:700px)  {
           .block .title {
             margin: auto auto;
           }
         }
 
         .link {
-          background-color: #feca57;
+          background-color: #FD7272;
           color: ${darkModeActive ? 'white' : 'black'};
+          opacity: 0.9;
           transition: all 0.2s ease;
+
+          border-color: rgba(0, 0, 0, 0.25);
+          border-radius: 10px;
+          border-bottom-style: solid;
+          border-bottom-width: .5em;
         }
 
         .link span {
@@ -111,7 +121,7 @@ export default function Dashboard({ user }) {
 
         .link:hover {
           opacity: 1;
-          transform: scale(1.1, 1.1);
+          transform: scale(1.015, 1.015);
           cursor: pointer;
         }
 

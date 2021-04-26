@@ -1,12 +1,13 @@
 .list {
   display: flex;
   flex-direction: row;
-  flex: 1 0 48%;
+  flex-wrap: wrap;
+  flex: 1 1 0;
+  justify-content: center;
 
   gap: 20px;
   width: 100%;
 
-  flex-wrap: wrap;
 }
 
 .list > * {
