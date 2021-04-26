@@ -137,7 +137,7 @@ export default function UserLayout({ title, user, children, header, flex = true,
 
           <div className="buttons">
             <Link href="/settings">
-              <Button is="warning" icon={<HiAdjustments />}></Button>
+              <Button icon={<HiAdjustments />}>Paramètres</Button>
             </Link>
 
             <Link href="/logout">

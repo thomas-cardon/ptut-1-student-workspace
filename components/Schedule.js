@@ -150,7 +150,7 @@ export default function Schedule({ user, index }) {
     </Menu>
 
     {calendar.length === 0 && (
-      <Highlight icon="🏫" title="Informations">
+      <Highlight icon="🏫" title="Information">
         Il n'y a pas de cours cette semaine.
       </Highlight>
     )}

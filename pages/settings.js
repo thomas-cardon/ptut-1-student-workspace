@@ -86,11 +86,17 @@ export default function SettingsPage({ user }) {
         <p className="subtitle">
           <i>Vous êtes un utilisateur de type {user.userType}, c'est-à-dire que {permsDesc}</i>
         </p>
-
-        <h2>Changer son mot de passe</h2>
-        <hr style={{ width: '60%' }} />
       </div>
-      <Form onSubmit={onSubmit}>
+
+      width: 80%;
+      padding: 1em;
+      margin: auto auto 2em;
+      border-radius: 8px;
+      background-color: var(--color-primary-800);
+  }
+      <Form onSubmit={onSubmit} style={{ width: '89%', borderRadius: '8px', backgroundColor: 'var(--color-primary-800)', padding: '1em', margin: 'auto auto 2em' }}>
+        <h2>Changer son mot de passe</h2>
+        <hr style={{ marginBottom: '1em', marginTop: '-0.5em' }} />
         <Fields.FormInput label="Ancien mot de passe" id="oldPassword" name="oldPassword" minLength="8" onChange={handleInputChange} value={values.oldPassword} type="password" required />
         <Fields.FormInput label="Nouveau mot de passe" id="newPassword" name="newPassword" minLength="8" onChange={handleInputChange} value={values.newPassword} type="password" required />
         <Fields.FormButton type="submit">Changer</Fields.FormButton>
