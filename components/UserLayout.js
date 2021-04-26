@@ -4,8 +4,6 @@ import React, { useState, useEffect } from 'react';
 * Voir pour importer ces fonts par page ou composant, car là on les importe dans toute les pages alors
 * qu'elles ne sont pas forcément utilisées partout
 */
-import "@fontsource/lato";
-
 import "@fontsource/nunito/800.css";
 
 import "@fontsource/raleway/100.css";
@@ -31,17 +29,11 @@ import Link from './Link';
 import Card from './Card';
 
 const isServer = () => typeof window === `undefined`;
-import { useADE, getClasses } from '../lib/ade';
 
+import { useADE, getClasses, getCurrentCourse } from '../lib/ade';
 import { useCurrentClass } from '../lib/hooks';
 
 export default function UserLayout({ title, user, children, header, flex = true, ...rest }) {
-  if (!isServer()) {
-    useEffect(() => {
-      useADE(user);
-    }, []);
-  }
-
   const {
     autoModeActive,    // boolean - whether the auto mode is active or not
     autoModeSupported, // boolean - whether the auto mode is supported on this browser
@@ -52,12 +44,28 @@ export default function UserLayout({ title, user, children, header, flex = true,
   } = useDarkMode();
 
   const [darkMode, setDarkMode] = useState(-1);
-  const { data : current } = useCurrentClass();
+  const [current, setCurrentCourse] = useState(getCurrentCourse());
+
+  const { data : currentSWS } = useCurrentClass();
+
+  if (!isServer()) {
+    useEffect(() => {
+      useADE(user);
+
+      setDarkMode(localStorage.getItem('theme') ? parseInt(localStorage.getItem('theme')) : darkMode);
+    }, []);
+  }
+
+  useEffect(() => {
+    if (currentSWS && !currentSWS.error) setCurrentCourse(current);
+  }, [currentSWS]);
 
   useEffect(() => {
     if (darkMode === -1) switchToAutoMode();
     else if (darkMode === 0) switchToLightMode();
     else if (darkMode === 1) switchToDarkMode();
+
+    localStorage.setItem('theme', darkMode);
   }, [darkMode]);
 
   return (<>
@@ -106,7 +114,7 @@ export default function UserLayout({ title, user, children, header, flex = true,
           </Button>
         </Card>
 
-        {current && !current.error && (
+        {current && current.teacher && ( /* SWS */
           <Card className={[styles.card, styles.currentClass].join(' ')}>
             <p className={styles.text}>
               <span className={styles.title}>{current.subject.module} {current.subject.name}</span>
@@ -118,13 +126,29 @@ export default function UserLayout({ title, user, children, header, flex = true,
               <Button is="danger" icon={<HiMoon />} onClick={() => confirm('(WIP) Se déclarer absent ?')}>Absent ?</Button>
               {current.meetingUrl && (
                 <Link href={current.meetingUrl} target="_blank">
-                  <Button is="success" icon={<HiArrowRight />}>Connexion</Button>
+                  <Button is="success" icon={<HiArrowRight />}>Rejoindre</Button>
                 </Link>
               )}
 
               <Link href="/schedule/current">
                 <Button icon={<HiDotsHorizontal />}>Voir</Button>
               </Link>
+            </div>
+          </Card>
+        )}
+
+        {current && current.summary && ( /* ADE */
+          <Card className={[styles.card, styles.currentClass].join(' ')}>
+            <p className={styles.text}>
+              <span className={styles.title}>{current.summary}</span>
+              <span className={styles.subtitle}><i>{current.description.split(' ').slice(1).join(' ').replace(/(\r\n|\n|\r)/gm, '\n').replace(/\s*\(.*?\)\s*/g, '').trim()}</i></span>
+              <span className={styles.subtitle}><b>{current.location}</b></span>
+              <span className={styles.subtitle} style={{ color: 'var(--color-accent)' }}>Démarré {formatDistanceToNow(current.start, { addSuffix: true, locale: fr })}</span>
+            </p>
+
+            <div className="buttons">
+              <Button icon={<HiDotsHorizontal />}>Voir</Button>
+              <Button is="success" icon={<HiArrowRight />} disabled={typeof current.meetingUrl === 'undefined'}>Rejoindre</Button>
             </div>
           </Card>
         )}
