@@ -18,7 +18,7 @@ import Sidebar from './Sidebar';
 import styles from './UserLayout.module.css';
 
 import Gravatar from 'react-gravatar';
-import { HiAdjustments, HiLogout, HiArrowRight, HiDotsHorizontal, HiMoon, HiColorSwatch } from "react-icons/hi";
+import { HiAdjustments, HiLogout, HiArrowRight, HiDotsHorizontal, HiMoon, HiSun, HiColorSwatch } from "react-icons/hi";
 
 import { useDarkMode } from 'next-dark-mode';
 
@@ -97,8 +97,8 @@ export default function UserLayout({ title, user, children, header, flex = true,
           </div>
           <Button style={{ marginTop: '1em' }} icon={<>
             {darkMode === -1 && <HiColorSwatch />}
-            {darkMode === 0  && <HiColorSwatch />}
-            {darkMode === 1  && <HiColorSwatch />}
+            {darkMode === 0  && <HiSun />}
+            {darkMode === 1  && <HiMoon />}
           </>} onClick={() => setDarkMode(darkMode === -1 ? 1 : darkMode - 1)}>
             {darkMode === -1 && (<span>Auto</span>)}
             {darkMode === 0  && (<span>Clair</span>)}
