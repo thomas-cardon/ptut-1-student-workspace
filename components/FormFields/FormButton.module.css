@@ -78,8 +78,9 @@
 
 
 .button:disabled {
-  background-color: var(--color-primary-800);
-  color: var(--color-primary-100);
+  opacity: 0.4;
+
+  cursor: not-allowed;
 }
 
 .content {
