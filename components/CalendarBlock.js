@@ -56,7 +56,7 @@ export default function CalendarBlock({ user, data }) {
       },
       body: JSON.stringify({ key, value })
     }).then(res => {
-      addToast("Cours modifié. Les emplois du temps peuvent prendre jusqu'à une heure pour se mettre à jour.", { appearance: 'success' });
+      addToast("Cours modifié.", { appearance: 'success' });
       res.text().then(console.dir).catch(console.error);
     })
       .catch(err => {

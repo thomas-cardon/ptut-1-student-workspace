@@ -30,7 +30,11 @@ export default function Schedule({ user, index }) {
   /*
   * Variable definitions
   */
+  const { darkModeActive } = useDarkMode();
+  const { addToast } = useToasts();
+
   const [calendar, setCalendarData] = useState([]);
+  const [events, setCalendarEvents] = useState([]);
 
   if (!isServer()) {
     useEffect(() => {
@@ -38,14 +42,30 @@ export default function Schedule({ user, index }) {
         parseCalendar()
         .filter(x => getISOWeek(x.start) === index)
         .filter(x => x.start.getHours() >= HOURS_MIN && x.end.getHours() >= HOURS_MIN && x.start.getHours() <= HOURS_MAX && x.end.getHours() <= HOURS_MAX)
+        .map(x => {
+          let event = events.find(y => x.id === y.uid);
+          if (!event) return x;
+
+          return { ...x, [event.key] : [event.value][0] };
+        })
+        .filter(x => typeof x?.hidden === 'undefined' || x.hidden === 0)
       );
-    }, [sessionStorage.getItem('ade_data'), index]);
+    }, [sessionStorage.getItem('ade_data'), index, events]);
   }
 
-  const { data : schedule } = useSWR(`/api/schedule/by-week/${index}` + (user.userType == 0 && user?.group?.id ? '?filterByGroup=' + user?.group?.id : ''), fetcher);
+  useEffect(async () => {
+    try {
+      const r = await fetch(`${process.env.NEXT_PUBLIC_URL_PREFIX}/api/schedule/ade/events`);
+      if (!r.ok) throw 'Response not OK';
 
-  const { darkModeActive } = useDarkMode();
-  const { addToast } = useToasts();
+      setCalendarEvents(await r.json());
+    } catch (error) {
+        console.error(error);
+        addToast('Impossible de récupérer les évènements modifiés. Erreur fatale', { appearance: 'error' })
+    }
+  }, []);
+
+  const { data : schedule } = useSWR(`/api/schedule/by-week/${index}` + (user.userType == 0 && user?.group?.id ? '?filterByGroup=' + user?.group?.id : ''), fetcher);
 
   const { show } = useContextMenu({ id: 'MENU_SWS' });
 
@@ -122,9 +142,8 @@ export default function Schedule({ user, index }) {
 
   useEffect(() => {
     if (typeof schedule?.success === 'undefined') return;
-
+    console.error(schedule?.message || schedule);
     addToast("Une erreur s'est produite pendant le chargement de l'emploi du temps SWS.", { appearance: 'error' });
-    console.error(schedule);
   }, [schedule])
 
   /*
