@@ -15,3 +15,9 @@
   font-weight: 700;
   margin-right: 15px;
 }
+
+@media screen and (max-width: 700px) {
+  .block {
+    margin: 1em;
+  }
+}

@@ -10,9 +10,10 @@ import { useToasts } from 'react-toast-notifications';
 import { useDarkMode } from 'next-dark-mode';
 
 import { lightFormat, addDays, getISOWeek } from 'date-fns';
-import ICAL from 'ical.js';
-
 import { getDateOfISOWeek } from '../lib/date';
+import { parseCalendar } from '../lib/ade';
+
+import Highlight from './Highlight';
 
 import ScheduleBlock from './ScheduleBlock';
 import CalendarBlock from './CalendarBlock';
@@ -23,29 +24,24 @@ const HOURS_MIN = 8, HOURS_MAX = 19;
 
 import "react-contexify/dist/ReactContexify.css";
 
-function getICalendarData() {
-  try {
-    const data = sessionStorage.getItem('ade_data');
-    if (!data) return [];
-
-    let jcalData = ICAL.parse(data);
-    let vcalendar = new ICAL.Component(jcalData);
-
-    return vcalendar.getAllSubcomponents().map(x => x.toJSON()[1]);
-  }
-  catch(error) {
-    console.error(error);
-    sessionStorage.removeItem('ade_data');
-  }
-
-  return [];
-}
+const isServer = () => typeof window === `undefined`;
 
 export default function Schedule({ user, index }) {
   /*
   * Variable definitions
   */
-  const vevents = typeof window === `undefined` ? [] : getICalendarData();
+  const [calendar, setCalendarData] = useState([]);
+
+  if (!isServer()) {
+    useEffect(() => {
+      setCalendarData(
+        parseCalendar()
+        .filter(x => getISOWeek(x.start) === index)
+        .filter(x => x.start.getHours() >= HOURS_MIN && x.end.getHours() >= HOURS_MIN && x.start.getHours() <= HOURS_MAX && x.end.getHours() <= HOURS_MAX)
+      );
+    }, [sessionStorage.getItem('ade_data'), index]);
+  }
+
   const { data : schedule } = useSWR(`/api/schedule/by-week/${index}` + (user.userType == 0 && user?.group?.id ? '?filterByGroup=' + user?.group?.id : ''), fetcher);
 
   const { darkModeActive } = useDarkMode();
@@ -125,7 +121,7 @@ export default function Schedule({ user, index }) {
   }
 
   useEffect(() => {
-    if (schedule?.success === undefined) return;
+    if (typeof schedule?.success === 'undefined') return;
 
     addToast("Une erreur s'est produite pendant le chargement de l'emploi du temps SWS.", { appearance: 'error' });
     console.error(schedule);
@@ -152,6 +148,12 @@ export default function Schedule({ user, index }) {
         </Submenu>
       )}
     </Menu>
+
+    {calendar.length === 0 && (
+      <Highlight icon="🏫" title="Informations">
+        Il n'y a pas de cours cette semaine.
+      </Highlight>
+    )}
 
     <div className={[styles.schedule, darkModeActive ? styles.dark : ''].join(' ')}>
       <span className={styles.timeSlot} style={{ gridRow: 'time-0800' }}>8:00</span>
@@ -184,11 +186,8 @@ export default function Schedule({ user, index }) {
         <small>{lightFormat(addDays(getDateOfISOWeek(index, new Date().getFullYear()), i), 'dd/MM')}</small>
       </div>)}
 
-      {vevents
-        .filter(x => getISOWeek(new Date(x[1][3])) === index)
-        .filter(x => new Date(x[1][3]).getHours() >= HOURS_MIN && new Date(x[2][3]).getHours() >= HOURS_MIN && new Date(x[1][3]).getHours() <= HOURS_MAX && new Date(x[2][3]).getHours() <= HOURS_MAX)
-        .map((x, i) => <CalendarBlock key={'ade-' + i} user={user} start={x[1][3]} end={x[2][3]} summary={x[3][3]} description={x[5][3]} location={x[4][3]} />
-      )}
+      {calendar
+        .map((x, i) => <CalendarBlock key={x.id} user={user} data={x} />)}
 
       {!schedule?.message && schedule && schedule.filter(x => new Date(x.start).getHours() >= HOURS_MIN && new Date(x.end).getHours() >= HOURS_MIN && new Date(x.start).getHours() <= HOURS_MAX && new Date(x.end).getHours() <= HOURS_MAX).map((x, i) => <ScheduleBlock data={x} key={'sws' + i} onContextMenu={event => show(event, { props: { id: x.id } })} />)}
     </div>

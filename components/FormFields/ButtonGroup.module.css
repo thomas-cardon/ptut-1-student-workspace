@@ -9,6 +9,8 @@
 
   line-height: 0;
   font-weight: lighter;
+
+  outline: 0;
 }
 
 .btnGroup.dark button {

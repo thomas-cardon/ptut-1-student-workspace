@@ -9,6 +9,7 @@ export default function ScheduleBlock({ data, onContextMenu }) {
       className={styles.session}
       meetingurl={data.meetingUrl}
       onContextMenu={onContextMenu}
+      onClick={() => confirm(`Vous allez rejoindre la réunion du cours: ${data.subject.name}`)}
       style={{
         gridColumn: "track-" + getDay(parseISO(data.start)),
         backgroundColor: data.subject.color || stringToColor(data.subject.name),

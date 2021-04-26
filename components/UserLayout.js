@@ -31,12 +31,16 @@ import Link from './Link';
 import Card from './Card';
 
 const isServer = () => typeof window === `undefined`;
-import { useADE } from '../lib/ade';
+import { useADE, getClasses } from '../lib/ade';
 
 import { useCurrentClass } from '../lib/hooks';
 
 export default function UserLayout({ title, user, children, header, flex = true, ...rest }) {
-  if (!isServer()) useADE(user);
+  if (!isServer()) {
+    useEffect(() => {
+      useADE(user);
+    }, []);
+  }
 
   const {
     autoModeActive,    // boolean - whether the auto mode is active or not
@@ -81,6 +85,12 @@ export default function UserLayout({ title, user, children, header, flex = true,
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%' }}>
             <div className={styles.text}>
               <span className={styles.name}>{user.firstName} {user.lastName}</span>
+              <span className={styles.id}>
+                {user.userType === 0 && user.delegate === 0 && 'Étudiant'}
+                {user.userType === 0 && user.delegate === 1 && 'Délégué'}
+                {user.userType === 1 && 'Professeur'}
+                {user.userType === 2 && 'Administration'}
+              </span>
               <span className={styles.id}>#{user.userId}</span>
             </div>
             <Gravatar size={80} email={user.email} alt="Votre photo de profil" className={styles.avatar} draggable={false} />

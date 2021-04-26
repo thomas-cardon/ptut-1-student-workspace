@@ -38,15 +38,6 @@ export default function Sidebar({ user, children, active, setActive }) {
           Informations
         </Link>
 
-        {user?.userType !== 2 && (
-          <Link href="/grades/list" className={styles.item}>
-            <div className={styles.icon}>
-              <HiPencilAlt />
-            </div>
-            Mes notes
-          </Link>
-        )}
-
         {user?.userType === 2 && (<>
           <hr />
 
@@ -61,13 +52,6 @@ export default function Sidebar({ user, children, active, setActive }) {
               <HiUsers />
             </div>
             Étudiants
-          </Link>
-
-          <Link href="/grades/list" className={styles.item}>
-            <div className={styles.icon}>
-              <HiPencilAlt />
-            </div>
-            Notes
           </Link>
         </>)}
 

@@ -18,7 +18,7 @@
 
   color: black;
 
-  margin: 0 0 4em;
+  margin: 0 0 2em;
   padding: 0.5em;
 }
 
@@ -38,10 +38,6 @@
 
   .schedule .timeSlot, .schedule .trackSlot {
     display: none;
-  }
-
-  .session {
-    margin: 1em;
   }
 }
 
@@ -114,63 +110,4 @@
   text-align: center;
   border-bottom: darkgrey solid 1px;
   margin: 0 0 -0.5em 1em;
-}
-
-.session {
-  display: flex;
-  flex-direction: column;
-
-  border-color: rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  border-left-style: solid;
-  border-left-width: .5em;
-
-  font-family: Marianne;
-
-  transition: all 0.2s ease;
-}
-
-.session:hover {
-  border-left-width: 1em;
-  cursor: pointer;
-}
-
-.session .top, .session .teacher, .session .bottom, .session .module, .session .name {
-  margin: 5% 0 0 5%;
-
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: pre-wrap;
-}
-
-.teacher {
-  font-size: .6em;
-  font-style: italic;
-  font-family: 'MarianneBOLD';
-  margin-top: 0 !important;
-}
-
-.top {
-  flex-wrap: wrap;
-  display: flex;
-  padding: 0.2em;
-
-  font-size: small;
-}
-
-.name {
-  font-family: MarianneBOLD;
-  font-size: 0.8em;
-}
-
-.bottom {
-  display: flex;
-  flex-direction: column;
-
-  text-transform: uppercase;
-  font-size: .6em;
-}
-
-.bottom * {
-  margin: 0;
 }

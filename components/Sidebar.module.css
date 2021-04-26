@@ -46,9 +46,11 @@
 
 @media (max-width:641px)  { /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */
   .list {
-    display: flex;
-    flex-direction: row;
     margin: 0;
+
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-areas: ". . . . . ."
   }
 
   .item {
@@ -57,7 +59,7 @@
 
     padding: 1em;
     margin: auto;
-    
+
     width: 1em;
     height: 1em;
   }

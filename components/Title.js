@@ -10,7 +10,7 @@ export default function Title({ appendGradient, subtitle, button, style = {}, ch
         {children}&nbsp;
         <span className={defaultStyles.gradient}>{appendGradient}</span>
       </h1>
-      <div style={{ display: 'flex', flexDirection: 'row' }}>
+      <div className={defaultStyles.subtitleContent}>
         {button || <></>}
         {subtitle && (<span className={defaultStyles.subtitle}>{subtitle}</span>)}
       </div>

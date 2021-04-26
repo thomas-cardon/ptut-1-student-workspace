@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import Loader from 'react-loader-spinner';
 import dynamic from 'next/dynamic';
 
 import Title from '../../components/Title';
@@ -16,7 +16,6 @@ import withSession from "../../lib/session";
 import { getISOWeek } from 'date-fns';
 
 import { HiPlusCircle } from "react-icons/hi";
-import Loader from 'react-loader-spinner';
 
 const Schedule = dynamic(() => import('../../components/Schedule'), {
   loading: () => <Loader type="Oval" color="var(--color-accent)" height="5em" width="100%" />
@@ -46,18 +45,18 @@ export default function SchedulePage({ user, selectedWeek }) {
         </Link> : <></>}>
         Emploi du
       </Title>
-      <ButtonGroup style={{ width: 'fit-content', margin: 'auto'}}>
+      <ButtonGroup style={{ width: 'max-content', margin: 'auto', gridTemplateAreas: '. . . . .' }}>
         <Link href={{ pathname: '/schedule', query: { selectedWeek: selectedWeek - 1 } }}>
-            <FormButton is="action" disabled={selectedWeek === 0}>{"<"}</FormButton>
+            <FormButton is="action" disabled={selectedWeek === 0}>{"«"}</FormButton>
         </Link>
-        {[-3, -2, -1, 0, 1, 2, 3].map((e, i) => {
+        {[-1, 0, 1].map((e, i) => {
           return (
             <Link key={'week-' + i} href={{ pathname: '/schedule', query: { selectedWeek: week + e } }}>
                 <FormButton is="action" key={i} disabled={selectedWeek ? (week + e) === selectedWeek : e === 0}>{week + e}</FormButton>
             </Link>);
         })}
         <Link href={{ pathname: '/schedule', query: { selectedWeek: selectedWeek + 1 } }}>
-            <FormButton is="action" disabled={selectedWeek === 52}>{">"}</FormButton>
+            <FormButton is="action" disabled={selectedWeek === 52}>{"»"}</FormButton>
         </Link>
       </ButtonGroup>
     </>}>
