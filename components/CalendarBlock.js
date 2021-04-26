@@ -2,10 +2,9 @@ import {
   stringToColor,
   pickTextColorBasedOnBgColorAdvanced,
 } from "../lib/colors";
-import { parseISO, getDay } from "date-fns";
+import { getDay } from "date-fns";
 
-import styles from "./CalendarBlock.module.css";
-
+import { useToasts } from 'react-toast-notifications';
 import {
   useContextMenu,
   Submenu,
@@ -15,32 +14,101 @@ import {
 } from "react-contexify";
 import "react-contexify/dist/ReactContexify.css";
 
+import styles from "./CalendarBlock.module.css";
+
 /**
  * Permet de transformer une description iCalendar en données utilisables
- * @param  {string} description
+ * @param  {string} description [Description iCalendar]
+ * @param  {boolean} textOnly [Transforme la description sans ajouter d'éléments React]
  * @return {[string[]]} [Les éléments à afficher dans le bloc]
  */
-function bake(description) {
-  let words = description
+function bake(description, textOnly = false) {
+  const words = description
             .match(/^[^\(]+/)[0]
             .replace(/(\r\n|\n|\r)/gm, " ")
             .trim().split(' ')
             .filter(word => word.length > 3 && !word.includes('Groupe'))
             .map((word, i, arr) => {
+              if (textOnly) return word;
+
               if (word === word.toUpperCase() && arr[i - 1] && arr[i - 1] !== arr[i - 1].toUpperCase())
                 return <span key={i}><br />{word}</span>;
 
               return <span key={i}>{i === 0 ? '' : ' '}{word}</span>;
-            })
+            });
 
+  if (textOnly) return words.join(' ');
   return words;
 }
 
 export default function CalendarBlock({ user, data }) {
   const { show } = useContextMenu({ id: data.id });
+  const { addToast } = useToasts();
 
-  function handleItemClick({ event, props, data, triggerEvent }) {
+  const patch = (key, value) => {
+    console.log('[PATCH]', data.id, '->', key, '=', value);
+
+    if (value === null) return;
+    fetch(location.protocol + '//' + location.host + `/api/schedule/ade/patch/${data.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ key, value })
+    }).then(res => {
+      addToast("Cours modifié. Les emplois du temps peuvent prendre jusqu'à une heure pour se mettre à jour.", { appearance: 'success' });
+      res.text().then(console.dir).catch(console.error);
+    })
+      .catch(err => {
+        addToast("Une erreur s'est produite lors de l'édition du cours.", { appearance: 'error' });
+        console.error(err);
+      });
+  };
+
+
+  function handleItemClick({ event, props, triggerEvent }) {
     switch (event.currentTarget.id) {
+      case "notify": {
+          let title = window.prompt('Saisissez le titre de la notification', 'Rappel de cours');
+          let body = window.prompt('Saisissez le corps de la notification', data?.subject || data.summary);
+
+          fetch(location.protocol + '//' + location.host + `/api/notifications/broadcast?title=${title}&body=${body}&interests=${document.querySelector('[interests]').getAttribute('interests')}`)
+          .then(() => addToast('Tous les utilisateurs concernés ont été notifiés.', { appearance: 'success' }))
+          .catch(err => {
+            addToast("Une erreur s'est produite.", { appearance: 'error' });
+            console.error(err);
+          });
+
+          break;
+      }
+      case "connect": {
+        alert("Aucune réunion n'est encore disponible pour ce cours.");
+        break;
+      }
+      case "change-subject": {
+        patch('subject', window.prompt('Saisissez le titre du cours', data?.subject || data.summary));
+        break;
+      }
+      case "change-module": {
+        patch('module', window.prompt('Saisissez le module du cours', data?.module || ''));
+        break;
+      }
+      case "change-description": {
+        patch('description', window.prompt('Saisissez la description du cours', bake(data.description, true)));
+        break;
+      }
+      case "change-meeting": {
+        patch('meeting', window.prompt('Saisissez le lien de la réunion'));
+        break;
+      }
+      case "change-room": {
+        patch('location', window.prompt('Saisissez le lieu de la réunion', data.location));
+        break;
+      }
+      case "remove": {
+        patch('hidden', confirm('Voulez-vous supprimer ce cours?') ? 1 : 0);
+        break;
+      }
     }
   }
 
@@ -48,20 +116,34 @@ export default function CalendarBlock({ user, data }) {
     <>
       <Menu id={data.id}>
         <Item id="connect" onClick={handleItemClick}>
-          &#x1F4BB;&nbsp;&nbsp;Se connecter à la réunion
+          &#x1F4BB;&nbsp;Se connecter à la réunion
         </Item>
         <Separator />
-        {user?.userType > 0 && (
-          <Submenu label="Modération&nbsp;">
-            <Item id="notify" onClick={handleItemClick}>
-              🔔&nbsp;&nbsp;Notifier le groupe
-            </Item>
-            <Separator />
-            <Item id="edit" onClick={handleItemClick}>
-              &#x1F392;&nbsp;&nbsp;Modifier les données
-            </Item>
-          </Submenu>
-        )}
+        <Submenu label="Modération&nbsp;" hidden={user.userType === 0 || user.delegate === false}>
+          <Item id="notify" onClick={handleItemClick}>
+            🔔&nbsp;Notifier le groupe
+          </Item>
+          <Separator />
+          <Item id="change-subject" onClick={handleItemClick}>
+            Changer le titre
+          </Item>
+          <Item id="change-module" onClick={handleItemClick}>
+            Changer le module
+          </Item>
+          <Item id="change-description" onClick={handleItemClick}>
+            Changer la description
+          </Item>
+          <Item id="change-meeting" onClick={handleItemClick}>
+            Changer la réunion
+          </Item>
+          <Item id="change-room" onClick={handleItemClick}>
+            Changer la salle
+          </Item>
+          <Separator />
+          <Item id="remove" onClick={handleItemClick}>
+            ❌&nbsp;Supprimer le cours
+          </Item>
+        </Submenu>
       </Menu>
       <div
         onClick={() => confirm(`Vous allez rejoindre la réunion du cours: "${data.summary}"`)}
