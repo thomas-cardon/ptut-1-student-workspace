@@ -1,5 +1,5 @@
 {
-  "name": "ptut-1-student-workspace",
+  "name": "student-workspace",
   "version": "1.0.0",
   "scripts": {
     "dev": "next dev",
@@ -12,12 +12,10 @@
     "url": "https://github.com/thomas-cardon/ptut-1-student-workspace/issues",
     "email": "thomas.cardon@pm.me"
   },
-  "author": "Thomas Cardon <thomas.cardon@pm.me> (https://thomascardon.fr)",
+  "author": "Thomas Cardon <thomas.cardon@pm.me> (https://thomas-cardon.fr)",
   "repository": "github:thomas-cardon/ptut-1-student-workspace",
   "dependencies": {
-    "@fontsource/lato": "^4.2.1",
     "@fontsource/nunito": "^4.2.2",
-    "@fontsource/open-sans": "^4.2.1",
     "@fontsource/raleway": "^4.2.2",
     "@pusher/push-notifications-server": "^1.2.1",
     "@pusher/push-notifications-web": "^1.1.0",
