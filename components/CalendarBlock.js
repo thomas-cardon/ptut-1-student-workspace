@@ -120,19 +120,19 @@ export default function CalendarBlock({ user, data }) {
         <Separator hidden={user.userType === 0 && user.delegate === false} />
         <Submenu label="Edition&nbsp;" hidden={user.userType === 0 && user.delegate === false}>
           <Item id="change-subject" onClick={handleItemClick}>
-            🖍️Titre
+            🖍️&nbsp;Titre
           </Item>
           <Item id="change-module" onClick={handleItemClick}>
-            ❓ Module
+            ❓&nbsp;Module
           </Item>
           <Item id="change-description" onClick={handleItemClick}>
-            ❓ Description
+            ❓&nbsp;Description
           </Item>
           <Item id="change-meeting" onClick={handleItemClick}>
-            💬 Réunion
+            💬&nbsp;Réunion
           </Item>
           <Item id="change-room" onClick={handleItemClick}>
-            🚪 Salle
+            🚪&nbsp;Salle
           </Item>
         </Submenu>
         <Submenu label="Modération&nbsp;" hidden={user.userType === 0 && user.delegate === false}>
