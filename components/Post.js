@@ -8,7 +8,7 @@ import styles from "./Post.module.css";
 
 import { useDarkMode } from 'next-dark-mode';
 
-export default function Post({ id, title, content, module, authorName, creationTime, email, children }) {
+export default function Post({ id, title, content, module, authorName, creationTime, email, href, children }) {
   const { darkModeActive } = useDarkMode();
 
   return (
@@ -22,7 +22,7 @@ export default function Post({ id, title, content, module, authorName, creationT
           )}
         </div>
         <h2 className={styles.title}>
-          <Link href={'/posts/' + id}>
+          <Link href={href || '/posts/' + id}>
             {title}
           </Link>
         </h2>

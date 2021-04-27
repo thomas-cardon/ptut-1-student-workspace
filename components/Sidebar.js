@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Link from './Link';
 
-import { HiOutlineMenu, HiViewGridAdd, HiCalendar, HiAnnotation, HiPencilAlt, HiTable, HiUsers, HiSparkles } from "react-icons/hi";
+import { HiOutlineMenu, HiViewGridAdd, HiCalendar, HiAnnotation, HiPencilAlt, HiTable, HiUsers, HiCollection, HiSparkles } from "react-icons/hi";
 import { useDarkMode } from 'next-dark-mode';
 
 import styles from './Sidebar.module.css';
@@ -31,6 +31,13 @@ export default function Sidebar({ user, children, active, setActive }) {
           Emploi du temps
         </Link>
 
+        <Link href="/news/list" className={styles.item}>
+          <div className={styles.icon}>
+            <HiCollection />
+          </div>
+          Newsfeed (beta)
+        </Link>
+
         <Link href="/posts/list" className={styles.item}>
           <div className={styles.icon}>
             <HiAnnotation />
@@ -54,6 +61,8 @@ export default function Sidebar({ user, children, active, setActive }) {
             Étudiants
           </Link>
         </>)}
+
+        <hr />
 
         <Link href="/legal" className={styles.item}>
           <div className={styles.icon}>
