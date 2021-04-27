@@ -94,8 +94,8 @@ export default function UserLayout({ title, user, children, header, flex = true,
             <div className={styles.text}>
               <span className={styles.name}>{user.firstName} {user.lastName}</span>
               <span className={styles.id}>
-                {user.userType === 0 && user.delegate === 0 && 'Étudiant'}
-                {user.userType === 0 && user.delegate === 1 && 'Délégué'}
+                {user.userType === 0 && user.delegate === false && 'Étudiant'}
+                {user.userType === 0 && user.delegate === true && 'Délégué'}
                 {user.userType === 1 && 'Professeur'}
                 {user.userType === 2 && 'Administration'}
               </span>

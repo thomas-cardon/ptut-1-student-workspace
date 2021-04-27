@@ -58,11 +58,10 @@ export default function CalendarBlock({ user, data }) {
     }).then(res => {
       addToast("Cours modifié.", { appearance: 'success' });
       res.text().then(console.dir).catch(console.error);
-    })
-      .catch(err => {
-        addToast("Une erreur s'est produite lors de l'édition du cours.", { appearance: 'error' });
-        console.error(err);
-      });
+    }).catch(err => {
+      addToast("Une erreur s'est produite lors de l'édition du cours.", { appearance: 'error' });
+      console.error(err);
+    });
   };
 
 
@@ -118,8 +117,8 @@ export default function CalendarBlock({ user, data }) {
         <Item id="connect" onClick={handleItemClick}>
           &#x1F4BB;&nbsp;Se connecter à la réunion
         </Item>
-        <Separator />
-        <Submenu label="Modération&nbsp;" hidden={user.userType === 0 || user.delegate === false}>
+        <Separator hidden={user.userType === 0 && user.delegate === false} />
+        <Submenu label="Modération&nbsp;" hidden={user.userType === 0 && user.delegate === false}>
           <Item id="notify" onClick={handleItemClick}>
             🔔&nbsp;Notifier le groupe
           </Item>
