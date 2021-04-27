@@ -22,7 +22,6 @@ export default function LatestNews({ user, module }) {
 
   useEffect(() => fetchNews()
   .then(data => {
-    console.dir(data);
     setNews(data.map((post, i) => <Post
                         id={'news-' + i}
                         key={'news-' + i}
