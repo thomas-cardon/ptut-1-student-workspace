@@ -81,7 +81,7 @@ export default function CalendarBlock({ user, data }) {
           break;
       }
       case "connect": {
-        alert("Aucune réunion n'est encore disponible pour ce cours.");
+        window.open(data.meeting, '_blank').focus();
         break;
       }
       case "change-subject": {
@@ -114,29 +114,30 @@ export default function CalendarBlock({ user, data }) {
   return (
     <>
       <Menu id={data.id}>
-        <Item id="connect" onClick={handleItemClick}>
+        <Item id="connect" onClick={handleItemClick} disabled={typeof data.meeting === 'undefined'}>
           &#x1F4BB;&nbsp;Se connecter à la réunion
         </Item>
         <Separator hidden={user.userType === 0 && user.delegate === false} />
+        <Submenu label="Edition&nbsp;" hidden={user.userType === 0 && user.delegate === false}>
+          <Item id="change-subject" onClick={handleItemClick}>
+            🖍️Titre
+          </Item>
+          <Item id="change-module" onClick={handleItemClick}>
+            ❓ Module
+          </Item>
+          <Item id="change-description" onClick={handleItemClick}>
+            ❓ Description
+          </Item>
+          <Item id="change-meeting" onClick={handleItemClick}>
+            💬 Réunion
+          </Item>
+          <Item id="change-room" onClick={handleItemClick}>
+            🚪 Salle
+          </Item>
+        </Submenu>
         <Submenu label="Modération&nbsp;" hidden={user.userType === 0 && user.delegate === false}>
           <Item id="notify" onClick={handleItemClick}>
             🔔&nbsp;Notifier le groupe
-          </Item>
-          <Separator />
-          <Item id="change-subject" onClick={handleItemClick}>
-            Changer le titre
-          </Item>
-          <Item id="change-module" onClick={handleItemClick}>
-            Changer le module
-          </Item>
-          <Item id="change-description" onClick={handleItemClick}>
-            Changer la description
-          </Item>
-          <Item id="change-meeting" onClick={handleItemClick}>
-            Changer la réunion
-          </Item>
-          <Item id="change-room" onClick={handleItemClick}>
-            Changer la salle
           </Item>
           <Separator />
           <Item id="remove" onClick={handleItemClick}>
@@ -145,7 +146,10 @@ export default function CalendarBlock({ user, data }) {
         </Submenu>
       </Menu>
       <div
-        onClick={() => confirm(`Vous allez rejoindre la réunion du cours: "${data.summary}"`)}
+        onClick={() => {
+          if (!data.meeting) addToast("Ce cours n'a pas de réunion associée.", { appearance: 'error' });
+          if (confirm(`Vous allez rejoindre la réunion du cours: "${data.summary}"`))  window.open(data.meeting, '_blank').focus();
+        }}
         onContextMenu={(event) => show(event, { props: {} })}
         className={styles.session}
         style={{
