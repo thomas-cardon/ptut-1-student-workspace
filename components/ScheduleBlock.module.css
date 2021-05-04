@@ -12,6 +12,8 @@
   display: flex;
   flex-direction: column;
 
+  margin: 0 .2em;
+
   border-color: rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   border-left-style: solid;
@@ -19,12 +21,7 @@
 
   font-family: Marianne;
 
-  transition: all 0.2s ease;
-}
-
-.session:hover {
-  border-left-width: 1em;
-  cursor: pointer;
+  transition: all 0.15s ease;
 }
 
 .session .top, .session .teacher, .session .bottom, .session .module, .session .name {
@@ -69,7 +66,7 @@
 
 @media (hover: hover) {
   .session:hover {
-    border-left-width: 1em;
+    border-left-width: 0.75em;
     cursor: pointer;
   }
 }

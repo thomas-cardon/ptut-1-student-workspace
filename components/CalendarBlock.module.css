@@ -12,6 +12,8 @@
   display: flex;
   flex-direction: column;
 
+  margin: 0 .2em;
+
   border-color: rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   border-left-style: solid;
@@ -19,13 +21,13 @@
 
   font-family: Marianne;
 
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
 }
 
-.session .top, .session .teacher, .session .bottom, .session .module, .session .name {
+.session .hour, .session .teacher, .session .bottom, .session .module, .session .name {
   margin-left: 5% !important;
   text-overflow: ellipsis;
-  overflow-y: hidden;
+  overflow: hidden;
 }
 
 .session * {
@@ -39,17 +41,21 @@
   margin-top: 0 !important;
 }
 
-.top {
-  flex-wrap: wrap;
-  display: flex;
-  padding: 0.2em;
+.hour {
+  margin-top: .5rem;
+  margin-bottom: .5rem;
 
-  font-size: small;
+  font-size: .88rem;
 }
 
 .name {
   font-family: MarianneBOLD;
   font-size: 0.8em;
+
+  min-height: 1em;
+  width: 85%;
+
+  flex: 1 1 auto;
 }
 
 .bottom {
@@ -66,7 +72,7 @@
 
 @media (hover: hover) {
   .session:hover {
-    border-left-width: 1em;
+    border-left-width: 0.75em;
     cursor: pointer;
   }
 }

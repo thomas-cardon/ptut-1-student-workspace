@@ -84,6 +84,10 @@ export default function CalendarBlock({ user, data }) {
         window.open(data.meeting, '_blank').focus();
         break;
       }
+      case "details": {
+        alert(`${data?.module || ''} ${data?.subject || data.summary}\n${data.description}\n${data.location}`);
+        break;
+      }
       case "change-subject": {
         patch('subject', window.prompt('Saisissez le titre du cours', data?.subject || data.summary));
         break;
@@ -117,6 +121,9 @@ export default function CalendarBlock({ user, data }) {
         <Item id="connect" onClick={handleItemClick} disabled={typeof data.meeting === 'undefined'}>
           &#x1F4BB;&nbsp;Se connecter à la réunion
         </Item>
+        <Item id="details" onClick={handleItemClick}>
+          ℹ️&nbsp;Détails
+        </Item>
         <Separator hidden={user.userType === 0 && user.delegate === false} />
         <Submenu label="Edition&nbsp;" hidden={user.userType === 0 && user.delegate === false}>
           <Item id="change-subject" onClick={handleItemClick}>
@@ -148,7 +155,7 @@ export default function CalendarBlock({ user, data }) {
       <div
         onClick={() => {
           if (!data.meeting) addToast("Ce cours n'a pas de réunion associée.", { appearance: 'error' });
-          if (confirm(`Vous allez rejoindre la réunion du cours: "${data.summary}"`))  window.open(data.meeting, '_blank').focus();
+          else if (confirm(`Vous allez rejoindre la réunion du cours: "${data.summary}"`))  window.open(data.meeting, '_blank').focus();
         }}
         onContextMenu={(event) => show(event, { props: {} })}
         className={styles.session}
@@ -167,17 +174,13 @@ export default function CalendarBlock({ user, data }) {
             data.end.toLocaleTimeString().slice(0, 5).replace(":", ""),
         }}
       >
-        <div className={styles.top} style={{ display: "flex" }}>
-          <b>{data?.module}</b>
-          {data?.module && <span>&nbsp;-&nbsp;</span>}
-          <span>
-            {data.start.toLocaleTimeString().slice(0, 5)} -{" "}
-            {data.end.toLocaleTimeString().slice(0, 5)}
-          </span>
+        <div className={styles.hour}>
+          {data.start.toLocaleTimeString().slice(0, 5)} -{" "}
+          {data.end.toLocaleTimeString().slice(0, 5)}
         </div>
 
         <p className={styles.name}>
-          {data?.subject || data.summary} {data?.type && `(${data?.type})`}
+          {data?.module && data.module} {data?.subject || data.summary} {data?.type && `(${data?.type})`}
         </p>
         <p className={styles.teacher}>{bake(data.description)}</p>
 
