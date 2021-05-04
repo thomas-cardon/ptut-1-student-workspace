@@ -1,6 +1,5 @@
 .btnGroup button {
-  border: 0.25px solid white;
-  padding: 1.15em 1em;
+  padding: 1em;
   cursor: pointer;
   float: left;
 
@@ -13,12 +12,13 @@
   outline: 0;
 }
 
-.btnGroup.dark button {
-  border: 0.25px solid var(--color-primary-200);
-}
-
 .btnGroup button {
   border-radius: 0;
+}
+
+.btnGroup button:hover:not([disabled]) {
+  background-color: var(--color-accent);
+  opacity: 1;
 }
 
 .btnGroup a:first-child > button {
@@ -31,12 +31,7 @@
   border-bottom-right-radius: 0.4rem;
 }
 
-.btnGroup button:not(:last-child) {
-  border-right: none; /* Prevent double borders */
-}
-
 .btnGroup button:disabled {
-  border: 0.25px solid white;
   cursor: not-allowed;
 }
 
