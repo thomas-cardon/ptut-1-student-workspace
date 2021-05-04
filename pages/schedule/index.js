@@ -39,26 +39,29 @@ export default function SchedulePage({ user, selectedWeek }) {
 
   return (
     <UserLayout user={user} flex={true} header={<>
-      <Title appendGradient="temps" subtitle={`Semaine ${selectedWeek}`} button={user.userType > 0 ?
-        <Link href={{ pathname: '/schedule/edit' }}>
-          <FormButton is="action" icon={<HiPlusCircle />}>Ajouter</FormButton>
-        </Link> : <></>}>
+      <Title appendGradient="temps" subtitle={`Semaine ${selectedWeek}`} button={<>
+        <ButtonGroup style={{ width: 'max-content', margin: '0 1em 0 0' }}>
+          <Link href={{ pathname: '/schedule', query: { selectedWeek: selectedWeek - 1 } }}>
+              <FormButton disabled={selectedWeek === 0}>{"«"}</FormButton>
+          </Link>
+          {[-1, 0, 1].map((e, i) => {
+            return (
+              <Link key={'week-' + i} href={{ pathname: '/schedule', query: { selectedWeek: week + e } }}>
+                  <FormButton key={i} disabled={selectedWeek ? (week + e) === selectedWeek : e === 0}>{week + e}</FormButton>
+              </Link>);
+          })}
+          <Link href={{ pathname: '/schedule', query: { selectedWeek: selectedWeek + 1 } }}>
+              <FormButton disabled={selectedWeek === 52}>{"»"}</FormButton>
+          </Link>
+        </ButtonGroup>
+        {user.userType > 0 && (
+          <Link href={{ pathname: '/schedule/edit' }}>
+            <FormButton is="action" icon={<HiPlusCircle />}>Ajouter</FormButton>
+          </Link>
+        )}
+        </>}>
         Emploi du
       </Title>
-      <ButtonGroup style={{ width: 'max-content', margin: 'auto', gridTemplateAreas: '. . . . .' }}>
-        <Link href={{ pathname: '/schedule', query: { selectedWeek: selectedWeek - 1 } }}>
-            <FormButton is="action" disabled={selectedWeek === 0}>{"«"}</FormButton>
-        </Link>
-        {[-1, 0, 1].map((e, i) => {
-          return (
-            <Link key={'week-' + i} href={{ pathname: '/schedule', query: { selectedWeek: week + e } }}>
-                <FormButton is="action" key={i} disabled={selectedWeek ? (week + e) === selectedWeek : e === 0}>{week + e}</FormButton>
-            </Link>);
-        })}
-        <Link href={{ pathname: '/schedule', query: { selectedWeek: selectedWeek + 1 } }}>
-            <FormButton is="action" disabled={selectedWeek === 52}>{"»"}</FormButton>
-        </Link>
-      </ButtonGroup>
     </>}>
       <Schedule index={selectedWeek} user={user} />
     </UserLayout>
@@ -87,6 +90,6 @@ export const getServerSideProps = withSession(async function ({ req, res, query 
   }
 
   return {
-    props: { user, ...query },
+    props: { user, title: 'Emploi du temps', ...query },
   };
 });

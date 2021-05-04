@@ -123,6 +123,6 @@ export const getServerSideProps = withSession(async function ({ req, res }) {
   }
 
   return {
-    props: { user: req.session.get('user') },
+    props: { user: req.session.get('user'), title: 'Paramètres' },
   };
 });

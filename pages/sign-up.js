@@ -324,6 +324,6 @@ export const getServerSideProps = withSession(async function ({ req, res, query 
     res.end();
   }
 
-  if (query.email) return { props: { email: query.email } };
-  return { props: {} };
+  if (query.email) return { props: { email: query.email, title: 'Inscription' } };
+  return { props: { title: 'Inscription' } };
 });

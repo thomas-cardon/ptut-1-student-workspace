@@ -281,5 +281,5 @@ export const getServerSideProps = withSession(async function ({ req, res }) {
     res.end();
   }
 
-  return { props: {} };
+  return { props: { title: 'Connexion' } };
 });
