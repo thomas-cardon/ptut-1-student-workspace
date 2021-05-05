@@ -85,7 +85,7 @@ export default function CalendarBlock({ user, data }) {
         break;
       }
       case "details": {
-        alert(`${data?.module || ''} ${data?.subject || data.summary}\n${data.description}\n${data.location}`);
+        alert(`${data?.module || ''} ${data?.subject || data.summary}\n${data.start.toLocaleString()} au ${data.end.toLocaleString()}\n${data.description}\n${data.location}`);
         break;
       }
       case "change-subject": {

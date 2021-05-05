@@ -13,21 +13,25 @@ body {
 
   color: var(--color-primary-200);
   text-align: left;
+}
 
+/* Works on Firefox */
+* {
+  scrollbar-width: 5px;
   scrollbar-color: var(--color-accent-hover) var(--color-primary-900);
 }
 
-/* Scrollbar */
-body::-webkit-scrollbar {
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
   width: 5px;
 }
 
-body::-webkit-scrollbar-track {
+*::-webkit-scrollbar-track {
   box-shadow: none !important;
   background-color: var(--color-primary-900);
 }
 
-body::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb {
   background-color: var(--color-accent-hover);
   border-radius: 25px;
 }
