@@ -70,30 +70,31 @@ export default function SettingsPage({ user }) {
   else if (user.userType == 1) permsDesc = 'vous êtes professeur. Vous pouvez créer des posts, ajouter des devoirs, notifier les élèves, etc.';
   else permsDesc = "vous faites partie de l'administration. Vous avez tous les droits possibles sur le service.";
   return (
-    <UserLayout user={user} flex={true}>
-      <Title appendGradient={user.firstName}>
-        Paramètres utilisateur:
+    <UserLayout user={user} flex={true} header={
+      <Title appendGradient="utilisateur" style={{ textAlign: 'center' }}>
+        Paramètres
       </Title>
-      <Highlight>
+    }>
+      <Highlight style={{ width: '89%', margin: '1em auto 2em auto' }}>
         Cliquez&nbsp;<Link href="http://en.gravatar.com/emails/" style={{ color: 'red' }}>ici</Link>&nbsp;pour accéder à&nbsp;<b>Gravatar</b>&nbsp;et ainsi changer votre photo de profil.
       </Highlight>
 
       <div className="content">
-        <Gravatar size={128} email={user.email} style={{ borderRadius: '50%', margin: '0.5em' }} draggable={false} />
-        <h3 style={{ fontSize: 'xx-large', fontWeight: 'normal', margin: '0 0 1em 0' }}>
-          {user.firstName} <b style={{ color: '#686de0' }}>{user.lastName}</b>
-        </h3>
-        <p className="subtitle">
-          <i>Vous êtes un utilisateur de type {user.userType}, c'est-à-dire que {permsDesc}</i>
-        </p>
+        <div style={{ width: '89%', borderRadius: '8px', backgroundColor: 'var(--color-primary-800)', padding: '1em', margin: 'auto auto 2em' }}>
+          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+            <Link href="http://en.gravatar.com/emails/" style={{ color: 'red' }}>
+              <Gravatar size={128} email={user.email} style={{ borderRadius: '50%', margin: '0 .5em .5em 0' }} draggable={false} />
+            </Link>
+            <h3 style={{ fontSize: 'xx-large', fontWeight: 'normal', margin: '0 0 1em 0' }}>
+              {user.firstName} <b style={{ color: '#686de0' }}>{user.lastName}</b>
+            </h3>
+          </div>
+          <p className="subtitle">
+            <i>Vous êtes un utilisateur de type {user.userType}, c'est-à-dire que {permsDesc}</i>
+          </p>
+        </div>
       </div>
 
-      width: 80%;
-      padding: 1em;
-      margin: auto auto 2em;
-      border-radius: 8px;
-      background-color: var(--color-primary-800);
-  }
       <Form onSubmit={onSubmit} style={{ width: '89%', borderRadius: '8px', backgroundColor: 'var(--color-primary-800)', padding: '1em', margin: 'auto auto 2em' }}>
         <h2>Changer son mot de passe</h2>
         <hr style={{ marginBottom: '1em', marginTop: '-0.5em' }} />
