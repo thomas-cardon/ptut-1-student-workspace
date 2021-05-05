@@ -31,7 +31,7 @@ export default function Sidebar({ user, children, active, setActive }) {
           Emploi du temps
         </Link>
 
-        <Link href="/news/list" className={styles.item}>
+        <Link href="/news" className={styles.item}>
           <div className={styles.icon}>
             <HiCollection />
           </div>

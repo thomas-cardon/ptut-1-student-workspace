@@ -16,30 +16,42 @@ import { fetchNews } from '../../lib/news';
 import withSession from "../../lib/session";
 
 export default function LatestNews({ user, module }) {
+  const [error, setError] = useState(null);
+
   const [news, setNews] = useState([<Post>
     <Loader type="Oval" color="var(--color-accent)" height="2em" width="100%" />
   </Post>]);
 
-  useEffect(() => fetchNews()
-  .then(data => {
-    setNews(data.map((post, i) => <Post
-                        id={'news-' + i}
-                        key={'news-' + i}
-                        href={post.href}
-                        authorName={post.author}
-                        creationTime={new Date(post.created)}
-                        email={post.email}
-                        title={post.title}
-                        description={post.description}></Post>))
+  useEffect(async () => {
+    try {
+      const data = await fetchNews();
+      setNews(data.map((post, i) => <Post
+                          id={'news-' + i}
+                          key={'news-' + i}
+                          href={post.href}
+                          authorName={post.author}
+                          creationTime={new Date(post.created)}
+                          email={post.email}
+                          title={post.title}
+                          description={post.description}></Post>));
     }
-  ), []);
+    catch(error) {
+      setError(typeof error === 'object' ? JSON.stringify(error) : error);
+    }
+  }, []);
 
   return (
     <UserLayout user={user} flex={true} header={<>
       <Title>Newsfeed</Title>
-      <Highlight title="Le saviez-vous?">
-        Ces titres sont aggrégés de diverses sources, comme votre université.
-      </Highlight>
+      {error ? (
+        <Highlight title="Erreur">
+          {error}
+        </Highlight>
+      ) : (
+        <Highlight title="Le saviez-vous?">
+          Ces titres sont aggrégés de diverses sources, comme votre université.
+        </Highlight>
+      )}
     </>}>
       {news.length > 0 && news}
       {news.length === 0 && <h2 className={'title'}>Aucun post disponible</h2>}
