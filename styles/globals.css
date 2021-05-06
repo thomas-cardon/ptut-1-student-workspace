@@ -17,7 +17,7 @@ body {
 
 /* Works on Firefox */
 * {
-  scrollbar-width: 5px;
+  scrollbar-width: thin;
   scrollbar-color: var(--color-accent-hover) var(--color-primary-900);
 }
 
