@@ -82,3 +82,9 @@
     display: none;
   }
 }
+
+@media screen and (max-width: 900px) {
+  .brand h3 {
+    display: none;
+  }
+}
