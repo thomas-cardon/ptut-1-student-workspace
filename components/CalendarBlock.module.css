@@ -81,6 +81,10 @@
   display: none;
 }
 
+.contextMenuButton {
+  display: none;
+}
+
 @media screen and (max-width: 900px) {
   .session {
     margin-top: 0.5em;
@@ -89,6 +93,10 @@
   }
 
   .date {
+    display: unset;
+  }
+
+  .contextMenuButton {
     display: unset;
   }
 }

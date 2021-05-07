@@ -21,6 +21,19 @@
   transition: all 0.2s ease;
 }
 
+.circle {
+  height: unset;
+  width: unset;
+
+  padding: 8px;
+  border-radius: 16px;
+
+  display: inline;
+  margin-right: 1em !important;
+
+  font-size: smaller;
+}
+
 .button span {
   text-align: center;
   width: 100%;
@@ -72,7 +85,7 @@
   background-color: var(--color-secondary-washed-out);
 }
 
-.button:hover:not([disabled]) {
+.button:not([disabled]) {
   cursor: pointer;
 }
 

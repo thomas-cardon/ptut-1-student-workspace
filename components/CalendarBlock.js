@@ -3,6 +3,9 @@ import {
   pickTextColorBasedOnBgColorAdvanced,
 } from "../lib/colors";
 
+import { FormButton } from './FormFields';
+import { HiPlusCircle } from "react-icons/hi";
+
 import { format, getDay } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
@@ -156,6 +159,7 @@ export default function CalendarBlock({ user, data }) {
       </Menu>
       <div
         onClick={() => {
+          if  (window.matchMedia('screen and (max-width: 900px)').matches) return;
           if (!data.meeting) addToast("Ce cours n'a pas de réunion associée.", { appearance: 'error' });
           else if (confirm(`Vous allez rejoindre la réunion du cours: "${data.summary}"`))  window.open(data.meeting, '_blank').focus();
         }}
@@ -178,6 +182,9 @@ export default function CalendarBlock({ user, data }) {
       >
         <div className={styles.hour}>
           <span className={styles.date}>
+            <FormButton is="circle" className={styles.contextMenuButton} onClick={(event) => show(event, { props: {} })}>
+              ✨
+            </FormButton>
             {format(data.start, 'eeee dd MMMM', { locale: fr })} de&nbsp;
           </span>
           {data.start.toLocaleTimeString().slice(0, 5)}{' à '}
