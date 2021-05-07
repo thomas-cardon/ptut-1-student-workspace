@@ -77,10 +77,18 @@
   }
 }
 
+.date {
+  display: none;
+}
+
 @media screen and (max-width: 700px) {
   .session {
     margin-top: 0.5em;
     margin-bottom: 0.5em;
     padding: 1em 0;
+  }
+
+  .date {
+    display: unset;
   }
 }

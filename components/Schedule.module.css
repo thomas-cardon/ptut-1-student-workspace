@@ -33,11 +33,30 @@
 
 @media screen and (max-width: 700px) {
   .schedule {
+    display: grid;
+    grid-template-columns: 1fr;
+
+    width: 100%;
+    min-height: 100%;
+
     background-color: unset;
   }
 
-  .schedule .timeSlot, .schedule .trackSlot {
+  .schedule > .timeSlot {
     display: none;
+  }
+
+  .schedule > .trackSlot {
+    display: none;
+  }
+
+  .schedule > :not(.trackSlot, .timeSlot) {
+    margin: 0.25em 0;
+    grid-area: unset !important;
+  }
+
+  .schedule > :not(.trackSlot, .timeSlot) .date {
+    display: unset !important;
   }
 }
 
@@ -81,11 +100,6 @@
 .timeSlot {
   line-height: 0;
   grid-column: times;
-}
-
-.trackSlot {
-  display: none;
-  /* hidden on small screens and browsers without grid support */
 }
 
 @supports (display: grid) {

@@ -1,5 +1,6 @@
 import { stringToColor, pickTextColorBasedOnBgColorAdvanced } from '../lib/colors';
-import { parseISO, getDay } from 'date-fns';
+import { format, parseISO, getDay } from 'date-fns';
+import { fr } from 'date-fns/locale';
 
 import styles from "./ScheduleBlock.module.css";
 
@@ -26,10 +27,13 @@ export default function ScheduleBlock({ data, onContextMenu }) {
       <div className={styles.top} style={{ display: "flex" }}>
         <b>{data.subject.module}</b>
         <span> - </span>
-        <span>
-          {parseISO(data.start).toLocaleTimeString().slice(0, 5)} -{" "}
-          {parseISO(data.end).toLocaleTimeString().slice(0, 5)}
-        </span>
+        <div className={styles.hour}>
+          <span className={styles.date}>
+            {format(data.start, 'eeee dd MMMM', { locale: fr })} de&nbsp;
+          </span>
+          {data.start.toLocaleTimeString().slice(0, 5)}{' à '}
+          {data.end.toLocaleTimeString().slice(0, 5)}
+        </div>
       </div>
 
       <p className={styles.name}>{data.subject.name}</p>

@@ -50,7 +50,7 @@
 
     display: grid;
     grid-template-rows: 1fr;
-    grid-template-areas: ". . . . . ."
+    grid-template-areas: ". . . .";
   }
 
   .item {

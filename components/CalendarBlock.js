@@ -2,7 +2,9 @@ import {
   stringToColor,
   pickTextColorBasedOnBgColorAdvanced,
 } from "../lib/colors";
-import { getDay } from "date-fns";
+
+import { format, getDay } from 'date-fns';
+import { fr } from 'date-fns/locale';
 
 import { useToasts } from 'react-toast-notifications';
 import {
@@ -175,7 +177,10 @@ export default function CalendarBlock({ user, data }) {
         }}
       >
         <div className={styles.hour}>
-          {data.start.toLocaleTimeString().slice(0, 5)} -{" "}
+          <span className={styles.date}>
+            {format(data.start, 'eeee dd MMMM', { locale: fr })} de&nbsp;
+          </span>
+          {data.start.toLocaleTimeString().slice(0, 5)}{' à '}
           {data.end.toLocaleTimeString().slice(0, 5)}
         </div>
 
