@@ -21,15 +21,12 @@ export default function Dashboard({ user }) {
   const { darkModeActive } = useDarkMode();
   useServiceWorker(user);
 
-  const content = (<></>);
-
   return (
     <UserLayout user={user} flex={true}>
       <Title appendGradient={user.firstName + ' !'} subtitle={' — ' + (user?.group?.name || 'Groupe inconnu')}>
         Salut,
       </Title>
       <div className="block">
-        <h3 className="title">Mes outils AMU</h3>
         <CardList className="links">
             <Link href="https://outlook.office.com/owa/?realm=etu.univ-amu.fr&path=/mail" target="_blank">
               <Card className="link">
@@ -93,8 +90,7 @@ export default function Dashboard({ user }) {
         }
 
         .link {
-          background-color: #FD7272;
-          color: ${darkModeActive ? 'white' : 'black'};
+          background-color: var(--color-primary-600);
           opacity: 0.9;
           transition: all 0.2s ease;
 
@@ -109,6 +105,8 @@ export default function Dashboard({ user }) {
           font-weight: bolder;
           font-style: italic;
           text-shadow: 0px 0px 5px black;
+
+          color: white;
         }
 
         .link > div {
@@ -131,7 +129,6 @@ export default function Dashboard({ user }) {
           margin: auto;
         }
       `}</style>
-      {content}
     </UserLayout>
   );
 };

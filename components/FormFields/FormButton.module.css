@@ -39,7 +39,7 @@
   width: 100%;
 }
 
-.button:hover:not([disabled]) {
+.button:hover:not([disabled], .danger) {
   color: var(--color-primary-100);
   background-color: var(--color-primary-900);
 }

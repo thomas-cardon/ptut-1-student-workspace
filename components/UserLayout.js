@@ -99,9 +99,9 @@ export default function UserLayout({ title, user, children, header, flex = true,
           --color-primary-900: #fff;
 
           --color-secondary-washed-out: #879eed;
-          --color-secondary: #5575e7;
+          --color-secondary: #7110F6;
           --color-accent-glow: rgba(253,77,77,0.3);
-          --color-accent: #fd4d4d;
+          --color-accent: #FF3C50;
           --color-accent-hover: #fd6868;
           --color-accent-disabled: #f5bfbf;
         `}

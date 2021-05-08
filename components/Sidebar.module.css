@@ -4,6 +4,10 @@
   width: fit-content;
 }
 
+.brand > h3 {
+  transition: all 0.3s ease;
+}
+
 .brand, .brand > * {
   margin: auto;
 }
@@ -27,8 +31,9 @@
   transition: all 0.3s ease;
 }
 
-.item:hover {
+.item:hover, .brand > h3:hover {
   cursor: pointer;
+  color: var(--color-secondary);
 }
 
 .icon {
