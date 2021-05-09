@@ -9,6 +9,7 @@ async function handler(req, res, session) {
 
   try {
     const url = getURL(req.query.school, req.query.degree, req.query.year);
+    console.log(url);
 
     const results = await query(`SELECT body from ade_cache WHERE url = ?`, [url]);
     let ics;
