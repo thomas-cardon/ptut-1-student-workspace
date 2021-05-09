@@ -5,9 +5,6 @@ import Link from '../components/Link';
 
 import Gravatar from 'react-gravatar';
 
-import withSession from "../lib/session";
-import { useAvatar } from '../lib/hooks';
-
 import UserLayout from '../components/UserLayout';
 import Title from '../components/Title';
 
@@ -16,12 +13,17 @@ import * as Fields from "../components/FormFields";
 
 import Highlight from '../components/Highlight';
 
+import Loader from 'react-loader-spinner';
+
+import useUser from '../lib/useUser';
 import { useToasts } from 'react-toast-notifications';
 
-export default function SettingsPage({ user }) {
+export default function SettingsPage() {
   /*
    * Variable definitions
    */
+   const { user } = useUser({ redirectTo: '/login' });
+
    let permsDesc;
 
    const [values, setValues] = useState({ oldPassword: '', newPassword: '' });
@@ -54,9 +56,7 @@ export default function SettingsPage({ user }) {
          addToast('Mot de passe changé', { appearance: 'success' });
          Router.push('/login');
        }
-       else {
-         addToast('Une erreur s\'est produite', { appearance: 'error' });
-       }
+       else addToast('Une erreur s\'est produite', { appearance: 'error' });
      }
      catch(error) {
        console.error(error);
@@ -66,19 +66,10 @@ export default function SettingsPage({ user }) {
      }
   };
 
-  if (user.userType == 0) permsDesc = 'vous disposez des permissions les plus basiques.';
-  else if (user.userType == 1) permsDesc = 'vous êtes professeur. Vous pouvez créer des posts, ajouter des devoirs, notifier les élèves, etc.';
-  else permsDesc = "vous faites partie de l'administration. Vous avez tous les droits possibles sur le service.";
-  return (
-    <UserLayout user={user} flex={true} header={
-      <Title appendGradient="utilisateur" style={{ textAlign: 'center' }}>
-        Paramètres
-      </Title>
-    }>
-      <Highlight style={{ width: '89%', margin: '1em auto 2em auto' }}>
-        Cliquez&nbsp;<Link href="http://en.gravatar.com/emails/" style={{ color: 'red' }}>ici</Link>&nbsp;pour accéder à&nbsp;<b>Gravatar</b>&nbsp;et ainsi changer votre photo de profil.
-      </Highlight>
+  let content = <Loader type="Oval" color="var(--color-accent)" height="5em" width="100%" />;
 
+  if (user?.isLoggedIn) {
+    content = (<>
       <div className="content">
         <div style={{ width: '89%', borderRadius: '8px', backgroundColor: 'var(--color-primary-800)', padding: '1em', margin: 'auto auto 2em' }}>
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
@@ -90,7 +81,12 @@ export default function SettingsPage({ user }) {
             </h3>
           </div>
           <p className="subtitle">
-            <i>Vous êtes un utilisateur de type {user.userType}, c'est-à-dire que {permsDesc}</i>
+            <i>
+              Vous êtes un utilisateur de type {user.userType}, c'est-à-dire que
+              {user.userType == 0 ? 'vous disposez des permissions les plus basiques.'
+                                  : (user.userType == 1 ? 'vous êtes professeur. Vous pouvez créer des posts, ajouter des devoirs, notifier les élèves, etc.'
+                                                        : "vous faites partie de l'administration. Vous avez tous les droits possibles sur le service.")
+              }</i>
           </p>
         </div>
       </div>
@@ -102,6 +98,21 @@ export default function SettingsPage({ user }) {
         <Fields.FormInput label="Nouveau mot de passe" id="newPassword" name="newPassword" minLength="8" onChange={handleInputChange} value={values.newPassword} type="password" required />
         <Fields.FormButton type="submit">Changer</Fields.FormButton>
       </Form>
+    </>);
+  }
+
+  return (
+    <UserLayout user={user} flex={true} header={
+      <Title appendGradient="utilisateur" style={{ textAlign: 'center' }}>
+        Paramètres
+      </Title>
+    }>
+      <Highlight style={{ width: '89%', margin: '1em auto 2em auto' }}>
+        Cliquez&nbsp;<Link href="http://en.gravatar.com/emails/" style={{ color: 'red' }}>ici</Link>&nbsp;pour accéder à&nbsp;<b>Gravatar</b>&nbsp;et ainsi changer votre photo de profil.
+      </Highlight>
+
+      {content}
+
       <style jsx global>{`
       .content {
         display: flex;
@@ -112,18 +123,3 @@ export default function SettingsPage({ user }) {
     </UserLayout>
   );
 };
-
-export const getServerSideProps = withSession(async function ({ req, res }) {
-  const user = req.session.get('user');
-
-  if (!user) {
-    res.setHeader('location', '/login');
-    res.statusCode = 302;
-    res.end();
-    return { props: {} };
-  }
-
-  return {
-    props: { user: req.session.get('user'), title: 'Paramètres' },
-  };
-});

@@ -51,15 +51,11 @@
   background-color: #F8F6FF;
 }
 
-.dark th {
+[data-theme='dark'] .table th {
   background-color: var(--color-primary-800);
 }
 
-.dark tr {
-  background-color: #373737;
-}
-
-.dark tr:nth-child(even) {
+[data-theme='dark'] .table tr:nth-child(even) {
   background-color: #2D2D2D;
   color: var(--color-primary-200);
 }

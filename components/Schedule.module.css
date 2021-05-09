@@ -22,7 +22,7 @@
   padding: 0.5em;
 }
 
-.schedule.dark {
+[data-theme='dark'] .schedule {
   background-color: var(--color-primary-800);
   color: var(--color-primary-100);
 }

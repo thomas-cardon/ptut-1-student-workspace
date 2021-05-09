@@ -7,7 +7,6 @@ const fetcher = url => fetch(url).then(r => r.json());
 
 import { useContextMenu, Submenu, Menu, Item, Separator } from 'react-contexify';
 import { useToasts } from 'react-toast-notifications';
-import { useDarkMode } from 'next-dark-mode';
 
 import { lightFormat, addDays, getISOWeek } from 'date-fns';
 import { getDateOfISOWeek } from '../lib/date';
@@ -30,7 +29,6 @@ export default function Schedule({ user, index }) {
   /*
   * Variable definitions
   */
-  const { darkModeActive } = useDarkMode();
   const { addToast } = useToasts();
 
   const [calendar, setCalendarData] = useState([]);
@@ -174,7 +172,7 @@ export default function Schedule({ user, index }) {
       </Highlight>
     )}
 
-    <div className={[styles.schedule, darkModeActive ? styles.dark : ''].join(' ')}>
+    <div className={styles.schedule}>
       <span className={styles.timeSlot} style={{ gridRow: 'time-0800' }}>8:00</span>
       <span className={styles.timeSlot} style={{ gridRow: 'time-0830' }}>8:30</span>
       <span className={styles.timeSlot} style={{ gridRow: 'time-0900' }}>9:00</span>

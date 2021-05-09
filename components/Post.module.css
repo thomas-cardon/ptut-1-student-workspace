@@ -13,7 +13,7 @@
   transition: all 0.2s ease 0s;
 }
 
-.dark {
+[data-theme='dark'] .article {
   border-bottom: none;
   border-top: none;
 
@@ -23,7 +23,7 @@
   margin-bottom: 1em;
 }
 
-.dark:hover {
+[data-theme='dark'] .article:hover {
   color: #FAFAFA;
 }
 
@@ -79,7 +79,7 @@
   font-size: xxx-large;
 }
 
-.article:not(.dark) > .title > a:hover {
+[data-theme='light'] .article > .title > a:hover {
   color: var(--color-accent-hover);
 }
 

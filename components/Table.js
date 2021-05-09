@@ -11,10 +11,7 @@ import {
 
 import "react-contexify/dist/ReactContexify.css";
 
-import { useDarkMode } from 'next-dark-mode';
-
 const Table = React.forwardRef((props, ref) => {
-  const { darkModeActive } = useDarkMode();
 
   if (props.menuId) {
     const { show } = useContextMenu({
@@ -23,7 +20,7 @@ const Table = React.forwardRef((props, ref) => {
 
     return (<div>
       {props.menu}
-      <table ref={ref} className={[styles.table, props.fixed ? styles.fixed : '', darkModeActive ? styles.dark : ''].join(' ')}>
+      <table ref={ref} className={[styles.table, props.fixed ? styles.fixed : ''].join(' ')}>
         <thead>
           <tr>
             {props.head.map((x, i) => <th key={'head-' + i}>{x}</th>)}
@@ -38,7 +35,7 @@ const Table = React.forwardRef((props, ref) => {
     </div>);
   }
 
-  return (<table className={[styles.table, props.fixed ? styles.fixed : '', darkModeActive ? styles.dark : ''].join(' ')}>
+  return (<table className={[styles.table, props.fixed ? styles.fixed : ''].join(' ')}>
     <thead>
       <tr>
         {props.head.map((x, i) => <th key={'head-' + i}>{x}</th>)}

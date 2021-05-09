@@ -19,8 +19,9 @@ import styles from './UserLayout.module.css';
 import Gravatar from 'react-gravatar';
 import { HiAdjustments, HiLogout, HiArrowRight, HiDotsHorizontal, HiMoon, HiSun, HiColorSwatch } from "react-icons/hi";
 
-import { useDarkMode } from 'next-dark-mode';
+import Loader from 'react-loader-spinner';
 
+import { useTheme } from 'next-themes';
 import { parseISO, formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
@@ -35,78 +36,20 @@ import { useADE, getClasses, getCurrentCourse } from '../lib/ade';
 import { useCurrentClass } from '../lib/hooks';
 
 export default function UserLayout({ title, user, children, header, flex = true, ...rest }) {
-  const {
-    autoModeActive,    // boolean - whether the auto mode is active or not
-    autoModeSupported, // boolean - whether the auto mode is supported on this browser
-    darkModeActive,    // boolean - whether the dark mode is active or not
-    switchToAutoMode,  // function - toggles the auto mode on
-    switchToDarkMode,  // function - toggles the dark mode on
-    switchToLightMode, // function - toggles the light mode on
-  } = useDarkMode();
+  const { theme, setTheme } = useTheme();
 
-  const [darkMode, setDarkMode] = useState(-1);
   const [current, setCurrentCourse] = useState(getCurrentCourse());
 
   const { data : currentSWS } = useCurrentClass();
-
-  if (!isServer()) {
-    useEffect(() => {
-      useADE(user);
-
-      setDarkMode(localStorage.getItem('theme') ? parseInt(localStorage.getItem('theme')) : darkMode);
-    }, []);
-  }
 
   useEffect(() => {
     if (currentSWS && !currentSWS.error) setCurrentCourse(current);
   }, [currentSWS]);
 
-  useEffect(() => {
-    if (darkMode === -1) switchToAutoMode();
-    else if (darkMode === 0) switchToLightMode();
-    else if (darkMode === 1) switchToDarkMode();
-
-    localStorage.setItem('theme', darkMode);
-  }, [darkMode]);
+  if (!isServer()) useEffect(() => useADE(user), [user]);
 
   return (<>
-    <style global jsx>{`
-      :root {
-        ${darkModeActive ? `
-          --color-button-text: #fff;
-          --color-primary-100: #dee3ea;
-          --color-primary-200: #b2bdcd;
-          --color-primary-300: #5d7290;
-          --color-primary-600: #323d4d;
-          --color-primary-700: #242c37;
-          --color-primary-800: #151a21;
-          --color-primary-900: #0b0e11;
-
-          --color-secondary-washed-out: #879eed;
-          --color-secondary: #5575e7;
-          --color-accent-glow: rgba(253,77,77,0.3);
-          --color-accent: #fd4d4d;
-          --color-accent-hover: #fd6868;
-          --color-accent-disabled: #f5bfbf;
-        ` : `
-          --color-button-text: #fff;
-          --color-primary-100: #151a21;
-          --color-primary-200: #242c37;
-          --color-primary-300: #323d4d;
-          --color-primary-600: #5d7290;
-          --color-primary-700: #b2bdcd;
-          --color-primary-800: #dee3ea;
-          --color-primary-900: #fff;
-
-          --color-secondary-washed-out: #879eed;
-          --color-secondary: #7110F6;
-          --color-accent-glow: rgba(253,77,77,0.3);
-          --color-accent: #FF3C50;
-          --color-accent-hover: #fd6868;
-          --color-accent-disabled: #f5bfbf;
-        `}
-    `}</style>
-    <main className={[styles.main, darkModeActive ? styles.dark : ''].join(' ')} {...rest}>
+    <main className={styles.main} {...rest}>
       <Sidebar user={user}></Sidebar>
 
       <section className={styles.content}>
@@ -122,26 +65,27 @@ export default function UserLayout({ title, user, children, header, flex = true,
       <aside className={styles['cards-list']}>
         <Card className={styles.card}>
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%' }}>
-            <div className={styles.text}>
-              <span className={styles.name}>{user.firstName} {user.lastName}</span>
-              <span className={styles.id}>
-                {user.userType === 0 && user.delegate === false && 'Étudiant'}
-                {user.userType === 0 && user.delegate === true && 'Délégué'}
-                {user.userType === 1 && 'Professeur'}
-                {user.userType === 2 && 'Administration'}
-              </span>
-              <span className={styles.id}>#{user.userId}</span>
-            </div>
-            <Gravatar size={80} email={user.email} alt="Votre photo de profil" className={styles.avatar} draggable={false} />
+            {!user?.isLoggedIn ? <Loader type="Oval" color="var(--color-accent)" style={{ margin: 'auto auto' }} width="100%" /> : (
+              <div className={styles.text}>
+                <span className={styles.name}>{user.firstName} {user.lastName}</span>
+                <span className={styles.id}>
+                  {user.userType === 0 && user.delegate === false && 'Étudiant'}
+                  {user.userType === 0 && user.delegate === true && 'Délégué'}
+                  {user.userType === 1 && 'Professeur'}
+                  {user.userType === 2 && 'Administration'}
+                </span>
+                <span className={styles.id}>#{user.userId}</span>
+              </div>)}
+            {user?.isLoggedIn && <Gravatar size={80} email={user.email} alt="Votre photo de profil" className={styles.avatar} draggable={false} />}
           </div>
           <Button style={{ marginTop: '1em' }} icon={<>
-            {darkMode === -1 && <HiColorSwatch />}
-            {darkMode === 0  && <HiSun />}
-            {darkMode === 1  && <HiMoon />}
-          </>} onClick={() => setDarkMode(darkMode === -1 ? 1 : darkMode - 1)}>
-            {darkMode === -1 && (<span>Auto</span>)}
-            {darkMode === 0  && (<span>Clair</span>)}
-            {darkMode === 1  && (<span>Sombre</span>)}
+            {/*theme === 'system' && <HiColorSwatch />*/}
+            {theme === 'light' && <HiSun />}
+            {theme === 'dark' && <HiMoon />}
+          </>} onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}>
+            {/*darkMode === -1 && (<span>Auto</span>)*/}
+            {theme === 'light'  && (<span>Clair</span>)}
+            {theme === 'dark'   && (<span>Sombre</span>)}
           </Button>
         </Card>
 

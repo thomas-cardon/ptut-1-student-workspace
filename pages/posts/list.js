@@ -12,9 +12,10 @@ import { HiPlusCircle } from "react-icons/hi";
 import Loader from 'react-loader-spinner';
 
 import { usePosts, useAvatar } from '../../lib/hooks';
-import withSession from "../../lib/session";
+import useUser from '../../lib/useUser';
 
-export default function Posts({ user, module }) {
+export default function PostList({ module }) {
+  const { user } = useUser({ redirectTo: '/login' });
   const { data : posts } = usePosts(user, module);
 
   let content = (<Post>
@@ -26,7 +27,7 @@ export default function Posts({ user, module }) {
 
   return (
     <UserLayout user={user} flex={true} header={<>
-      <Title appendGradient="informations" button={user.userType > 0 ?
+      <Title appendGradient="informations" button={user?.userType > 0 ?
         <Link href="/posts/create">
           <Button is="action" icon={<HiPlusCircle />}>Ajouter</Button>
         </Link> : <></>}>
@@ -48,18 +49,3 @@ export default function Posts({ user, module }) {
     </UserLayout>
   );
 };
-
-export const getServerSideProps = withSession(async function ({ req, res, query }) {
-  const user = req.session.get('user');
-
-  if (!user) {
-    res.setHeader('location', '/login');
-    res.statusCode = 302;
-    res.end();
-    return { props: {} };
-  }
-
-  return {
-    props: { user: req.session.get('user'), ...query },
-  };
-});

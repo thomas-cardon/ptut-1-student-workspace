@@ -7,23 +7,20 @@ import Homework from '../components/Homework';
 
 import Link from '../components/Link';
 
-import useServiceWorker from '../lib/workers';
-
-import { usePosts, useNextCourse } from '../lib/hooks';
-import withSession from "../lib/session";
-
-import { useDarkMode } from 'next-dark-mode';
-
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
-export default function Dashboard({ user }) {
-  const { darkModeActive } = useDarkMode();
+import useUser from '../lib/useUser';
+import useServiceWorker from '../lib/workers';
+import { usePosts, useNextCourse } from '../lib/hooks';
+
+export default function Dashboard() {
+  const { user } = useUser({ redirectTo: '/login' });
   useServiceWorker(user);
 
   return (
     <UserLayout user={user} flex={true}>
-      <Title appendGradient={user.firstName + ' !'} subtitle={' — ' + (user?.group?.name || 'Groupe inconnu')}>
+      <Title appendGradient={(user?.firstName || 'inconnu') + ' !'} subtitle={' — ' + (user?.group?.name || 'Groupe inconnu')}>
         Salut,
       </Title>
       <div className="block">
@@ -132,18 +129,3 @@ export default function Dashboard({ user }) {
     </UserLayout>
   );
 };
-
-export const getServerSideProps = withSession(async function ({ req, res }) {
-  const user = req.session.get('user');
-
-  if (!user) {
-    res.setHeader('location', '/login');
-    res.statusCode = 302;
-    res.end();
-    return { props: {} };
-  }
-
-  return {
-    props: { user: req.session.get('user') },
-  };
-});

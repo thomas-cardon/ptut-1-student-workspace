@@ -1,11 +1,9 @@
-import * as styles from './Homework.module.css';
-import { useDarkMode } from 'next-dark-mode';
+import styles from './Homework.module.css';
 
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
 export default function Homework({ timestamp, description, subjectId, name, isDone, userId, groupId }) {
-  const { darkModeActive } = useDarkMode();
 
   return (
     <div className={styles.content}>

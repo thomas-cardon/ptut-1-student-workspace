@@ -3,9 +3,11 @@ import withSession from "../../../lib/session";
 import { query } from '../../../lib/db';
 import { hash, verify } from '../../../lib/encryption';
 
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
 async function handler(req, res) {
   const user = req?.session?.get('user');
-  
+
   if (req.method === 'PATCH') { // Modification
     if (!user) return res.status(401).send({ error: 'NOT_AUTHORIZED', success: false });
     if (!req.body.oldPassword || !req.body.newPassword) return res.status(400).json({ error: 'MISSING_PARAMETERS', success: false });
@@ -43,8 +45,8 @@ async function handler(req, res) {
     }
   }
   else {
-    if (!user) return res.status(401).send({ error: 'NOT_AUTHORIZED', success: false });
-    res.send(user);
+    if (!user) return res.json({ isLoggedIn: false });
+    res.send({ ...user, isLoggedIn: true });
   }
 }
 

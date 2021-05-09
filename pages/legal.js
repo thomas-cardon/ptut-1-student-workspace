@@ -1,14 +1,11 @@
-import React, { useState } from 'react';
-
-import Router from 'next/router';
-import Link from '../components/Link';
-
-import withSession from "../lib/session";
+import useUser from "../lib/useUser";
 
 import UserLayout from '../components/UserLayout';
 import Title from '../components/Title';
 
-export default function LegalPage({ user }) {
+export default function LegalPage() {
+  const { user } = useUser();
+
   return (
     <UserLayout user={user} flex={true}>
       <Title>
@@ -285,18 +282,3 @@ export default function LegalPage({ user }) {
     </UserLayout>
   );
 };
-
-export const getServerSideProps = withSession(async function ({ req, res }) {
-  const user = req.session.get('user');
-
-  if (!user) {
-    res.setHeader('location', '/login');
-    res.statusCode = 302;
-    res.end();
-    return { props: {} };
-  }
-
-  return {
-    props: { user: req.session.get('user') },
-  };
-});

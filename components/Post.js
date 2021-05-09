@@ -6,13 +6,10 @@ import { fr } from 'date-fns/locale';
 
 import styles from "./Post.module.css";
 
-import { useDarkMode } from 'next-dark-mode';
-
 export default function Post({ id, title, content, module, authorName, creationTime, email, href, children }) {
-  const { darkModeActive } = useDarkMode();
 
   return (
-    <article className={[styles.article, darkModeActive ? styles.dark : ''].join(' ')}>
+    <article className={styles.article}>
       {children ? children : (<>
         <div className={styles.module}>
           {module && (

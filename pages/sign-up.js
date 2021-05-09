@@ -8,7 +8,7 @@ import BasicLayout from '../components/BasicLayout';
 import Form from "../components/Form";
 import * as Fields from "../components/FormFields";
 
-import { useDarkMode } from 'next-dark-mode';
+import { useTheme } from 'next-themes';
 import { useToasts } from 'react-toast-notifications';
 
 import withSession from "../lib/session";
@@ -18,10 +18,10 @@ import { Line } from 'rc-progress';
 import { uni as schools, emails } from '../lib/ade';
 
 export default function LoginPage({ email }) {
-  const router = useRouter();
-
-  const { darkModeActive } = useDarkMode();
+  const { theme, setTheme } = useTheme();
   const { addToast } = useToasts();
+
+  const router = useRouter();
 
   /*
    * Variable definitions
@@ -196,7 +196,7 @@ export default function LoginPage({ email }) {
 
         box-sizing: border-box;
         background-color: #282828;
-        opacity: ${darkModeActive ? 0.3 : 0.2};
+        opacity: ${theme === 'dark' ? 0.3 : 0.2};
         font-family: monospace;
         font-size: large;
         color: white;
