@@ -2,12 +2,10 @@ import React, { useState } from 'react';
 import Link from './Link';
 
 import { HiOutlineMenu, HiViewGridAdd, HiCalendar, HiAnnotation, HiPencilAlt, HiTable, HiUsers, HiCollection, HiSparkles } from "react-icons/hi";
-import { useDarkMode } from 'next-dark-mode';
 
 import styles from './Sidebar.module.css';
 
 export default function Sidebar({ user, children, active, setActive }) {
-  const { darkModeActive } = useDarkMode();
   return (
     <aside data-active={active ? 1 : 0} className={styles.sidebar}>
       <Link href="/dashboard">
@@ -16,7 +14,7 @@ export default function Sidebar({ user, children, active, setActive }) {
           <h3>Student Workspace</h3>
         </div>
       </Link>
-      <div className={[styles.list, darkModeActive ? styles['list-dark'] : ''].join(' ')}>
+      <div className={styles.list}>
         <Link href="/dashboard" className={styles.item}>
           <div className={styles.icon}>
             <HiViewGridAdd />
@@ -45,9 +43,8 @@ export default function Sidebar({ user, children, active, setActive }) {
           Informations
         </Link>
 
-        {user?.userType === 2 && (<>
+        {user?.isLoggedIn && user?.userType === 2 && (<>
           <hr />
-
           <Link href="/subjects/list" className={styles.item}>
             <div className={styles.icon}>
               <HiTable />

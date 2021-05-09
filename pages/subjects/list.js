@@ -18,12 +18,12 @@ import {
   Submenu
 } from "react-contexify";
 
-import withSession from "../../lib/session";
-
+import useUser from '../../lib/useUser';
 import { useSubjects } from '../../lib/hooks';
 import { useToasts } from 'react-toast-notifications';
 
-export default function ClassListPage({ user }) {
+export default function SubjectListPage() {
+  const { user } = useUser({ redirectTo: '/login' });
   const { data : subjects } = useSubjects();
   const { addToast } = useToasts();
   const router = useRouter();
@@ -73,7 +73,7 @@ export default function ClassListPage({ user }) {
 
   return (
     <UserLayout user={user} flex={true} header={<>
-      <Title appendGradient="enregistrés" button={user.userType == 2 ?
+      <Title appendGradient="enregistrés" button={user?.userType == 2 ?
         <Link href="/subjects/create">
           <Button is="action" icon={<HiPlusCircle />}>Ajouter</Button>
         </Link> : <></>}>
@@ -84,18 +84,3 @@ export default function ClassListPage({ user }) {
     </UserLayout>
   );
 };
-
-export const getServerSideProps = withSession(async function ({ req, res, query, params }) {
-  const user = req.session.get('user');
-
-  if (!user) {
-    res.setHeader('location', '/login');
-    res.statusCode = 302;
-    res.end();
-    return { props: {} };
-  }
-
-  return {
-    props: { user: req.session.get('user') }
-  };
-});

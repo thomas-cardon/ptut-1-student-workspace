@@ -8,11 +8,11 @@
   cursor: pointer;
 }
 
-.dark {
+[data-theme='dark'] .link {
   color: #FAFAFA;
 }
 
-.dark:hover {
+[data-theme='dark'] .link:hover {
   color: #4393e6;
 }
 

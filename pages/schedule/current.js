@@ -6,15 +6,20 @@ import Highlight from '../../components/Highlight';
 import Title from '../../components/Title';
 import Table from '../../components/Table';
 
+import useUser from '../../lib/useUser';
 import { useToasts } from 'react-toast-notifications';
-
 import { useCurrentClass } from '../../lib/hooks';
-import withSession from "../../lib/session";
 
 import Loader from 'react-loader-spinner';
 
-export default function CurrentSchedulePage({ user }) {
+export default function CurrentSchedulePage() {
+  /*
+  *  Variable definitions
+  */
+
+  const { user } = useUser({ redirectTo: '/login' });
   const { data : current } = useCurrentClass();
+
   let content = <Loader type="Oval" color="var(--color-accent)" height="5em" width="100%" />;
 
   if (current?.error)
@@ -25,7 +30,7 @@ export default function CurrentSchedulePage({ user }) {
         Si vous pensez que c'est une erreur, contactez le support.
       </> : current.error}
     </Highlight>);
-  else if (current)
+  else if (user?.isLoggedIn && current)
   content = (<>
     {current?.students && <Table head={['Nom', 'Prénom', 'Groupe', 'Date. naissance', 'Présent ?']} footer={<i>35 élèves | 1 groupe</i>} fixed={true}>
         {current.students.map((user, index) => <tr id={`${user.userId}`} key={user.userId}>
@@ -49,18 +54,3 @@ export default function CurrentSchedulePage({ user }) {
       {content}
     </UserLayout>);
   };
-
-export const getServerSideProps = withSession(async function ({ req, res }) {
-  const user = req.session.get('user');
-
-  if (!user) {
-    res.setHeader('location', '/login');
-    res.statusCode = 302;
-    res.end();
-    return { props: {} };
-  }
-
-  return {
-    props: { user: req.session.get('user') }
-  };
-});

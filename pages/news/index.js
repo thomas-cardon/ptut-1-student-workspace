@@ -11,11 +11,11 @@ import { HiPlusCircle } from "react-icons/hi";
 
 import Loader from 'react-loader-spinner';
 
+import useUser from '../../lib/useUser';
 import { fetchNews } from '../../lib/news';
 
-import withSession from "../../lib/session";
-
-export default function LatestNews({ user, module }) {
+export default function LatestNews() {
+  const { user } = useUser({ redirectTo: '/login' });
   const [error, setError] = useState(null);
 
   const [news, setNews] = useState([<Post>
@@ -58,18 +58,3 @@ export default function LatestNews({ user, module }) {
     </UserLayout>
   );
 };
-
-export const getServerSideProps = withSession(async function ({ req, res, query }) {
-  const user = req.session.get('user');
-
-  if (!user) {
-    res.setHeader('location', '/login');
-    res.statusCode = 302;
-    res.end();
-    return { props: {} };
-  }
-
-  return {
-    props: { user: req.session.get('user'), ...query },
-  };
-});

@@ -10,9 +10,7 @@ import GroupList from '../../components/GroupList';
 
 import { ButtonGroup, FormButton } from '../../components/FormFields';
 
-import { useSchedule } from '../../lib/hooks';
-import withSession from "../../lib/session";
-
+import useUser from '../../lib/useUser';
 import { getISOWeek } from 'date-fns';
 
 import { HiPlusCircle } from "react-icons/hi";
@@ -21,12 +19,16 @@ const Schedule = dynamic(() => import('../../components/Schedule'), {
   loading: () => <Loader type="Oval" color="var(--color-accent)" height="5em" width="100%" />
 });
 
-const HOURS_MIN = 8, HOURS_MAX = 19;
+export default function SchedulePage({ selectedWeek }) {
+  /*
+  *  Variable definitions
+  */
 
-export default function SchedulePage({ user, selectedWeek }) {
+  const { user } = useUser({ redirectTo: '/login' });
+  const [week, setWeek] = useState(0);
+
   selectedWeek = parseInt(selectedWeek) || getISOWeek(new Date());
 
-  const [week, setWeek] = useState(0);
 
   useEffect(() => {
     /* Calcul semaines */
@@ -37,6 +39,9 @@ export default function SchedulePage({ user, selectedWeek }) {
     setWeek(Math.ceil((todaydate.getDay() + 1 + numberOfDays) / 7));
   }, []);
 
+  /*
+  *  End of variable definitions
+  */
   return (
     <UserLayout user={user} flex={true} header={<>
       <Title appendGradient="temps" subtitle={`Semaine ${selectedWeek}`} button={<>
@@ -53,7 +58,7 @@ export default function SchedulePage({ user, selectedWeek }) {
           <Link href={{ pathname: '/schedule', query: { selectedWeek: selectedWeek + 1 } }}>
               <FormButton disabled={selectedWeek === 52}>{"»"}</FormButton>
           </Link>
-          {user.userType > 0 && (
+          {user?.userType > 0 && (
             <Link href={{ pathname: '/schedule/edit' }}>
               <FormButton is="action" icon={<HiPlusCircle />}>Ajouter</FormButton>
             </Link>
@@ -63,35 +68,7 @@ export default function SchedulePage({ user, selectedWeek }) {
         Emploi du
       </Title>
     </>}>
-      {user && (
-        <Schedule index={selectedWeek} user={user} />
-      )}
+      {user && <Schedule index={selectedWeek} user={user} />}
     </UserLayout>
   );
 };
-
-export const getServerSideProps = withSession(async function ({ req, res, query }) {
-  const user = req.session.get('user');
-
-  if (!user) {
-    res.setHeader('location', '/login');
-    res.statusCode = 302;
-    res.end();
-
-    return {};
-  }
-
-  if (!user?.school) {
-    await req.session.destroy();
-
-    res.setHeader('location', '/login');
-    res.statusCode = 302;
-    res.end();
-
-    return {};
-  }
-
-  return {
-    props: { user, title: 'Emploi du temps', ...query },
-  };
-});

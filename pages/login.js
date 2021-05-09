@@ -8,13 +8,13 @@ import BasicLayout from '../components/BasicLayout';
 import Form from "../components/Form";
 import * as Fields from "../components/FormFields";
 
-import { useDarkMode } from 'next-dark-mode';
+import { useTheme } from 'next-themes';
 import { useToasts } from 'react-toast-notifications';
 
 import withSession from "../lib/session";
 
-export default function LoginPage(props) {
-  const { darkModeActive } = useDarkMode();
+export default function LoginPage() {
+  const { theme, setTheme } = useTheme();
   const { addToast } = useToasts();
 
   const router = useRouter();
@@ -83,7 +83,7 @@ export default function LoginPage(props) {
       }
 
       body {
-        background: #${darkModeActive ? '282828' : 'EBEBEB'};
+        background: #${theme === 'dark' ? '282828' : 'EBEBEB'};
         background-image: url(/assets/login/bg-1.webp), url(/assets/login/bg-1.png);
         background-repeat: no-repeat;
         background-size: cover;
@@ -119,7 +119,7 @@ export default function LoginPage(props) {
       h3 {
         margin: 1em 0 0 0;
         padding-bottom: 0;
-        color: #${darkModeActive ? 'DCDCDC' : '282828'} !important;
+        color: #${theme === 'dark' ? 'DCDCDC' : '282828'} !important;
         font-size: 3.125em;
         text-align: center;
         text-transform: uppercase;
@@ -165,7 +165,7 @@ export default function LoginPage(props) {
       }
 
       form label {
-        color: #${darkModeActive ? 'DCDCDC' : '282828'} !important;
+        color: #${theme === 'dark' ? 'DCDCDC' : '282828'} !important;
 
         font-family: 'Marianne', 'Segoe UI', 'Segoe';
         font-weight: bolder;
@@ -208,7 +208,7 @@ export default function LoginPage(props) {
 
         box-sizing: border-box;
         background-color: #282828;
-        opacity: ${darkModeActive ? 0.3 : 0.2};
+        opacity: ${theme === 'dark' ? 0.3 : 0.2};
         font-family: monospace;
         font-size: large;
         color: white;
@@ -233,7 +233,7 @@ export default function LoginPage(props) {
       	margin: 0%;
       	padding-bottom: 0%;
       	font-family: 'Segoe UI', 'Segoe';
-        color: #${darkModeActive ? 'DCDCDC' : '282828'};
+        color: #${theme === 'dark' ? 'DCDCDC' : '282828'};
       	font-size: 1.125em;
       	text-align: center;
         text-transform: uppercase;

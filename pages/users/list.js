@@ -18,16 +18,22 @@ import { FormButton as Button } from '../../components/FormFields';
 import { HiPlusCircle, HiRefresh } from "react-icons/hi";
 
 import use from '../../lib/use';
-import withSession from "../../lib/session";
+import useUser from '../../lib/useUser';
 
 import { useToasts } from 'react-toast-notifications';
 
 import Loader from 'react-loader-spinner';
 
-export default function UserListPage({ user, module }) {
-  const { data: users, setSize, size } = use({ url: '/api/users/list', infinite: true });
+export default function UserListPage({ module }) {
+  /*
+   * Variable definitions
+   */
+
   const { addToast } = useToasts();
   const router = useRouter();
+
+  const { user } = useUser({ redirectTo: '/login' });
+  const { data: users, setSize, size } = use({ url: '/api/users/list', infinite: true });
 
   const displayMenu = e => contextMenu.show({
     id: "userTable",
@@ -39,9 +45,6 @@ export default function UserListPage({ user, module }) {
     switch (event.currentTarget.id) {
       case "edit":
         router.push('/users/edit?id=' + props.id);
-        break;
-      case "notes":
-        router.push('/grades/list?id=' + props.id);
         break;
       case "remove":
         if (!confirm('Voulez-vous vraiment supprimer cet utilisateur?'))
@@ -57,9 +60,13 @@ export default function UserListPage({ user, module }) {
     }
   }
 
+  /*
+   * End of variable definitions
+   */
+
   let content = <Loader type="Oval" color="var(--color-accent)" height="5em" width="100%" />;
 
-  if (users) {
+  if (user?.isLoggedIn && users) {
     content = <div style={{ display: 'flex', flexDirection: 'column' }}>
       <Table head={['#', 'Nom', 'Prénom', 'E-mail', 'Groupe', 'Type']} menuId="userTable" onContextMenu={displayMenu} menu={<Menu id="userTable">
         <Item id="edit" onClick={handleItemClick}>📝 Editer </Item>
@@ -82,7 +89,7 @@ export default function UserListPage({ user, module }) {
 
   return (
     <UserLayout user={user} flex={true} header={<>
-      <Title appendGradient="inscrits" button={user.userType == 2 ?
+      <Title appendGradient="inscrits" button={user?.userType == 2 ?
         <Link href="/users/edit">
           <Button is="action" icon={<HiPlusCircle />}>Ajouter</Button>
         </Link> : <></>}>
@@ -96,18 +103,3 @@ export default function UserListPage({ user, module }) {
     </UserLayout>
   );
 };
-
-export const getServerSideProps = withSession(async function ({ req, res, query }) {
-  const user = req.session.get('user');
-
-  if (!user || user.userType != 2) {
-    res.setHeader('location', '/login');
-    res.statusCode = 302;
-    res.end();
-    return { props: {} };
-  }
-
-  return {
-    props: { user: req.session.get('user'), ...query },
-  };
-});
