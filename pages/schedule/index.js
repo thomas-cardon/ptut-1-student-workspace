@@ -76,7 +76,7 @@ export const getServerSideProps = withSession(async function ({ req, res, query 
     res.statusCode = 302;
     res.end();
 
-    return;
+    return {};
   }
 
   if (!user?.school) {
@@ -86,7 +86,7 @@ export const getServerSideProps = withSession(async function ({ req, res, query 
     res.statusCode = 302;
     res.end();
 
-    return;
+    return {};
   }
 
   return {
