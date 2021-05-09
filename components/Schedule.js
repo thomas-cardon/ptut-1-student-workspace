@@ -39,7 +39,7 @@ export default function Schedule({ user, index }) {
   if (!isServer()) {
     useEffect(() => {
       setCalendarData(
-        parseCalendar()
+        parseCalendar(user)
         .filter(x => getISOWeek(x.start) === index)
         .filter(x => x.start.getHours() >= HOURS_MIN && x.end.getHours() >= HOURS_MIN && x.start.getHours() <= HOURS_MAX && x.end.getHours() <= HOURS_MAX)
         .map(x => {

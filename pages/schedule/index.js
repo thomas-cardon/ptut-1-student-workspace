@@ -63,7 +63,9 @@ export default function SchedulePage({ user, selectedWeek }) {
         Emploi du
       </Title>
     </>}>
-      <Schedule index={selectedWeek} user={user} />
+      {user && (
+        <Schedule index={selectedWeek} user={user} />
+      )}
     </UserLayout>
   );
 };
