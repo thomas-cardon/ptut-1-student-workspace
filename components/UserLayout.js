@@ -4,12 +4,6 @@ import React, { useState, useEffect } from 'react';
 * Voir pour importer ces fonts par page ou composant, car là on les importe dans toute les pages alors
 * qu'elles ne sont pas forcément utilisées partout
 */
-import "@fontsource/nunito/800.css";
-
-import "@fontsource/raleway/100.css";
-import "@fontsource/raleway/400.css";
-import "@fontsource/raleway/800.css";
-
 import Sidebar from './Sidebar';
 import Searchbar from './Searchbar';
 import { onSelect, getSuggestions } from '../lib/search';

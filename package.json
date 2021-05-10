@@ -15,8 +15,6 @@
   "author": "Thomas Cardon <thomas.cardon@pm.me> (https://thomas-cardon.fr)",
   "repository": "github:thomas-cardon/ptut-1-student-workspace",
   "dependencies": {
-    "@fontsource/nunito": "^4.2.2",
-    "@fontsource/raleway": "^4.2.2",
     "@pusher/push-notifications-server": "^1.2.1",
     "@pusher/push-notifications-web": "^1.1.0",
     "date-fns": "^2.17.0",

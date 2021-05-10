@@ -20,14 +20,19 @@ function MyApp({ Component, pageProps }) {
       <Head>
         <title>{pageProps?.title ? `SWS | ${pageProps.title}` : 'Student Workspace'}</title>
 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover" />
         <meta name="description" content="Votre nouvel environnement de travail" />
 
-        <meta property="og:title" content="Student Workspace" key="title" />
-
         <meta charSet="UTF-8" />
-
-        <meta name="theme-color" content="#5575e7" />
+        
+        <meta name='application-name' content='Student Workspace' />
+        <meta name='apple-mobile-web-app-capable' content='yes' />
+        <meta name='apple-mobile-web-app-status-bar-style' content='default' />
+        <meta name='apple-mobile-web-app-title' content='Student Workspace' />
+        <meta name='description' content='Votre nouvel environnement de travail' />
+        <meta name='format-detection' content='telephone=no' />
+        <meta name='mobile-web-app-capable' content='yes' />
+        <meta name='theme-color' content='#5575e7' />
 
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png" />
@@ -46,6 +51,21 @@ function MyApp({ Component, pageProps }) {
         <link rel="manifest" href="/manifest.json" />
         <meta name="msapplication-TileColor" content="#5575e7" />
         <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
+
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@800&family=Raleway:wght@100;400;800&display=swap" rel="stylesheet" />
+
+        <meta name='twitter:card' content='summary' />
+        <meta name='twitter:url' content='https://student-workspace.vercel.app/' />
+        <meta name='twitter:title' content='PWA App' />
+        <meta name='twitter:description' content='Votre nouvel environnement de travail' />
+        <meta name='twitter:image' content='https://student-workspace.vercel.app/icon-192x192.png' />
+        <meta name='twitter:creator' content='@Ryzzzen' />
+        <meta property='og:type' content='website' />
+        <meta property='og:title' content='Student Workspace' />
+        <meta property='og:description' content='Votre nouvel environnement de travail' />
+        <meta property='og:site_name' content='SWS' />
+        <meta property='og:url' content='https://student-workspace.vercel.app/' />
+        <meta property='og:image' content='https://student-workspace.vercel.app/preview.png' />
 
         <script src="https://js.pusher.com/beams/1.0/push-notifications-cdn.js" />
       </Head>

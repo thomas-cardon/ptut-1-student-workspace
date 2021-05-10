@@ -1,4 +1,3 @@
-import "@fontsource/nunito/800.css"
 import styles from "./FormButton.module.css";
 
 import FormGroup from "./FormGroup";

@@ -12,7 +12,6 @@ import { fr } from 'date-fns/locale';
 
 import useUser from '../lib/useUser';
 import useServiceWorker from '../lib/workers';
-import { usePosts, useNextCourse } from '../lib/hooks';
 
 export default function Dashboard() {
   const { user } = useUser({ redirectTo: '/login' });
