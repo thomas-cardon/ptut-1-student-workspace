@@ -1,4 +1,6 @@
 import { useRouter } from 'next/router';
+import fetcher from 'isomorphic-unfetch';
+
 import Link from '../../components/Link';
 
 import {
@@ -68,18 +70,17 @@ export default function UserListPage({ module }) {
 
   if (user?.isLoggedIn && users) {
     content = <div style={{ display: 'flex', flexDirection: 'column' }}>
-      <Table head={['#', 'Nom', 'Prénom', 'E-mail', 'Groupe', 'Type']} menuId="userTable" onContextMenu={displayMenu} menu={<Menu id="userTable">
+      <Table head={['Nom', 'Prénom', 'E-mail', 'Groupe', 'Date. naiss', 'Type']} menuId="userTable" onContextMenu={displayMenu} fixed={true} menu={<Menu id="userTable">
         <Item id="edit" onClick={handleItemClick}>📝 Editer </Item>
-        <Item id="notes" onClick={handleItemClick}>📑 Voir les notes</Item>
         <Separator />
         <Item id="remove" onClick={handleItemClick}>&#x274C; Supprimer</Item>
       </Menu>}>
         {[].concat(...users).map((user, index) => <tr id={`${user.userId}`} key={user.userId}>
-          <td data-type="id">{user.userId}</td>
           <td data-type="lastName">{user.lastName}</td>
           <td data-type="firstName">{user.firstName}</td>
-          <td data-type="email">{user.email}</td>
+          <td data-type="email"><small><em>{user.email}</em></small></td>
           <td data-type="groupName">{user.group.name}</td>
+          <td data-type="birthDate">{new Date(user.birthDate).toLocaleString().split(" ")[0]}</td>
           <td data-type="type">{user.userType === 0 ? 'Étudiant' : user.userType === 1 ? 'Professeur' : 'Administration'}</td>
         </tr>)}
       </Table>
