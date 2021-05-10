@@ -78,14 +78,8 @@ export default function UserLayout({ title, user, children, header, flex = true,
               </div>)}
             {user?.isLoggedIn && <Gravatar size={80} email={user.email} alt="Votre photo de profil" className={styles.avatar} draggable={false} />}
           </div>
-          <Button style={{ marginTop: '1em' }} icon={<>
-            {/*theme === 'system' && <HiColorSwatch />*/}
-            {theme === 'light' && <HiSun />}
-            {theme === 'dark' && <HiMoon />}
-          </>} onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}>
-            {/*darkMode === -1 && (<span>Auto</span>)*/}
-            {theme === 'light'  && (<span>Clair</span>)}
-            {theme === 'dark'   && (<span>Sombre</span>)}
+          <Button style={{ marginTop: '1em' }} icon={theme === 'light' ? <HiSun /> : <HiMoon />} onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}>
+            {theme === 'light' ? <span>Clair</span> : <span>Sombre</span>}
           </Button>
         </Card>
 
