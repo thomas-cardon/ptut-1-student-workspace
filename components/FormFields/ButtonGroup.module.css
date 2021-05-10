@@ -21,12 +21,12 @@
   opacity: 1;
 }
 
-.btnGroup a:first-child > button {
+.btnGroup a:first-child > button, .btnGroup > button:first-child {
   border-top-left-radius: 0.4rem;
   border-bottom-left-radius: 0.4rem;
 }
 
-.btnGroup a:last-child > button {
+.btnGroup a:last-child > button, .btnGroup > button:last-child {
   border-top-right-radius: 0.4rem;
   border-bottom-right-radius: 0.4rem;
 }
