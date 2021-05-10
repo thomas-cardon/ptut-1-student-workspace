@@ -52,6 +52,7 @@ function MyApp({ Component, pageProps }) {
         <meta name="msapplication-TileColor" content="#5575e7" />
         <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
 
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@800&family=Raleway:wght@100;400;800&display=swap" rel="stylesheet" />
 
         <meta name='twitter:card' content='summary' />
