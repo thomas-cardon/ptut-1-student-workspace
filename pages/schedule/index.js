@@ -19,45 +19,28 @@ const Schedule = dynamic(() => import('../../components/Schedule'), {
   loading: () => <Loader type="Oval" color="var(--color-accent)" height="5em" width="100%" />
 });
 
-export default function SchedulePage({ selectedWeek }) {
+export default function SchedulePage() {
   /*
   *  Variable definitions
   */
+  const selectedWeek = getISOWeek(new Date());
+
 
   const { user } = useUser({ redirectTo: '/login' });
-  const [week, setWeek] = useState(0);
-
-  selectedWeek = parseInt(selectedWeek) || getISOWeek(new Date());
-
-
-  useEffect(() => {
-    /* Calcul semaines */
-    let todaydate = new Date();
-    let oneJan =  new Date(todaydate.getFullYear(), 0, 1);
-    let numberOfDays =  Math.floor((todaydate - oneJan) / (24 * 60 * 60 * 1000));
-
-    setWeek(Math.ceil((todaydate.getDay() + 1 + numberOfDays) / 7));
-  }, []);
+  const [week, setWeek] = useState(selectedWeek);
 
   /*
   *  End of variable definitions
   */
   return (
     <UserLayout user={user} flex={true} header={<>
-      <Title appendGradient="temps" subtitle={`Semaine ${selectedWeek}`} button={<>
+      <Title appendGradient="temps" subtitle={`Semaine ${week}`} button={<>
         <ButtonGroup>
-          <Link href={{ pathname: '/schedule', query: { selectedWeek: selectedWeek - 1 } }}>
-              <FormButton disabled={selectedWeek === 0}>{"«"}</FormButton>
-          </Link>
+          <FormButton disabled={selectedWeek === 0} onClick={() => setWeek(week - 1)}>{"«"}</FormButton>
           {[-1, 0, 1].map((e, i) => {
-            return (
-              <Link key={'week-' + i} href={{ pathname: '/schedule', query: { selectedWeek: selectedWeek + e } }}>
-                  <FormButton key={i} disabled={e === 0}>{selectedWeek + e}</FormButton>
-              </Link>);
+            return (<FormButton key={i} disabled={(selectedWeek + e) === week} onClick={() => setWeek(selectedWeek + e)}>{selectedWeek + e}</FormButton>);
           })}
-          <Link href={{ pathname: '/schedule', query: { selectedWeek: selectedWeek + 1 } }}>
-              <FormButton disabled={selectedWeek === 52}>{"»"}</FormButton>
-          </Link>
+          <FormButton disabled={selectedWeek === 52} onClick={() => setWeek(week + 1)}>{"»"}</FormButton>
           {user?.userType > 0 && (
             <Link href={{ pathname: '/schedule/edit' }}>
               <FormButton is="action" icon={<HiPlusCircle />}>Ajouter</FormButton>
@@ -68,7 +51,7 @@ export default function SchedulePage({ selectedWeek }) {
         Emploi du
       </Title>
     </>}>
-      {user && <Schedule index={selectedWeek} user={user} />}
+      {user && <Schedule index={week} user={user} />}
     </UserLayout>
   );
 };
