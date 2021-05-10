@@ -53,8 +53,7 @@ export default function LatestNews() {
         </Highlight>
       )}
     </>}>
-      {news.length > 0 && news}
-      {news.length === 0 && <h2 className={'title'}>Aucun post disponible</h2>}
+      {news.length > 0 ? news : <h2 className={'title'}>Aucun post disponible</h2>}
     </UserLayout>
   );
 };
