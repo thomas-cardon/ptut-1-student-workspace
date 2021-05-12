@@ -65,6 +65,8 @@ export default function SchedulePage() {
         console.log('Affichage ->', event.currentTarget.id);
         setYear(event.currentTarget.id);
         localStorage.setItem('schedule/year', event.currentTarget.id);
+
+        window.location.reload();
         break;
     }
   }
