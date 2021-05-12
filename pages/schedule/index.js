@@ -59,6 +59,8 @@ export default function SchedulePage() {
       case "add":
         router.push('/schedule/edit');
         break;
+      case "refresh":
+        break;
       default:
         console.log('Affichage ->', event.currentTarget.id);
         setYear(event.currentTarget.id);
@@ -74,6 +76,7 @@ export default function SchedulePage() {
       <Title appendGradient="temps" subtitle={`Semaine ${week} ${year && year !== user?.year ? '| 👥 ' + year : ''}`} button={<>
         <Menu id={MENU_ID}>
           <Item id="add" onClick={handleItemClick}>📝 Ajouter un cours (SWS)</Item>
+          {user?.userType > 0 && <Item id="refresh" onClick={handleItemClick} disabled="true">🔄 Forcer l'actualisation</Item>}
           <Separator />
           <Submenu label="👥 Affichage">
             {user?.school && user?.degree && getSchoolYears(user).map(group => <Item id={group} key={group} onClick={handleItemClick}>{group === year ? '✅ ' : ''}{group}</Item>)}
