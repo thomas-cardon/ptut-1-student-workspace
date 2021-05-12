@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import Head from 'next/head';
 
-/*
-* Voir pour importer ces fonts par page ou composant, car là on les importe dans toute les pages alors
-* qu'elles ne sont pas forcément utilisées partout
-*/
 import Sidebar from './Sidebar';
 import Searchbar from './Searchbar';
 
@@ -46,6 +43,9 @@ export default function UserLayout({ title, user, children, header, flex = true,
   if (!isServer()) useEffect(() => useADE(user, user?.school, user?.degree, year || user?.year), [user, year]);
 
   return (<>
+    <Head>
+      <title>{title ? 'SWS | ' + title : 'Student Workspace'}</title>
+    </Head>
     <main className={styles.main} {...rest}>
       <Sidebar user={user}></Sidebar>
 
