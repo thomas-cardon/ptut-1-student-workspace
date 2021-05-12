@@ -89,7 +89,7 @@ export default function UserListPage({ module }) {
   }
 
   return (
-    <UserLayout user={user} flex={true} header={<>
+    <UserLayout user={user} title="Utilisateurs" flex={true} header={<>
       <Title appendGradient="inscrits" button={user?.userType == 2 ?
         <Link href="/users/edit">
           <Button is="action" icon={<HiPlusCircle />}>Ajouter</Button>

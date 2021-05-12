@@ -41,7 +41,7 @@ export default function LatestNews() {
   }, []);
 
   return (
-    <UserLayout user={user} flex={true} header={<>
+    <UserLayout user={user} flex={true} title="Newsfeed" header={<>
       <Title>Newsfeed</Title>
       {error ? (
         <Highlight title="Erreur">

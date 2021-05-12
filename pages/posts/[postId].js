@@ -38,7 +38,7 @@ export default function ReadPostPage({ postId }) {
   }
 
   return (
-    <UserLayout user={user} flex={true}>
+    <UserLayout user={user} title={post?.title} flex={true}>
       {content}
     </UserLayout>
   );

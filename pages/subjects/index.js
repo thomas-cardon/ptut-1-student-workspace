@@ -72,7 +72,7 @@ export default function SubjectListPage() {
   </>);
 
   return (
-    <UserLayout user={user} flex={true} header={<>
+    <UserLayout user={user} title="Liste des modules" flex={true} header={<>
       <Title appendGradient="enregistrés" button={user?.userType == 2 ?
         <Link href="/subjects/create">
           <Button is="action" icon={<HiPlusCircle />}>Ajouter</Button>

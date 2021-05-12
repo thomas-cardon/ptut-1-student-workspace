@@ -26,7 +26,7 @@ export default function PostList() {
   else if (posts) content = posts.map((post, i) => <Post id={post.id} key={'post-' + post.id} authorName={post.firstName + ' ' + post.lastName} creationTime={new Date(post.creation_time)} email={post.email} {...post}></Post>);
 
   return (
-    <UserLayout user={user} flex={true} header={<>
+    <UserLayout user={user} title="Dernières infos" flex={true} header={<>
       <Title appendGradient="informations" button={user?.userType > 0 || user?.delegate === true ?
         <Link href="/posts/create">
           <Button is="action" icon={<HiPlusCircle />}>Ajouter</Button>

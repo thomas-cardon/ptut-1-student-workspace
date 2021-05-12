@@ -125,7 +125,7 @@ export default function CreatePostPage() {
   </>);
 
   return (
-    <UserLayout user={user} flex={true}>
+    <UserLayout user={user} title="Création de posts" flex={true}>
       <style jsx global>{`
         body::selection {
           background-color: rebeccapurple !important;

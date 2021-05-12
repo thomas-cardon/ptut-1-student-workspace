@@ -114,7 +114,7 @@ export default function EditSchedulePage({ user }) {
   }
 
   return (
-    <UserLayout user={user} flex={true} header={<>
+    <UserLayout user={user} flex={true} title="Ajouter un cours" header={<>
         <Title appendGradient="l'emploi du temps">
           Edition de
         </Title>

@@ -102,7 +102,7 @@ export default function SettingsPage() {
   }
 
   return (
-    <UserLayout user={user} flex={true} header={
+    <UserLayout user={user} title="Paramètres utilisateur" flex={true} header={
       <Title appendGradient="utilisateur" style={{ textAlign: 'center' }}>
         Paramètres
       </Title>

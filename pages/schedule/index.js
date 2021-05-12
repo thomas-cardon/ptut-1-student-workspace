@@ -72,7 +72,7 @@ export default function SchedulePage() {
   *  End of variable definitions
   */
 
-  return <UserLayout user={user} flex={true} year={year} header={<>
+  return <UserLayout user={user} title="Emploi du temps" flex={true} year={year} header={<>
       <Title appendGradient="temps" subtitle={`Semaine ${week} ${year && year !== user?.year ? '| 👥 ' + year : ''}`} button={<>
         <Menu id={MENU_ID}>
           <Item id="add" onClick={handleItemClick}>📝 Ajouter un cours (SWS)</Item>

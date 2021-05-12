@@ -43,7 +43,7 @@ export default function CreateClassPage({ user }) {
   }
 
   return (
-    <UserLayout user={user} flex={true} header={<>
+    <UserLayout user={user} title="Ajouter un module" flex={true} header={<>
       <Title appendGradient="nouveau cours">Edition d'un</Title>
     </>}>
       <Form onSubmit={onSubmit} style={{ width: '80%', padding: '1em', margin: 'auto auto 2em auto', borderRadius: '8px', backgroundColor: 'var(--color-primary-800)' }}>

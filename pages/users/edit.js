@@ -50,7 +50,7 @@ export default function EditUserPage({ user, id }) {
   }
 
   return (
-    <UserLayout user={user} flex={true} header={<>
+    <UserLayout user={user} title="Créer un utilisateur" flex={true} header={<>
       <Title appendGradient={id ? "" : "utilisateur"}>{id ? 'Edition de l\'utilisateur #' + id : 'Création d\'un nouvel'}</Title>
     </>}>
       {!id && (

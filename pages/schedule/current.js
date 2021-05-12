@@ -46,7 +46,7 @@ export default function CurrentSchedulePage() {
       </Table>}
     </>);
 
-   return (<UserLayout user={user} flex={true} header={<>
+   return (<UserLayout user={user} title="Cours actuel" flex={true} header={<>
       <Title appendGradient="actuel">
         Votre cours
       </Title>

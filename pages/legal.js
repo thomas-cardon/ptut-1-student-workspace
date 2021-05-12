@@ -7,7 +7,7 @@ export default function LegalPage() {
   const { user } = useUser();
 
   return (
-    <UserLayout user={user} flex={true}>
+    <UserLayout user={user} title="Mentions légales" flex={true}>
       <Title>
         Mentions légales
       </Title>
