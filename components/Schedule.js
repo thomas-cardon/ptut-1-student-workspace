@@ -35,7 +35,7 @@ export default function Schedule({ user, year, index }) {
   const [events, setCalendarEvents] = useState([]);
 
   if (!isServer()) {
-    useEffect(() => {
+    const update = () => {
       setCalendarData(
         parseCalendar(user, year)
         .filter(x => getISOWeek(x.start) === index)
@@ -48,7 +48,21 @@ export default function Schedule({ user, year, index }) {
         })
         .filter(x => typeof x?.hidden === 'undefined' || x.hidden === 0)
       );
-    }, [sessionStorage.getItem(`${user.school}/${user.degree}/${year || user.year}`), year, index, events]);
+    }
+
+    useEffect(() => {
+      const onStorageChange = (e) => {
+        if (e.storageArea === localStorage) return;
+        update();
+      }
+
+      console.log('[Storage] registering events');
+
+      window.addEventListener('storage', onStorageChange);
+      return () => window.removeEventListener('storage', onStorageChange);
+    }, []);
+
+    useEffect(update, [year, index, events]);
   }
 
   useEffect(async () => {
