@@ -6,7 +6,6 @@ import React, { useState, useEffect } from 'react';
 */
 import Sidebar from './Sidebar';
 import Searchbar from './Searchbar';
-import { onSelect, getSuggestions } from '../lib/search';
 
 import styles from './UserLayout.module.css';
 
@@ -53,7 +52,7 @@ export default function UserLayout({ title, user, children, header, flex = true,
       <section className={styles.content}>
         <header className={styles.header}>
           <div className={styles.content}>
-            <Searchbar suggestions={getSuggestions()} onSelect={onSelect} />
+            <Searchbar />
             {header || <></>}
           </div>
         </header>

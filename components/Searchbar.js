@@ -1,13 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useRouter } from 'next/router';
+import { getSuggestions } from '../lib/search';
+
 import styles from './Searchbar.module.css';
 
-export default function Searchbar({ suggestions, onSelect }) {
+export default function Searchbar() {
+  const router = useRouter();
+
   const [filtered, setFilteredSuggestions] = useState([]);
   const [input, setUserInput] = useState('');
   const inputEl = useRef(null);
 
   useEffect(() => {
-    setFilteredSuggestions(suggestions.filter(suggestion =>
+    setFilteredSuggestions(getSuggestions().filter(suggestion =>
       suggestion.toLowerCase().indexOf(input.toLowerCase()) > -1));
   }, [input]);
 
@@ -21,6 +26,46 @@ export default function Searchbar({ suggestions, onSelect }) {
     window.addEventListener('keydown', handle);
     return () => window.removeEventListener('keydown', handle);
   }, []);
+
+  const onSelect = action => {
+    console.log('Action >>', action);
+
+    switch(action) {
+      case 'Emploi du temps':
+        router.push('/schedule');
+        break;
+      case 'Matières':
+        router.push('/subjects/list');
+        break;
+      case 'Utilisateurs':
+        router.push('/users/list');
+        break;
+      case 'Etudiants':
+        router.push('/users/list');
+        break;
+      case 'Mentions légales':
+        router.push('/legal');
+        break;
+      case 'Informations':
+        router.push('/posts/list');
+        break;
+      case 'Newsfeed':
+        router.push('/news');
+        break;
+      case 'Paramètres':
+        router.push('/settings');
+        break;
+      case 'Tableau de bord':
+        router.push('/');
+        break;
+      case 'Déconnexion':
+        router.push('/logout');
+        break;
+      default:
+        alert('Action non gérée');
+        break;
+    }
+  }
 
   const onClick = (e) => {
     setFilteredSuggestions([]);
