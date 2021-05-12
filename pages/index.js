@@ -1,3 +1,9 @@
+import React, { useEffect } from 'react';
+
+import { useToasts } from 'react-toast-notifications';
+import { format } from 'date-fns';
+import { fr } from 'date-fns/locale';
+
 import UserLayout from '../components/UserLayout';
 import Title from '../components/Title';
 
@@ -7,19 +13,26 @@ import Homework from '../components/Homework';
 
 import Link from '../components/Link';
 
-import { format } from 'date-fns';
-import { fr } from 'date-fns/locale';
-
 import useUser from '../lib/useUser';
 import useServiceWorker from '../lib/workers';
 import { usePosts, useNextCourse } from '../lib/hooks';
 
 export default function Dashboard() {
   const { user } = useUser({ redirectTo: '/login' });
+  const { addToast } = useToasts();
+
   useServiceWorker(user);
 
+  if (typeof window !== 'undefined')
+    useEffect(() => {
+      if (!window.location.search.includes("alert=")) return;
+
+      addToast(decodeURIComponent(window.location.search.split("alert=")[1]), { appearance: 'warning' });
+      history.pushState({}, null, window.location.origin);
+    }, []);
+
   return (
-    <UserLayout user={user} flex={true}>
+    <UserLayout user={user} flex={true} title="Tableau de bord">
       <Title appendGradient={(user?.firstName || 'inconnu') + ' !'} subtitle={' — ' + (user?.group?.name || 'Groupe inconnu')}>
         Salut,
       </Title>
