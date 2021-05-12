@@ -36,7 +36,7 @@ export default function Sidebar({ user, children, active, setActive }) {
           Newsfeed (beta)
         </Link>
 
-        <Link href="/posts/list" className={styles.item}>
+        <Link href="/posts" className={styles.item}>
           <div className={styles.icon}>
             <HiAnnotation />
           </div>
@@ -45,13 +45,13 @@ export default function Sidebar({ user, children, active, setActive }) {
 
         {user?.isLoggedIn && user?.userType === 2 && (<>
           <hr />
-          <Link href="/subjects/list" className={styles.item}>
+          <Link href="/subjects" className={styles.item}>
             <div className={styles.icon}>
               <HiTable />
             </div>
             Matières
           </Link>
-          <Link href="/users/list" className={styles.item}>
+          <Link href="/users" className={styles.item}>
             <div className={styles.icon}>
               <HiUsers />
             </div>
