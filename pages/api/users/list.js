@@ -5,6 +5,7 @@ import { query } from '../../../lib/db';
 
 async function handler(req, res) {
   if (!req?.session?.get('user')) return res.status(401).send({ error: 'NOT_AUTHORIZED', success: false });
+  if (req?.session?.get('user').userType === 0) return res.send([]);
 
   try {
     const users = await query(`

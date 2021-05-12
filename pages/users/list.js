@@ -98,9 +98,9 @@ export default function UserListPage({ module }) {
       </Title>
       </>}>
       <Highlight title="Le saviez-vous?">
-        Cliquez sur un utilisateur pour éditer des propriétés.
+        {user?.userType === 0 ? "Impossible d'afficher les utilisateurs: vous n'avez pas les permissions requises." : 'Cliquez sur un utilisateur pour éditer des propriétés.'}
       </Highlight>
-      {content}
+      {user?.userType > 0 && content}
     </UserLayout>
   );
 };
