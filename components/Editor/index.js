@@ -16,7 +16,7 @@ class Editor extends Component {
   }
 
   render() {
-    return (<div style={{ ...{ boxShadow: '0  5px 10px rgba(154,160,185,0.05),  0 15px 40px rgba(166,173,201,0.2)' }, ...(this.props.style || {})}}>
+    return (<div style={{ ...{ width: '100%', borderRadius: '8px', backgroundColor: 'var(--color-primary-800)', padding: '1em', margin: '2em auto 0 auto' }, ...(this.props.style || {})}}>
       <EditorJs readOnly={this.props.readOnly} placeholder="Commencez à écrire ici. Cliquez sur du texte pour faire apparaître les outils. Vous pouvez aussi coller le lien d'une image pour la faire apparaitre." onChange={!this.props.readOnly ? this.onEditorChange : () => {}} tools={EDITOR_JS_TOOLS} instanceRef={instance => this.editorInstance = instance} data={this.state.data} />
     </div>);
   }
