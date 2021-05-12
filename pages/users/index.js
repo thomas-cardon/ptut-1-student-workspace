@@ -35,7 +35,7 @@ export default function UserListPage({ module }) {
   const router = useRouter();
 
   const { user } = useUser({ redirectTo: '/login' });
-  const { data: users, setSize, size } = use({ url: '/api/users/list', infinite: true });
+  const { data: users, setSize, size } = use({ url: '/api/users', infinite: true });
 
   const displayMenu = e => contextMenu.show({
     id: "userTable",

@@ -11,12 +11,12 @@ import { HiPlusCircle } from "react-icons/hi";
 
 import Loader from 'react-loader-spinner';
 
-import { usePosts, useAvatar } from '../../lib/hooks';
+import { usePosts } from '../../lib/hooks';
 import useUser from '../../lib/useUser';
 
-export default function PostList({ module }) {
+export default function PostList() {
   const { user } = useUser({ redirectTo: '/login' });
-  const { data : posts } = usePosts(user, module);
+  const { data : posts } = usePosts(user);
 
   let content = (<Post>
     <Loader type="Oval" color="var(--color-accent)" height="2em" width="100%" />
@@ -27,7 +27,7 @@ export default function PostList({ module }) {
 
   return (
     <UserLayout user={user} flex={true} header={<>
-      <Title appendGradient="informations" button={user?.userType > 0 ?
+      <Title appendGradient="informations" button={user?.userType > 0 || user?.delegate === true ?
         <Link href="/posts/create">
           <Button is="action" icon={<HiPlusCircle />}>Ajouter</Button>
         </Link> : <></>}>
@@ -35,7 +35,7 @@ export default function PostList({ module }) {
       </Title>
       </>}>
 
-      {module && (
+      {/*module && (
         <Highlight title="Le saviez-vous?">
           <div>
             Cliquez sur le titre d'un post pour y accéder. Ou retournez à la&nbsp;
@@ -44,7 +44,7 @@ export default function PostList({ module }) {
             </Link>.
           </div>
         </Highlight>
-      )}
+      )*/}
       {content}
     </UserLayout>
   );
