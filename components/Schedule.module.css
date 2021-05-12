@@ -118,6 +118,8 @@
   font-family: 'Marianne';
   text-transform: uppercase;
   margin: 0 0.5em;
+
+  user-select: none;
 }
 
 .trackSlot {
