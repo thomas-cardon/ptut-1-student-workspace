@@ -1,5 +1,7 @@
 import dynamic from 'next/dynamic';
+import Error from 'next/error';
 
+import useUser from '../../lib/useUser';
 import { usePost } from '../../lib/hooks';
 import withSession from "../../lib/session";
 
@@ -7,12 +9,16 @@ const Editor = dynamic(() => import("../../components/Editor"), { ssr: false });
 import UserLayout from '../../components/UserLayout';
 import Title from '../../components/Title';
 
-export default function ReadPostPage({ user, postId }) {
-  const { data : post } = usePost(postId);
+import Loader from 'react-loader-spinner';
 
-  let content = <Title>Chargement...</Title>;
+export default function ReadPostPage({ postId }) {
+  const { user } = useUser({ redirectTo: '/login' });
+  const { data : post, error } = usePost(postId);
 
-  if (post) {
+  let content = <Loader type="Oval" color="var(--color-accent)" height="2em" width="100%" />;
+
+  if (error) return <Error statusCode={error.status} />;
+  else if (post) {
     try {
       let postContent = JSON.parse(post.content);
 
@@ -21,20 +27,13 @@ export default function ReadPostPage({ user, postId }) {
           {post.title}
         </h1>
         <Editor readOnly={true} data={postContent} />
+        <div style={{ width: '100%', borderRadius: '8px', backgroundColor: 'var(--color-primary-800)', padding: '1em', margin: '2em auto 0 auto' }}>
+          Article posté le {new Date(post.creation_time).toLocaleDateString()} | par {post.authorFirstName} {post.authorLastName} - <em>{post.groupName}</em>
+        </div>
       </>);
     }
     catch(error) {
-      console.error(error);
-
-      content = (<>
-        <Title appendGradient="l'emploi du temps" style={{ marginBottom: '1em' }}>
-          {post.title}
-        </Title>
-        <h3 className={'subtitle'}>Une erreur s'est produite lors de la lecture du post.</h3>
-        <pre>
-          <code>{error.toString()}</code>
-        </pre>
-      </>);
+      return <Error title={error} statusCode={500} />;
     }
   }
 
@@ -45,17 +44,6 @@ export default function ReadPostPage({ user, postId }) {
   );
 };
 
-export const getServerSideProps = withSession(async function ({ req, res, query, params }) {
-  const user = req.session.get('user');
-
-  if (!user) {
-    res.setHeader('location', '/login');
-    res.statusCode = 302;
-    res.end();
-    return { props: {} };
-  }
-
-  return {
-    props: { user: req.session.get('user'), ...query, ...params },
-  };
-});
+export function getServerSideProps({ req, res, query, params }) {
+  return { props: { postId: query.postId } };
+};

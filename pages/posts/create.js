@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { useToasts } from 'react-toast-notifications';
 import Loader from 'react-loader-spinner';
 
 import Router from 'next/router';
 import dynamic from 'next/dynamic';
+
+import { formatDistance } from 'date-fns';
+import { fr } from 'date-fns/locale';
 
 import UserLayout from '../../components/UserLayout';
 import Highlight from "../../components/Highlight";
@@ -13,34 +16,30 @@ import Title from '../../components/Title';
 import Form from "../../components/Form";
 import * as Fields from "../../components/FormFields";
 
-import { useSubjects, useSchedule } from '../../lib/hooks';
-
-import { formatDistance } from 'date-fns';
-import { fr } from 'date-fns/locale';
-
-import withSession from "../../lib/session";
-
 const Editor = dynamic(() => import("../../components/Editor"), { ssr: false });
 
-export default function CreatePostPage({ user }) {
- /*
-  * Variable definitions
-  */
-  let content = <Loader type="Oval" color="var(--color-accent)" height="5em" width="100%" />;;
+import useUser from '../../lib/useUser';
+import { useSubjects, useSchedule } from '../../lib/hooks';
 
+export default function CreatePostPage() {
+ /*
+ * Variable definitions
+ */
+  const { user } = useUser({ redirectTo: '/login', perms: [{ userType: 1 }, { delegate: true }] });
   const [values, setValues] = useState({ homework: false, title: 'Sans titre', subjectId: '', courseId: '', homeworkDate: '' });
+  const { data : schedule } = useSchedule(/*user, 1, user.userType === 1 ? user.userId : 0*/);
+  const { data : subjects } = useSubjects();
+
+  const { addToast } = useToasts();
 
   const handleInputChange = e => {
     const {name, value, checked, type } = e.target;
     setValues({ ...values, [name]: type === 'checkbox' ? checked : value });
   };
 
-  const { data : subjects } = useSubjects();
-  const { data : schedule } = useSchedule(user, 1, user.userType === 1 ? user.userId : 0);
+  let content = <Loader type="Oval" color="var(--color-accent)" height="5em" width="100%" />;;
 
-  const { addToast } = useToasts();
-
- /*
+  /*
   * End of variable definitions
   */
 
@@ -137,18 +136,3 @@ export default function CreatePostPage({ user }) {
     </UserLayout>
   );
 };
-
-export const getServerSideProps = withSession(async function ({ req, res }) {
-  const user = req.session.get('user');
-
-  if (!user || user.userType !== 2) {
-    res.setHeader('location', '/login');
-    res.statusCode = 302;
-    res.end();
-    return { props: {} };
-  }
-
-  return {
-    props: { user: req.session.get('user') },
-  };
-});

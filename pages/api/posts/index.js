@@ -16,8 +16,6 @@ async function handler(req, res, session) {
       `
     );
 
-    console.dir(data);
-
     if (data.length > 0) res.send(data);
     else res.status(404).send({ message: 'NOT_FOUND', success: false });
   }
