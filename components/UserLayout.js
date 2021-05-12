@@ -29,18 +29,22 @@ const isServer = () => typeof window === `undefined`;
 import { useADE, getClasses, getCurrentCourse } from '../lib/ade';
 import { useCurrentClass } from '../lib/hooks';
 
-export default function UserLayout({ title, user, children, header, flex = true, ...rest }) {
+export default function UserLayout({ title, user, children, header, flex = true, year, ...rest }) {
   const { theme, setTheme } = useTheme();
 
   const [current, setCurrentCourse] = useState(getCurrentCourse());
-
   const { data : currentSWS } = useCurrentClass();
 
   useEffect(() => {
     if (currentSWS && !currentSWS.error) setCurrentCourse(current);
+    console.dir(currentSWS);
   }, [currentSWS]);
 
-  if (!isServer()) useEffect(() => useADE(user), [user]);
+  useEffect(() => {
+    console.dir(current);
+  }, [current]);
+
+  if (!isServer()) useEffect(() => useADE(user, user?.school, user?.degree, year || user?.year), [user, year]);
 
   return (<>
     <main className={styles.main} {...rest}>

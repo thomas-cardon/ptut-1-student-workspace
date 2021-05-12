@@ -25,7 +25,7 @@ import "react-contexify/dist/ReactContexify.css";
 
 const isServer = () => typeof window === `undefined`;
 
-export default function Schedule({ user, index }) {
+export default function Schedule({ user, year, index }) {
   /*
   * Variable definitions
   */
@@ -37,7 +37,7 @@ export default function Schedule({ user, index }) {
   if (!isServer()) {
     useEffect(() => {
       setCalendarData(
-        parseCalendar(user)
+        parseCalendar(user, year)
         .filter(x => getISOWeek(x.start) === index)
         .filter(x => x.start.getHours() >= HOURS_MIN && x.end.getHours() >= HOURS_MIN && x.start.getHours() <= HOURS_MAX && x.end.getHours() <= HOURS_MAX)
         .map(x => {
@@ -48,7 +48,7 @@ export default function Schedule({ user, index }) {
         })
         .filter(x => typeof x?.hidden === 'undefined' || x.hidden === 0)
       );
-    }, [sessionStorage.getItem('ade_data'), index, events]);
+    }, [sessionStorage.getItem(`${user.school}/${user.degree}/${year || user.year}`), year, index, events]);
   }
 
   useEffect(async () => {
@@ -97,7 +97,7 @@ export default function Schedule({ user, index }) {
             },
             body: JSON.stringify({ room })
          })
-        .then(() => addToast(`Modification réussie du cours #${props.id}`, { appearance: 'success' }))
+        .then(() => addToast(`Modification réussie du cours #${props.id}. Vous devrez peut-être actualiser la page.`, { appearance: 'success' }))
         .catch(err => {
           addToast("Une erreur s'est produite.", { appearance: 'error' });
           console.error(err);
@@ -115,7 +115,7 @@ export default function Schedule({ user, index }) {
             },
             body: JSON.stringify({ meetingUrl })
          })
-        .then(() => addToast(`Modification réussie du cours #${props.id}`, { appearance: 'success' }))
+        .then(() => addToast(`Modification réussie du cours #${props.id}. Vous devrez peut-être actualiser la page.`, { appearance: 'success' }))
         .catch(err => {
           addToast("Une erreur s'est produite.", { appearance: 'error' });
           console.error(err);
@@ -128,7 +128,7 @@ export default function Schedule({ user, index }) {
           return;
 
         fetcher(location.protocol + '//' + location.host + '/api/schedule/' + props.id, { method: 'DELETE' })
-        .then(() => addToast(`Suppression réussie du cours  #${props.id}`, { appearance: 'success' }))
+        .then(() => addToast(`Suppression réussie du cours  #${props.id}. Vous devrez peut-être actualiser la page.`, { appearance: 'success' }))
         .catch(err => {
           addToast("Une erreur s'est produite.", { appearance: 'error' });
           console.error(err);
