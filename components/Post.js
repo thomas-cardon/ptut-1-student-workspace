@@ -1,5 +1,5 @@
 import Link from './Link';
-import Gravatar from 'react-gravatar';
+import Avatar from 'react-avatar';
 
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
@@ -26,7 +26,7 @@ export default function Post({ id, title, content, module, authorName, creationT
         <div className={styles.meta}>
            <span className={styles.author}>
               <span className={styles.avatar}>
-                <Gravatar size={30} email={email} alt={authorName} className={styles.avatarImage} draggable={false} />
+                <Avatar size={80} name={authorName} mail={email} className={styles.avatarImage} draggable={false} />}
               </span>
               {authorName}
            </span>
