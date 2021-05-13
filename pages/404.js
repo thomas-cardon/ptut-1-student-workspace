@@ -4,26 +4,17 @@ import Title from '../components/Title';
 
 import useUser from '../lib/useUser';
 
-function Error({ statusCode }) {
+export default function Error404() {
   const { user } = useUser({ redirectTo: '/login' });
 
   return (
     <UserLayout user={user} flex={true} title="Erreur 404">
-      <Title appendGradient={statusCode}>
+      <Title appendGradient="404">
         Erreur
       </Title>
       <Highlight title="Erreur">
-        {statusCode
-          ? `An error ${statusCode} occurred on server`
-          : 'An error occurred on client'}
+        La page demandée n'est pas disponible.
       </Highlight>
     </UserLayout>
   );
 };
-
-Error.getInitialProps = ({ res, err }) => {
-  const statusCode = res ? res.statusCode : err ? err.statusCode : 404
-  return { statusCode }
-}
-
-export default Error;
