@@ -6,7 +6,7 @@ import Searchbar from './Searchbar';
 
 import styles from './UserLayout.module.css';
 
-import Gravatar from 'react-gravatar';
+import Avatar from 'react-avatar';
 import { HiAdjustments, HiLogout, HiArrowRight, HiDotsHorizontal, HiMoon, HiSun, HiColorSwatch } from "react-icons/hi";
 
 import Loader from 'react-loader-spinner';
@@ -61,7 +61,7 @@ export default function UserLayout({ title, user, children, header, flex = true,
 
       <aside className={styles['cards-list']}>
         <Card className={styles.card}>
-          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%' }}>
+          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%', userSelect: 'none' }}>
             {!user?.isLoggedIn ? <Loader type="Oval" color="var(--color-accent)" style={{ margin: 'auto auto' }} width="100%" /> : (
               <div className={styles.text}>
                 <span className={styles.name}>{user.firstName} {user.lastName}</span>
@@ -73,7 +73,7 @@ export default function UserLayout({ title, user, children, header, flex = true,
                 </span>
                 <span className={styles.id}>#{user.userId}</span>
               </div>)}
-            {user?.isLoggedIn && <Gravatar size={80} email={user.email} alt="Votre photo de profil" className={styles.avatar} draggable={false} />}
+            {user?.isLoggedIn && <Avatar size={80} name={user.firstName + ' ' + user.lastName} mail={user.email} alt="Votre photo de profil" className={styles.avatar} draggable={false} {...user.avatar} />}
           </div>
           <Button style={{ marginTop: '1em' }} icon={theme === 'light' ? <HiSun /> : <HiMoon />} onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}>
             {theme === 'light' ? <span>Clair</span> : <span>Sombre</span>}
@@ -81,7 +81,7 @@ export default function UserLayout({ title, user, children, header, flex = true,
         </Card>
 
         {current && current.teacher && ( /* SWS */
-          <Card className={[styles.card, styles.currentClass].join(' ')}>
+          <Card className={[styles.card, styles.currentClass].join(' ')} style={{ alignContent: 'center' }}>
             <p className={styles.text}>
               <span className={styles.title}>{current.subject.module} {current.subject.name}</span>
               <span className={styles.subtitle}>{current.teacher.firstName} {current.teacher.lastName}</span>
@@ -119,7 +119,7 @@ export default function UserLayout({ title, user, children, header, flex = true,
           </Card>
         )}
 
-        <Card className={[styles.card, styles.actions].join(' ')}>
+        <Card className={[styles.card, styles.actions].join(' ')} style={{ alignContent: 'center' }}>
           <p className={styles.text}>
             <span className={styles.title}>Actions</span>
             <span className={styles.subtitle}>Que souhaitez-vous faire ?</span>

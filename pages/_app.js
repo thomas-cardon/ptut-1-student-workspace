@@ -4,17 +4,18 @@ import { ToastProvider } from 'react-toast-notifications';
 import { ThemeProvider } from 'next-themes';
 import { SWRConfig } from 'swr';
 
-import fetch from "../lib/fetchJson";
+import { ConfigProvider } from 'react-avatar';
+
+import { fetcher } from '../lib/hooks';
 
 import '../styles/globals.css';
 
 function MyApp({ Component, pageProps }) {
-  return (<SWRConfig
+  return (<ConfigProvider>
+    <SWRConfig
       value={{
-        fetcher: fetch,
-        onError: (err) => {
-          console.error(err);
-        },
+        fetcher,
+        onError: console.error,
       }}
     >
       <Head>
@@ -75,7 +76,8 @@ function MyApp({ Component, pageProps }) {
           <Component {...pageProps} />
         </ToastProvider>
       </ThemeProvider>
-    </SWRConfig>);
+    </SWRConfig>
+  </ConfigProvider>);
 }
 
 export default MyApp;

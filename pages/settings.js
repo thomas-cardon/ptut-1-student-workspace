@@ -3,8 +3,6 @@ import React, { useState } from 'react';
 import Router from 'next/router';
 import Link from '../components/Link';
 
-import Gravatar from 'react-gravatar';
-
 import UserLayout from '../components/UserLayout';
 import Title from '../components/Title';
 
@@ -13,10 +11,13 @@ import * as Fields from "../components/FormFields";
 
 import Highlight from '../components/Highlight';
 
+import Avatar from 'react-avatar';
 import Loader from 'react-loader-spinner';
 
 import useUser from '../lib/useUser';
 import { useToasts } from 'react-toast-notifications';
+
+import { HiCake, HiSparkles } from "react-icons/hi";
 
 export default function SettingsPage() {
   /*
@@ -73,16 +74,14 @@ export default function SettingsPage() {
       <div className="content">
         <div style={{ width: '89%', borderRadius: '8px', backgroundColor: 'var(--color-primary-800)', padding: '1em', margin: 'auto auto 2em' }}>
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-            <Link href="http://en.gravatar.com/emails/" style={{ color: 'red' }}>
-              <Gravatar size={128} email={user.email} style={{ borderRadius: '50%', margin: '0 .5em .5em 0' }} draggable={false} />
-            </Link>
-            <h3 style={{ fontSize: 'xx-large', fontWeight: 'normal', margin: '0 0 1em 0' }}>
-              {user.firstName} <b style={{ color: '#686de0' }}>{user.lastName}</b>
+            <Avatar size={128} name={user.firstName + ' ' + user.lastName} mail={user.email} alt="Votre photo de profil" round="100px" draggable={false} {...user.avatar} />
+            <h3 style={{ fontSize: 'xx-large', fontWeight: 'normal', margin: '0 0 0 1em' }}>
+              {user.firstName} <b style={{ color: 'var(--color-secondary)' }}>{user.lastName}</b>
             </h3>
           </div>
           <p className="subtitle">
             <i>
-              Vous êtes un utilisateur de type {user.userType}, c'est-à-dire que
+              Vous êtes un utilisateur de type {user.userType}, c'est-à-dire que&nbsp;
               {user.userType == 0 ? 'vous disposez des permissions les plus basiques.'
                                   : (user.userType == 1 ? 'vous êtes professeur. Vous pouvez créer des posts, ajouter des devoirs, notifier les élèves, etc.'
                                                         : "vous faites partie de l'administration. Vous avez tous les droits possibles sur le service.")
@@ -98,6 +97,18 @@ export default function SettingsPage() {
         <Fields.FormInput label="Nouveau mot de passe" id="newPassword" name="newPassword" minLength="8" onChange={handleInputChange} value={values.newPassword} type="password" required />
         <Fields.FormButton type="submit">Changer</Fields.FormButton>
       </Form>
+
+      <div onSubmit={onSubmit} style={{ width: '89%', borderRadius: '8px', backgroundColor: 'var(--color-primary-800)', padding: '1em', margin: 'auto auto 2em' }}>
+        <h2>Attacher un avatar</h2>
+        <hr style={{ marginBottom: '1em', marginTop: '-0.5em' }} />
+        <div className="buttons">
+          <Link href={`https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_URL_PREFIX + '/api/callback/github/exchange_token'}&allow_signup=false&login=${user.email}`}>
+            <Fields.FormButton type="submit" icon={<HiSparkles />}>Connexion via GitHub</Fields.FormButton>
+          </Link>
+          <Fields.FormButton type="submit" icon={<HiCake />} disabled={true}>Connexion via Twitter</Fields.FormButton>
+          <Fields.FormButton type="submit" disabled={true}>Définir l'icône avec un lien</Fields.FormButton>
+        </div>
+      </div>
     </>);
   }
 
@@ -114,11 +125,20 @@ export default function SettingsPage() {
       {content}
 
       <style jsx global>{`
-      .content {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
+        .content {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .subtitle {
+          margin-top: 1em;
+        }
+
+        .buttons {
+          display: flex;
+          flex-direction: row;
+        }
       `}</style>
     </UserLayout>
   );
