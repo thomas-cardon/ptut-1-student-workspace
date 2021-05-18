@@ -44,7 +44,7 @@ export default function Schedule({ user, year, index }) {
           let event = events.find(y => x.id === y.uid);
           if (!event) return x;
 
-          return { ...x, [event.key] : [event.value][0] };
+          return { ...x, [event.key] : [event.value] };
         })
         .filter(x => typeof x?.hidden === 'undefined' || x.hidden === 0)
       );

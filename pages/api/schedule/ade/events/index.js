@@ -1,5 +1,5 @@
-import withSession from '../../../../lib/session';
-import { query } from '../../../../lib/db';
+import withSession from '../../../../../lib/session';
+import { query } from '../../../../../lib/db';
 
 async function handler(req, res, session) {
   try {

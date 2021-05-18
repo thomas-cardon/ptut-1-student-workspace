@@ -28,6 +28,8 @@ import styles from "./CalendarBlock.module.css";
  * @return {[string[]]} [Les éléments à afficher dans le bloc]
  */
 function bake(description, textOnly = false) {
+  if (!description?.match) return description;
+
   const words = description
             .match(/^[^\(]+/)[0]
             .replace(/(\r\n|\n|\r)/gm, " ")

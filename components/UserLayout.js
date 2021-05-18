@@ -28,17 +28,25 @@ import { useCurrentClass } from '../lib/hooks';
 export default function UserLayout({ title, user, children, header, flex = true, year, ...rest }) {
   const { theme, setTheme } = useTheme();
 
-  const [current, setCurrentCourse] = useState(getCurrentCourse());
+  const [current, setCurrentCourse] = useState(null);
   const { data : currentSWS } = useCurrentClass();
 
+  /* désactivation SWS
   useEffect(() => {
     if (currentSWS && !currentSWS.error) setCurrentCourse(current);
     console.dir(currentSWS);
   }, [currentSWS]);
+  */
 
-  useEffect(() => {
-    console.dir(current);
-  }, [current]);
+  if (!isServer())
+    useEffect(() => {
+      if (!user) return;
+
+      getCurrentCourse(user, year).then(course => {
+        console.dir(course);
+        setCurrentCourse(course);
+      });
+    }, [user]);
 
   if (!isServer()) useEffect(() => useADE(user, user?.school, user?.degree, year || user?.year), [user, year]);
 
@@ -107,14 +115,16 @@ export default function UserLayout({ title, user, children, header, flex = true,
           <Card className={[styles.card, styles.currentClass].join(' ')}>
             <p className={styles.text}>
               <span className={styles.title}>{current.summary}</span>
-              <span className={styles.subtitle}><i>{current.description.split(' ').slice(1).join(' ').replace(/(\r\n|\n|\r)/gm, '\n').replace(/\s*\(.*?\)\s*/g, '').trim()}</i></span>
+              <span className={styles.subtitle}><i>{current.description ? current.description.split(' ').slice(1).join(' ').replace(/(\r\n|\n|\r)/gm, '\n').replace(/\s*\(.*?\)\s*/g, '').trim() : 'Sans description'}</i></span>
               <span className={styles.subtitle}><b>{current.location}</b></span>
               <span className={styles.subtitle} style={{ color: 'var(--color-accent)' }}>Démarré {formatDistanceToNow(current.start, { addSuffix: true, locale: fr })}</span>
             </p>
 
             <div className="buttons">
               <Button icon={<HiDotsHorizontal />}>Voir</Button>
-              <Button is="success" icon={<HiArrowRight />} disabled={typeof current.meetingUrl === 'undefined'}>Rejoindre</Button>
+              <Link href={current?.meeting || '#'}>
+                <Button is="success" icon={<HiArrowRight />} disabled={typeof current.meeting === 'undefined'}>Rejoindre</Button>
+              </Link>
             </div>
           </Card>
         )}
