@@ -118,10 +118,6 @@ export default function SettingsPage() {
         Paramètres
       </Title>
     }>
-      <Highlight style={{ width: '89%', margin: '1em auto 2em auto' }}>
-        Cliquez&nbsp;<Link href="http://en.gravatar.com/emails/" style={{ color: 'red' }}>ici</Link>&nbsp;pour accéder à&nbsp;<b>Gravatar</b>&nbsp;et ainsi changer votre photo de profil.
-      </Highlight>
-
       {content}
 
       <style jsx global>{`
