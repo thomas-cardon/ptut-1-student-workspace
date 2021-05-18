@@ -217,9 +217,7 @@ export default function Schedule({ user, year, index }) {
         <small>{lightFormat(addDays(getDateOfISOWeek(index, new Date().getFullYear()), i), 'dd/MM')}</small>
       </div>)}
 
-      {calendar
-        .map((x, i) => <CalendarBlock key={x.id} user={user} data={x} />)}
-
+      {calendar.map((x, i) => <CalendarBlock key={x.id} user={user} data={x} />)}
       {!schedule?.message && schedule && schedule.filter(x => new Date(x.start).getHours() >= HOURS_MIN && new Date(x.end).getHours() >= HOURS_MIN && new Date(x.start).getHours() <= HOURS_MAX && new Date(x.end).getHours() <= HOURS_MAX).map((x, i) => <ScheduleBlock data={x} key={'sws' + i} onContextMenu={event => show(event, { props: { id: x.id } })} />)}
     </div>
     </>);
