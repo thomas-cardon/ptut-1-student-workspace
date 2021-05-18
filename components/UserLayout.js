@@ -111,18 +111,18 @@ export default function UserLayout({ title, user, children, header, flex = true,
           </Card>
         )}
 
-        {current && current.summary && ( /* ADE */
+        {current?.summary && ( /* ADE */
           <Card className={[styles.card, styles.currentClass].join(' ')}>
             <p className={styles.text}>
               <span className={styles.title}>{current.summary}</span>
-              <span className={styles.subtitle}><i>{current.description ? current.description.split(' ').slice(1).join(' ').replace(/(\r\n|\n|\r)/gm, '\n').replace(/\s*\(.*?\)\s*/g, '').trim() : 'Sans description'}</i></span>
+              <span className={styles.subtitle}><i>{current.description ? current.description.trim() : 'Sans description'}</i></span>
               <span className={styles.subtitle}><b>{current.location}</b></span>
               <span className={styles.subtitle} style={{ color: 'var(--color-accent)' }}>Démarré {formatDistanceToNow(current.start, { addSuffix: true, locale: fr })}</span>
             </p>
 
             <div className="buttons">
               <Button icon={<HiDotsHorizontal />}>Voir</Button>
-              <Link href={current?.meeting || '#'}>
+              <Link href={current?.meeting || '#'} target="_blank">
                 <Button is="success" icon={<HiArrowRight />} disabled={typeof current.meeting === 'undefined'}>Rejoindre</Button>
               </Link>
             </div>
