@@ -12,7 +12,7 @@ function Error({ statusCode }) {
       <Title appendGradient={statusCode}>
         Erreur
       </Title>
-      <Highlight title="Erreur">
+      <Highlight title="Erreur:">
         {statusCode
           ? `An error ${statusCode} occurred on server`
           : 'An error occurred on client'}
