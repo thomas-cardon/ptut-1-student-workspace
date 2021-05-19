@@ -29,7 +29,6 @@ export default function UserLayout({ title, user, children, header, flex = true,
   const { theme, setTheme } = useTheme();
 
   const [current, setCurrentCourse] = useState(null);
-  const [calendar, setCalendarData] = useState([]);
 
   /* désactivation SWS
   const { data : currentSWS } = useCurrentClass();
@@ -41,8 +40,7 @@ export default function UserLayout({ title, user, children, header, flex = true,
   */
 
   if (!isServer()) {
-    useEffect(() => useADE(user, undefined, undefined, year).then(setCalendarData).catch(console.error), [user, year]);
-    useEffect(() => getCurrentCourse({ calendar }).then(setCurrentCourse), [calendar]);
+    useEffect(() => useADE(user, undefined, undefined, year).then(calendar => getCurrentCourse({ calendar }).then(setCurrentCourse).catch(console.error)).catch(console.error), [user, year]);
   }
 
   return (<>
