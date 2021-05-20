@@ -47,10 +47,10 @@ export default function SchedulePage() {
   const [year, setYear] = useState(null);
 
   useEffect(() => {
-    if (!isServer()) {
+    if (!isServer() && user) {
       if (localStorage.getItem('schedule/year') && localStorage.getItem('schedule/year') !== 'null')
         setYear(localStorage.getItem('schedule/year'));
-      else setYear(user.year);
+      else setYear(user?.year);
     }
   }, [user]);
 
