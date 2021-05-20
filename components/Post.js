@@ -6,7 +6,7 @@ import { fr } from 'date-fns/locale';
 
 import styles from "./Post.module.css";
 
-export default function Post({ id, title, content, module, authorName, creationTime, email, href, children }) {
+export default function Post({ id, title, content, module, authorName, creationTime, email, href, avatar, children }) {
 
   return (
     <article className={styles.article}>
@@ -25,10 +25,8 @@ export default function Post({ id, title, content, module, authorName, creationT
         </h2>
         <div className={styles.meta}>
            <span className={styles.author}>
-              <span className={styles.avatar}>
-                <Avatar size={80} name={authorName} mail={email} className={styles.avatarImage} draggable={false} />}
-              </span>
-              {authorName}
+            <Avatar size={30} name={authorName} alt="Photo" mail={email} className={styles.avatar} draggable={false} {...avatar} />
+            {authorName}
            </span>
            {creationTime && (
              <span className={styles.date}>{format(creationTime, 'd MMMM yyyy', { locale: fr })}</span>
