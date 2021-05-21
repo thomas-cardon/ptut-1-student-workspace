@@ -33,6 +33,7 @@
 
 .content > h1 {
   text-align: center;
+  margin-top: 0;
 }
 
 .content > h4 {
@@ -47,4 +48,10 @@
   font-weight: 500;
   font-size: 0.8rem;
   color: var(--color-primary-200);
+}
+
+.content > button {
+  display: inline-flex;
+  margin: 0;
+  justify-content: flex-end;
 }

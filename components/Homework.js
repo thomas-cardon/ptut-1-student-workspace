@@ -25,6 +25,9 @@ export default function Homework() {
 
   return (
     <div className={styles.content}>
+      <FormButton>{"«"}</FormButton>
+      <FormButton>{"»"}</FormButton>
+      <FormButton>{"+"}</FormButton>
       <h1>Travail à faire</h1>
       {Object.entries(homework).map(data => (<div key={data[0]}>
         <h5 className={styles.title}>
