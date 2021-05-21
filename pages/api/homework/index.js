@@ -12,7 +12,7 @@ async function handler(req, res, session) {
       FROM homework
       INNER JOIN subjects ON homework.subjectId = subjects.id
       WHERE homework.groupId = ?
-      ORDER BY timestamp DESC
+      ORDER BY timestamp ASC
       `, [req.session.get('user').group.id]);
 
     res.json(data);
