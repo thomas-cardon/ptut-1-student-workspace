@@ -21,33 +21,6 @@ import "react-contexify/dist/ReactContexify.css";
 
 import styles from "./CalendarBlock.module.css";
 
-/**
- * Permet de transformer une description iCalendar en données utilisables
- * @param  {string} description [Description iCalendar]
- * @param  {boolean} textOnly [Transforme la description sans ajouter d'éléments React]
- * @return {[string[]]} [Les éléments à afficher dans le bloc]
- */
-function bake(description, textOnly = false) {
-  if (!description?.match) return description;
-
-  const words = description
-            .match(/^[^\(]+/)[0]
-            .replace(/(\r\n|\n|\r)/gm, " ")
-            .trim().split(' ')
-            .filter(word => word.length > 3 && !word.includes('Groupe'))
-            .map((word, i, arr) => {
-              if (textOnly) return word;
-
-              if (word === word.toUpperCase() && arr[i - 1] && arr[i - 1] !== arr[i - 1].toUpperCase())
-                return <span key={i}><br />{word}</span>;
-
-              return <span key={i}>{i === 0 ? '' : ' '}{word}</span>;
-            });
-
-  if (textOnly) return words.join(' ');
-  return words;
-}
-
 export default function CalendarBlock({ user, data }) {
   const { show } = useContextMenu({ id: data.id });
   const { addToast } = useToasts();
@@ -104,7 +77,7 @@ export default function CalendarBlock({ user, data }) {
         break;
       }
       case "change-description": {
-        patch('description', window.prompt('Saisissez la description du cours', bake(data.description, true)));
+        patch('description', window.prompt('Saisissez la description du cours', data.description));
         break;
       }
       case "change-meeting": {
@@ -196,7 +169,7 @@ export default function CalendarBlock({ user, data }) {
         <p className={styles.name}>
           {data?.module && data.module} {data?.subject || data.summary} {data?.type && `(${data?.type})`}
         </p>
-        <p className={styles.teacher}>{bake(data.description)}</p>
+        <p className={styles.teacher}>{data.description}</p>
 
         <div className={styles.bottom}>
           <p>{data.location}</p>

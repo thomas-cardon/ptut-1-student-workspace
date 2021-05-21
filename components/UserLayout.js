@@ -40,7 +40,20 @@ export default function UserLayout({ title, user, children, header, flex = true,
   */
 
   if (!isServer()) {
-    useEffect(() => useADE(user, undefined, undefined, year).then(calendar => getCurrentCourse({ user, year, calendar }).then(setCurrentCourse).catch(console.error)).catch(console.error), [user, year]);
+    useEffect(() => {
+      function exec() {
+        useADE(user, undefined, undefined, year)
+        .then(calendar =>
+          getCurrentCourse({ user, year, calendar })
+          .then(setCurrentCourse).catch(console.error))
+        .catch(console.error);
+      }
+
+      exec();
+
+      const intervalId = setInterval(exec, 30*60*1000);
+      return () => clearInterval(intervalId);
+    }, [user, year]);
   }
 
   return (<>

@@ -64,12 +64,7 @@
 .avatar {
   float: left;
   display: block;
-  width: 30px;
-  height: 30px;
   margin: -2px 8px 0 0;
-}
-
-.avatarImage {
   border-radius: 50%;
 }
 
