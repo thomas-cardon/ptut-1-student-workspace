@@ -1,7 +1,7 @@
 .title {
   font-family: "Raleway";
   font-weight: bolder;
-  font-size: 1rem;
+  font-size: 1.2rem;
   text-align: center;
 
   color: var(--color-primary-100);
@@ -36,17 +36,17 @@
   margin-top: 0;
 }
 
-.content > h4 {
-  margin: 1.5em 0 0 1em;
+.content h4 {
+  margin: 1.2em 0 0 1em;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: var(--color-primary-200);
 }
 
-.content > h6 {
+.content h6 {
   margin: 0.2em 0 0 1em;
   font-weight: 500;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   color: var(--color-primary-200);
 }
 

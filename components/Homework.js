@@ -7,10 +7,11 @@ import useSWR from 'swr';
 import { fetcher } from '../lib/hooks';
 
 import { FormButton, ButtonGroup } from '../components/FormFields';
+import Link from '../components/Link';
 
 import styles from './Homework.module.css';
 
-export default function Homework() {
+export default function Homework({ user, groupId }) {
   const { data, error } = useSWR('/api/homework', fetcher);
 
   const [day, setDay] = useState(0);
@@ -42,21 +43,23 @@ export default function Homework() {
       <div className="buttons">
         <ButtonGroup style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
           <FormButton disabled={day <= 0} onClick={() => setDay(day - 1)}>{"«"}</FormButton>
-          <FormButton>{"+"}</FormButton>
+          <Link href="/homework/add">
+            <FormButton disabled={user.userType === 0 && !user.delegate}>{"+"}</FormButton>
+          </Link>
           <FormButton disabled={day === Object.entries(homework).length - 1} onClick={() => setDay(day + 1)}>{"»"}</FormButton>
         </ButtonGroup>
       </div>
       <h1>Travail à faire</h1>
-      <div key={Object.entries(homework)[day][0]}>
-        <h5 className={styles.title}>
-          <span>Pour le&nbsp;</span>
-          <span className={styles.date}>{Object.entries(homework)[day][0]}</span>
-        </h5>
-        {Object.entries(homework)[day][1].map((element, i) => (<div key={Object.entries(homework)[day][0] + '-' + i}>
-          <h4>{element.module} {element.name}</h4>
-          <h6>• {element.content}</h6>
-        </div>))}
-      </div>
+        <div key={Object.entries(homework)[day][0]}>
+          <h5 className={styles.title}>
+            <span>Pour le&nbsp;</span>
+            <span className={styles.date}>{Object.entries(homework)[day][0]}</span>
+          </h5>
+          {Object.entries(homework)[day][1].map((element, i) => (<div key={Object.entries(homework)[day][0] + '-' + i}>
+            <h4>{element.module} {element.name}</h4>
+            <h6>• {element.content}</h6>
+          </div>))}
+        </div>
     </div>
   );
 };
