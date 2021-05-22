@@ -88,12 +88,11 @@ export default function CreateHomeworkPage() {
         <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', columnGap: '20px' }}>
           <Form onSubmit={onSubmit} style={{ flex: '1', padding: '1em', margin: '0 auto', borderRadius: '8px', backgroundColor: 'var(--color-primary-800)' }}>
             <Fields.FormInput label="Description" name="content" type="text" onChange={handleInputChange} value={values.content} placeholder="Finir l'exercice 1..." required />
-            <Fields.FormSelect label="Matière (Module)" name="subjectId" onChange={handleInputChange} noOption="-- Sélectionnez un module --" value={values.subjectId} options={(subjects || []).map(x => { return { option: 'Cours ' + x.module, value: x.id } })} required />
+            <Fields.FormSelect label="Matière (Module)" name="subjectId" onChange={handleInputChange} noOption="-- Sélectionnez un module --" value={values.subjectId} options={(subjects || []).map(x => { return { option: x.module + ' ' + x.name, value: x.id } })} required />
             <Fields.FormInput label="A faire pour le" name="date" type="date" min={new Date().toISOString().split("T")[0]} onChange={handleInputChange} value={values.date} required/>
 
             {user.userType > 0 && groups && groups.map(x => <>
-              <input type="radio" id={x.id} name="groupId" onChange={handleInputChange} />
-              <label for={x.id}>{x.name}</label>
+              <Fields.FormRadio id={x.id} name="groupId" onChange={handleInputChange}>{x.name}</Fields.FormRadio>
             </>)}
 
             <Fields.FormButton type="submit">Ajouter le travail</Fields.FormButton>
