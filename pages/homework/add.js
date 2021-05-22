@@ -25,7 +25,7 @@ export default function CreateHomeworkPage() {
  /*
  * Variable definitions
  */
-  const { user } = useUser({ redirectTo: '/login', perms: [{ userType: 1 && 2 }, { delegate: true }] });
+  const { user } = useUser({ redirectTo: '/login', perms: [{ userType: 1 }, { delegate: true }] });
   const [values, setValues] = useState({ timestamp: '', content: '', subjectId: '', groupId: '' });
   const { data : subjects } = useSubjects();
   const { data : groups } = useGroups();
