@@ -29,6 +29,8 @@
   width: 50%;
 
   margin-top: 3em;
+
+  min-height: 30vh;
 }
 
 .content > h1 {

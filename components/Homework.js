@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Loader from 'react-loader-spinner';
 
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
@@ -40,26 +41,27 @@ export default function Homework({ user, groupId }) {
 
   return (
     <div className={styles.content}>
-      <div className="buttons">
-        <ButtonGroup style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-          <FormButton disabled={day <= 0} onClick={() => setDay(day - 1)}>{"«"}</FormButton>
-          <Link href="/homework/add">
-            <FormButton disabled={user.userType === 0 && !user.delegate}>{"+"}</FormButton>
-          </Link>
-          <FormButton disabled={day === Object.entries(homework).length - 1} onClick={() => setDay(day + 1)}>{"»"}</FormButton>
-        </ButtonGroup>
-      </div>
-      <h1>Travail à faire</h1>
-        <div key={Object.entries(homework)[day][0]}>
-          <h5 className={styles.title}>
-            <span>Pour le&nbsp;</span>
-            <span className={styles.date}>{Object.entries(homework)[day][0]}</span>
-          </h5>
-          {Object.entries(homework)[day][1].map((element, i) => (<div key={Object.entries(homework)[day][0] + '-' + i}>
-            <h4>{element.module} {element.name}</h4>
-            <h6>• {element.content}</h6>
-          </div>))}
+      {user?.group ? (<>
+        <div className="buttons">
+          <ButtonGroup style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+            <FormButton disabled={day <= 0} onClick={() => setDay(day - 1)}>{"«"}</FormButton>
+            <Link href="/homework/add">
+              <FormButton disabled={user.userType === 0 && !user.delegate}>{"+"}</FormButton>
+            </Link>
+            <FormButton disabled={day === Object.entries(homework).length - 1} onClick={() => setDay(day + 1)}>{"»"}</FormButton>
+          </ButtonGroup>
         </div>
-    </div>
-  );
+        <h1>Travail à faire</h1>
+          <div key={Object.entries(homework)[day][0]}>
+            <h5 className={styles.title}>
+              <span>Pour le&nbsp;</span>
+              <span className={styles.date}>{Object.entries(homework)[day][0]}</span>
+            </h5>
+            {Object.entries(homework)[day][1].map((element, i) => (<div key={Object.entries(homework)[day][0] + '-' + i}>
+              <h4>{element.module} {element.name}</h4>
+              <h6>• {element.content}</h6>
+            </div>))}
+          </div>
+      </>) : <Loader type="Oval" color="var(--color-accent)" height="2rem" width="100%" style={{ padding: '5rem' }} />}
+  </div>);
 };

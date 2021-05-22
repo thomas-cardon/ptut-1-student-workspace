@@ -71,7 +71,7 @@ export default function Dashboard() {
               </Card>
             </Link>
         </CardList>
-        {user?.group?.name && <Homework user={user} />}
+        <Homework user={user} />
       </div>
       <style jsx global>{`
         .links > * {
