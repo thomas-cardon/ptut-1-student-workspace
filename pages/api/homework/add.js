@@ -18,7 +18,7 @@ async function handler(req, res, session) {
         minimum: 5
       }
     },
-    timestamp: {
+    date: {
       presence: true
     },
     subjectId: {
@@ -32,10 +32,10 @@ async function handler(req, res, session) {
   try {
     const results = await query(
       `
-      INSERT INTO homework (timestamp, content, subjectId, groupId)
+      INSERT INTO homework (date, content, subjectId, groupId)
       VALUES (?, ?, ?, ?)
       `,
-      [homework.timestamp, homework.content, homework.subjectId, homework.groupId || req.session.get('user')?.group?.id]
+      [homework.date, homework.content, homework.subjectId, homework.groupId || req.session.get('user')?.group?.id]
     );
 
     res.send({ success: true });

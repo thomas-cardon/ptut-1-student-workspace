@@ -23,7 +23,7 @@ export default function Homework({ user, groupId }) {
     let h = {};
 
     for (let i = 0; i < data.length; i++) {
-      let date = format(new Date(data[i].timestamp * 1000), 'EEEE dd LLL', { locale: fr });
+      let date = format(new Date(data[i].date), 'EEEE dd LLL', { locale: fr });
       if (h[date]) h[date].push(data[i]);
       else h[date] = [ data[i] ];
     }
