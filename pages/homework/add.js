@@ -34,10 +34,11 @@ export default function CreateHomeworkPage() {
 
   const handleInputChange = e => {
     const {name, value, checked, type } = e.target;
-    setValues({ ...values, [name]: type === 'checkbox' ? checked : value });
+
+    if (type === 'radio') setValues({ ...values, [name]: isNaN(e.target.id) ? e.target.id : parseInt(e.target.id) });
+    else setValues({ ...values, [name]: type === 'checkbox' ? checked : value });
   };
 
-  let content = <Loader type="Oval" color="var(--color-accent)" height="5em" width="100%" />;;
 
   /*
   * End of variable definitions
@@ -53,7 +54,7 @@ export default function CreateHomeworkPage() {
       groupId: values.groupId ? parseInt(values.groupId) : undefined,
     };
 
-    // if (!body.content) return addToast('Erreur: contenu manquant', { appearance: 'error' });
+    if (!body.content) return addToast('Erreur: contenu manquant', { appearance: 'error' });
 
     try {
       const res = await fetch(location.protocol + '//' + location.host + '/api/homework/add', {
@@ -67,8 +68,6 @@ export default function CreateHomeworkPage() {
 
       if (result.success) {
         addToast('Travail ajouté avec succès', { appearance: 'success' });
-
-        localStorage.removeItem('homework.lastSavedState', null);
         Router.push('/dashboard');
       }
       else addToast(result.error || 'Une erreur s\'est produite', { appearance: 'error' });
@@ -79,40 +78,28 @@ export default function CreateHomeworkPage() {
     }
   }
 
-  const onError = (errors, e) => {
-    console.error(errors, e);
-    addToast(errors || 'Une erreur s\'est produite', { appearance: 'error' });
-  }
-
-  if (user && subjects) content = (<>
-    <Title appendGradient="travail à faire">
-      Ajout d'un
-    </Title>
-
-    <Highlight title={'Le saviez-vous?'}>Le contenu du travail est enregistré sur votre navigateur tant qu'il n'est pas envoyé.</Highlight>
-
-    <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', columnGap: '20px' }}>
-      <Form onSubmit={onSubmit} style={{ flex: '1', padding: '1em', margin: '0 auto', borderRadius: '8px', backgroundColor: 'var(--color-primary-800)' }}>
-        <Fields.FormInput label="Description" name="content" type="text" onChange={handleInputChange} value={values.content} placeholder="Finir l'exercice 1..." required />
-        <Fields.FormSelect label="Matière (Module)" name="subjectId" onChange={handleInputChange} noOption="-- Sélectionnez un module --" value={values.subjectId} options={(subjects || []).map(x => { return { option: 'Cours ' + x.module, value: x.id } })} required />
-        <Fields.FormInput  label="A faire pour le" name="timestamp" type="datetime-local" onChange={handleInputChange} value={values.timestamp} required/>
-        <Fields.FormCheckboxList label="Groupes affectés" name="groupId" value={values.groupId} options={(groups || []).map(x => { return { label: x.name, id: x.id } })} />
-
-        <Fields.FormButton type="submit">Ajouter le travail</Fields.FormButton>
-      </Form>
-
-    </div>
-  </>);
-
   return (
     <UserLayout user={user} title="Ajouter un devoir" flex={true}>
-      <style jsx global>{`
-        body::selection {
-          background-color: rebeccapurple !important;
-        }
-        `}</style>
+      <Title appendGradient="travail à faire">
+        Ajout d'un
+      </Title>
 
-      {content}
+      {user && subjects ? (
+        <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', columnGap: '20px' }}>
+          <Form onSubmit={onSubmit} style={{ flex: '1', padding: '1em', margin: '0 auto', borderRadius: '8px', backgroundColor: 'var(--color-primary-800)' }}>
+            <Fields.FormInput label="Description" name="content" type="text" onChange={handleInputChange} value={values.content} placeholder="Finir l'exercice 1..." required />
+            <Fields.FormSelect label="Matière (Module)" name="subjectId" onChange={handleInputChange} noOption="-- Sélectionnez un module --" value={values.subjectId} options={(subjects || []).map(x => { return { option: 'Cours ' + x.module, value: x.id } })} required />
+            <Fields.FormInput label="A faire pour le" name="timestamp" type="date" min={new Date().toISOString().split("T")[0]} onChange={handleInputChange} value={values.timestamp} required/>
+
+            {user.userType > 0 && groups && groups.map(x => <>
+              <input type="radio" id={x.id} name="groupId" onChange={handleInputChange} />
+              <label for={x.id}>{x.name}</label>
+            </>)}
+
+            <Fields.FormButton type="submit">Ajouter le travail</Fields.FormButton>
+          </Form>
+        </div>
+      ) : <Loader type="Oval" color="var(--color-accent)" height="5em" width="100%" />}
     </UserLayout>
   );
 };
