@@ -85,7 +85,7 @@ export default function CreateHomeworkPage() {
   }
 
   if (user && subjects) content = (<>
-    <Title appendGradient="nouveau travail">
+    <Title appendGradient="travail à faire">
       Ajout d'un
     </Title>
 
@@ -105,7 +105,7 @@ export default function CreateHomeworkPage() {
   </>);
 
   return (
-    <UserLayout user={user} title="Ajout d'un devoir" flex={true}>
+    <UserLayout user={user} title="Ajouter un devoir" flex={true}>
       <style jsx global>{`
         body::selection {
           background-color: rebeccapurple !important;
