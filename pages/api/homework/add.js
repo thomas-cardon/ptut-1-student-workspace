@@ -6,17 +6,27 @@ import { query } from '../../../lib/db';
 async function handler(req, res, session) {
   if (!req?.session?.get('user')) return res.status(401).send({ error: 'NOT_AUTHORIZED', success: false });
 
-  let post = req.body;
-  let errors = validate(addHomework, {
+  if (!req.body.groupId) return res.status(401).send({ error: 'MISSING_PARAMETERS', success: false }); // TODO: || autre variables etc
+  if (req.session.get('user').userType === 0 && req.body.groupId !== req.session.get('user')?.group?.id) return res.status(401).send({ error: 'NOT_AUTHORIZED', success: false });
+
+  let homework = req.body;
+
+  let errors = validate(homework, {
     content: {
       presence: true,
       length: {
         minimum: 5
       }
+    },
+    timestamp: {
+      presence: true
+    },
+    subjectId: {
+      presence: true
     }
+    /* Pas besoin de re-valider groupId vu qu'on vérifie déjà juste avant, et que si userType > 0 && groupId inexistant, alors on prend celui de l'utilisateur */
   });
 
-  console.dir(post);
   if (errors) return res.status(400).send({ errors, success: false });
 
   try {
@@ -25,7 +35,7 @@ async function handler(req, res, session) {
       INSERT INTO homework (timestamp, content, subjectId, groupId)
       VALUES (?, ?, ?, ?)
       `,
-      [addHomework.timestamp, addHomework.content, addHomework.subjectId, addHomework.groupId]
+      [homework.timestamp, homework.content, homework.subjectId, homework.groupId || req.session.get('user')?.group?.id]
     );
 
     res.send({ success: true });
