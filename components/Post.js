@@ -6,7 +6,7 @@ import { fr } from 'date-fns/locale';
 
 import styles from "./Post.module.css";
 
-export default function Post({ id, title, content, module, authorName, creationTime, email, href, avatar, children }) {
+export default function Post({ id, title, content, module, authorName, creationTime, email, href, avatar_key, avatar_value, children }) {
 
   return (
     <article className={styles.article}>
@@ -25,7 +25,7 @@ export default function Post({ id, title, content, module, authorName, creationT
         </h2>
         <div className={styles.meta}>
            <span className={styles.author}>
-            <Avatar size={30} name={authorName} alt="Photo" mail={email} className={styles.avatar} draggable={false} {...avatar} />
+            <Avatar size={30} name={authorName} alt="Photo" mail={email} className={styles.avatar} draggable={false} {...{ [avatar_key] : avatar_value }} />
             {authorName}
            </span>
            {creationTime && (

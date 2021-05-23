@@ -22,16 +22,15 @@ async function handler(req, res, session) {
     }
   });
 
-  console.dir(post);
   if (errors) return res.status(400).send({ errors, success: false });
 
   try {
     const results = await query(
       `
-      INSERT INTO posts (title, content, userId, subjectId, courseId, isHomework, homeworkDate)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO posts (title, content, userId, subjectId)
+      VALUES (?, ?, ?, ?)
       `,
-      [post.title, post.content, user.userId, post.subjectId, post.courseId, post.isHomework, post.homeworkDate]
+      [post.title, post.content, req?.session?.get('user').userId, post.subjectId]
     );
 
     res.send({ success: true });

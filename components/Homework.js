@@ -1,19 +1,67 @@
-import styles from './Homework.module.css';
+import { useState, useEffect } from 'react';
+import Loader from 'react-loader-spinner';
 
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
-export default function Homework({ timestamp, description, subjectId, name, isDone, userId, groupId }) {
+import useSWR from 'swr';
+import { fetcher } from '../lib/hooks';
+
+import { FormButton, ButtonGroup } from '../components/FormFields';
+import Link from '../components/Link';
+
+import styles from './Homework.module.css';
+
+export default function Homework({ user, groupId }) {
+  const { data, error } = useSWR('/api/homework', fetcher);
+
+  const [day, setDay] = useState(0);
+  const [homework, setHomework] = useState({});
+
+  useEffect(() => {
+    if (!data || error) return;
+
+    let h = {};
+
+    for (let i = 0; i < data.length; i++) {
+      let date = format(new Date(data[i].date), 'EEEE dd LLL', { locale: fr });
+      if (h[date]) h[date].push(data[i]);
+      else h[date] = [ data[i] ];
+    }
+
+    setHomework(h);
+  }, [data]);
+
+  if (error) {
+    console.error(error);
+    return <></>;
+  }
+
+  if (!homework || !Object.entries(homework)[day]) return <></>;
 
   return (
     <div className={styles.content}>
-      <h1>Travail à faire :</h1>
-      <h5 className={styles.title}>
-        <span>Pour le&nbsp;</span>
-        <span className={styles.module}>{format(new Date(timestamp * 1000), 'EEEE dd LLL', { locale: fr })}</span>
-      </h5>
-      <h4>{subjectId + " " + name}</h4>
-      <h5>{description} {isDone}</h5>
-    </div>
-  );
+      {user?.group ? (<>
+        <div className="buttons">
+          <ButtonGroup style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+            <FormButton disabled={day <= 0} onClick={() => setDay(day - 1)}>{"«"}</FormButton>
+            <Link href="/homework/add">
+              <FormButton disabled={user.userType === 0 && !user.delegate}>{"+"}</FormButton>
+            </Link>
+            <FormButton disabled={day === Object.entries(homework).length - 1} onClick={() => setDay(day + 1)}>{"»"}</FormButton>
+          </ButtonGroup>
+        </div>
+        <h1>Travail à faire</h1>
+          <div key={Object.entries(homework)[day][0]}>
+            <h5 className={styles.title}>
+              <span>Pour le&nbsp;</span>
+              <span className={styles.date}>{Object.entries(homework)[day][0]}</span>
+            </h5>
+            {Object.entries(homework)[day][1].map((element, i) => (<div key={Object.entries(homework)[day][0] + '-' + i}>
+              <h4>{element.module} {element.name}</h4>
+              <h6>• {element.content}</h6>
+            </div>))}
+          </div>
+      </>) : <Loader type="Oval" color="var(--color-accent)" height="2rem" width="100%" style={{ padding: '5rem' }} />}
+  </div>);
 };
