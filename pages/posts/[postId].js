@@ -3,7 +3,6 @@ import Error from 'next/error';
 
 import useUser from '../../lib/useUser';
 import { usePost } from '../../lib/hooks';
-import withSession from "../../lib/session";
 
 const Editor = dynamic(() => import("../../components/Editor"), { ssr: false });
 import UserLayout from '../../components/UserLayout';

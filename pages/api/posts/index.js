@@ -16,8 +16,7 @@ async function handler(req, res, session) {
       `
     );
 
-    if (data.length > 0) res.send(data);
-    else res.status(404).send({ message: 'NOT_FOUND', success: false });
+    res.send(data);
   }
   catch (e) {
     res.status(500).json({ message: e.message, success: false });

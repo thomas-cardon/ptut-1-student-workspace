@@ -12,7 +12,7 @@ import { HiAdjustments, HiLogout, HiArrowRight, HiDotsHorizontal, HiMoon, HiSun,
 import Loader from 'react-loader-spinner';
 
 import { useTheme } from 'next-themes';
-import { parseISO, formatDistanceToNow } from 'date-fns';
+import { parseISO, formatDistance, formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
 import Button from './FormFields/FormButton';
@@ -22,13 +22,13 @@ import Card from './Card';
 
 const isServer = () => typeof window === `undefined`;
 
-import { useADE, getClasses, getCurrentCourse } from '../lib/ade';
-import { useCurrentClass } from '../lib/hooks';
+import { useADE, getClasses, getCurrentCourse, getNextCourse } from '../lib/ade';
 
 export default function UserLayout({ title, user, children, header, flex = true, year, ...rest }) {
   const { theme, setTheme } = useTheme();
 
   const [current, setCurrentCourse] = useState(null);
+  const [next, setNextCourse] = useState(null);
 
   /* désactivation SWS
   const { data : currentSWS } = useCurrentClass();
@@ -45,7 +45,10 @@ export default function UserLayout({ title, user, children, header, flex = true,
         useADE(user, { year })
         .then(calendar =>
           getCurrentCourse({ user, year, calendar })
-          .then(setCurrentCourse).catch(console.error))
+          .then(course => {
+            setCurrentCourse(course);
+            if (!course) getNextCourse({ user, year, calendar }).then(setNextCourse).catch(console.error);
+          }).catch(console.error))
         .catch(console.error);
       }
 
@@ -94,7 +97,7 @@ export default function UserLayout({ title, user, children, header, flex = true,
           </Button>
         </Card>
 
-        {current && current.teacher && ( /* SWS */
+        {/*current && current.teacher && ( /* SWS
           <Card className={[styles.card, styles.currentClass].join(' ')} style={{ alignContent: 'center' }}>
             <p className={styles.text}>
               <span className={styles.title}>{current.subject.module} {current.subject.name}</span>
@@ -115,7 +118,7 @@ export default function UserLayout({ title, user, children, header, flex = true,
               </Link>
             </div>
           </Card>
-        )}
+        )*/}
 
         {current?.summary && ( /* ADE */
           <Card className={[styles.card, styles.currentClass].join(' ')}>
@@ -130,6 +133,25 @@ export default function UserLayout({ title, user, children, header, flex = true,
               <Button icon={<HiDotsHorizontal />}>Voir</Button>
               <Link href={current?.meeting || '#'} target="_blank">
                 <Button is="success" icon={<HiArrowRight />} disabled={typeof current.meeting === 'undefined'}>Rejoindre</Button>
+              </Link>
+            </div>
+          </Card>
+        )}
+
+        {!current?.summary && next?.summary && ( /* ADE Prochain cours */
+          <Card className={[styles.card, styles.nextClass].join(' ')}>
+            <p className={styles.text}>
+              <span className={styles.title}>⏭️ {next.summary}</span>
+              <span className={styles.subtitle}><i>{next.description ? next.description.trim() : 'Sans description'}</i></span>
+              <span className={styles.subtitle}><b>{next.location}</b></span>
+              <span className={styles.subtitle} style={{ color: '#27ae60' }}>Démarre {formatDistanceToNow(next.start, { addSuffix: true, locale: fr })}</span>
+              <span className={styles.subtitle} style={{ color: '#27ae60' }}>Durée: {formatDistance(next.start, next.end, { locale: fr })}</span>
+            </p>
+
+            <div className="buttons">
+              <Button icon={<HiDotsHorizontal />}>Voir</Button>
+              <Link href={next?.meeting || '#'} target="_blank">
+                <Button is="success" icon={<HiArrowRight />} disabled={typeof next.meeting === 'undefined'}>Rejoindre</Button>
               </Link>
             </div>
           </Card>

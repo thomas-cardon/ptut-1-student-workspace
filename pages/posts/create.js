@@ -102,8 +102,9 @@ export default function CreatePostPage() {
           <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', columnGap: '20px' }}>
             <Form onSubmit={onSubmit} style={{ flex: '1', padding: '1em', margin: '0 auto', borderRadius: '8px', backgroundColor: 'var(--color-primary-800)' }}>
               <Fields.FormInput label="Titre du post" name="title" type="text" onChange={handleInputChange} value={values.title} placeholder="Titre" required />
-              <Fields.FormSelect label="Matière (Module)" name="subjectId" disabled={user.userType === 0} onChange={handleInputChange} noOption="-- Sélectionnez un module --" value={values.subjectId} options={(subjects || []).map(x => { return { option: 'Cours ' + x.module, value: x.id } })} />
+              <Fields.FormSelect label="Matière (Module)" name="subjectId" disabled={user.userType === 0} onChange={handleInputChange} noOption="-- Sélectionnez un module --" value={values.subjectId} options={(subjects || []).map(x => { return { option: x.module + ' | ' + x.name, value: x.id } })} />
 
+              <label style={{ marginRight: '1em', fontWeight: 'bolder', color: 'white' }}>Ou, un groupe sélectionné</label>
               {groups && groups.map(x => <Fields.FormRadio id={x.id} name="groupId" onChange={handleInputChange}>{x.name}</Fields.FormRadio>)}
 
               <Fields.FormButton type="submit" is="danger">Créer un nouveau post</Fields.FormButton>
