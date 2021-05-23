@@ -99,6 +99,11 @@ p {
 .buttons {
   gap: 10px;
   display: flex;
+  flex-wrap: wrap;
+}
+
+.buttons button {
+  width: 100%;
 }
 
 aside {

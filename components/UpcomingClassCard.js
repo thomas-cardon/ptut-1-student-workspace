@@ -8,7 +8,7 @@ import Loader from 'react-loader-spinner';
 import Link from './Link';
 import Button from './FormFields/FormButton';
 
-import { HiDotsHorizontal, HiArrowRight } from "react-icons/hi";
+import { HiDotsHorizontal, HiPencilAlt, HiArrowRight } from "react-icons/hi";
 
 import { useADE, getClasses, getCurrentCourse, getNextCourse } from '../lib/ade';
 import { formatDistance, formatDistanceToNow } from 'date-fns';
@@ -59,7 +59,10 @@ export default function UpcomingClassCard({ user, year }) {
           <span style={{ color: current ? 'var(--color-accent)' : '#27ae60' }}>Durée: {formatDistance(course.start, course.end, { locale: fr })}</span>
         </p>
 
-        <div className="buttons">
+        <div className="buttons" style={{ justifyContent: 'center' }}>
+          <Link href={"/course/notes/" + course.id}>
+            <Button icon={<HiPencilAlt />}>Créer nouvelle note</Button>
+          </Link>
           <Link href={"/course/" + course.id}>
             <Button icon={<HiDotsHorizontal />}>Voir</Button>
           </Link>
