@@ -1,0 +1,28 @@
+.current, .next {
+ gap: 20px;
+}
+
+.current {
+ border: 1px solid var(--color-accent);
+}
+
+.next {
+ border: 1px solid #27ae60;
+}
+
+.title {
+ font-weight: bold;
+ font-size: 1.2rem;
+ color: var(--color-primary-100);
+}
+
+.text {
+  height: 100%;
+  display: flex;
+
+  flex-direction: column;
+  align-items: flex-start;
+
+  text-align: left;
+  float: left;
+}

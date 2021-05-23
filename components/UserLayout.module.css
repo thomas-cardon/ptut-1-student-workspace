@@ -77,26 +77,14 @@
   float: right;
 }
 
-.actions, .currentClass, .nextClass {
-  gap: 20px;
-}
-
-.currentClass {
-  border: 1px solid var(--color-accent);
-}
-
-.nextClass {
-  border: 1px solid #27ae60;
-}
-
 .card span.title {
-  font-weight: bold;
-  font-size: 1.2rem;
-  color: var(--color-primary-100);
+ font-weight: bold;
+ font-size: 1.2rem;
+ color: var(--color-primary-100);
 }
 
-.card span.subtitle {
-  color: var(--color-primary-300);
+.actions {
+  gap: 20px;
 }
 
 .text {
