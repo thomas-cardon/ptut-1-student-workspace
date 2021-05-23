@@ -12,7 +12,7 @@ import { HiAdjustments, HiLogout, HiArrowRight, HiDotsHorizontal, HiMoon, HiSun,
 import Loader from 'react-loader-spinner';
 
 import { useTheme } from 'next-themes';
-import { parseISO, formatDistanceToNow } from 'date-fns';
+import { parseISO, formatDistance, formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
 import Button from './FormFields/FormButton';
@@ -97,7 +97,7 @@ export default function UserLayout({ title, user, children, header, flex = true,
           </Button>
         </Card>
 
-        {current && current.teacher && ( /* SWS */
+        {/*current && current.teacher && ( /* SWS
           <Card className={[styles.card, styles.currentClass].join(' ')} style={{ alignContent: 'center' }}>
             <p className={styles.text}>
               <span className={styles.title}>{current.subject.module} {current.subject.name}</span>
@@ -118,7 +118,7 @@ export default function UserLayout({ title, user, children, header, flex = true,
               </Link>
             </div>
           </Card>
-        )}
+        )*/}
 
         {current?.summary && ( /* ADE */
           <Card className={[styles.card, styles.currentClass].join(' ')}>
@@ -145,6 +145,7 @@ export default function UserLayout({ title, user, children, header, flex = true,
               <span className={styles.subtitle}><i>{next.description ? next.description.trim() : 'Sans description'}</i></span>
               <span className={styles.subtitle}><b>{next.location}</b></span>
               <span className={styles.subtitle} style={{ color: '#27ae60' }}>Démarre {formatDistanceToNow(next.start, { addSuffix: true, locale: fr })}</span>
+              <span className={styles.subtitle} style={{ color: '#27ae60' }}>Durée: {formatDistance(next.start, next.end, { locale: fr })}</span>
             </p>
 
             <div className="buttons">
