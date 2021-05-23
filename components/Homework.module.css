@@ -33,6 +33,14 @@
   min-height: 30vh;
 }
 
+@media screen and (max-width: 900px) {
+  .content {
+    width: 80%;
+    margin-inline: auto;
+  }
+}
+
+
 .content > h1 {
   text-align: center;
   margin-top: 0;
