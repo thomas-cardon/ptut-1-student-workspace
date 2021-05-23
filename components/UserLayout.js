@@ -42,7 +42,7 @@ export default function UserLayout({ title, user, children, header, flex = true,
   if (!isServer()) {
     useEffect(() => {
       function exec() {
-        useADE(user, undefined, undefined, year)
+        useADE(user, { year })
         .then(calendar =>
           getCurrentCourse({ user, year, calendar })
           .then(setCurrentCourse).catch(console.error))
