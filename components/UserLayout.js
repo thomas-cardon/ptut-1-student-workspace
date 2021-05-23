@@ -130,7 +130,9 @@ export default function UserLayout({ title, user, children, header, flex = true,
             </p>
 
             <div className="buttons">
-              <Button icon={<HiDotsHorizontal />}>Voir</Button>
+              <Link href={"/course/" + next.id}>
+                <Button icon={<HiDotsHorizontal />}>Voir</Button>
+              </Link>
               <Link href={current?.meeting || '#'} target="_blank">
                 <Button is="success" icon={<HiArrowRight />} disabled={typeof current.meeting === 'undefined'}>Rejoindre</Button>
               </Link>
@@ -149,7 +151,9 @@ export default function UserLayout({ title, user, children, header, flex = true,
             </p>
 
             <div className="buttons">
-              <Button icon={<HiDotsHorizontal />}>Voir</Button>
+              <Link href={"/course/" + next.id}>
+                <Button icon={<HiDotsHorizontal />}>Voir</Button>
+              </Link>
               <Link href={next?.meeting || '#'} target="_blank">
                 <Button is="success" icon={<HiArrowRight />} disabled={typeof next.meeting === 'undefined'}>Rejoindre</Button>
               </Link>
