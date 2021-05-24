@@ -177,7 +177,7 @@ export default function LoginPage() {
         display: block;
       }
 
-      form > div {
+      form > div:not(.buttons) {
         width: 60% !important;
       }
 
