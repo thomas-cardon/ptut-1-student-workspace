@@ -251,6 +251,8 @@ export default function LoginPage() {
         align-self: flex-end;
         margin: 0 auto;
         width: fit-content !important;
+
+        flex-wrap: nowrap;
       }
     `}</style>
     <BasicLayout title="SWS -> Connexion" disableBackground={true}>
