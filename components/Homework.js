@@ -37,22 +37,34 @@ export default function Homework({ user, groupId }) {
     return <></>;
   }
 
-  if (!homework || !Object.entries(homework)[day]) return <></>;
+  console.dir(Object.entries(homework));
 
   return (
     <div className={styles.content}>
-      {user?.group ? (<>
+      {data && user?.group ? (<>
         <div className="buttons">
           <ButtonGroup style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
             <FormButton disabled={day <= 0} onClick={() => setDay(day - 1)}>{"«"}</FormButton>
             <Link href="/homework/add">
               <FormButton disabled={user.userType === 0 && !user.delegate}>{"+"}</FormButton>
             </Link>
-            <FormButton disabled={day === Object.entries(homework).length - 1} onClick={() => setDay(day + 1)}>{"»"}</FormButton>
+            <FormButton disabled={day >= Object.entries(homework).length - 1} onClick={() => setDay(day + 1)}>{"»"}</FormButton>
           </ButtonGroup>
         </div>
         <h1>Travail à faire</h1>
-          <div key={Object.entries(homework)[day][0]}>
+        {data.length === 0 ? (
+          <div>
+            <h5 className={styles.title}>
+              <span className={styles.date}>A ce jour</span>
+            </h5>
+            <p style={{ padding: '0.5em' }}>
+              Vous n'avez pas de travail à faire.
+              <br />
+              Peut-être devriez vous demander à votre délégué de les ajouter ?
+            </p>
+          </div>
+        ) : (
+          <div>
             <h5 className={styles.title}>
               <span>Pour le&nbsp;</span>
               <span className={styles.date}>{Object.entries(homework)[day][0]}</span>
@@ -62,6 +74,7 @@ export default function Homework({ user, groupId }) {
               <h6>• {element.content}</h6>
             </div>))}
           </div>
+        )}
       </>) : <Loader type="Oval" color="var(--color-accent)" height="2rem" width="100%" style={{ padding: '5rem' }} />}
   </div>);
 };
