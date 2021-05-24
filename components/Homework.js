@@ -37,8 +37,6 @@ export default function Homework({ user, groupId }) {
     return <></>;
   }
 
-  console.dir(Object.entries(homework));
-
   return (
     <div className={styles.content}>
       {data && user?.group ? (<>
