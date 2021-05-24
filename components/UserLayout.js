@@ -1,63 +1,25 @@
-import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 
 import Sidebar from './Sidebar';
 import Searchbar from './Searchbar';
 
+import Card from './Card';
+import UpcomingClassCard from './UpcomingClassCard';
+
+import Link from './Link';
+import Button from './FormFields/FormButton';
+
 import styles from './UserLayout.module.css';
 
 import Avatar from 'react-avatar';
-import { HiAdjustments, HiLogout, HiArrowRight, HiDotsHorizontal, HiMoon, HiSun, HiColorSwatch } from "react-icons/hi";
+import { HiAdjustments, HiLogout, HiMoon, HiSun } from "react-icons/hi";
 
 import Loader from 'react-loader-spinner';
 
 import { useTheme } from 'next-themes';
-import { parseISO, formatDistance, formatDistanceToNow } from 'date-fns';
-import { fr } from 'date-fns/locale';
-
-import Button from './FormFields/FormButton';
-
-import Link from './Link';
-import Card from './Card';
-
-const isServer = () => typeof window === `undefined`;
-
-import { useADE, getClasses, getCurrentCourse, getNextCourse } from '../lib/ade';
 
 export default function UserLayout({ title, user, children, header, flex = true, year, ...rest }) {
   const { theme, setTheme } = useTheme();
-
-  const [current, setCurrentCourse] = useState(null);
-  const [next, setNextCourse] = useState(null);
-
-  /* désactivation SWS
-  const { data : currentSWS } = useCurrentClass();
-
-  useEffect(() => {
-    if (currentSWS && !currentSWS.error) setCurrentCourse(current);
-    console.dir(currentSWS);
-  }, [currentSWS]);
-  */
-
-  if (!isServer()) {
-    useEffect(() => {
-      function exec() {
-        useADE(user, { year })
-        .then(calendar =>
-          getCurrentCourse({ user, year, calendar })
-          .then(course => {
-            setCurrentCourse(course);
-            if (!course) getNextCourse({ user, year, calendar }).then(setNextCourse).catch(console.error);
-          }).catch(console.error))
-        .catch(console.error);
-      }
-
-      exec();
-
-      const intervalId = setInterval(exec, 30*60*1000);
-      return () => clearInterval(intervalId);
-    }, [user, year]);
-  }
 
   return (<>
     <Head>
@@ -120,46 +82,7 @@ export default function UserLayout({ title, user, children, header, flex = true,
           </Card>
         )*/}
 
-        {current?.summary && ( /* ADE */
-          <Card className={[styles.card, styles.currentClass].join(' ')}>
-            <p className={styles.text}>
-              <span className={styles.title}>{current.summary}</span>
-              <span className={styles.subtitle}><i>{current.description ? current.description.trim() : 'Sans description'}</i></span>
-              <span className={styles.subtitle}><b>{current.location}</b></span>
-              <span className={styles.subtitle} style={{ color: 'var(--color-accent)' }}>Démarré {formatDistanceToNow(current.start, { addSuffix: true, locale: fr })}</span>
-            </p>
-
-            <div className="buttons">
-              <Link href={"/course/" + next.id}>
-                <Button icon={<HiDotsHorizontal />}>Voir</Button>
-              </Link>
-              <Link href={current?.meeting || '#'} target="_blank">
-                <Button is="success" icon={<HiArrowRight />} disabled={typeof current.meeting === 'undefined'}>Rejoindre</Button>
-              </Link>
-            </div>
-          </Card>
-        )}
-
-        {!current?.summary && next?.summary && ( /* ADE Prochain cours */
-          <Card className={[styles.card, styles.nextClass].join(' ')}>
-            <p className={styles.text}>
-              <span className={styles.title}>⏭️ {next.summary}</span>
-              <span className={styles.subtitle}><i>{next.description ? next.description.trim() : 'Sans description'}</i></span>
-              <span className={styles.subtitle}><b>{next.location}</b></span>
-              <span className={styles.subtitle} style={{ color: '#27ae60' }}>Démarre {formatDistanceToNow(next.start, { addSuffix: true, locale: fr })}</span>
-              <span className={styles.subtitle} style={{ color: '#27ae60' }}>Durée: {formatDistance(next.start, next.end, { locale: fr })}</span>
-            </p>
-
-            <div className="buttons">
-              <Link href={"/course/" + next.id}>
-                <Button icon={<HiDotsHorizontal />}>Voir</Button>
-              </Link>
-              <Link href={next?.meeting || '#'} target="_blank">
-                <Button is="success" icon={<HiArrowRight />} disabled={typeof next.meeting === 'undefined'}>Rejoindre</Button>
-              </Link>
-            </div>
-          </Card>
-        )}
+        <UpcomingClassCard user={user} year={year} />
 
         <Card className={[styles.card, styles.actions].join(' ')} style={{ alignContent: 'center' }}>
           <p className={styles.text}>
