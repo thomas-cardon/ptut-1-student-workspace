@@ -102,10 +102,6 @@ p {
   flex-wrap: wrap;
 }
 
-.buttons button {
-  width: 100%;
-}
-
 aside {
   display: flex;
   flex-direction: column;

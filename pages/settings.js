@@ -101,7 +101,7 @@ export default function SettingsPage() {
       <div onSubmit={onSubmit} style={{ width: '89%', borderRadius: '8px', backgroundColor: 'var(--color-primary-800)', padding: '1em', margin: 'auto auto 2em' }}>
         <h2>Attacher un avatar</h2>
         <hr style={{ marginBottom: '1em', marginTop: '-0.5em' }} />
-        <div className="buttons">
+        <div className="buttons" style={{ flexWrap: 'nowrap' }}>
           <Link href={`https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_URL_PREFIX + '/api/callback/github/exchange_token'}&allow_signup=false&login=${user.email}`}>
             <Fields.FormButton type="submit" icon={<HiSparkles />}>Connexion via GitHub</Fields.FormButton>
           </Link>
