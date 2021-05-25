@@ -8,11 +8,11 @@ async function handler(req, res, session) {
   try {
     const data = await query(
       `
-      SELECT homework.id, timestamp, content, subjects.module, subjects.name
+      SELECT homework.id, date, content, subjects.module, subjects.name, homework.groupId
       FROM homework
       INNER JOIN subjects ON homework.subjectId = subjects.id
       WHERE homework.groupId = ?
-      ORDER BY timestamp DESC
+      ORDER BY date ASC
       `, [req.session.get('user').group.id]);
 
     res.json(data);

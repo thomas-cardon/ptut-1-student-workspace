@@ -77,22 +77,14 @@
   float: right;
 }
 
-.actions, .currentClass {
-  gap: 20px;
-}
-
-.currentClass {
-  border: 1px solid var(--color-accent);
-}
-
 .card span.title {
-  font-weight: bold;
-  font-size: 1.2rem;
-  color: var(--color-primary-100);
+ font-weight: bold;
+ font-size: 1.2rem;
+ color: var(--color-primary-100);
 }
 
-.card span.subtitle {
-  color: var(--color-primary-300);
+.actions {
+  gap: 20px;
 }
 
 .text {

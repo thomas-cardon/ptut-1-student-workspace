@@ -35,6 +35,7 @@
   .schedule {
     display: grid;
     grid-template-columns: 1fr;
+    grid-template-rows: [track-1] 1fr [track-2] 1fr [track-3] 1fr [track-4] 1fr [track-5] 1fr [track-6] 1fr [track-7] 1fr;
 
     width: 100%;
     min-height: 100%;
@@ -47,12 +48,29 @@
   }
 
   .schedule > .trackSlot {
-    display: none;
+    display: block;
+    width: 100%;
+    margin: 0.25em 0;
+    grid-area: unset !important;
+    grid-row: tracks;
+
+    border-bottom: unset;
+  }
+
+  .schedule > .trackSlot > *:first-child {
+    padding: 0 1em;
+    float: left;
+  }
+
+  .schedule > .trackSlot > *:last-child {
+    padding: 0 1em;
+    float: right;
   }
 
   .schedule > :not(.trackSlot, .timeSlot) {
     margin: 0.25em 0;
     grid-area: unset !important;
+    grid-row: tracks;
   }
 
   .schedule > :not(.trackSlot, .timeSlot) .date {

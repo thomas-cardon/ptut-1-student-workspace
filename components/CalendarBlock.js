@@ -110,13 +110,13 @@ export default function CalendarBlock({ user, data }) {
             🖍️&nbsp;Titre
           </Item>
           <Item id="change-module" onClick={handleItemClick}>
-            ❓&nbsp;Module
+            📚&nbsp;Module
           </Item>
           <Item id="change-description" onClick={handleItemClick}>
-            ❓&nbsp;Description
+            💬&nbsp;Description
           </Item>
           <Item id="change-meeting" onClick={handleItemClick}>
-            💬&nbsp;Réunion
+            💻&nbsp;Réunion
           </Item>
           <Item id="change-room" onClick={handleItemClick}>
             🚪&nbsp;Salle
