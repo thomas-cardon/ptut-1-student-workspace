@@ -58,8 +58,6 @@ export default function SchedulePage() {
     window.addEventListener('resize', handleResize);
     handleResize();
 
-    console.log(gridEnabled);
-
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
@@ -72,13 +70,13 @@ export default function SchedulePage() {
   }, [user]);
 
   useEffect(() => {
-    if (!isServer()) {
-      if (localStorage.getItem('schedule/settings'))
-        setSettings(JSON.parse(localStorage.getItem('schedule/settings')));
+    if (isServer()) return;
 
-      return () => localStorage.setItem('schedule/settings', JSON.stringify(settings));
-    }
-  }, [settings]);
+    if (localStorage.getItem('schedule/settings'))
+      setSettings(JSON.parse(localStorage.getItem('schedule/settings')));
+  }, []);
+
+  useEffect(() => localStorage.setItem('schedule/settings', JSON.stringify(settings)), [settings]);
 
 
   function handleItemClick({ event, props, triggerEvent, data }){
@@ -87,6 +85,13 @@ export default function SchedulePage() {
         router.push('/schedule/edit');
         break;
       case "refresh":
+        break;
+      case "toggle-module":
+        setSettings({ ...settings, showModule: !settings.showModule });
+        break;
+        break;
+      case "toggle-teachers":
+        setSettings({ ...settings, showTeachers: !settings.showTeachers });
         break;
       default:
         console.log('Affichage ->', event.currentTarget.id);
@@ -102,8 +107,8 @@ export default function SchedulePage() {
   return <UserLayout user={user} title="Emploi du temps" flex={true} year={year} header={<>
       <Title appendGradient="temps" subtitle={`Semaine ${week} ${year && year !== user?.year ? '| 👥 ' + year : ''}`} button={<>
         <Menu id={MENU_ID}>
-          <Item id="toggle-module" onClick={handleItemClick} disabled="true">🔄 Afficher le module</Item>
-          <Item id="toggle-teachers" onClick={handleItemClick} disabled="true">🔄 Afficher les professeurs</Item>
+          <Item id="toggle-module" onClick={handleItemClick}>{settings.showModule ? 'Cacher' : 'Afficher'} les modules</Item>
+          <Item id="toggle-teachers" onClick={handleItemClick}>{settings.showTeachers ? 'Cacher' : 'Afficher'} les professeurs</Item>
           <Separator />
           {user?.userType > 0 && <Item id="refresh" onClick={handleItemClick} disabled="true">🔄 Forcer l'actualisation</Item>}
           <Separator />
