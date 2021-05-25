@@ -46,8 +46,6 @@ export default function UpcomingClassCard({ user, year }) {
     }, [user, year]);
   }
 
-  console.dir(course);
-
   return (
     <Card className={course === null ? '' : styles[current ? 'current' : 'next']} style={{ alignContent: 'center' }}>
       {!user?.isLoggedIn || !course ? <Loader type="Oval" color="var(--color-accent)" style={{ margin: 'auto auto' }} width="100%" /> : (<>

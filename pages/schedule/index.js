@@ -45,6 +45,21 @@ export default function SchedulePage() {
 
   const [week, setWeek] = useState(selectedWeek);
   const [year, setYear] = useState(null);
+  const [gridEnabled, setGridEnabled] = useState(true);
+
+  useEffect(() => {
+    function handleResize() {
+      setGridEnabled(window.matchMedia('screen and (min-width: 900px)').matches);
+    }
+
+    // Add event listener
+    window.addEventListener('resize', handleResize);
+    handleResize();
+
+    console.log(gridEnabled);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     if (!isServer() && user) {
@@ -88,12 +103,13 @@ export default function SchedulePage() {
             return (<FormButton key={i} disabled={(selectedWeek + e) === week} onClick={() => setWeek(selectedWeek + e)}>{selectedWeek + e}</FormButton>);
           })}
           <FormButton disabled={selectedWeek === 52} onClick={() => setWeek(week + 1)}>{"»"}</FormButton>
+          <FormButton is="action" icon={<HiDotsHorizontal />} onClick={e => setGridEnabled(!gridEnabled)}>{gridEnabled ? 'Grille' : 'Liste'}</FormButton>
           <FormButton is="action" icon={<HiDotsHorizontal />} onClick={e => show(e)}></FormButton>
         </ButtonGroup>
         </>}>
         Emploi du
       </Title>
     </>}>
-      {user && year && <Schedule index={week} user={user} year={year} />}
+      {user && year && <Schedule index={week} user={user} year={year} grid={gridEnabled} />}
     </UserLayout>;
 };
