@@ -62,7 +62,7 @@ export default function UpcomingClassCard({ user, year }) {
           <Link href="/" /*href={"/course/notes/" + course.id}*/ style={{ flex: '1' }}>
             <Button icon={<HiPencilAlt />} center={true}>Créer note</Button>
           </Link>
-          <ButtonGroup style={{ display: 'flex' }}>
+          <ButtonGroup style={{ display: 'flex', flex: '1 1 100%' }}>
             <Link href="/" /*href={"/course/" + course.id}*/>
               <Button is="action" icon={<HiDotsHorizontal />}>Voir</Button>
             </Link>

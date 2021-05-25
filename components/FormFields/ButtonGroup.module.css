@@ -12,6 +12,10 @@
   outline: 0;
 }
 
+.btnGroup > * {
+  flex: 1 1 0;
+}
+
 .btnGroup button {
   border-radius: 0;
 }
