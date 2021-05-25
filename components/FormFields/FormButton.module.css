@@ -105,6 +105,10 @@
   height: 100%;
 }
 
+.content.center {
+  justify-content: center;
+}
+
 .content span {
   width: 100%;
 }

@@ -25,7 +25,7 @@ import "react-contexify/dist/ReactContexify.css";
 
 const isServer = () => typeof window === `undefined`;
 
-export default function Schedule({ user, year, index }) {
+export default function Schedule({ grid, user, year, index }) {
   /*
   * Variable definitions
   */
@@ -186,7 +186,7 @@ export default function Schedule({ user, year, index }) {
       </Highlight>
     )}
 
-    <div className={styles.schedule}>
+    <div className={[styles.schedule, grid ? styles.grid : styles.list].join(' ')}>
       <span className={styles.timeSlot} style={{ gridRow: 'time-0800' }}>8:00</span>
       <span className={styles.timeSlot} style={{ gridRow: 'time-0830' }}>8:30</span>
       <span className={styles.timeSlot} style={{ gridRow: 'time-0900' }}>9:00</span>

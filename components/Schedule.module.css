@@ -31,88 +31,75 @@
   color: unset;
 }
 
-@media screen and (max-width: 900px) {
-  .schedule {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: [track-1] 1fr [track-2] 1fr [track-3] 1fr [track-4] 1fr [track-5] 1fr [track-6] 1fr [track-7] 1fr;
+/* List view */
+.schedule.list {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: [track-1] 1fr [track-2] 1fr [track-3] 1fr [track-4] 1fr [track-5] 1fr [track-6] 1fr [track-7] 1fr;
 
-    width: 100%;
-    min-height: 100%;
+  width: 100%;
+  min-height: 40vh;
 
-    background-color: unset;
-  }
-
-  .schedule > .timeSlot {
-    display: none;
-  }
-
-  .schedule > .trackSlot {
-    display: block;
-    width: 100%;
-    margin: 0.25em 0;
-    grid-area: unset !important;
-    grid-row: tracks;
-
-    border-bottom: unset;
-  }
-
-  .schedule > .trackSlot > *:first-child {
-    padding: 0 1em;
-    float: left;
-  }
-
-  .schedule > .trackSlot > *:last-child {
-    padding: 0 1em;
-    float: right;
-  }
-
-  .schedule > :not(.trackSlot, .timeSlot) {
-    margin: 0.25em 0;
-    grid-area: unset !important;
-    grid-row: tracks;
-  }
-
-  .schedule > :not(.trackSlot, .timeSlot) .date {
-    display: unset !important;
-  }
+  background-color: unset;
 }
 
-@media screen and (min-width: 900px) {
-  .schedule {
-    display: grid;
-    overflow: hidden;
-    position: relative;
+.schedule.list > .timeSlot, .schedule.list > .trackSlot {
+  display: none;
+}
 
-    width: 100%;
-    min-height: 50vh;
+.schedule.list > .trackSlot > *:first-child {
+  padding: 0 1em;
+  float: left;
+}
 
-    grid-template-rows: [tracks] minmax(40px, 3em)
-    [time-0800] 5px [time-0805] 5px [time-0810] 5px [time-0815] 5px [time-0820] 5px [time-0825] 5px
-    [time-0830] 5px [time-0835] 5px [time-0840] 5px [time-0845] 5px [time-0850] 5px [time-0855] 5px
-    [time-0900] 5px [time-0905] 5px [time-0910] 5px [time-0915] 5px [time-0920] 5px [time-0925] 5px
-    [time-0930] 5px [time-0935] 5px [time-0940] 5px [time-0945] 5px [time-0950] 5px [time-0955] 5px
-    [time-1000] 5px [time-1005] 5px [time-1010] 5px [time-1015] 5px [time-1020] 5px [time-1025] 5px
-    [time-1030] 5px [time-1035] 5px [time-1040] 5px [time-1045] 5px [time-1050] 5px [time-1055] 5px
-    [time-1100] 5px [time-1105] 5px [time-1110] 5px [time-1115] 5px [time-1120] 5px [time-1125] 5px
-    [time-1130] 5px [time-1135] 5px [time-1140] 5px [time-1145] 5px [time-1150] 5px [time-1155] 5px
-    [time-1200] 5px [time-1205] 5px [time-1210] 5px [time-1215] 5px [time-1220] 5px [time-1225] 5px
-    [time-1230] 5px [time-1235] 5px [time-1240] 5px [time-1245] 5px [time-1250] 5px [time-1255] 5px
-    [time-1300] 5px [time-1305] 5px [time-1310] 5px [time-1315] 5px [time-1320] 5px [time-1325] 5px
-    [time-1330] 5px [time-1335] 5px [time-1340] 5px [time-1345] 5px [time-1350] 5px [time-1355] 5px
-    [time-1400] 5px [time-1405] 5px [time-1410] 5px [time-1415] 5px [time-1420] 5px [time-1425] 5px
-    [time-1430] 5px [time-1435] 5px [time-1440] 5px [time-1445] 5px [time-1450] 5px [time-1455] 5px
-    [time-1500] 5px [time-1505] 5px [time-1510] 5px [time-1515] 5px [time-1520] 5px [time-1525] 5px
-    [time-1530] 5px [time-1535] 5px [time-1540] 5px [time-1545] 5px [time-1550] 5px [time-1555] 5px
-    [time-1600] 5px [time-1605] 5px [time-1610] 5px [time-1615] 5px [time-1620] 5px [time-1625] 5px
-    [time-1630] 5px [time-1635] 5px [time-1640] 5px [time-1645] 5px [time-1650] 5px [time-1655] 5px
-    [time-1700] 5px [time-1705] 5px [time-1710] 5px [time-1715] 5px [time-1720] 5px [time-1725] 5px
-    [time-1730] 5px [time-1735] 5px [time-1740] 5px [time-1745] 5px [time-1750] 5px [time-1755] 5px
-    [time-1800] 5px [time-1805] 5px [time-1810] 5px [time-1815] 5px [time-1820] 5px [time-1825] 5px
-    [time-1830] 5px [time-1835] 5px [time-1840] 5px [time-1845] 5px [time-1850] 5px [time-1855] 5px
-    [time-1900] 5px;
-    grid-template-columns: [times] 4em [track-1-start] minmax(0, 1fr) [track-1-end track-2-start] minmax(0, 1fr) [track-2-end track-3-start] minmax(0, 1fr) [track-3-end track-4-start] minmax(0, 1fr) [track-4-end track-5-start] minmax(0, 1fr) [track-5-end track-6-start] minmax(0, 1fr) [track-7-end];
-  }
+.schedule.list > .trackSlot > *:last-child {
+  padding: 0 1em;
+  float: right;
+}
+
+.schedule.list > :not(.trackSlot, .timeSlot) {
+  margin: 0.25em 0;
+  grid-area: unset !important;
+  grid-row: tracks;
+}
+
+.schedule.list > :not(.trackSlot, .timeSlot) .date {
+  display: unset !important;
+}
+
+.schedule.grid {
+  display: grid;
+  overflow: hidden;
+  position: relative;
+
+  width: 100%;
+  min-height: 50vh;
+
+  grid-template-rows: [tracks] minmax(40px, 3em)
+  [time-0800] 5px [time-0805] 5px [time-0810] 5px [time-0815] 5px [time-0820] 5px [time-0825] 5px
+  [time-0830] 5px [time-0835] 5px [time-0840] 5px [time-0845] 5px [time-0850] 5px [time-0855] 5px
+  [time-0900] 5px [time-0905] 5px [time-0910] 5px [time-0915] 5px [time-0920] 5px [time-0925] 5px
+  [time-0930] 5px [time-0935] 5px [time-0940] 5px [time-0945] 5px [time-0950] 5px [time-0955] 5px
+  [time-1000] 5px [time-1005] 5px [time-1010] 5px [time-1015] 5px [time-1020] 5px [time-1025] 5px
+  [time-1030] 5px [time-1035] 5px [time-1040] 5px [time-1045] 5px [time-1050] 5px [time-1055] 5px
+  [time-1100] 5px [time-1105] 5px [time-1110] 5px [time-1115] 5px [time-1120] 5px [time-1125] 5px
+  [time-1130] 5px [time-1135] 5px [time-1140] 5px [time-1145] 5px [time-1150] 5px [time-1155] 5px
+  [time-1200] 5px [time-1205] 5px [time-1210] 5px [time-1215] 5px [time-1220] 5px [time-1225] 5px
+  [time-1230] 5px [time-1235] 5px [time-1240] 5px [time-1245] 5px [time-1250] 5px [time-1255] 5px
+  [time-1300] 5px [time-1305] 5px [time-1310] 5px [time-1315] 5px [time-1320] 5px [time-1325] 5px
+  [time-1330] 5px [time-1335] 5px [time-1340] 5px [time-1345] 5px [time-1350] 5px [time-1355] 5px
+  [time-1400] 5px [time-1405] 5px [time-1410] 5px [time-1415] 5px [time-1420] 5px [time-1425] 5px
+  [time-1430] 5px [time-1435] 5px [time-1440] 5px [time-1445] 5px [time-1450] 5px [time-1455] 5px
+  [time-1500] 5px [time-1505] 5px [time-1510] 5px [time-1515] 5px [time-1520] 5px [time-1525] 5px
+  [time-1530] 5px [time-1535] 5px [time-1540] 5px [time-1545] 5px [time-1550] 5px [time-1555] 5px
+  [time-1600] 5px [time-1605] 5px [time-1610] 5px [time-1615] 5px [time-1620] 5px [time-1625] 5px
+  [time-1630] 5px [time-1635] 5px [time-1640] 5px [time-1645] 5px [time-1650] 5px [time-1655] 5px
+  [time-1700] 5px [time-1705] 5px [time-1710] 5px [time-1715] 5px [time-1720] 5px [time-1725] 5px
+  [time-1730] 5px [time-1735] 5px [time-1740] 5px [time-1745] 5px [time-1750] 5px [time-1755] 5px
+  [time-1800] 5px [time-1805] 5px [time-1810] 5px [time-1815] 5px [time-1820] 5px [time-1825] 5px
+  [time-1830] 5px [time-1835] 5px [time-1840] 5px [time-1845] 5px [time-1850] 5px [time-1855] 5px
+  [time-1900] 5px;
+  grid-template-columns: [times] 4em [track-1-start] minmax(0, 1fr) [track-1-end track-2-start] minmax(0, 1fr) [track-2-end track-3-start] minmax(0, 1fr) [track-3-end track-4-start] minmax(0, 1fr) [track-4-end track-5-start] minmax(0, 1fr) [track-5-end track-6-start] minmax(0, 1fr) [track-7-end];
 }
 
 .timeSlot {
@@ -120,14 +107,10 @@
   grid-column: times;
 }
 
-@supports (display: grid) {
-  @media screen and (min-width: 900px) {
-    .trackSlot {
-      display: flex;
-      flex-direction: column;
-      align-content: space-between;
-    }
-  }
+.schedule.grid > .trackSlot {
+  display: flex;
+  flex-direction: column;
+  align-content: space-between;
 }
 
 .trackSlot,
