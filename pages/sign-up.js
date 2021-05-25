@@ -278,7 +278,7 @@ export default function LoginPage({ email }) {
         color: var(--color-accent-hover);
       }
     `}</style>
-    <BasicLayout title="SWS -> Inscription" disableBackground={true}>
+    <BasicLayout title="Inscription" disableBackground={true}>
       <h3>Student Workspace</h3>
       <h5>Inscription</h5>
 

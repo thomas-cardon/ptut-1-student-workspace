@@ -58,7 +58,7 @@ function MyApp({ Component, pageProps }) {
 
         <meta name='twitter:card' content='summary' />
         <meta name='twitter:url' content='https://student-workspace.vercel.app/' />
-        <meta name='twitter:title' content='PWA App' />
+        <meta name='twitter:title' content='Student Workspace' />
         <meta name='twitter:description' content='Votre nouvel environnement de travail' />
         <meta name='twitter:image' content='https://student-workspace.vercel.app/icon-192x192.png' />
         <meta name='twitter:creator' content='@Ryzzzen' />
