@@ -50,7 +50,7 @@ export default function Homework({ user, groupId }) {
           </ButtonGroup>
         </div>
         <h1>Travail à faire</h1>
-        {data.length === 0 ? (
+        {data.length === 0 || !Object.entries(homework)[day] ? (
           <div>
             <h5 className={styles.title}>
               <span className={styles.date}>A ce jour</span>
