@@ -253,7 +253,7 @@ export default function LoginPage() {
         width: fit-content !important;
       }
     `}</style>
-    <BasicLayout title="SWS -> Connexion" disableBackground={true}>
+    <BasicLayout title="Connexion" disableBackground={true}>
       <h3>Student Workspace</h3>
       <p>Connexion</p>
       <Form onSubmit={handleSubmit}>
