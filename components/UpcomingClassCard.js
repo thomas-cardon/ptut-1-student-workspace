@@ -60,11 +60,11 @@ export default function UpcomingClassCard({ user, year }) {
 
         <div className="buttons">
           <Link href="/" /*href={"/course/notes/" + course.id}*/ style={{ flex: '1' }}>
-            <Button icon={<HiPencilAlt />} center="true">Créer note</Button>
+            <Button icon={<HiPencilAlt />} center={true}>Créer note</Button>
           </Link>
           <ButtonGroup style={{ display: 'flex' }}>
             <Link href="/" /*href={"/course/" + course.id}*/>
-              <Button  is="action" icon={<HiDotsHorizontal />}>Voir</Button>
+              <Button is="action" icon={<HiDotsHorizontal />}>Voir</Button>
             </Link>
             <Link href={course?.meeting || '#'} target="_blank">
               <Button is="success" icon={<HiArrowRight />} disabled={typeof course.meeting === 'undefined'}>Rejoindre</Button>
