@@ -23,13 +23,9 @@ import "react-contexify/dist/ReactContexify.css";
 
 import styles from "./CalendarBlock.module.css";
 
-export default function CalendarBlock({ user, data }) {
+export default function CalendarBlock({ user, settings, data }) {
   const { show } = useContextMenu({ id: data.id });
   const { addToast } = useToasts();
-
-  const [settings, setSettings] = useState({ showModule: false, showTeachers: false });
-
-  console.dir(data);
 
   const patch = (key, value) => {
     console.log('[PATCH]', data.id, '->', key, '=', value);

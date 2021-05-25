@@ -25,7 +25,7 @@ import "react-contexify/dist/ReactContexify.css";
 
 const isServer = () => typeof window === `undefined`;
 
-export default function Schedule({ grid, user, year, index }) {
+export default function Schedule({ grid, user, year, settings, index }) {
   /*
   * Variable definitions
   */
@@ -156,7 +156,7 @@ export default function Schedule({ grid, user, year, index }) {
     if (typeof schedule?.success === 'undefined') return;
     console.error(schedule?.message || schedule);
     addToast("Une erreur s'est produite pendant le chargement de l'emploi du temps SWS.", { appearance: 'error' });
-  }, [schedule])
+  }, [schedule]);
 
   /*
   * End of variable definitions
@@ -217,7 +217,7 @@ export default function Schedule({ grid, user, year, index }) {
         <small>{lightFormat(addDays(getDateOfISOWeek(index, new Date().getFullYear()), i), 'dd/MM')}</small>
       </div>)}
 
-      {calendar.map((x, i) => <CalendarBlock key={x.id} user={user} data={x} />)}
+      {calendar.map((x, i) => <CalendarBlock key={x.id} user={user} data={x} settings={settings} />)}
       {!schedule?.message && schedule && schedule.filter(x => new Date(x.start).getHours() >= HOURS_MIN && new Date(x.end).getHours() >= HOURS_MIN && new Date(x.start).getHours() <= HOURS_MAX && new Date(x.end).getHours() <= HOURS_MAX).map((x, i) => <ScheduleBlock data={x} key={'sws' + i} onContextMenu={event => show(event, { props: { id: x.id } })} />)}
     </div>
     </>);

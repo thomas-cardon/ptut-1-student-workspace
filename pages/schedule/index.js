@@ -15,7 +15,7 @@ import GroupList from '../../components/GroupList';
 
 import { ButtonGroup, FormButton } from '../../components/FormFields';
 
-import { HiDotsHorizontal, HiViewGrid, HiViewList } from "react-icons/hi";
+import { HiCog, HiDotsHorizontal, HiViewGrid, HiViewList } from "react-icons/hi";
 
 import {
   Menu,
@@ -45,7 +45,9 @@ export default function SchedulePage() {
 
   const [week, setWeek] = useState(selectedWeek);
   const [year, setYear] = useState(null);
+
   const [gridEnabled, setGridEnabled] = useState(true);
+  const [settings, setSettings] = useState({ showModule: false, showTeachers: false });
 
   useEffect(() => {
     function handleResize() {
@@ -69,6 +71,16 @@ export default function SchedulePage() {
     }
   }, [user]);
 
+  useEffect(() => {
+    if (!isServer()) {
+      if (localStorage.getItem('schedule/settings'))
+        setSettings(JSON.parse(localStorage.getItem('schedule/settings')));
+
+      return () => localStorage.setItem('schedule/settings', JSON.stringify(settings));
+    }
+  }, [settings]);
+
+
   function handleItemClick({ event, props, triggerEvent, data }){
     switch (event.currentTarget.id) {
       case "add":
@@ -90,7 +102,9 @@ export default function SchedulePage() {
   return <UserLayout user={user} title="Emploi du temps" flex={true} year={year} header={<>
       <Title appendGradient="temps" subtitle={`Semaine ${week} ${year && year !== user?.year ? '| 👥 ' + year : ''}`} button={<>
         <Menu id={MENU_ID}>
-          <Item id="add" onClick={handleItemClick}>📝 Ajouter un cours (SWS)</Item>
+          <Item id="toggle-module" onClick={handleItemClick} disabled="true">🔄 Afficher le module</Item>
+          <Item id="toggle-teachers" onClick={handleItemClick} disabled="true">🔄 Afficher les professeurs</Item>
+          <Separator />
           {user?.userType > 0 && <Item id="refresh" onClick={handleItemClick} disabled="true">🔄 Forcer l'actualisation</Item>}
           <Separator />
           <Submenu label="👥 Affichage">
@@ -103,13 +117,13 @@ export default function SchedulePage() {
             return (<FormButton key={i} disabled={(selectedWeek + e) === week} onClick={() => setWeek(selectedWeek + e)}>{selectedWeek + e}</FormButton>);
           })}
           <FormButton disabled={selectedWeek === 52} onClick={() => setWeek(week + 1)}>{"»"}</FormButton>
+          <FormButton icon={<HiCog />} onClick={e => show(e)}></FormButton>
           <FormButton is="action" icon={gridEnabled ? <HiViewGrid /> : <HiViewList />} onClick={e => setGridEnabled(!gridEnabled)}>{gridEnabled ? 'Grille' : 'Liste'}</FormButton>
-          <FormButton is="action" icon={<HiDotsHorizontal />} onClick={e => show(e)}></FormButton>
         </ButtonGroup>
         </>}>
         Emploi du
       </Title>
     </>}>
-      {user && year && <Schedule index={week} user={user} year={year} grid={gridEnabled} />}
+      {user && year && <Schedule index={week} user={user} year={year} settings={settings} grid={gridEnabled} />}
     </UserLayout>;
 };
