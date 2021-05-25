@@ -7,6 +7,7 @@ import Loader from 'react-loader-spinner';
 
 import Link from './Link';
 import Button from './FormFields/FormButton';
+import ButtonGroup from './FormFields/ButtonGroup';
 
 import { HiDotsHorizontal, HiPencilAlt, HiArrowRight } from "react-icons/hi";
 
@@ -57,16 +58,18 @@ export default function UpcomingClassCard({ user, year }) {
           <span style={{ color: current ? 'var(--color-accent)' : '#27ae60' }}>Durée: {formatDistance(course.start, course.end, { locale: fr })}</span>
         </p>
 
-        <div className="buttons" style={{ justifyContent: 'center' }}>
-          <Link href="/" /*href={"/course/notes/" + course.id}*/>
-            <Button icon={<HiPencilAlt />}>Créer nouvelle note</Button>
+        <div className="buttons">
+          <Link href="/" /*href={"/course/notes/" + course.id}*/ style={{ flex: '1' }}>
+            <Button icon={<HiPencilAlt />} center="true">Créer note</Button>
           </Link>
-          <Link href="/" /*href={"/course/" + course.id}*/>
-            <Button icon={<HiDotsHorizontal />}>Voir</Button>
-          </Link>
-          <Link href={course?.meeting || '#'} target="_blank">
-            <Button is="success" icon={<HiArrowRight />} disabled={typeof course.meeting === 'undefined'}>Rejoindre</Button>
-          </Link>
+          <ButtonGroup style={{ display: 'flex' }}>
+            <Link href="/" /*href={"/course/" + course.id}*/>
+              <Button  is="action" icon={<HiDotsHorizontal />}>Voir</Button>
+            </Link>
+            <Link href={course?.meeting || '#'} target="_blank">
+              <Button is="success" icon={<HiArrowRight />} disabled={typeof course.meeting === 'undefined'}>Rejoindre</Button>
+            </Link>
+          </ButtonGroup>
         </div>
       </>)}
     </Card>
