@@ -15,7 +15,7 @@ import GroupList from '../../components/GroupList';
 
 import { ButtonGroup, FormButton } from '../../components/FormFields';
 
-import { HiDotsHorizontal } from "react-icons/hi";
+import { HiDotsHorizontal, HiViewGrid, HiViewList } from "react-icons/hi";
 
 import {
   Menu,
@@ -103,7 +103,7 @@ export default function SchedulePage() {
             return (<FormButton key={i} disabled={(selectedWeek + e) === week} onClick={() => setWeek(selectedWeek + e)}>{selectedWeek + e}</FormButton>);
           })}
           <FormButton disabled={selectedWeek === 52} onClick={() => setWeek(week + 1)}>{"»"}</FormButton>
-          <FormButton is="action" icon={<HiDotsHorizontal />} onClick={e => setGridEnabled(!gridEnabled)}>{gridEnabled ? 'Grille' : 'Liste'}</FormButton>
+          <FormButton is="action" icon={gridEnabled ? <HiViewGrid /> : <HiViewList />} onClick={e => setGridEnabled(!gridEnabled)}>{gridEnabled ? 'Grille' : 'Liste'}</FormButton>
           <FormButton is="action" icon={<HiDotsHorizontal />} onClick={e => show(e)}></FormButton>
         </ButtonGroup>
         </>}>
