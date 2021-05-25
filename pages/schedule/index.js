@@ -85,6 +85,12 @@ export default function SchedulePage() {
         router.push('/schedule/edit');
         break;
       case "refresh":
+        fetch('/api/schedule/ade/refresh').then(res => {
+          if (res.ok) {
+            sessionStorage.clear();
+            location.reload();
+          }
+        }).catch(console.error);
         break;
       case "toggle-module":
         setSettings({ ...settings, showModule: !settings.showModule });
@@ -110,8 +116,10 @@ export default function SchedulePage() {
           <Item id="toggle-module" onClick={handleItemClick}>{settings.showModule ? 'Cacher' : 'Afficher'} les modules</Item>
           <Item id="toggle-teachers" onClick={handleItemClick}>{settings.showTeachers ? 'Cacher' : 'Afficher'} les professeurs</Item>
           <Separator />
-          {user?.userType > 0 && <Item id="refresh" onClick={handleItemClick} disabled="true">🔄 Forcer l'actualisation</Item>}
-          <Separator />
+          {(user?.userType > 0 || user?.delegate) && (<>
+            <Item id="refresh" onClick={handleItemClick}>🔄 Forcer l'actualisation</Item>
+            <Separator />
+          </>)}
           <Submenu label="👥 Affichage">
             {user?.school && user?.degree && getSchoolYears(user).map(group => <Item id={group} key={group} onClick={handleItemClick}>{group === year ? '✅ ' : ''}{group}</Item>)}
           </Submenu>
