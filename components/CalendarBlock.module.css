@@ -22,6 +22,8 @@
   font-family: Marianne;
 
   transition: all 0.15s ease;
+
+  padding: 2.5px 0;
 }
 
 .session .hour, .session .teacher, .session .bottom, .session .module, .session .name {
@@ -42,25 +44,26 @@
 }
 
 .hour {
-  margin-top: .5rem;
-  margin-bottom: .5rem;
-
+  flex: 1;
   font-size: .88rem;
+
+  overflow: visible !important;
 }
 
 .name {
+  flex: 3;
+
   font-family: MarianneBOLD;
   font-size: 0.8em;
 
   min-height: 1em;
   width: 85%;
-
-  flex: 1 1 auto;
 }
 
 .bottom {
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
 
   text-transform: uppercase;
   font-size: .6em;
