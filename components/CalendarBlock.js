@@ -1,3 +1,5 @@
+import React, { useEffect, useState } from 'react';
+
 import {
   stringToColor,
   pickTextColorBasedOnBgColorAdvanced,
@@ -21,7 +23,7 @@ import "react-contexify/dist/ReactContexify.css";
 
 import styles from "./CalendarBlock.module.css";
 
-export default function CalendarBlock({ user, data }) {
+export default function CalendarBlock({ user, settings, data }) {
   const { show } = useContextMenu({ id: data.id });
   const { addToast } = useToasts();
 
@@ -84,8 +86,16 @@ export default function CalendarBlock({ user, data }) {
         patch('meeting', window.prompt('Saisissez le lien de la réunion'));
         break;
       }
+      case "change-meeting-by-module": {
+
+        break;
+      }
       case "change-room": {
         patch('location', window.prompt('Saisissez le lieu de la réunion', data.location));
+        break;
+      }
+      case "change-room-to-remote": {
+        patch('location', '$_REMOTE');
         break;
       }
       case "remove": {
@@ -115,12 +125,22 @@ export default function CalendarBlock({ user, data }) {
           <Item id="change-description" onClick={handleItemClick}>
             💬&nbsp;Description
           </Item>
-          <Item id="change-meeting" onClick={handleItemClick}>
-            💻&nbsp;Réunion
-          </Item>
-          <Item id="change-room" onClick={handleItemClick}>
-            🚪&nbsp;Salle
-          </Item>
+          <Submenu label="💻 Réunion">
+            <Item id="change-meeting" onClick={handleItemClick}>
+              Pour ce cours
+            </Item>
+            <Item id="change-meeting-by-module" onClick={handleItemClick}>
+              Pour ce module entier
+            </Item>
+          </Submenu>
+          <Submenu label="🚪 Lieu">
+            <Item id="change-room" onClick={handleItemClick}>
+              Présentiel (et changer la salle)
+            </Item>
+            <Item id="change-room-to-remote" onClick={handleItemClick}>
+              Distanciel
+            </Item>
+          </Submenu>
         </Submenu>
         <Submenu label="Modération&nbsp;" hidden={user.userType === 0 && user.delegate === false}>
           <Item id="notify" onClick={handleItemClick}>
@@ -162,17 +182,19 @@ export default function CalendarBlock({ user, data }) {
             </FormButton>
             {format(data.start, 'eeee dd MMMM', { locale: fr })} de&nbsp;
           </span>
-          {data.start.toLocaleTimeString().slice(0, 5)}{' à '}
-          {data.end.toLocaleTimeString().slice(0, 5)}
+          {data.start.toLocaleTimeString().slice(0, 5)}{' à '}{data.end.toLocaleTimeString().slice(0, 5)}
         </div>
 
         <p className={styles.name}>
-          {data?.module && data.module} {data?.subject || data.summary} {data?.type && `(${data?.type})`}
+          {data.type ? <>{data.type} {settings.showModule && data.module}<br /></> : ''}
+          {data?.subject || data.summary}
         </p>
-        <p className={styles.teacher}>{data.description}</p>
+
+        {settings.showTeachers && <p className={styles.teacher}>{data.description}</p>}
 
         <div className={styles.bottom}>
-          <p>{data.location}</p>
+          {(data.meeting || data.location === '$_REMOTE' || data.type === 'CM' && !data.location) && <p>🌐 Distanciel</p>}
+          {data.location && data.location !== '$_REMOTE' && <p>🏫 {data.location}</p>}
         </div>
       </div>
     </>

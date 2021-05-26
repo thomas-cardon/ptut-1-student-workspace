@@ -25,7 +25,7 @@ import "react-contexify/dist/ReactContexify.css";
 
 const isServer = () => typeof window === `undefined`;
 
-export default function Schedule({ grid, user, year, index }) {
+export default function Schedule({ grid, user, year, settings, index }) {
   /*
   * Variable definitions
   */
@@ -77,109 +77,11 @@ export default function Schedule({ grid, user, year, index }) {
     }
   }, []);
 
-  const { data : schedule } = useSWR(`/api/schedule/by-week/${index}` + (user.userType == 0 && user?.group?.id ? '?filterByGroup=' + user?.group?.id : ''), fetcher);
-
-  const { show } = useContextMenu({ id: 'MENU_SWS' });
-
-  function handleItemClick({ event, props, data, triggerEvent }) {
-    switch (event.currentTarget.id) {
-      case "notify": {
-          let title = window.prompt('Saisissez le titre de la notification', 'Rappel de cours');
-          let body = window.prompt('Saisissez le corps de la notification', document.getElementById(props.id).children[1].innerText);
-
-          fetch(location.protocol + '//' + location.host + `/api/notifications/broadcast?title=${title}&body=${body}&interests=${document.querySelector('[interests]').getAttribute('interests')}`)
-          .then(() => addToast('Tous les utilisateurs concernés ont été notifiés.', { appearance: 'success' }))
-          .catch(err => {
-            addToast("Une erreur s'est produite.", { appearance: 'error' });
-            console.error(err);
-          });
-
-          break;
-      }
-      case "connect": {
-        if (!document.getElementById(event.currentTarget.id).getAttribute('meetingurl')) alert("Aucune réunion n'est encore disponible pour ce cours.");
-        else window.open(document.getElementById(event.currentTarget.id).getAttribute('meetingurl'), '_blank').focus();
-        break;
-      }
-      case "edit-room": {
-        let room = window.prompt('Saisissez le nom de la nouvelle salle', document.getElementById(props.id).children[3].innerText);
-
-        fetch(location.protocol + '//' + location.host + '/api/schedule/' + props.id, {
-            method: 'PATCH',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ room })
-         })
-        .then(() => addToast(`Modification réussie du cours #${props.id}. Vous devrez peut-être actualiser la page.`, { appearance: 'success' }))
-        .catch(err => {
-          addToast("Une erreur s'est produite.", { appearance: 'error' });
-          console.error(err);
-        });
-
-        break;
-      }
-      case "edit-meeting-url": {
-        let meetingUrl = window.prompt('Saisissez le lien de la réunion (Google Meet, Zoom, jit.si...)');
-
-        fetch(location.protocol + '//' + location.host + '/api/schedule/' + props.id, {
-            method: 'PATCH',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ meetingUrl })
-         })
-        .then(() => addToast(`Modification réussie du cours #${props.id}. Vous devrez peut-être actualiser la page.`, { appearance: 'success' }))
-        .catch(err => {
-          addToast("Une erreur s'est produite.", { appearance: 'error' });
-          console.error(err);
-        });
-
-        break;
-      }
-      case "remove": {
-        if (!confirm('Voulez-vous vraiment supprimer ce cours?'))
-          return;
-
-        fetcher(location.protocol + '//' + location.host + '/api/schedule/' + props.id, { method: 'DELETE' })
-        .then(() => addToast(`Suppression réussie du cours  #${props.id}. Vous devrez peut-être actualiser la page.`, { appearance: 'success' }))
-        .catch(err => {
-          addToast("Une erreur s'est produite.", { appearance: 'error' });
-          console.error(err);
-        });
-        break;
-      }
-    }
-  }
-
-  useEffect(() => {
-    if (typeof schedule?.success === 'undefined') return;
-    console.error(schedule?.message || schedule);
-    addToast("Une erreur s'est produite pendant le chargement de l'emploi du temps SWS.", { appearance: 'error' });
-  }, [schedule])
-
   /*
   * End of variable definitions
   */
 
   return (<>
-    <Menu id="MENU_SWS">
-      <Item id="view" onClick={handleItemClick}>&#x1F4DC;&nbsp;&nbsp;Voir le post attaché</Item>
-      <Item id="connect" onClick={handleItemClick}>&#x1F4BB;&nbsp;&nbsp;Se connecter à la réunion</Item>
-      <Separator />
-      {user.userType > 0 && (
-          <Submenu label="Modération">
-          <Item id="notify" onClick={handleItemClick}>🔔&nbsp;&nbsp;Notifier le groupe</Item>
-          <Separator />
-
-          <Item id="edit-room" onClick={handleItemClick}>&#x1F392;&nbsp;&nbsp;Modifier la salle</Item>
-          <Item disabled={true} id="edit-meeting-url" onClick={handleItemClick}>&#x1F4BB;&nbsp;&nbsp;Modifier la réunion</Item>
-          <Separator />
-          <Item id="remove" onClick={handleItemClick}>&#x274C;&nbsp;&nbsp;Supprimer</Item>
-        </Submenu>
-      )}
-    </Menu>
-
     {calendar.length === 0 && (
       <Highlight icon="🏫" title="Informations">
         Il n'y a pas de cours cette semaine.
@@ -217,8 +119,7 @@ export default function Schedule({ grid, user, year, index }) {
         <small>{lightFormat(addDays(getDateOfISOWeek(index, new Date().getFullYear()), i), 'dd/MM')}</small>
       </div>)}
 
-      {calendar.map((x, i) => <CalendarBlock key={x.id} user={user} data={x} />)}
-      {!schedule?.message && schedule && schedule.filter(x => new Date(x.start).getHours() >= HOURS_MIN && new Date(x.end).getHours() >= HOURS_MIN && new Date(x.start).getHours() <= HOURS_MAX && new Date(x.end).getHours() <= HOURS_MAX).map((x, i) => <ScheduleBlock data={x} key={'sws' + i} onContextMenu={event => show(event, { props: { id: x.id } })} />)}
+      {calendar.map((x, i) => <CalendarBlock key={x.id} user={user} data={x} settings={settings} />)}
     </div>
     </>);
 }

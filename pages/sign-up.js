@@ -45,6 +45,8 @@ export default function LoginPage({ email }) {
     e.preventDefault();
 
     if (step === MAX_STEPS) {
+      if (values.password.length < 8) return addToast('Veuillez entrer un mot de passe d\'au moins 8 caractères', { appearance: 'error' });
+
       try {
         const res = await fetch(process.env.NEXT_PUBLIC_URL_PREFIX + '/api/me/sign-up', {
           body: JSON.stringify(values),
@@ -52,21 +54,17 @@ export default function LoginPage({ email }) {
           method: 'POST'
         });
 
-        if (!res.ok) return addToast('Une erreur s\'est produite', { appearance: 'error' });
         const result = await res.json();
 
         if (result.success) {
           addToast('Inscription réussie', { appearance: 'success' });
           router.push('/login');
         }
-        else {
-          addToast(result.error || 'Une erreur s\'est produite', { appearance: 'error' });
-          console.dir(result);
-        }
+        else addToast(result.message ? result.message : (result.error ? 'Erreur: ' + result.error : 'Une erreur s\'est produite'), { appearance: 'error' });
       }
       catch(error) {
+        addToast('Une erreur s\'est produite', { appearance: 'error' });
         console.error(error);
-        addToast(error || 'Une erreur s\'est produite', { appearance: 'error' });
       }
     }
     else {
@@ -75,7 +73,16 @@ export default function LoginPage({ email }) {
         if (!emails.includes(values.email.slice(values.email.indexOf('@')))) return addToast('Veuillez entrer une adresse-mail universitaire (ex. @etu.univ-amu.fr).', { appearance: 'error' });
 
         let data = values.email.split('@')[0].split('.');
-        setValues({ ...values, firstName: data[0].charAt(0).toUpperCase() + data[0].slice(1), lastName: data[1].toUpperCase() });
+
+        setValues({ ...values, firstName: data[0].charAt(0).toUpperCase() + data[0].slice(1), lastName: data[1] ? data[1].toUpperCase() : '' });
+        setStep(step + 1);
+      }
+      else if (step === 2) {
+        if (values.school === '' || values.degree === '' || values.year === '') return addToast('Sélectionnez votre école, votre formation et votre année pour continuer.', { appearance: 'error' });
+        setStep(step + 1);
+      }
+      else if (step === 3) {
+        if (values.firstName === '' || values.lastName === '') return addToast('Veuillez entrer votre nom et prénom pour continuer.', { appearance: 'error' });
         setStep(step + 1);
       }
       else setStep(step + 1);
@@ -129,6 +136,8 @@ export default function LoginPage({ email }) {
       h5 {
         color: var(--color-secondary);
         font-size: 1.5rem;
+
+        margin-top: -1em;
       }
 
       @media (max-width: 600px) {
@@ -145,9 +154,9 @@ export default function LoginPage({ email }) {
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: space-between;
+        justify-content: start;
 
-        margin: 3em auto auto auto;
+        margin: 1em auto 0 auto;
         width: 100%;
       }
 
@@ -165,7 +174,8 @@ export default function LoginPage({ email }) {
       }
 
       form > div:not(.buttons) {
-        width: 60% !important;
+        width: 40vw !important;
+        margin-bottom: 1rem;
       }
 
       form > div:not(.buttons) > div {
@@ -210,10 +220,6 @@ export default function LoginPage({ email }) {
         background-color: #ccc;
       }
 
-      button:hover {
-        transform: scale(1.1, 1.1);
-      }
-
       @media (max-width: 600px) {
         button {
           padding: 3%;
@@ -252,6 +258,8 @@ export default function LoginPage({ email }) {
         align-self: flex-end;
 
         margin-bottom: 2em;
+
+        flex-wrap: nowrap;
       }
 
       .login {
@@ -262,6 +270,8 @@ export default function LoginPage({ email }) {
 
         color: var(--color-accent);
         transition: color 0.2s ease;
+
+        font-size: x-large;
       }
 
       .login:hover {
@@ -270,9 +280,6 @@ export default function LoginPage({ email }) {
     `}</style>
     <BasicLayout title="Inscription" disableBackground={true}>
       <h3>Student Workspace</h3>
-      <Link href="/login">
-        <p className="login">Vous avez déjà un compte?</p>
-      </Link>
       <h5>Inscription</h5>
 
       <div style={{ margin: '0 auto', width: '30%' }}>
@@ -304,8 +311,8 @@ export default function LoginPage({ email }) {
 
       {step === 4 && (
         <Form onSubmit={e => e.preventDefault()}>
-          <p>Veuillez écrire un mot de passe de 8 caractères contenant au moins une minuscule, une majuscule, et un chiffre.</p>
-          <Fields.FormInput disableStyle={true} label="Définissez votre mot de passe" name="password" type="password" minLength={8} pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}$" onChange={handleInputChange} value={values.password} />
+          <p style={{ fontSize: '1rem', width: '50%', marginBottom: '2em' }}>Veuillez écrire un mot de passe de 8 caractères minimum contenant au moins une minuscule, une majuscule, et un chiffre.</p>
+          <Fields.FormInput disableStyle={true} label="Définissez votre mot de passe" name="password" type="password" minLength={8} pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}$" required onChange={handleInputChange} value={values.password} />
         </Form>
       )}
 
@@ -313,6 +320,9 @@ export default function LoginPage({ email }) {
         <Fields.FormButton is="light" onClick={previousStep} disabled={step <= 1}>Précédent</Fields.FormButton>
         <Fields.FormButton is="action" onClick={nextStep}>Suivant</Fields.FormButton>
       </div>
+      <Link href="/login">
+        <p className="login">Vous avez déjà un compte?</p>
+      </Link>
     </BasicLayout>
   </div>);
 };

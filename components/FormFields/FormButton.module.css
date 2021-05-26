@@ -75,7 +75,7 @@
 
 .button.light:hover:not([disabled]) {
   background-color: white;
-  color: black;
+  color: #404040;
 }
 
 .button.action {

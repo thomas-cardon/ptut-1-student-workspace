@@ -5,6 +5,11 @@ async function handler(req, res, session) {
   if (!req?.session?.get('user')) return res.status(401).send({ error: 'NOT_AUTHORIZED', success: false });
   if (!req.session.get('user').group?.id) return res.send({ homework: [], success: true });
 
+  if (req.method === 'DELETE' /* && Vérifier que l'utilisateur à bien le droit de supprimer */) { // Suppression
+    const data = await query(`DELETE FROM homework WHERE id = ?`, req.query.id);
+    res.json({ success: true });
+  }
+
   try {
     const data = await query(
       `

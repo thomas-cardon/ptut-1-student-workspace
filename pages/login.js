@@ -156,7 +156,7 @@ export default function LoginPage() {
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: space-between;
+        justify-content: start;
 
         margin: auto auto;
 
@@ -177,7 +177,7 @@ export default function LoginPage() {
         display: block;
       }
 
-      form > div {
+      form > div:not(.buttons) {
         width: 60% !important;
       }
 
@@ -218,11 +218,11 @@ export default function LoginPage() {
         font-size: 1.15rem;
       }
 
-      button:hover {
-        transform: scale(1.1, 1.1);
-      }
-
       @media (max-width: 600px) {
+        input {
+          border-radius: 5px;
+        }
+
         button {
           padding: 3%;
           font-size: 0.93em;
@@ -247,10 +247,10 @@ export default function LoginPage() {
 
       .buttons {
         display: flex;
-        gap: 20px;
-        align-self: flex-end;
-        margin: 0 auto;
-        width: fit-content !important;
+        gap: 5px;
+        align-self: center;
+        margin-top: 20vh;
+        flex-wrap: wrap;
       }
     `}</style>
     <BasicLayout title="Connexion" disableBackground={true}>
@@ -261,13 +261,11 @@ export default function LoginPage() {
         <Fields.FormInput disableStyle={true} label="Mot de passe" name="password" type="password" placeholder="Mot de passe difficile à trouver" onChange={handleInputChange} defaultValue={values.password} />
 
         <div className="buttons">
-          <Fields.FormButton type="submit" is="light">Se connecter</Fields.FormButton>
-          <Link href={{
-            pathname: '/sign-up',
-            query: { email: values.email },
-          }}>
-            <Fields.FormButton is="danger">Inscription</Fields.FormButton>
-          </Link>
+          <Fields.FormButton type="submit" is="light">Connexion</Fields.FormButton>
+          <Fields.FormButton is="danger" onClick={e => {
+            e.preventDefault();
+            router.push('/sign-up?email=' + values.email);
+          }}>Inscription</Fields.FormButton>
         </div>
       </Form>
     </BasicLayout>
