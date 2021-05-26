@@ -25,6 +25,8 @@ export default function CreateHomeworkPage() {
  /*
  * Variable definitions
  */
+  const id = 5;
+  
   const { user } = useUser({ redirectTo: '/login', perms: [{ userType: 1 }, { delegate: true }] });
   const [values, setValues] = useState({ date: '', content: '', subjectId: '', groupId: '' });
   const { data : subjects } = useSubjects();
@@ -41,7 +43,7 @@ export default function CreateHomeworkPage() {
 
 
   /*
-  * End of variable definitions
+ * End of variable definitions
   */
 
   const onSubmit = async (e) => {
@@ -80,8 +82,8 @@ export default function CreateHomeworkPage() {
 
   return (
     <UserLayout user={user} title="Modifier un devoir" flex={true}>
-      <Title appendGradient="travail à faire">
-        Modification d'un
+      <Title appendGradient={"#" + id}>
+        Modification du devoir
       </Title>
 
       {user && subjects ? (

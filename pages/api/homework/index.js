@@ -6,7 +6,9 @@ async function handler(req, res, session) {
   if (!req.session.get('user').group?.id) return res.send({ homework: [], success: true });
 
   if (req.method === 'DELETE' /* && Vérifier que l'utilisateur à bien le droit de supprimer */) { // Suppression
-    const data = await query(`DELETE FROM homework WHERE id = ?`, req.query.id);
+    if (!req.body.id) return res.status(401).send({ error: 'MISSING_PARAMETERS', message: 'Le paramètre id est manquant.', success: false });
+    
+    const data = await query(`DELETE FROM homework WHERE id = ?`, req.body.id);
     res.json({ success: true });
   }
 
