@@ -34,11 +34,13 @@ function MyApp({ Component, pageProps }) {
         <meta name='format-detection' content='telephone=no' />
         <meta name='mobile-web-app-capable' content='yes' />
 
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=1" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=2" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=1" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=1" />
-        <link rel="manifest" href="/site.webmanifest?v=1" />
-        <link rel="mask-icon" href="/safari-pinned-tab.svg?v=1" color="#5575e7" />
+        <link rel="manifest" href="/site.webmanifest?v=2" />
+        <link rel="mask-icon" href="/safari-pinned-tab.svg?v=2" color="#5575e7" />
         <link rel="shortcut icon" href="/favicon.ico?v=1" />
         <meta name="msapplication-TileColor" content="#5575e7" />
         <meta name="theme-color" content="#5575e7" />
