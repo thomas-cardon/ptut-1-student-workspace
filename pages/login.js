@@ -99,7 +99,7 @@ export default function LoginPage() {
         }
       }
 
-      .bgLogo {
+      .layout .bgLogo {
         height: 100vh;
         width: 100vw;
         background-image: url(/assets/login/bg-overlay.webp), url(/assets/login/bg-overlay.png);
@@ -110,13 +110,13 @@ export default function LoginPage() {
       }
 
       @media (max-width: 600px) {
-        .bgLogo {
+        .layout .bgLogo {
           background-position: center;
           background-size: 100%;
         }
       }
 
-      h3 {
+      .layout h3 {
         margin: 1em 0 0 0;
         padding-bottom: 0;
         color: #${theme === 'dark' ? 'DCDCDC' : '282828'} !important;
@@ -128,13 +128,13 @@ export default function LoginPage() {
       }
 
       @media (max-width: 600px) {
-        h3 {
+        .layout h3 {
           margin-top: 1.5em;
           font-size: 1.875em;
         }
       }
 
-      p {
+      .layout h5 {
         margin: 0;
 
         text-align: center;
@@ -147,24 +147,36 @@ export default function LoginPage() {
       }
 
       @media (max-width: 600px) {
-        p {
+        .layout h5 {
           font-size: 1.5625em;
         }
       }
 
-      form {
+      .layout p {
+        width: 80%;
+
+        color: var(--color-primary-100);
+
+        font-family: 'Marianne', 'Segoe UI', 'Segoe';
+        font-weight: bolder;
+        font-size: min(3vw, 1rem);
+
+        text-transform: uppercase;
+      }
+
+      .layout form {
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: start;
+        justify-content: space-between;
 
         margin: auto auto;
 
-        width: 100%;
-        height: 50vh;
+        width: 50vw;
+        height: 70vh;
       }
 
-      form label {
+      .layout form label {
         color: #${theme === 'dark' ? 'DCDCDC' : '282828'} !important;
 
         font-family: 'Marianne', 'Segoe UI', 'Segoe';
@@ -177,33 +189,50 @@ export default function LoginPage() {
         display: block;
       }
 
-      form > div:not(.buttons) {
-        width: 60% !important;
+      .layout form > div:not(.buttons) {
+        width: 100% !important;
       }
 
-      button {
+      .layout button {
         padding: 1em 2em !important;
       }
 
-      form > div > div {
+      .layout form > div > div {
         margin: 0 !important;
       }
 
-      input {
+      .layout input {
         outline: 0;
         border: none;
 
         width: 100%;
         padding: 1.5% 2%;
 
-        border-radius: 0.7em;
+        border-radius: 8px;
 
         transition: color 0.5s, background-color 0.5s;
       }
 
-      input[type="text"],
-      input[type="email"],
-      input[type="password"] {
+      .layout input:-webkit-autofill,
+      .layout input:-webkit-autofill:hover,
+      .layout input:-webkit-autofill:focus,
+      .layout input:-webkit-autofill:active {
+        transition: background-color 5000s ease-in-out 0s;
+      }
+
+      .layout input:-webkit-autofill {
+        font-family: monospace;
+        -webkit-text-fill-color: #fff;
+      }
+
+      .layout input:-webkit-autofill:focus {
+        font-family: monospace;
+        -webkit-text-fill-color: #fff;
+      }
+
+      .layout input[type="text"],
+      .layout input[type="email"],
+      .layout input[type="password"] {
         display: inline-block;
 
         box-sizing: border-box;
@@ -214,51 +243,50 @@ export default function LoginPage() {
         color: white;
       }
 
-      button {
-        font-size: 1.15rem;
+      .layout button:hover {
+        transform: scale(1.15, 1.15);
       }
 
       @media (max-width: 600px) {
-        input {
+        .layout input {
           border-radius: 5px;
         }
 
-        button {
+        .layout button {
           padding: 3%;
           font-size: 0.93em;
         }
       }
 
-      a {
-      	margin: 0%;
-      	padding-bottom: 0%;
-      	font-family: 'Segoe UI', 'Segoe';
-        color: #${theme === 'dark' ? 'DCDCDC' : '282828'};
-      	font-size: 1.125em;
-      	text-align: center;
-        text-transform: uppercase;
-      }
-
-      @media (max-width: 600px) {
-      	a {
-      		font-size: 0.81em;
-      	}
-      }
-
-      .buttons {
+      .layout .buttons {
         display: flex;
-        gap: 5px;
-        align-self: center;
-        margin-top: 20vh;
-        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: center;
+        margin-top: 2rem;
+        gap: 1rem;
+      }
+
+      .layout .buttons button {
+        width: unset;
+      }
+
+      .link {
+        border-bottom: solid 3px var(--color-accent);
+      }
+
+      .link:hover {
+        color: var(--color-accent-hover) !important;
       }
     `}</style>
-    <BasicLayout title="Connexion" disableBackground={true}>
+    <BasicLayout title="Connexion" disableBackground={true} className="layout">
       <h3>Student Workspace</h3>
-      <p>Connexion</p>
+      <h5>Connexion</h5>
       <Form onSubmit={handleSubmit}>
-        <Fields.FormInput disableStyle={true} label="Adresse mail" name="email" type="email" placeholder="exemple@exemple.fr" onChange={handleInputChange} defaultValue={values.email} />
-        <Fields.FormInput disableStyle={true} label="Mot de passe" name="password" type="password" placeholder="Mot de passe difficile à trouver" onChange={handleInputChange} defaultValue={values.password} />
+        <>
+          <p>En vous connectant, vous acceptez nos <a className="link" onClick={() => router.push('/legal')}>conditions générales d'utilisation</a>.</p>
+          <Fields.FormInput disableStyle={true} label="Adresse mail" name="email" type="email" placeholder="exemple@exemple.fr" onChange={handleInputChange} defaultValue={values.email} />
+          <Fields.FormInput disableStyle={true} label="Mot de passe" name="password" type="password" placeholder="Mot de passe difficile à trouver" onChange={handleInputChange} defaultValue={values.password} />
+        </>
 
         <div className="buttons">
           <Fields.FormButton type="submit" is="light">Connexion</Fields.FormButton>

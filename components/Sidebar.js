@@ -71,7 +71,7 @@ export default function Sidebar({ user, children, active, setActive }) {
           <div className={styles.icon}>
             <HiSparkles />
           </div>
-          Mentions légales
+          CGU
         </Link>
       </div>
     </aside>);
