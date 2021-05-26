@@ -7,7 +7,7 @@ async function handler(req, res, session) {
 
   if (req.method === 'DELETE' /* && Vérifier que l'utilisateur à bien le droit de supprimer */) { // Suppression
     if (!req.body.id) return res.status(401).send({ error: 'MISSING_PARAMETERS', message: 'Le paramètre id est manquant.', success: false });
-    
+
     const data = await query(`DELETE FROM homework WHERE id = ?`, req.body.id);
     res.json({ success: true });
   }
@@ -18,7 +18,7 @@ async function handler(req, res, session) {
       SELECT homework.id, date, content, subjects.module, subjects.name, homework.groupId
       FROM homework
       INNER JOIN subjects ON homework.subjectId = subjects.id
-      WHERE homework.groupId = ?
+      WHERE homework.groupId = ? AND date >= CURDATE()
       ORDER BY date ASC
       `, [req.session.get('user').group.id]);
 
