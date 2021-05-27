@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Image from 'next/image';
 import Link from './Link';
 
 import { HiOutlineMenu, HiViewGridAdd, HiCalendar, HiAnnotation, HiPencilAlt, HiTable, HiUsers, HiCollection, HiSparkles } from "react-icons/hi";
@@ -10,7 +11,12 @@ export default function Sidebar({ user, children, active, setActive }) {
     <aside data-active={active ? 1 : 0} className={styles.sidebar}>
       <Link href="/dashboard">
         <div className={styles.brand}>
-          <img width="40px" height="40px" src="/icon-384x384.png" />
+          <Image
+            src="/android-chrome-512x512.png"
+            alt="Logo"
+            width={40}
+            height={40}
+          />
           <h3>Student Workspace</h3>
         </div>
       </Link>
@@ -65,7 +71,7 @@ export default function Sidebar({ user, children, active, setActive }) {
           <div className={styles.icon}>
             <HiSparkles />
           </div>
-          Mentions légales
+          CGU
         </Link>
       </div>
     </aside>);

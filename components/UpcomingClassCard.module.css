@@ -1,5 +1,10 @@
-.current, .next {
- gap: 20px;
+.card {
+  text-align: unset;
+  align-content: center;
+}
+
+.buttons {
+  margin-top: 1rem;
 }
 
 .current {
@@ -11,18 +16,10 @@
 }
 
 .title {
- font-weight: bold;
- font-size: 1.2rem;
- color: var(--color-primary-100);
-}
+  color: var(--color-primary-100);
 
-.text {
-  height: 100%;
-  display: flex;
+  font-weight: bold;
+  font-size: large;
 
-  flex-direction: column;
-  align-items: flex-start;
-
-  text-align: left;
-  float: left;
+  line-height: normal;
 }
