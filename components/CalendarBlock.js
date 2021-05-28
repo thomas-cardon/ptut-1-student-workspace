@@ -5,10 +5,12 @@ import {
   pickTextColorBasedOnBgColorAdvanced,
 } from "../lib/colors";
 
+import { parseCalendar } from '../lib/ade';
+
 import { FormButton } from './FormFields';
 import { HiPlusCircle } from "react-icons/hi";
 
-import { format, getDay } from 'date-fns';
+import { format, getDay, isBefore } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
 import { useToasts } from 'react-toast-notifications';
@@ -23,23 +25,33 @@ import "react-contexify/dist/ReactContexify.css";
 
 import styles from "./CalendarBlock.module.css";
 
-export default function CalendarBlock({ user, settings, data }) {
+export default function CalendarBlock({ user, year, settings, data, calendar }) {
   const { show } = useContextMenu({ id: data.id });
   const { addToast } = useToasts();
 
-  const patch = (key, value) => {
+  const patch = (key, value, bulk = false) => {
     console.log('[PATCH]', data.id, '->', key, '=', value);
 
     if (value === null) return;
-    fetch(location.protocol + '//' + location.host + `/api/schedule/ade/patch/${data.id}`, {
+    return fetch(location.protocol + '//' + location.host + `/api/schedule/ade/patch/${data.id}`, {
       method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ key, value })
     }).then(res => {
       addToast("Cours modifié.", { appearance: 'success' });
-      res.text().then(console.dir).catch(console.error);
+    }).catch(err => {
+      addToast("Une erreur s'est produite lors de l'édition du cours.", { appearance: 'error' });
+      console.error(err);
+    });
+  };
+
+  const bulkPatch = (ids, key, value) => {
+    return fetch(location.protocol + '//' + location.host + `/api/schedule/ade/patch-bulk`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(ids.map(id => ({ id, key, value })))
+    }).then(res => {
+      addToast(ids.length + ' cours modifiés', { appearance: 'success' });
     }).catch(err => {
       addToast("Une erreur s'est produite lors de l'édition du cours.", { appearance: 'error' });
       console.error(err);
@@ -87,7 +99,11 @@ export default function CalendarBlock({ user, settings, data }) {
         break;
       }
       case "change-meeting-by-module": {
+        const q = window.prompt('Saisissez le lien de la réunion');
+        if (!q || q === '') return addToast('Opération annulée', { appearance: 'warning' });
 
+        const ids = parseCalendar({ user, year }).filter(e => e?.module === data?.module && !isBefore(e.start, data.start)).map(e => e.id);
+        bulkPatch(ids, 'meeting', q);
         break;
       }
       case "change-room": {
@@ -129,7 +145,7 @@ export default function CalendarBlock({ user, settings, data }) {
             <Item id="change-meeting" onClick={handleItemClick}>
               Pour ce cours
             </Item>
-            <Item id="change-meeting-by-module" onClick={handleItemClick}>
+            <Item id="change-meeting-by-module" onClick={handleItemClick} disabled={data.module === undefined}>
               Pour ce module entier
             </Item>
           </Submenu>

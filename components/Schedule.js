@@ -119,7 +119,7 @@ export default function Schedule({ grid, user, year, settings, index }) {
         <small>{lightFormat(addDays(getDateOfISOWeek(index, new Date().getFullYear()), i), 'dd/MM')}</small>
       </div>)}
 
-      {calendar.map((x, i) => <CalendarBlock key={x.id} user={user} data={x} settings={settings} />)}
+      {calendar.map((x, i) => <CalendarBlock key={x.id} user={user} year={year} data={x} settings={settings} />)}
     </div>
     </>);
 }
