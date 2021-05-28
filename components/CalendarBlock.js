@@ -25,7 +25,7 @@ import "react-contexify/dist/ReactContexify.css";
 
 import styles from "./CalendarBlock.module.css";
 
-export default function CalendarBlock({ user, year, settings, data, calendar }) {
+export default function CalendarBlock({ user, year, settings, data }) {
   const { show } = useContextMenu({ id: data.id });
   const { addToast } = useToasts();
 
@@ -38,7 +38,7 @@ export default function CalendarBlock({ user, year, settings, data, calendar }) 
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ key, value })
     }).then(res => {
-      addToast("Cours modifié.", { appearance: 'success' });
+      addToast("Cours modifié. Rechargez pour voir les changements.", { appearance: 'success' });
     }).catch(err => {
       addToast("Une erreur s'est produite lors de l'édition du cours.", { appearance: 'error' });
       console.error(err);
@@ -51,13 +51,12 @@ export default function CalendarBlock({ user, year, settings, data, calendar }) 
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(ids.map(id => ({ id, key, value })))
     }).then(res => {
-      addToast(ids.length + ' cours modifiés', { appearance: 'success' });
+      addToast(ids.length + ' cours modifiés. Rechargez pour voir les changements.', { appearance: 'success' });
     }).catch(err => {
       addToast("Une erreur s'est produite lors de l'édition du cours.", { appearance: 'error' });
       console.error(err);
     });
   };
-
 
   function handleItemClick({ event, props, triggerEvent }) {
     switch (event.currentTarget.id) {
