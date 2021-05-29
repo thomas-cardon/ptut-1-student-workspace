@@ -10,6 +10,7 @@ import Title from '../components/Title';
 import CardList from '../components/CardList';
 import Card from '../components/Card';
 import Homework from '../components/Homework';
+import Highlight from '../components/Highlight';
 
 import Link from '../components/Link';
 
@@ -36,6 +37,15 @@ export default function Dashboard() {
       <Title appendGradient={(user?.firstName || 'inconnu') + ' !'} subtitle={' — ' + (user?.group?.name || 'Groupe inconnu')}>
         Salut,
       </Title>
+      {user?.group?.name === 'Professeur' && user?.userType === 0 && (
+        <Highlight>
+          <div style={{ color: 'var(--color-primary-600)' }}>
+            Votre compte est en cours de <b>validation</b> par l'équipe de Student Workspace.
+            <br />
+            En attendant, vos actions seront réduites.
+          </div>
+        </Highlight>
+      )}
       <div className="block">
         <CardList className="links">
             <Link href="https://outlook.office.com/owa/?realm=etu.univ-amu.fr&path=/mail" target="_blank">
