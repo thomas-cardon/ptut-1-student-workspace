@@ -105,7 +105,7 @@ export default function Homework({ user, groupId }) {
               <span className={styles.date}>A ce jour</span>
             </h5>
             <p style={{ padding: '0.5em' }}>
-            {user.userType >= 1 ? (
+            {user?.group?.name === 'Professeur' ? (
               <>
                 Les élèves n'ont pas de travail aujourd'hui.
                 <br />
