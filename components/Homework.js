@@ -105,9 +105,19 @@ export default function Homework({ user, groupId }) {
               <span className={styles.date}>A ce jour</span>
             </h5>
             <p style={{ padding: '0.5em' }}>
-              Vous n'avez pas de travail à faire.
-              <br />
-              Peut-être devriez vous demander à votre délégué de les ajouter ?
+            {user.userType >= 1 ? (
+              <>
+                Les élèves n'ont pas de travail aujourd'hui.
+                <br />
+                Peut-être devriez vous en ajouter ?
+              </>
+            ) : (
+              <>
+                Vous n'avez pas de travail à faire.
+                <br />
+                Peut-être devriez vous demander à votre délégué de les ajouter ?
+              </>
+            )}
             </p>
           </div>
         ) : (<>
