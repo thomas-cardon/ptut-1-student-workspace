@@ -62,7 +62,7 @@ export default function UserLayout({ title, user, children, header, flex = true,
             </Button>
           </Card>
 
-          <UpcomingClassCard user={user} year={year} />
+          <UpcomingClassCard user={user} year={user?.year || year} />
 
           <Card className={[styles.card, styles.actions].join(' ')} style={{ alignContent: 'center' }}>
             <p className={styles.text}>

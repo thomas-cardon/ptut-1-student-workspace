@@ -1,7 +1,7 @@
 .card {
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 
   width: 100%;
   padding: 1em;
@@ -13,10 +13,6 @@
 
   color: var(--color-primary-100);
   background-color: var(--color-primary-800);
-}
-
-.card > div {
-  padding: 0.5em;
 }
 
 .card h4 {

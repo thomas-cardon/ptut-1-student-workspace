@@ -1,8 +1,8 @@
 import styles from "./ButtonGroup.module.css";
 
-export default function ButtonGroup({ style = {}, children, ...rest }) {
+export default function ButtonGroup({ className, style = {}, children, ...rest }) {
   return (
-    <div className={styles.btnGroup} style={style}>
+    <div className={[styles.btnGroup, className].join(' ')} style={style}>
       {children}
     </div>
   );

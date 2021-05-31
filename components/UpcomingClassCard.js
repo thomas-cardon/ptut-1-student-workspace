@@ -59,18 +59,17 @@ export default function UpcomingClassCard({ user, year }) {
         {course && <span style={{ color: current ? 'var(--color-accent)' : '#27ae60' }}>Démarr{current ? 'é' : 'e'} {formatDistanceToNowStrict(course.start, { addSuffix: true, locale: fr })}</span>}
         {course && <span style={{ color: current ? 'var(--color-accent)' : '#27ae60' }}>Durée: {formatDistanceStrict(course.start, course.end, { locale: fr })}</span>}
 
-        <div className={["buttons", styles.buttons].join(' ')}>
-          <Link href="/" /*href={"/course/notes/" + course.id}*/ style={{ flex: '1' }}>
-            <Button icon={<HiPencilAlt />} center={true}>Créer note</Button>
+        <Link href={course?.meeting || '#'} target="_blank" className={styles.joinButton}>
+          <Button is="success" icon={<HiArrowRight />} disabled={typeof course?.meeting === 'undefined'}>Rejoindre</Button>
+        </Link>
+
+        <div className={styles.buttons}>
+          <Link href="/" /*href={"/course/notes/" + course.id}*/>
+            <Button icon={<HiPencilAlt />} center={true}>Note</Button>
           </Link>
-          <ButtonGroup style={{ display: 'flex', flex: '1 1 100%' }}>
-            <Link href="/" /*href={"/course/" + course.id}*/>
-              <Button is="action" icon={<HiDotsHorizontal />}>Voir</Button>
-            </Link>
-            <Link href={course?.meeting || '#'} target="_blank">
-              <Button is="success" icon={<HiArrowRight />} disabled={typeof course?.meeting === 'undefined'}>Rejoindre</Button>
-            </Link>
-          </ButtonGroup>
+          <Link href="/" /*href={"/course/" + course.id}*/>
+            <Button is="action" icon={<HiDotsHorizontal />}>Voir</Button>
+          </Link>
         </div>
       </>)}
     </Card>
