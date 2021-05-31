@@ -35,19 +35,19 @@ export default function Searchbar() {
         router.push('/schedule');
         break;
       case 'Matières':
-        router.push('/subjects/list');
+        router.push('/subjects');
         break;
       case 'Utilisateurs':
-        router.push('/users/list');
+        router.push('/users');
         break;
       case 'Etudiants':
-        router.push('/users/list');
+        router.push('/users');
         break;
       case 'Mentions légales':
         router.push('/legal');
         break;
       case 'Informations':
-        router.push('/posts/list');
+        router.push('/posts');
         break;
       case 'Newsfeed':
         router.push('/news');
