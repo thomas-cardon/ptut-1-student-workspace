@@ -41,7 +41,9 @@
   margin-right: .6em;
 }
 
-.sidebar {}
+.sidebar {
+  user-select: none;
+}
 
 .sidebar hr {
   width: 85%;
