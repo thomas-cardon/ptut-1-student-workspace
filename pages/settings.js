@@ -17,7 +17,7 @@ import Loader from 'react-loader-spinner';
 import useUser from '../lib/useUser';
 import { useToasts } from 'react-toast-notifications';
 
-import { HiCake, HiSparkles } from "react-icons/hi";
+import { HiTrash, HiCake, HiSparkles } from "react-icons/hi";
 
 export default function SettingsPage() {
   /*
@@ -107,6 +107,16 @@ export default function SettingsPage() {
           </Link>
           <Fields.FormButton type="submit" icon={<HiCake />} disabled={true}>Connexion via Twitter</Fields.FormButton>
           <Fields.FormButton type="submit" disabled={true}>Définir l'icône avec un lien</Fields.FormButton>
+        </div>
+      </div>
+
+      <div onSubmit={onSubmit} style={{ width: '89%', borderRadius: '8px', backgroundColor: 'var(--color-primary-800)', padding: '1em', margin: 'auto auto 2em' }}>
+        <h2>Supprimer son compte</h2>
+        <hr style={{ marginBottom: '1em', marginTop: '-0.5em' }} />
+        <div className="buttons">
+          <Fields.FormButton icon={<HiTrash />} is="danger" onClick={() => {
+            if (confirm('Voulez-vous vraiment supprimer votre compte ?')) Router.push('/api/me/destroy');
+          }}>Supprimer?</Fields.FormButton>
         </div>
       </div>
     </>);

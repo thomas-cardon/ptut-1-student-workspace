@@ -26,10 +26,10 @@ export default function LoginPage({ email }) {
   /*
    * Variable definitions
    */
-   const MAX_STEPS = 4;
-
-   const [values, setValues] = useState({ firstName: '', lastName: '', email: email || '', password: '', school: '', degree: '', year: '', birthDate: "1970-01-01" });
+   const [values, setValues] = useState({ firstName: '', lastName: '', email: email || '', password: '', school: '', degree: '', year: '', birthDate: "1970-01-01", resourceId: null });
    const [step, setStep] = useState(1);
+
+   const MAX_STEPS = values.year === 'Prof' ? 5 : 4;
 
    const handleInputChange = e => {
      const { name, value } = e.target;
@@ -45,11 +45,14 @@ export default function LoginPage({ email }) {
     e.preventDefault();
 
     if (step === MAX_STEPS) {
+      if (values.year === 'Prof' && !new URLSearchParams(values.resourceId).get('resources')) return addToast('Veuillez entrer la bonne URL afin de pouvoir importer votre emploi du temps.', { appearance: 'error' });
       if (values.password.length < 8) return addToast('Veuillez entrer un mot de passe d\'au moins 8 caractères', { appearance: 'error' });
 
       try {
+        console.dir(JSON.stringify({ ...values, resourceId: new URLSearchParams(values.resourceId).get('resources') }));
+
         const res = await fetch(process.env.NEXT_PUBLIC_URL_PREFIX + '/api/me/sign-up', {
-          body: JSON.stringify(values),
+          body: JSON.stringify({ ...values, resourceId: parseInt(new URLSearchParams(values.resourceId).get('resources')) }),
           headers: { 'Content-Type': 'application/json' },
           method: 'POST'
         });
@@ -201,7 +204,8 @@ export default function LoginPage({ email }) {
       input[type="text"],
       input[type="email"],
       input[type="password"],
-      input[type="date"] {
+      input[type="date"],
+      input[type="url"] {
         display: inline-block;
 
         box-sizing: border-box;
@@ -277,6 +281,14 @@ export default function LoginPage({ email }) {
       .login:hover {
         color: var(--color-accent-hover);
       }
+
+      .link {
+        border-bottom: solid 3px var(--color-accent);
+      }
+
+      .link:hover {
+        color: var(--color-accent-hover) !important;
+      }
     `}</style>
     <BasicLayout title="Inscription" disableBackground={true}>
       <h3>Student Workspace</h3>
@@ -313,6 +325,14 @@ export default function LoginPage({ email }) {
         <Form onSubmit={e => e.preventDefault()}>
           <p style={{ fontSize: '1rem', width: '50%', marginBottom: '2em' }}>Veuillez écrire un mot de passe de 8 caractères minimum contenant au moins une minuscule, une majuscule, et un chiffre.</p>
           <Fields.FormInput disableStyle={true} label="Définissez votre mot de passe" name="password" type="password" minLength={8} pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}$" required onChange={handleInputChange} value={values.password} />
+        </Form>
+      )}
+
+      {step === 5 && (
+        <Form onSubmit={e => e.preventDefault()}>
+          <p style={{ fontSize: '1rem', width: '50%', marginBottom: '1em' }}>Afin d'importer votre emploi du temps, vous devez nous indiquer votre lien d'exportation iCalendar. Cliquez <a className="link" href={schools[values.school][values.degree]._ade} target="_blank">ici</a> pour aller sur ADE.</p>
+          <p style={{ fontSize: '1rem', width: '50%', marginBottom: '2em' }}>Vous pouvez récupérer ce lien en cliquant sur le deuxième bouton en partant de la gauche en bas, dans le cadre "options"</p>
+          <Fields.FormInput disableStyle={true} label="Lien" name="resourceId" type="url" placeholder="Lien d'exportation de l'agenda en format iCalendar" required onChange={handleInputChange} value={values.resourceId} />
         </Form>
       )}
 

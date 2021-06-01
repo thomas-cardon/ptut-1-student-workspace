@@ -12,7 +12,7 @@ async function handler(req, res) {
    * TODO: VALIDATION
    */
   try {
-    if (req.session.get('user')) return res.status(400).json({ error: 'ALREADY_AUTHENTIFIED', success: true });
+    if (req.session.get('user')) return res.status(400).json({ error: 'ALREADY_AUTHENTIFIED', message: "Vous êtes déjà connecté.", success: true });
 
     const results = await query(`
       SELECT * FROM users
@@ -20,19 +20,20 @@ async function handler(req, res) {
       LIMIT 1`, [req.body.email]);
 
     if (results.length === 1) return res.status(400).json({ error: 'USER_ALREADY_EXISTS', message: "Un utilisateur avec cette adresse mail existe déjà.", success: false });
+    if (req.body.year === 'Prof' && !req.body.resourceId) return res.status(400).json({ error: 'RESOURCEID_MISSING', message: "Le paramètre resourceId est manquant.", success: false });
 
     const hashed = await hash(req.body.password);
 
     await query(`
-      INSERT INTO users (firstName, lastName, email, hash, birthDate, userType, school, degree, year, groupId)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [req.body.firstName, req.body.lastName, req.body.email, hashed, req.body.birthDate, 0, req.body.school, req.body.degree, req.body.year, schools[req.body.school][req.body.degree][req.body.year].groupId]);
+      INSERT INTO users (firstName, lastName, email, hash, birthDate, userType, school, degree, year, groupId, resourceId)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [req.body.firstName, req.body.lastName, req.body.email, hashed, req.body.birthDate, 0, req.body.school, req.body.degree, req.body.year, schools[req.body.school][req.body.degree][req.body.year].groupId, req.body.year === 'Prof' ? req.body.resourceId : null]);
 
     await req.session.save();
     res.send({ success: true });
   }
   catch (e) {
     console.error(e);
-    res.status(500).json({ error: e.message, success: false });
+    res.status(500).json({ error: e.code || e, message: e.message || e.toString(), success: false });
   }
 }
 

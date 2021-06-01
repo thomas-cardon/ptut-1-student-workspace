@@ -29,6 +29,8 @@
   transition: all 0.15s ease;
 
   padding: 2.5px 0;
+
+  user-select: none;
 }
 
 .session .hour, .session .teacher, .session .bottom, .session .module, .session .name {
