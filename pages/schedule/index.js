@@ -3,7 +3,6 @@ import Loader from 'react-loader-spinner';
 import dynamic from 'next/dynamic';
 
 import useUser from '../../lib/useUser';
-import { uni, getSchoolYears } from '../../lib/ade';
 
 import { getISOWeek } from 'date-fns';
 
@@ -44,7 +43,6 @@ export default function SchedulePage() {
   const { show } = useContextMenu({ id: MENU_ID });
 
   const [week, setWeek] = useState(selectedWeek);
-  const [year, setYear] = useState(null);
 
   const [gridEnabled, setGridEnabled] = useState(true);
   const [settings, setSettings] = useState({ showModule: false, showTeachers: false });
@@ -62,21 +60,13 @@ export default function SchedulePage() {
   }, []);
 
   useEffect(() => {
-    if (!isServer() && user) {
-      if (localStorage.getItem('schedule/year') && localStorage.getItem('schedule/year') !== 'null')
-        setYear(localStorage.getItem('schedule/year'));
-      else setYear(user?.year);
-    }
-  }, [user]);
-
-  useEffect(() => {
     if (isServer()) return;
 
-    if (localStorage.getItem('schedule/settings'))
-      setSettings(JSON.parse(localStorage.getItem('schedule/settings')));
+    if (localStorage.getItem(`schedule/settings`))
+      setSettings(JSON.parse(localStorage.getItem(`schedule/settings`)));
   }, []);
 
-  useEffect(() => localStorage.setItem('schedule/settings', JSON.stringify(settings)), [settings]);
+  useEffect(() => localStorage.setItem(`schedule/settings`, JSON.stringify(settings)), [settings]);
 
 
   function handleItemClick({ event, props, triggerEvent, data }){
@@ -102,7 +92,7 @@ export default function SchedulePage() {
       default:
         console.log('Affichage ->', event.currentTarget.id);
         setYear(event.currentTarget.id);
-        localStorage.setItem('schedule/year', event.currentTarget.id);
+        localStorage.setItem(`schedule/${user.userId}/year`, event.currentTarget.id);
         break;
     }
   }
@@ -110,8 +100,8 @@ export default function SchedulePage() {
   *  End of variable definitions
   */
 
-  return <UserLayout user={user} title="Emploi du temps" flex={true} year={year} header={<>
-      <Title appendGradient="temps" subtitle={`Semaine ${week} ${year && year !== user?.year ? '| 👥 ' + year : ''}`} button={<>
+  return <UserLayout user={user} title="Emploi du temps" flex={true} header={<>
+      <Title appendGradient="temps" subtitle={`Semaine ${week}`} button={<>
         <Menu id={MENU_ID}>
           <Item id="toggle-module" onClick={handleItemClick}>{settings.showModule ? 'Cacher' : 'Afficher'} les modules</Item>
           <Item id="toggle-teachers" onClick={handleItemClick}>{settings.showTeachers ? 'Cacher' : 'Afficher'} les professeurs</Item>
@@ -120,7 +110,7 @@ export default function SchedulePage() {
             <Item id="refresh" onClick={handleItemClick}>🔄 Forcer l'actualisation</Item>
             <Separator />
           </>)}
-          <Submenu label="👥 Affichage">
+          <Submenu disabled={true} label="👥 Affichage">
             {user?.school && user?.degree && getSchoolYears(user).filter(group => group === "Prof" ? (user.userType > 0 || user?.group?.name === 'Professeur') : true).map(group => <Item id={group} key={group} onClick={handleItemClick}>{group === year ? '✅ ' : ''}{group}</Item>)}
           </Submenu>
         </Menu>
@@ -137,6 +127,6 @@ export default function SchedulePage() {
         Emploi du
       </Title>
     </>}>
-      {user && year && <Schedule index={week} user={user} year={year} settings={settings} grid={gridEnabled} />}
+      {user && <Schedule index={week} user={user} degree={user.degree} settings={settings} grid={gridEnabled} />}
     </UserLayout>;
 };

@@ -17,7 +17,7 @@
   transition: all 0.2s;
 }
 
-.input-container:hover {
+.input-container:enabled:hover {
   opacity: 1;
 }
 
@@ -43,6 +43,10 @@
   background-color: transparent;
   font-family: inherit;
   font-size: 100%;
+}
+
+.input-container > select:disabled {
+  opacity: 0.5;
 }
 
 .input-container > select option {

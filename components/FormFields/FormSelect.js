@@ -2,8 +2,8 @@ import FormGroup from "./FormGroup.js";
 
 import styles from "./FormSelect.module.css";
 
-export default function FormInput({ label, name, icon, options, noOption, groupStyle, ...rest }) {
-  if (!options) return null;
+export default function FormInput({ label, name, icon, options = [], noOption, groupStyle, ...rest }) {
+  if (!options) options = [];
 
   return (
     <FormGroup label={label} name={name} style={groupStyle}>

@@ -25,7 +25,7 @@ import "react-contexify/dist/ReactContexify.css";
 
 const isServer = () => typeof window === `undefined`;
 
-export default function Schedule({ grid, user, year, settings, index }) {
+export default function Schedule({ grid, user, degree, settings, index }) {
   /*
   * Variable definitions
   */
@@ -37,7 +37,7 @@ export default function Schedule({ grid, user, year, settings, index }) {
   if (!isServer()) {
     const update = () => {
       setCalendarData(
-        parseCalendar({ user, year })
+        parseCalendar({ user, degree })
         .filter(x => getISOWeek(x.start) === index)
         .filter(x => x.start.getHours() >= HOURS_MIN && x.end.getHours() >= HOURS_MIN && x.start.getHours() <= HOURS_MAX && x.end.getHours() <= HOURS_MAX)
         .map(x => {
@@ -62,7 +62,7 @@ export default function Schedule({ grid, user, year, settings, index }) {
       return () => window.removeEventListener('storage', onStorageChange);
     }, []);
 
-    useEffect(update, [year, index, events]);
+    useEffect(update, [degree, index, events]);
   }
 
   useEffect(async () => {
@@ -119,7 +119,7 @@ export default function Schedule({ grid, user, year, settings, index }) {
         <small>{lightFormat(addDays(getDateOfISOWeek(index, new Date().getFullYear()), i), 'dd/MM')}</small>
       </div>)}
 
-      {calendar.map((x, i) => <CalendarBlock key={x.id} user={user} year={year} data={x} settings={settings} />)}
+      {calendar.map((x, i) => <CalendarBlock key={x.id} user={user} degree={degree} data={x} settings={settings} />)}
     </div>
     </>);
 }

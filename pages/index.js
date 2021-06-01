@@ -34,10 +34,10 @@ export default function Dashboard() {
 
   return (
     <UserLayout user={user} flex={true} title="Tableau de bord">
-      <Title appendGradient={(user?.firstName || 'inconnu') + ' !'} subtitle={' — ' + (user?.group?.name || 'Groupe inconnu')}>
+      <Title appendGradient={(user?.firstName || 'inconnu') + ' !'} subtitle={user?.isTeacher ? '' : (' — ' + (user?.group?.name || 'Groupe inconnu'))}>
         Salut,
       </Title>
-      {user?.group?.name === 'Professeur' && user?.userType === 0 && (
+      {user?.isTeacher && user?.userType === 0 && (
         <Highlight>
           <div style={{ color: 'var(--color-primary-600)' }}>
             Votre compte est en cours de <b>validation</b> par l'équipe de Student Workspace.

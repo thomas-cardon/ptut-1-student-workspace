@@ -19,7 +19,7 @@ import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
 import { useTheme } from 'next-themes';
 
-export default function UserLayout({ title, user, children, header, flex = true, year, ...rest }) {
+export default function UserLayout({ title, user, children, header, flex = true, degree, ...rest }) {
   const { theme, setTheme } = useTheme();
 
   return (<>
@@ -48,9 +48,10 @@ export default function UserLayout({ title, user, children, header, flex = true,
                   <span className={styles.name}>{user.firstName || 'Anonyme'} {user.lastName}</span>
                   <small className={styles.id}>
                     {user?.isLoggedIn === false && 'Déconnecté'}
-                    {user.userType === 0 && user.delegate === false && 'Étudiant'}
+                    {user.userType === 0 && user.delegate === false && !user.isTeacher && 'Étudiant'}
                     {user.userType === 0 && user.delegate === true && 'Délégué'}
-                    {user.userType === 1 && 'Professeur'}
+                    {user.userType === 0 && user.isTeacher === true && 'Professeur (en attente)'}
+                    {user.userType === 1 && user.isTeacher === true && 'Professeur'}
                     {user.userType === 2 && 'Administration'}
                   </small>
                   <small className={styles.id}>{user.userId ? '#' + user.userId : <Link href="/login">Se reconnecter</Link>}</small>
@@ -62,7 +63,7 @@ export default function UserLayout({ title, user, children, header, flex = true,
             </Button>
           </Card>
 
-          <UpcomingClassCard user={user} year={user?.year || year} />
+          <UpcomingClassCard user={user} />
 
           <Card className={[styles.card, styles.actions].join(' ')} style={{ alignContent: 'center' }}>
             <p className={styles.text}>
