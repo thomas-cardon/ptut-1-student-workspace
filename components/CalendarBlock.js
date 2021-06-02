@@ -25,7 +25,7 @@ import "react-contexify/dist/ReactContexify.css";
 
 import styles from "./CalendarBlock.module.css";
 
-export default function CalendarBlock({ user, year, settings, data }) {
+export default function CalendarBlock({ user, resource, settings, data }) {
   const { show } = useContextMenu({ id: data.id });
   const { addToast } = useToasts();
 
@@ -101,7 +101,7 @@ export default function CalendarBlock({ user, year, settings, data }) {
         const q = window.prompt('Saisissez le lien de la réunion');
         if (!q || q === '') return addToast('Opération annulée', { appearance: 'warning' });
 
-        const ids = parseCalendar({ user, year }).filter(e => e?.module === data?.module && !isBefore(e.start, data.start)).map(e => e.id);
+        const ids = parseCalendar({ user, resource }).filter(e => e?.module === data?.module && !isBefore(e.start, data.start)).map(e => e.id);
         bulkPatch(ids, 'meeting', q);
         break;
       }

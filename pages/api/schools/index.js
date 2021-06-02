@@ -7,8 +7,7 @@ async function handler(req, res) {
     const degrees = await query(`SELECT * from degrees`);
     const groups = await query(`SELECT * from groups`);
 
-    //res.setHeader('Cache-Control', 's-maxage=86400, stale-while-revalidate=3600');
-
+    res.setHeader('Cache-Control', 's-maxage=86400, stale-while-revalidate=3600');
     res.json(schools.map(o => ({
       ...o,
       degrees: degrees.filter(d => d.school === o.id).map(d => ({ ...d, groups: groups.filter(g => g.degree === d.id) }))

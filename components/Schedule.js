@@ -10,11 +10,9 @@ import { useToasts } from 'react-toast-notifications';
 
 import { lightFormat, addDays, getISOWeek } from 'date-fns';
 import { getDateOfISOWeek } from '../lib/date';
-import { parseCalendar } from '../lib/ade';
+import { parseCalendarAsync } from '../lib/ade';
 
 import Highlight from './Highlight';
-
-import ScheduleBlock from './ScheduleBlock';
 import CalendarBlock from './CalendarBlock';
 
 import styles from "./Schedule.module.css";
@@ -25,7 +23,7 @@ import "react-contexify/dist/ReactContexify.css";
 
 const isServer = () => typeof window === `undefined`;
 
-export default function Schedule({ grid, user, degree, settings, index }) {
+export default function Schedule({ grid, user, resource, settings, index }) {
   /*
   * Variable definitions
   */
@@ -34,10 +32,13 @@ export default function Schedule({ grid, user, degree, settings, index }) {
   const [calendar, setCalendarData] = useState([]);
   const [events, setCalendarEvents] = useState([]);
 
+  let update;
+
   if (!isServer()) {
-    const update = () => {
-      setCalendarData(
-        parseCalendar({ user, degree })
+    update = () => {
+      parseCalendarAsync({ user, resource })
+      .then(calendar => setCalendarData(
+        calendar
         .filter(x => getISOWeek(x.start) === index)
         .filter(x => x.start.getHours() >= HOURS_MIN && x.end.getHours() >= HOURS_MIN && x.start.getHours() <= HOURS_MAX && x.end.getHours() <= HOURS_MAX)
         .map(x => {
@@ -47,22 +48,10 @@ export default function Schedule({ grid, user, degree, settings, index }) {
           return { ...x, [event.key] : [event.value] };
         })
         .filter(x => typeof x?.hidden === 'undefined' || x.hidden === 0)
-      );
+      )).catch(console.error);
     }
 
-    useEffect(() => {
-      const onStorageChange = (e) => {
-        if (e.storageArea === localStorage) return;
-        update();
-      }
-
-      console.log('[Storage] registering events');
-
-      window.addEventListener('storage', onStorageChange);
-      return () => window.removeEventListener('storage', onStorageChange);
-    }, []);
-
-    useEffect(update, [degree, index, events]);
+    useEffect(update, [resource, index, events]);
   }
 
   useEffect(async () => {
@@ -119,7 +108,7 @@ export default function Schedule({ grid, user, degree, settings, index }) {
         <small>{lightFormat(addDays(getDateOfISOWeek(index, new Date().getFullYear()), i), 'dd/MM')}</small>
       </div>)}
 
-      {calendar.map((x, i) => <CalendarBlock key={x.id} user={user} degree={degree} data={x} settings={settings} />)}
+      {calendar.map((x, i) => <CalendarBlock key={x.id} user={user} resource={resource} data={x} settings={settings} />)}
     </div>
     </>);
 }

@@ -10,7 +10,7 @@ import ButtonGroup from './FormFields/ButtonGroup';
 
 import { HiDotsHorizontal, HiPencilAlt, HiArrowRight } from "react-icons/hi";
 
-import { useADE, getClasses, getCurrentCourse, getNextCourse } from '../lib/ade';
+import { useADE, getCurrentCourse, getNextCourse } from '../lib/ade';
 import { formatDistanceStrict, formatDistanceToNowStrict } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
@@ -18,22 +18,20 @@ import Skeleton from 'react-loading-skeleton';
 
 const isServer = () => typeof window === `undefined`;
 
-export default function UpcomingClassCard({ user, year }) {
+export default function UpcomingClassCard({ user }) {
   const [course, setCourse] = useState(null);
   const [current, setCurrent] = useState(false);
-
-  const coursex = undefined;
 
   if (!isServer()) {
     function exec() {
       if (!user) return;
 
-      useADE(user, { year })
+      useADE(user)
       .then(calendar =>
-        getCurrentCourse({ user, year, calendar })
+        getCurrentCourse({ user, calendar })
         .then(course => {
           setCourse(course);
-          if (!course) getNextCourse({ user, year, calendar }).then(course => {
+          if (!course) getNextCourse({ user, calendar }).then(course => {
             setCourse(course);
             setCurrent(false);
           }).catch(console.error);
@@ -47,7 +45,7 @@ export default function UpcomingClassCard({ user, year }) {
 
       const intervalId = setInterval(exec, 30*60*1000);
       return () => clearInterval(intervalId);
-    }, [user, year]);
+    }, [user]);
   }
 
   return (
