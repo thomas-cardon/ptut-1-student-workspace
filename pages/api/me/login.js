@@ -14,8 +14,9 @@ async function handler(req, res) {
 
     // On cherche dans la table users tous les utilisateurs ayant l'adresse mail sélectionnée
     const results = await query(`
-      SELECT userId, email, hash, userType, firstName, lastName, birthDate, school, users.degree, year, groupId, groups.name AS groupName, avatar_key, avatar_value, delegate, users.resourceId FROM users
+      SELECT userId, email, hash, userType, firstName, lastName, birthDate, degrees.school, degreeId, groupId, groups.name AS groupName, groups.resourceId AS groupResourceId, avatar_key, avatar_value, delegate, isTeacher, users.resourceId, ent, url FROM users
       LEFT OUTER JOIN groups ON groups.id = users.groupId
+      LEFT OUTER JOIN degrees ON users.degreeId
       WHERE email = ?`, req.body.email);
     if (results.length > 0) { // Si un utilisateur est trouvé on poursuit
       // On vérifie le mot de passe avec le hash qu'on a dans le tuple sélectionné
@@ -32,16 +33,22 @@ async function handler(req, res) {
         birthDate: results[0].birthDate,
         userType: results[0].userType,
         delegate: results[0].delegate === 1,
+        isDelegate: results[0].delegate === 1,
+        isTeacher: results[0].isTeacher === 1,
         school: results[0].school,
-        degree: results[0].degree,
-        year: results[0].year,
-        group: {
+        degree: results[0].degreeId,
+        group: results[0].groupName ? {
           id: results[0]?.groupId,
           name: results[0]?.groupName
+        } : null,
+        schedule: {
+          resourceId: results[0].resourceId || results[0].groupResourceId,
+          ent: results[0].ent,
+          url: results[0].url
         },
-        resourceId: results[0].resourceId,
         avatar: results[0].avatar_key && results[0].avatar_value ? { [results[0].avatar_key]: results[0].avatar_value } : {}
-      } /* On sélectionne les variables voulues */);
+      });
+
       await req.session.save();
 
       res.send({ success: true });

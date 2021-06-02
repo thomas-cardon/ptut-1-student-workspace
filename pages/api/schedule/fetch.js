@@ -8,7 +8,7 @@ async function handler(req, res, session) {
   if (!req?.session?.get('user')) return res.status(401).send({ error: 'NOT_AUTHORIZED', success: false });
 
   try {
-    const url = getURL(req.query.school, req.query.degree, req.query.year, req.session.get('user'));
+    const url = getURL(req.session.get('user'), req.query.resource);
     console.log(url);
 
     const results = await query(`SELECT body from ade_cache WHERE url = ?`, [url]);

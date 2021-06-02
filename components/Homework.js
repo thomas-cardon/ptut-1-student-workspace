@@ -26,7 +26,7 @@ import styles from './Homework.module.css';
 
 const MENU_ID = 'HOMEWORK-EDIT';
 
-export default function Homework({ user, groupId }) {
+export default function Homework({ user }) {
   const { data, error } = useSWR('/api/homework', fetcher);
   const { addToast } = useToasts();
   const router = useRouter();
@@ -88,8 +88,8 @@ export default function Homework({ user, groupId }) {
         <Item id="edit" disabled="true" onClick={handleItemClick}>📝 Editer </Item>
         <Item id="remove" onClick={handleItemClick}>&#x274C; Supprimer</Item>
       </Menu>
-      {data && user?.group ? (<>
-        <div className="buttons">
+      {data && user ? (<>
+        <div className="buttons full">
           <ButtonGroup style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
             <FormButton disabled={day <= 0} onClick={() => setDay(day - 1)}>{"«"}</FormButton>
             <Link href="/homework/add">
@@ -105,7 +105,7 @@ export default function Homework({ user, groupId }) {
               <span className={styles.date}>A ce jour</span>
             </h5>
             <p style={{ padding: '0.5em' }}>
-            {user?.group?.name === 'Professeur' ? (
+            {user?.isTeacher ? (
               <>
                 Les élèves n'ont pas de travail aujourd'hui.
                 <br />

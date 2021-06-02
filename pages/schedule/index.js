@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import useSWR from 'swr';
+
 import Loader from 'react-loader-spinner';
 import dynamic from 'next/dynamic';
 
 import useUser from '../../lib/useUser';
-import { uni, getSchoolYears } from '../../lib/ade';
+import { fetcher } from '../../lib/hooks';
 
 import { getISOWeek } from 'date-fns';
 
@@ -41,13 +43,16 @@ export default function SchedulePage() {
   const selectedWeek = getISOWeek(new Date());
 
   const { user } = useUser({ redirectTo: '/login' });
-  const { show } = useContextMenu({ id: MENU_ID });
+  const { data : groups, groupsError } = useSWR('/api/groups/by-user', fetcher); // api/users/teachers/resources
+  const { data : teachers, resourcesError } = useSWR('/api/users/teachers/resources', fetcher);
 
   const [week, setWeek] = useState(selectedWeek);
-  const [year, setYear] = useState(null);
+  const [resource, setResource] = useState(null);
 
   const [gridEnabled, setGridEnabled] = useState(true);
   const [settings, setSettings] = useState({ showModule: false, showTeachers: false });
+
+  const { show } = useContextMenu({ id: MENU_ID });
 
   useEffect(() => {
     function handleResize() {
@@ -62,21 +67,20 @@ export default function SchedulePage() {
   }, []);
 
   useEffect(() => {
-    if (!isServer() && user) {
-      if (localStorage.getItem('schedule/year') && localStorage.getItem('schedule/year') !== 'null')
-        setYear(localStorage.getItem('schedule/year'));
-      else setYear(user?.year);
-    }
+    if (isServer() || !user) return;
+
+    if (localStorage.getItem(`schedule/${user.userId}/resource`) != null)
+      setResource(localStorage.getItem(`schedule/${user.userId}/resource`));
   }, [user]);
 
   useEffect(() => {
     if (isServer()) return;
 
-    if (localStorage.getItem('schedule/settings'))
-      setSettings(JSON.parse(localStorage.getItem('schedule/settings')));
+    if (localStorage.getItem(`schedule/settings`))
+      setSettings(JSON.parse(localStorage.getItem(`schedule/settings`)));
   }, []);
 
-  useEffect(() => localStorage.setItem('schedule/settings', JSON.stringify(settings)), [settings]);
+  useEffect(() => localStorage.setItem(`schedule/settings`, JSON.stringify(settings)), [settings]);
 
 
   function handleItemClick({ event, props, triggerEvent, data }){
@@ -100,9 +104,11 @@ export default function SchedulePage() {
         setSettings({ ...settings, showTeachers: !settings.showTeachers });
         break;
       default:
-        console.log('Affichage ->', event.currentTarget.id);
-        setYear(event.currentTarget.id);
-        localStorage.setItem('schedule/year', event.currentTarget.id);
+        if (!event.currentTarget.id) return;
+
+        console.log('Affichage -> Définition ressource:', event.currentTarget.id);
+        setResource(event.currentTarget.id);
+        localStorage.setItem(`schedule/${user.userId}/resource`, event.currentTarget.id);
         break;
     }
   }
@@ -110,8 +116,8 @@ export default function SchedulePage() {
   *  End of variable definitions
   */
 
-  return <UserLayout user={user} title="Emploi du temps" flex={true} year={year} header={<>
-      <Title appendGradient="temps" subtitle={`Semaine ${week} ${year && year !== user?.year ? '| 👥 ' + year : ''}`} button={<>
+  return <UserLayout user={user} title="Emploi du temps" flex={true} header={<>
+      <Title appendGradient="temps" subtitle={`Semaine ${week}`} button={<>
         <Menu id={MENU_ID}>
           <Item id="toggle-module" onClick={handleItemClick}>{settings.showModule ? 'Cacher' : 'Afficher'} les modules</Item>
           <Item id="toggle-teachers" onClick={handleItemClick}>{settings.showTeachers ? 'Cacher' : 'Afficher'} les professeurs</Item>
@@ -121,7 +127,11 @@ export default function SchedulePage() {
             <Separator />
           </>)}
           <Submenu label="👥 Affichage">
-            {user?.school && user?.degree && getSchoolYears(user).filter(group => group === "Prof" ? (user.userType > 0 || user?.group?.name === 'Professeur') : true).map(group => <Item id={group} key={group} onClick={handleItemClick}>{group === year ? '✅ ' : ''}{group}</Item>)}
+            <Item id={user?.schedule.resourceId} onClick={handleItemClick}>Par défaut (#{user?.schedule.resourceId})</Item>
+            <Separator />
+            {user?.school && !groupsError && groups?.map(g => <Item id={g.resourceId} key={g.resourceId} onClick={handleItemClick}>{g.resourceId === resource ? '✅ ' : ''}{g.name}</Item>)}
+            <Separator />
+            {!resourcesError && teachers?.map(t => <Item id={t.resourceId} key={"t-" + t.resourceId} onClick={handleItemClick}>{t.resourceId === resource ? '✅ ' : ''}{t.firstName} {t.lastName}</Item>)}
           </Submenu>
         </Menu>
         <ButtonGroup>
@@ -137,6 +147,6 @@ export default function SchedulePage() {
         Emploi du
       </Title>
     </>}>
-      {user && year && <Schedule index={week} user={user} year={year} settings={settings} grid={gridEnabled} />}
+      {user && <Schedule index={week} user={user} resource={resource} settings={settings} grid={gridEnabled} />}
     </UserLayout>;
 };

@@ -2,6 +2,7 @@ export { default as FormRadio } from "./FormRadio";
 
 export { default as FormCheckbox } from "./FormCheckbox";
 export { default as FormCheckboxList } from "./FormCheckboxList";
+export { default as FormSwitch } from './FormSwitch';
 
 export { default as FormInput } from "./FormInput";
 export { default as FormSelect } from "./FormSelect";

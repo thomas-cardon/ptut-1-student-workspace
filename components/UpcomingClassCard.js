@@ -10,7 +10,7 @@ import ButtonGroup from './FormFields/ButtonGroup';
 
 import { HiDotsHorizontal, HiPencilAlt, HiArrowRight } from "react-icons/hi";
 
-import { useADE, getClasses, getCurrentCourse, getNextCourse } from '../lib/ade';
+import { useADE, getCurrentCourse, getNextCourse } from '../lib/ade';
 import { formatDistanceStrict, formatDistanceToNowStrict } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
@@ -18,22 +18,20 @@ import Skeleton from 'react-loading-skeleton';
 
 const isServer = () => typeof window === `undefined`;
 
-export default function UpcomingClassCard({ user, year }) {
+export default function UpcomingClassCard({ user }) {
   const [course, setCourse] = useState(null);
   const [current, setCurrent] = useState(false);
-
-  const coursex = undefined;
 
   if (!isServer()) {
     function exec() {
       if (!user) return;
 
-      useADE(user, { year })
+      useADE(user)
       .then(calendar =>
-        getCurrentCourse({ user, year, calendar })
+        getCurrentCourse({ user, calendar })
         .then(course => {
           setCourse(course);
-          if (!course) getNextCourse({ user, year, calendar }).then(course => {
+          if (!course) getNextCourse({ user, calendar }).then(course => {
             setCourse(course);
             setCurrent(false);
           }).catch(console.error);
@@ -47,7 +45,7 @@ export default function UpcomingClassCard({ user, year }) {
 
       const intervalId = setInterval(exec, 30*60*1000);
       return () => clearInterval(intervalId);
-    }, [user, year]);
+    }, [user]);
   }
 
   return (
@@ -56,19 +54,24 @@ export default function UpcomingClassCard({ user, year }) {
         <h1 className={styles.title}>{course ? `${!current ? '⏭️ ' : ''}${course.summary}` : <Skeleton />}</h1>
         <small><i>{course ? (course.description ? course.description.trim() : 'Sans description') : <Skeleton />}</i></small>
         <span><b>{course ? course?.location : <Skeleton />}</b></span>
-        {course && <span style={{ color: current ? 'var(--color-accent)' : '#27ae60' }}>Démarr{current ? 'é' : 'e'} {formatDistanceToNowStrict(course.start, { addSuffix: true, locale: fr })}</span>}
-        {course && <span style={{ color: current ? 'var(--color-accent)' : '#27ae60' }}>Durée: {formatDistanceStrict(course.start, course.end, { locale: fr })}</span>}
+        {course ? <>
+          <span style={{ color: current ? 'var(--color-accent)' : '#27ae60' }}>Durée: {formatDistanceStrict(course.start, course.end, { locale: fr })}</span>
+          <span style={{ color: current ? 'var(--color-accent)' : '#27ae60' }}>Démarr{current ? 'é' : 'e'} {formatDistanceToNowStrict(course.start, { addSuffix: true, locale: fr })}</span>
+        </> : <>
+          <span><Skeleton /></span>
+          <span><Skeleton /></span>
+        </>}
 
-        <Link href={course?.meeting || '#'} target="_blank" className={styles.joinButton}>
-          <Button is="success" icon={<HiArrowRight />} disabled={typeof course?.meeting === 'undefined'}>Rejoindre</Button>
+        <Link style={{ marginTop: '1rem' }} href={course?.meeting || '#'} target="_blank">
+          <Button is="success" icon={<HiArrowRight />} style={{ width: '100%' }} disabled={typeof course?.meeting === 'undefined'}>Rejoindre</Button>
         </Link>
 
         <div className={styles.buttons}>
           <Link href="/" /*href={"/course/notes/" + course.id}*/>
-            <Button icon={<HiPencilAlt />} center={true}>Note</Button>
+            <Button icon={<HiPencilAlt />} center={true} disabled={true}>Note</Button>
           </Link>
           <Link href="/" /*href={"/course/" + course.id}*/>
-            <Button is="action" icon={<HiDotsHorizontal />}>Voir</Button>
+            <Button is="action" icon={<HiDotsHorizontal />} disabled={true}>Voir</Button>
           </Link>
         </div>
       </>)}

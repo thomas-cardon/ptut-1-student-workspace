@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
+import useSWR from 'swr';
 
 import Link from '../components/Link';
 
@@ -15,7 +16,8 @@ import withSession from "../lib/session";
 
 import { Line } from 'rc-progress';
 
-import { uni as schools, emails } from '../lib/ade';
+import { emails } from '../lib/ade';
+import { fetcher } from '../lib/hooks';
 
 export default function LoginPage({ email }) {
   const { theme, setTheme } = useTheme();
@@ -26,14 +28,16 @@ export default function LoginPage({ email }) {
   /*
    * Variable definitions
    */
-   const [values, setValues] = useState({ firstName: '', lastName: '', email: email || '', password: '', school: '', degree: '', year: '', birthDate: "1970-01-01", resourceId: null });
+   const { data : schools, error } = useSWR('/api/schools', fetcher);
+
+   const [values, setValues] = useState({ firstName: '', lastName: '', email: email || '', password: '', school: 0, degree: 0, group: 0, teacher: false, birthDate: "1970-01-01", resourceId: null });
    const [step, setStep] = useState(1);
 
-   const MAX_STEPS = values.year === 'Prof' ? 5 : 4;
+   const MAX_STEPS = values.teacher ? 5 : 4;
 
    const handleInputChange = e => {
-     const { name, value } = e.target;
-     setValues({ ...values, [name]: value});
+     const {name, value, checked, type } = e.target;
+     setValues({ ...values, [name]: type === 'checkbox' ? checked : value });
    };
 
   function previousStep(e) {
@@ -45,7 +49,7 @@ export default function LoginPage({ email }) {
     e.preventDefault();
 
     if (step === MAX_STEPS) {
-      if (values.year === 'Prof' && !new URLSearchParams(values.resourceId).get('resources')) return addToast('Veuillez entrer la bonne URL afin de pouvoir importer votre emploi du temps.', { appearance: 'error' });
+      if (values.teacher && !new URLSearchParams(values.resourceId).get('resources')) return addToast('Veuillez entrer la bonne URL afin de pouvoir importer votre emploi du temps.', { appearance: 'error' });
       if (values.password.length < 8) return addToast('Veuillez entrer un mot de passe d\'au moins 8 caractères', { appearance: 'error' });
 
       try {
@@ -81,7 +85,7 @@ export default function LoginPage({ email }) {
         setStep(step + 1);
       }
       else if (step === 2) {
-        if (values.school === '' || values.degree === '' || values.year === '') return addToast('Sélectionnez votre école, votre formation et votre année pour continuer.', { appearance: 'error' });
+        if (values.teacher === false && (values.school === 0 || values.degree === 0 || values.year === 0)) return addToast('Sélectionnez votre école, votre formation et votre année pour continuer.', { appearance: 'error' });
         setStep(step + 1);
       }
       else if (step === 3) {
@@ -307,9 +311,10 @@ export default function LoginPage({ email }) {
 
       {step === 2 && (
         <Form onSubmit={e => e.preventDefault()}>
-          <Fields.FormSelect label="Université" name="school" onChange={handleInputChange} noOption="-- Sélectionnez une université --" value={values.school} options={Object.keys(schools).map(x => { return { option: x, value: x } })} required />
-          <Fields.FormSelect label="Formation" name="degree" onChange={handleInputChange} noOption="-- Sélectionnez une formation --" value={values.degree} options={(values.school ? Object.keys(schools[values.school]) : []).map(x => { return { option: x, value: x } })} required />
-          <Fields.FormSelect label="Groupe" name="year" onChange={handleInputChange} noOption="-- Sélectionnez un groupe --" value={values.year} options={(values.school && values.degree ? Object.keys(schools[values.school][values.degree]) : []).filter(x => !x.startsWith('_')).map(x => { return { option: x, value: x } })} required />
+          <Fields.FormSelect label="Université" name="school" onChange={handleInputChange} noOption="-- Sélectionnez une université --" value={values.school} options={schools?.map(x => { return { option: x.name, value: x.id } })} required />
+          <Fields.FormSelect label="Formation" name="degree" onChange={handleInputChange} noOption="-- Sélectionnez une formation --" value={values.degree} options={values.school ? schools.find(x => x.id == values.school).degrees.map(x => { return { option: x.name, value: x.id } }) : null} required />
+          <Fields.FormSelect disabled={values.teacher} label="Groupe" name="group" onChange={handleInputChange} noOption="-- Sélectionnez un groupe --" value={values.group} options={values.degree ? schools.find(x => x.id == values.school).degrees.find(x => x.id == values.degree).groups.map(x => { return { option: x.name, value: x.id } }) : null} required />
+          <Fields.FormSwitch label="Êtes vous professeur ?" name="teacher" onChange={handleInputChange} value={values.teacher} />
         </Form>
       )}
 
@@ -330,8 +335,11 @@ export default function LoginPage({ email }) {
 
       {step === 5 && (
         <Form onSubmit={e => e.preventDefault()}>
-          <p style={{ fontSize: '1rem', width: '50%', marginBottom: '1em' }}>Afin d'importer votre emploi du temps, vous devez nous indiquer votre lien d'exportation iCalendar. Cliquez <a className="link" href={schools[values.school][values.degree]._ade} target="_blank">ici</a> pour aller sur ADE.</p>
-          <p style={{ fontSize: '1rem', width: '50%', marginBottom: '2em' }}>Vous pouvez récupérer ce lien en cliquant sur le deuxième bouton en partant de la gauche en bas, dans le cadre "options"</p>
+          <p style={{ fontFamily: 'Lato', textTransform: 'none', textAlign: 'justify', fontSize: '1rem', width: '35vw', marginBottom: '2em' }}>
+            Afin d'importer votre emploi du temps, vous devez nous indiquer votre lien d'exportation iCalendar.
+            <br />
+            Vous pouvez récupérer ce lien sur ADE en cliquant sur le deuxième bouton en partant de la gauche en bas, dans le cadre "options"
+          </p>
           <Fields.FormInput disableStyle={true} label="Lien" name="resourceId" type="url" placeholder="Lien d'exportation de l'agenda en format iCalendar" required onChange={handleInputChange} value={values.resourceId} />
         </Form>
       )}

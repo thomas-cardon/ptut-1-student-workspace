@@ -8,6 +8,7 @@
   justify-content: space-between;
 
   margin-top: 0.5rem;
+  padding: 0 !important;
 }
 
 @media (max-width:641px)  {
@@ -25,14 +26,6 @@
 }
 
 .buttons > a > button {
-  width: 100%;
-}
-
-.joinButton {
-  margin-top: 1rem;
-}
-
-.joinButton > button {
   width: 100%;
 }
 
