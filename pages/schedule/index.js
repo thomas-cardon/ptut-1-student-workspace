@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import useSWR from 'swr';
+
 import Loader from 'react-loader-spinner';
 import dynamic from 'next/dynamic';
 
 import useUser from '../../lib/useUser';
+import { fetcher } from '../../lib/hooks';
 
 import { getISOWeek } from 'date-fns';
 
@@ -40,12 +43,16 @@ export default function SchedulePage() {
   const selectedWeek = getISOWeek(new Date());
 
   const { user } = useUser({ redirectTo: '/login' });
-  const { show } = useContextMenu({ id: MENU_ID });
+  const { data : groups, groupsError } = useSWR('/api/groups/by-user', fetcher); // api/users/teachers/resources
+  const { data : teachers, resourcesError } = useSWR('/api/users/teachers/resources', fetcher);
 
   const [week, setWeek] = useState(selectedWeek);
+  const [resource, setResource] = useState(null);
 
   const [gridEnabled, setGridEnabled] = useState(true);
   const [settings, setSettings] = useState({ showModule: false, showTeachers: false });
+
+  const { show } = useContextMenu({ id: MENU_ID });
 
   useEffect(() => {
     function handleResize() {
@@ -58,6 +65,13 @@ export default function SchedulePage() {
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  useEffect(() => {
+    if (isServer() || !user) return;
+
+    if (localStorage.getItem(`schedule/${user.userId}/resource`) != null)
+      setResource(localStorage.getItem(`schedule/${user.userId}/resource`));
+  }, [user]);
 
   useEffect(() => {
     if (isServer()) return;
@@ -90,9 +104,11 @@ export default function SchedulePage() {
         setSettings({ ...settings, showTeachers: !settings.showTeachers });
         break;
       default:
-        console.log('Affichage ->', event.currentTarget.id);
-        setYear(event.currentTarget.id);
-        localStorage.setItem(`schedule/${user.userId}/year`, event.currentTarget.id);
+        if (!event.currentTarget.id) return;
+
+        console.log('Affichage -> Définition ressource:', event.currentTarget.id);
+        setResource(event.currentTarget.id);
+        localStorage.setItem(`schedule/${user.userId}/resource`, event.currentTarget.id);
         break;
     }
   }
@@ -110,8 +126,12 @@ export default function SchedulePage() {
             <Item id="refresh" onClick={handleItemClick}>🔄 Forcer l'actualisation</Item>
             <Separator />
           </>)}
-          <Submenu disabled={true} label="👥 Affichage">
-            {user?.school && user?.degree && [].map(group => <Item id={group} key={group} onClick={handleItemClick}>{group === year ? '✅ ' : ''}{group}</Item>)}
+          <Submenu label="👥 Affichage">
+            <Item id={user?.schedule.resourceId} onClick={handleItemClick}>Par défaut (#{user?.schedule.resourceId})</Item>
+            <Separator />
+            {user?.school && !groupsError && groups?.map(g => <Item id={g.resourceId} key={g.resourceId} onClick={handleItemClick}>{g.resourceId === resource ? '✅ ' : ''}{g.name}</Item>)}
+            <Separator />
+            {!resourcesError && teachers?.map(t => <Item id={t.resourceId} key={"t-" + t.resourceId} onClick={handleItemClick}>{t.resourceId === resource ? '✅ ' : ''}{t.firstName} {t.lastName}</Item>)}
           </Submenu>
         </Menu>
         <ButtonGroup>
@@ -127,6 +147,6 @@ export default function SchedulePage() {
         Emploi du
       </Title>
     </>}>
-      {user && <Schedule index={week} user={user} degree={user.degree} settings={settings} grid={gridEnabled} />}
+      {user && <Schedule index={week} user={user} resource={resource} settings={settings} grid={gridEnabled} />}
     </UserLayout>;
 };
