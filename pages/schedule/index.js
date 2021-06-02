@@ -111,7 +111,7 @@ export default function SchedulePage() {
             <Separator />
           </>)}
           <Submenu disabled={true} label="👥 Affichage">
-            {user?.school && user?.degree && getSchoolYears(user).filter(group => group === "Prof" ? (user.userType > 0 || user?.group?.name === 'Professeur') : true).map(group => <Item id={group} key={group} onClick={handleItemClick}>{group === year ? '✅ ' : ''}{group}</Item>)}
+            {user?.school && user?.degree && [].map(group => <Item id={group} key={group} onClick={handleItemClick}>{group === year ? '✅ ' : ''}{group}</Item>)}
           </Submenu>
         </Menu>
         <ButtonGroup>
