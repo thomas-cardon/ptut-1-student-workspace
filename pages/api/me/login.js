@@ -14,7 +14,7 @@ async function handler(req, res) {
 
     // On cherche dans la table users tous les utilisateurs ayant l'adresse mail sélectionnée
     const results = await query(`
-      SELECT userId, email, hash, userType, firstName, lastName, birthDate, degreeId, groupId, groups.name AS groupName, groups.resourceId AS groupResourceId, avatar_key, avatar_value, delegate, isTeacher, users.resourceId, ent, url FROM users
+      SELECT userId, email, hash, userType, firstName, lastName, birthDate, degrees.school, degreeId, groupId, groups.name AS groupName, groups.resourceId AS groupResourceId, avatar_key, avatar_value, delegate, isTeacher, users.resourceId, ent, url FROM users
       LEFT OUTER JOIN groups ON groups.id = users.groupId
       LEFT OUTER JOIN degrees ON users.degreeId
       WHERE email = ?`, req.body.email);
@@ -35,6 +35,7 @@ async function handler(req, res) {
         delegate: results[0].delegate === 1,
         isDelegate: results[0].delegate === 1,
         isTeacher: results[0].isTeacher === 1,
+        school: results[0].school,
         degree: results[0].degreeId,
         group: results[0].groupName ? {
           id: results[0]?.groupId,
