@@ -16,7 +16,10 @@ export default function LegalPage() {
       <h7>Définitions</h7>
       <p>
         <strong>L'Éditeur</strong> : La personne, physique ou morale, qui édite les
-        services de communication au public en ligne. <strong>Le Site</strong> :
+        services de communication au public en ligne.
+        <br />
+
+        <strong>Le Site</strong> :
         L'ensemble des sites, pages Internet et services en ligne proposés par
         l'Éditeur.
       </p>

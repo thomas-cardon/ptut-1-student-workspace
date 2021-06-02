@@ -103,10 +103,10 @@ export default function SettingsPage() {
         <hr style={{ marginBottom: '1em', marginTop: '-0.5em' }} />
         <div className="buttons" style={{ flexWrap: 'nowrap' }}>
           <Link href={`https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_URL_PREFIX + '/api/callback/github/exchange_token'}&allow_signup=false&login=${user.email}`}>
-            <Fields.FormButton type="submit" icon={<HiSparkles />}>Connexion via GitHub</Fields.FormButton>
+            <Fields.FormButton type="submit" icon={<HiSparkles />}>Via GitHub</Fields.FormButton>
           </Link>
-          <Fields.FormButton type="submit" icon={<HiCake />} disabled={true}>Connexion via Twitter</Fields.FormButton>
-          <Fields.FormButton type="submit" disabled={true}>Définir l'icône avec un lien</Fields.FormButton>
+          <Fields.FormButton type="submit" icon={<HiCake />} disabled={true}>Via Twitter</Fields.FormButton>
+          <Fields.FormButton type="submit" disabled={true}>Via un lien perso.</Fields.FormButton>
         </div>
       </div>
 
@@ -116,7 +116,7 @@ export default function SettingsPage() {
         <div className="buttons">
           <Fields.FormButton icon={<HiTrash />} is="danger" onClick={() => {
             if (confirm('Voulez-vous vraiment supprimer votre compte ?')) Router.push('/api/me/destroy');
-          }}>Supprimer?</Fields.FormButton>
+          }}>Supprimer ?</Fields.FormButton>
         </div>
       </div>
     </>);

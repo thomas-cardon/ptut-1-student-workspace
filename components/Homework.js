@@ -89,7 +89,7 @@ export default function Homework({ user }) {
         <Item id="remove" onClick={handleItemClick}>&#x274C; Supprimer</Item>
       </Menu>
       {data && user ? (<>
-        <div className="buttons">
+        <div className="buttons full">
           <ButtonGroup style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
             <FormButton disabled={day <= 0} onClick={() => setDay(day - 1)}>{"«"}</FormButton>
             <Link href="/homework/add">
