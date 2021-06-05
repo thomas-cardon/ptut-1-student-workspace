@@ -10,7 +10,7 @@ import { parseCalendar } from '../lib/ade';
 import { FormButton } from './FormFields';
 import { HiPlusCircle } from "react-icons/hi";
 
-import { format, getDay, isBefore } from 'date-fns';
+import { format, parse, getDay, isBefore, set } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
 import { useToasts } from 'react-toast-notifications';
@@ -30,6 +30,8 @@ export default function CalendarBlock({ user, resource, settings, data }) {
   const { addToast } = useToasts();
 
   const patch = (key, value, bulk = false) => {
+    if (!value || value === '') return addToast('Opération annulée', { appearance: 'warning' });
+
     console.log('[PATCH]', data.id, '->', key, '=', value);
 
     if (value === null) return;
@@ -46,6 +48,8 @@ export default function CalendarBlock({ user, resource, settings, data }) {
   };
 
   const bulkPatch = (ids, key, value) => {
+    if (!value || value === '') return addToast('Opération annulée', { appearance: 'warning' });
+
     return fetch(location.protocol + '//' + location.host + `/api/schedule/ade/patch-bulk`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
@@ -93,13 +97,57 @@ export default function CalendarBlock({ user, resource, settings, data }) {
         patch('description', window.prompt('Saisissez la description du cours', data.description));
         break;
       }
+      case "change-date": {
+        let q = window.prompt('Saisissez la nouvelle date (format jour/mois)', format(data.start, 'dd/MM'));
+        if (!q || q === '') return addToast('Opération annulée', { appearance: 'warning' });
+
+        try {
+          let start = parse(q, 'dd/MM', data.start);
+          start = set(start, { hours: data.start.getHours(), minutes: data.start.getMinutes() });
+
+          let end = parse(q, 'dd/MM', data.end);
+          end = set(end, { hours: data.end.getHours(), minutes: data.end.getMinutes() });
+
+          if (isNaN(start.getTime()) || isNaN(end.getTime())) throw Error({ message: 'La date entrée est invalide' });
+
+          patch('start', start);
+          patch('end', end);
+        }
+        catch(error) {
+          console.error(error);
+          return addToast('Erreur' + error.message ? ': ' + error.message : '', { appearance: 'error' });
+        }
+
+        break;
+      }
+      case "change-hours": {
+        let q1 = window.prompt("Saisissez l'heure du début", format(data.start, 'HH:mm'));
+        let q2 = window.prompt("Saisissez l'heure de fin", format(data.end, 'HH:mm'));
+
+        if (!q1 || q1 === '' || !q2 || q2 === '') return addToast('Opération annulée', { appearance: 'warning' });
+
+        try {
+          let start = parse(q1, 'HH:mm', data.start);
+          let end = parse(q2, 'HH:mm', data.end);
+
+          if (isNaN(start.getTime()) || isNaN(end.getTime())) throw Error({ message: 'L\'heure donnée est invalide' });
+
+          patch('start', start);
+          patch('end', end);
+        }
+        catch(error) {
+          console.error(error);
+          return addToast('Erreur' + error.message ? ': ' + error.message : '', { appearance: 'error' });
+        }
+
+        break;
+      }
       case "change-meeting": {
         patch('meeting', window.prompt('Saisissez le lien de la réunion'));
         break;
       }
       case "change-meeting-by-module": {
         const q = window.prompt('Saisissez le lien de la réunion');
-        if (!q || q === '') return addToast('Opération annulée', { appearance: 'warning' });
 
         const ids = parseCalendar({ user, resource }).filter(e => e?.module === data?.module && !isBefore(e.start, data.start)).map(e => e.id);
         bulkPatch(ids, 'meeting', q);
@@ -113,8 +161,8 @@ export default function CalendarBlock({ user, resource, settings, data }) {
         patch('location', '$_REMOTE');
         break;
       }
-      case "remove": {
-        patch('hidden', confirm('Voulez-vous supprimer ce cours?') ? 1 : 0);
+      case "hide": {
+        patch('hidden', confirm('Voulez-vous cacher ce cours pour tout le monde?') ? 1 : 0);
         break;
       }
     }
@@ -140,6 +188,19 @@ export default function CalendarBlock({ user, resource, settings, data }) {
           <Item id="change-description" onClick={handleItemClick}>
             💬&nbsp;Description
           </Item>
+          <Item id="change-date" onClick={handleItemClick}>
+            ⏰&nbsp;Date
+          </Item>
+          {/*
+            <Submenu label="⏰ Date">
+              <Item id="change-hours" onClick={handleItemClick}>
+                ⏰&nbsp;Heure
+              </Item>
+              <Item id="change-datetime" onClick={handleItemClick}>
+                ⏰&nbsp;Les deux
+              </Item>
+            </Submenu>
+            */}
           <Submenu label="💻 Réunion">
             <Item id="change-meeting" onClick={handleItemClick}>
               Pour ce cours
@@ -162,8 +223,8 @@ export default function CalendarBlock({ user, resource, settings, data }) {
             🔔&nbsp;Notifier le groupe
           </Item>
           <Separator />
-          <Item id="remove" onClick={handleItemClick}>
-            ❌&nbsp;Supprimer le cours
+          <Item id="hide" onClick={handleItemClick}>
+            ❌&nbsp;Cacher le cours
           </Item>
         </Submenu>
       </Menu>
@@ -176,7 +237,7 @@ export default function CalendarBlock({ user, resource, settings, data }) {
         onContextMenu={(event) => show(event, { props: {} })}
         className={styles.session}
         style={{
-          gridColumn: "track-" + getDay(data.start),
+          gridColumn: "track-" + getDay(data.end),
           backgroundColor: stringToColor(data.summary),
           color: pickTextColorBasedOnBgColorAdvanced(
             stringToColor(data.summary),

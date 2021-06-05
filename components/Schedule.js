@@ -39,14 +39,17 @@ export default function Schedule({ grid, user, resource, settings, index }) {
       parseCalendarAsync({ user, resource })
       .then(calendar => setCalendarData(
         calendar
-        .filter(x => getISOWeek(x.start) === index)
-        .filter(x => x.start.getHours() >= HOURS_MIN && x.end.getHours() >= HOURS_MIN && x.start.getHours() <= HOURS_MAX && x.end.getHours() <= HOURS_MAX)
         .map(x => {
           let event = events.find(y => x.id === y.uid);
           if (!event) return x;
 
-          return { ...x, [event.key] : [event.value] };
+          if (event.key === 'start' || event.key === 'end')
+            event.value = new Date(event.value);
+
+          return { ...x, [event.key] : event.value };
         })
+        .filter(x => getISOWeek(x.start) === index)
+        .filter(x => x.start.getHours() >= HOURS_MIN && x.end.getHours() >= HOURS_MIN && x.start.getHours() <= HOURS_MAX && x.end.getHours() <= HOURS_MAX)
         .filter(x => typeof x?.hidden === 'undefined' || x.hidden === 0)
       )).catch(console.error);
     }
