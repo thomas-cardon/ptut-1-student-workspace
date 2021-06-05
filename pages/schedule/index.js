@@ -127,7 +127,7 @@ export default function SchedulePage() {
             <Separator />
           </>)}
           <Submenu label="👥 Affichage">
-            <Item id={user?.schedule.resourceId} onClick={handleItemClick}>Par défaut (#{user?.schedule.resourceId})</Item>
+            <Item id={user?.schedule.resourceId} onClick={handleItemClick}>Par défaut</Item>
             <Separator />
             {user?.school && !groupsError && groups?.map(g => <Item id={g.resourceId} key={g.resourceId} onClick={handleItemClick}>{g.resourceId === resource ? '✅ ' : ''}{g.name}</Item>)}
             <Separator />
