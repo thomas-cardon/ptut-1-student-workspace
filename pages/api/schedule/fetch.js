@@ -9,7 +9,6 @@ async function handler(req, res, session) {
 
   try {
     const url = getURL(req.session.get('user'), req.query.resource);
-    console.log(url);
 
     const results = await query(`SELECT body from ade_cache WHERE url = ?`, [url]);
     let ics;
