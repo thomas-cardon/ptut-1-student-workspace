@@ -9,16 +9,19 @@ async function handler(req, res) {
 
   try {
     const users = await query(`
-      SELECT userId, email, userType, firstName, lastName, birthDate, groupId, groups.name AS groupName FROM users
+      SELECT userId, email, hash, userType, firstName, lastName, birthDate, degrees.school, degreeId, groupId, groups.name AS groupName, groups.resourceId AS groupResourceId, avatar_key, avatar_value, delegate as isDelegate, isTeacher FROM users
       LEFT OUTER JOIN groups ON groups.id = users.groupId
+      LEFT OUTER JOIN degrees ON users.degreeId
       ${req.query.queryUserType ? 'WHERE userType >= ' + req.query.queryUserType : ''}
       ${req.query.page && req.query.limit ? 'LIMIT ' + (req.query.page * req.query.limit) + ', ' + req.query.limit : ''}
     `);
 
     res.send(users.map(u => {
-      u.group = { id: u.groupId, name: u.groupName };
-      delete u.groupId;
-      delete u.groupName;
+      if (u.groupName) {
+        u.group = { id: u.groupId, name: u.groupName };
+        delete u.groupId;
+        delete u.groupName;
+      }
 
       return u;
     }));
