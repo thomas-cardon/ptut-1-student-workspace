@@ -40,11 +40,17 @@ export default function UserListPage({ module }) {
   const displayMenu = e => contextMenu.show({
     id: "userTable",
     event: e,
-    props: { id: e.currentTarget.id }
+    props: { id: e.currentTarget.id, email: e.currentTarget.dataset.email }
   });
 
   function handleItemClick({ event, props, data, triggerEvent }) {
     switch (event.currentTarget.id) {
+      case "copyEmailAddress":
+        navigator.clipboard.writeText(props.email).then(() => addToast('Adresse mail copiée dans le presse-papiers', { appearance: 'success' })).catch(error => {
+          console.error(error);
+          addToast("Erreur: vous n'avez pas donné les permissions du presse-papiers.", { appearance: 'error' });
+        });
+        break;
       case "edit":
         router.push('/users/edit?id=' + props.id);
         break;
@@ -70,18 +76,19 @@ export default function UserListPage({ module }) {
 
   if (user?.isLoggedIn && users) {
     content = <div style={{ display: 'flex', flexDirection: 'column' }}>
-      <Table head={['Nom', 'Prénom', 'E-mail', 'Groupe', 'Date. naiss', 'Type']} menuId="userTable" onContextMenu={displayMenu} fixed={true} menu={<Menu id="userTable">
+      <Table head={['Nom', 'Prénom', 'Groupe', 'Date. naissance', 'Type']} menuId="userTable" onContextMenu={displayMenu} fixed={true} menu={<Menu id="userTable">
+        <Item id="copyEmailAddress" onClick={handleItemClick}>Copier adresse e-mail</Item>
+        <Separator />
         <Item id="edit" onClick={handleItemClick}>📝 Editer </Item>
         <Separator />
         <Item id="remove" onClick={handleItemClick}>&#x274C; Supprimer</Item>
       </Menu>}>
-        {[].concat(...users).map((user, index) => <tr id={`${user.userId}`} key={user.userId}>
+        {[].concat(...users).map((user, index) => <tr id={`${user.userId}`} data-email={user.email} key={user.userId}>
           <td data-type="lastName">{user.lastName}</td>
           <td data-type="firstName">{user.firstName}</td>
-          <td data-type="email"><small><em>{user.email}</em></small></td>
-          <td data-type="groupName">{user.group.name}</td>
+          <td data-type="groupName">{user.group?.name || 'N/A'}</td>
           <td data-type="birthDate">{new Date(user.birthDate).toLocaleString().split(" ")[0]}</td>
-          <td data-type="type">{user.userType === 0 ? 'Étudiant' : user.userType === 1 ? 'Professeur' : 'Administration'}</td>
+          <td data-type="type">{user.userType === 2 ? 'Administration' : user.isDelegate ? 'Délégué' : user.isTeacher ? 'Professeur' : 'Étudiant'}</td>
         </tr>)}
       </Table>
       <Button icon={<HiRefresh />} onClick={() => setSize(size + 1)} style={{ marginBottom: '1em', height: 'unset' }}>Charger plus...</Button>
