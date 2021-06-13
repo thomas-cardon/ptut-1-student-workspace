@@ -46,7 +46,7 @@ function MyApp({ Component, pageProps }) {
         <meta name="theme-color" content="#5575e7" />
 
         <link rel="preconnect" href="https://fonts.gstatic.com" />
-        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@800&family=Raleway:wght@100;400;800&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@800&family=Raleway:wght@100;400;800&family=Lato:wght@400;700&display=swap" rel="stylesheet" />
 
         <meta name='twitter:card' content='summary' />
         <meta name='twitter:url' content='https://student-workspace.vercel.app/' />
